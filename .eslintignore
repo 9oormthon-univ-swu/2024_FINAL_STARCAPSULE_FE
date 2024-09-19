@@ -1,0 +1,5 @@
+./craco.config.js
+src/stories/**
+src/**/*.stories.jsx
+src/**/*.stories.js
+.storybook/**

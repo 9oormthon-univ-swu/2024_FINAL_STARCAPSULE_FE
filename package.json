@@ -16,7 +16,9 @@
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "eslintConfig": {
     "extends": [
@@ -37,10 +39,24 @@
     ]
   },
   "devDependencies": {
+    "@chromatic-com/storybook": "^1.9.0",
     "@craco/craco": "^7.1.0",
+    "@storybook/addon-essentials": "^8.3.2",
+    "@storybook/addon-interactions": "^8.3.2",
+    "@storybook/addon-links": "^8.3.2",
+    "@storybook/addon-onboarding": "^8.3.2",
+    "@storybook/blocks": "^8.3.2",
+    "@storybook/preset-create-react-app": "^8.3.2",
+    "@storybook/react": "^8.3.2",
+    "@storybook/react-webpack5": "^8.3.2",
+    "@storybook/test": "^8.3.2",
     "craco-alias": "^3.0.1",
     "eslint": "^8.57.1",
     "eslint-plugin-react": "^7.36.1",
-    "prettier": "^3.3.3"
+    "eslint-plugin-storybook": "^0.8.0",
+    "prettier": "^3.3.3",
+    "prop-types": "^15.8.1",
+    "storybook": "^8.3.2",
+    "webpack": "^5.94.0"
   }
 }
