@@ -4,7 +4,13 @@ module.exports = {
         es2021: true,
         node: true,
     },
-    extends: ['eslint:recommended', 'plugin:react/recommended', 'plugin:jsx-a11y/recommended', 'plugin:react-hooks/recommended', 'plugin:storybook/recommended'],
+    extends: [
+        'eslint:recommended',
+        'plugin:react/recommended',
+        'plugin:jsx-a11y/recommended',
+        'plugin:react-hooks/recommended',
+        'plugin:storybook/recommended',
+    ],
     overrides: [],
     parserOptions: {
         ecmaVersion: 'latest',
@@ -15,9 +21,10 @@ module.exports = {
     },
     plugins: ['react', 'react-hooks', 'jsx-a11y'],
     rules: {
+        'react/prop-types': 'off',
         'react/react-in-jsx-scope': 'off',
     },
     settings: {
         react: { version: 'detect' },
     },
-}
+};
