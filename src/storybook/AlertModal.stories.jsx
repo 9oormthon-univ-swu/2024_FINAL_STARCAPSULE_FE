@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { Button } from '@mui/material';
-import AlertModal from './AlertModal';
+import AlertModal from '../components/AlertModal';
 
 const meta = {
     title: 'common/AlertModal',
