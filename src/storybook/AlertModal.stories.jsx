@@ -1,3 +1,5 @@
+import React from 'react';
+import { Typography } from '@mui/material';
 import AlertModal from '../components/AlertModal';
 
 const meta = {
@@ -7,11 +9,7 @@ const meta = {
     argTypes: {
         open: { control: 'boolean', description: '모달 open 여부' },
         onClose: { description: '모달을 닫는 함수', type: 'function' },
-        text: { control: 'text', description: '모달에 표시할 텍스트' },
-        confirmText: { control: 'text', description: '확인 버튼 텍스트' },
-        cancelText: { control: 'text', description: '취소 버튼 텍스트' },
-        onConfirm: { description: '확인 버튼 클릭 시 실행할 함수' },
-        onCancel: { description: '취소 버튼 클릭 시 실행할 함수' },
+        children: { description: '모달 내용', type: 'node' },
     },
 };
 
@@ -19,11 +17,16 @@ const meta = {
 const Default = {
     args: {
         open: false, // 기본값으로 모달을 닫힌 상태로 설정
-        text: '알림창 내용',
-        confirmText: '확인',
-        cancelText: '취소',
-        onConfirm: () => window.alert('확인 버튼 클릭'),
-        onCancel: () => window.alert('취소 버튼 클릭'),
+        onClose: () => {}, // onClose 함수는 비어있는 함수로 설정
+        buttonText: '확인', // 버튼 텍스트는 '확인'으로 설정
+        onButtonClick: () => {}, // onButtonClick 함수는 비어있는 함수로 설정
+        children: (
+            <Typography align='center'>
+                보관 후에는 수정이 불가해요.
+                <br />
+                이대로 전달할까요?
+            </Typography>
+        ),
     },
 };
 
