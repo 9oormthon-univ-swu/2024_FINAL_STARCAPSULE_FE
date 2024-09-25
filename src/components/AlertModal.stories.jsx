@@ -1,8 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@mui/material';
 import AlertModal from './AlertModal';
-import { useArgs } from '@storybook/client-api'; // useArgs 훅을 사용하여 args를 상태처럼 사용
-import { type } from '@testing-library/user-event/dist/type';
 
 const meta = {
     title: 'common/AlertModal',
@@ -17,28 +15,6 @@ const meta = {
         onConfirm: { description: '확인 버튼 클릭 시 실행할 함수' },
         onCancel: { description: '취소 버튼 클릭 시 실행할 함수' },
     },
-    decorators: [
-        (Story, context) => {
-            const [args, updateArgs] = useArgs(); // args와 업데이트 함수 사용
-
-            const handleOpen = () => updateArgs({ open: true });
-            const handleClose = () => updateArgs({ open: false });
-
-            return (
-                <div>
-                    <Button variant='contained' onClick={handleOpen}>
-                        Open Modal
-                    </Button>
-
-                    <AlertModal
-                        open={args.open} // 스토리북의 control과 상태 동기화
-                        onClose={handleClose} // 모달을 닫을 때 args 업데이트
-                        {...args} // 나머지 props 전달
-                    />
-                </div>
-            );
-        },
-    ],
 };
 
 // 기본 스토리 설정

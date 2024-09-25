@@ -1,4 +1,3 @@
-// craco.config.js
 const path = require('path');
 
 module.exports = {
@@ -9,6 +8,10 @@ module.exports = {
             '@page': path.resolve(__dirname, 'src/page'),
             '@layout': path.resolve(__dirname, 'src/layout'),
             '@hooks': path.resolve(__dirname, 'src/hooks'),
+            '@storybook': path.resolve(__dirname, 'src/storybook'),
         },
+    },
+    babel: {
+        presets: ['@babel/preset-react'],
     },
 };
