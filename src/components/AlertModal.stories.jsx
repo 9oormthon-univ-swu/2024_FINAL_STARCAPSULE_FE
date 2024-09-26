@@ -4,7 +4,7 @@ import AlertModal from './AlertModal';
 import { useArgs } from '@storybook/client-api'; // useArgs 훅을 사용하여 args를 상태처럼 사용
 import { type } from '@testing-library/user-event/dist/type';
 
-const meta = {
+const meta = {  
     title: 'common/AlertModal',
     component: AlertModal,
     tags: ['autodocs'],
