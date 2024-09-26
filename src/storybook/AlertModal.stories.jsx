@@ -1,6 +1,6 @@
 import React from 'react';
 import { Typography } from '@mui/material';
-import AlertModal from '../components/AlertModal';
+import AlertModal from '@/components/AlertModal';
 
 const meta = {
     title: 'common/AlertModal',

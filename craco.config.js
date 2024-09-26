@@ -1,17 +1,14 @@
-const path = require('path');
+const { CracoAliasPlugin } = require('react-app-alias');
 
 module.exports = {
-    webpack: {
-        alias: {
-            '@components': path.resolve(__dirname, 'src/components'),
-            '@utils': path.resolve(__dirname, 'src/utils'),
-            '@page': path.resolve(__dirname, 'src/page'),
-            '@layout': path.resolve(__dirname, 'src/layout'),
-            '@hooks': path.resolve(__dirname, 'src/hooks'),
-            '@storybook': path.resolve(__dirname, 'src/storybook'),
+    plugins: [
+        {
+            plugin: CracoAliasPlugin,
+            options: {
+                source: 'jsconfig',
+                baseUrl: './src',
+                tsConfigPath: './jsconfig.paths.json', // 위에서 작성한 tsconfig.paths.json입니다.
+            },
         },
-    },
-    babel: {
-        presets: ['@babel/preset-react'],
-    },
+    ],
 };
