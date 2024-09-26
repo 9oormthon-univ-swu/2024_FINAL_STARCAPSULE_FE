@@ -1,6 +1,13 @@
-import { Button, IconButton, Modal, Stack, Typography } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
 import React from 'react';
+import {
+    Box,
+    Button,
+    IconButton,
+    Modal,
+    Stack,
+    Typography,
+} from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
 /**
  * AlertModal 컴포넌트는 modal을 띄우고 확인, 취소 버튼을 제공합니다.
@@ -8,13 +15,9 @@ import React from 'react';
  *
  * @param {boolean} open - modal open 여부
  * @param {function} onClose - modal을 닫는 함수
- * @param {string} text - modal에 표시할 텍스트
- * @param {string} confirmText - 확인 버튼 텍스트
- * @param {string} cancelText - 취소 버튼 텍스트
- * @param {function} onConfirm - 확인 버튼 클릭 시 실행할 함수
- * @param {function} onCancel - 취소 버튼 클릭 시 실행할 함수
- * @param {object} cancelButtonProps - 취소 버튼에 전달할 props
- * @param {object} confirmButtonProps - 확인 버튼에 전달할 props
+ * @param {string} buttonText - 버튼 텍스트
+ * @param {function} onButtonClick - 버튼 클릭 시 실행되는 함수
+ * @param {any} children - modal 내용
  * @param  {...any} props - 추가적인 props, Modal 컴포넌트에 전달됨
  * @returns
  */
@@ -24,23 +27,19 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    // width: 400,
     bgcolor: 'background.paper',
-    border: '2px solid #000',
     boxShadow: 24,
-    p: 4,
+    borderRadius: '1.25rem',
+    overflow: 'hidden',
 };
 
 const AlertModal = ({
     open,
     onClose,
-    text, // text to display
-    confirmText, // text for the confirm button
-    cancelText, // text for the cancel button
-    onConfirm, // function to call when the confirm button is clicked
-    onCancel, // function to call when the cancel button is clicked
-    cancelButtonProps, // props to pass to the cancel button
-    confirmButtonProps, // props to pass to the confirm button
+    buttonText,
+    onButtonClick,
+    children,
     ...props
 }) => {
     return (
@@ -51,40 +50,28 @@ const AlertModal = ({
             {...props}
         >
             <Stack sx={style} direction={'column'} justifyContent={'center'}>
-                <Stack direction={'row'} justifyContent={'flex-end'}>
-                    <IconButton onClick={onClose}>
-                        <CloseIcon />
-                    </IconButton>
-                </Stack>
-                <Typography id={'alert-modal-description'} align='center'>
-                    {text}
-                </Typography>
-                <Stack direction={'row'} w={1} justifyContent={'space-between'}>
-                    {cancelText && (
-                        <Button
-                            onClick={onCancel}
-                            sx={{
-                                width: 1,
-                                height: '3rem',
+                <Stack direction={'column'} p={2} spacing={3} mb={3}>
+                    <Stack direction={'row'} justifyContent={'flex-end'}>
+                        <IconButton
+                            onClick={onClose}
+                            style={{
+                                width: '1.5rem',
+                                height: '1.5rem',
                             }}
-                            {...cancelButtonProps}
                         >
-                            {cancelText}
-                        </Button>
-                    )}
-                    {confirmText && (
-                        <Button
-                            onClick={onConfirm}
-                            sx={{
-                                width: 1,
-                                height: '3rem',
-                            }}
-                            {...confirmButtonProps}
-                        >
-                            {confirmText}
-                        </Button>
-                    )}
+                            <CloseIcon />
+                        </IconButton>
+                    </Stack>
+                    <Box sx={{ px: '3rem' }}>{children}</Box>
                 </Stack>
+                <Button
+                    variant='contained'
+                    color='primary'
+                    onClick={onButtonClick}
+                    sx={{ py: '1.25rem', borderRadius: 0 }}
+                >
+                    <Typography>{buttonText}</Typography>
+                </Button>
             </Stack>
         </Modal>
     );

@@ -10,8 +10,8 @@ const style = {
     width: '290px',
     height: '211px',
     borderRadius: '20px',
-    backgroundColor: '#FFFCFA', // 모달 배경색
-    boxShadow: '0px 0px 4px 0px rgba(40, 40, 40, 0.20)', // 그림자 설정
+    backgroundColor: '#FFFCFA', 
+    boxShadow: '0px 0px 4px 0px rgba(40, 40, 40, 0.20)', 
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -38,7 +38,7 @@ const style = {
             id={'transmission-modal-description'}
             align="center"
             sx={{
-              color: '#282828', // 폰트 색상
+              color: '#282828', 
               fontWeight: 'bold',
               marginBottom: '8px',
             }}
@@ -61,7 +61,7 @@ const style = {
             color: '#ffffff',
             height: '48px',
             fontSize: '16px',
-            borderRadius: '0 0 10px 10px', // 아래 모서리만 둥글게
+            borderRadius: '0 0 10px 10px', 
             '&:hover': {
               backgroundColor: '#8a613e',
             },
