@@ -81,7 +81,7 @@ const AlertModal = ({
                     variant='contained'
                     color='primary'
                     onClick={onButtonClick}
-                    sx={{ py: '1.25rem', borderRadius: 0 }}
+                    sx={{ py: '1.25rem', borderRadius: 0, bgcolor: 'button1' }}
                 >
                     <Typography>{buttonText}</Typography>
                 </Button>
