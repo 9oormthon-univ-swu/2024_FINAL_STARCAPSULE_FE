@@ -1,6 +1,6 @@
 import { createTheme } from '@mui/material/styles';
-import { palette } from './palette';
-import { textStyles } from './textStyles';
+import palette from '@/constants/palette.js';
+import textStyles from '@/constants/textStyles.js';
 
 const theme = createTheme({
     palette: {

@@ -22,7 +22,7 @@
             ],
             "@/constants/*": [
                 "src/constants/*"
-            ],
+            ]
         }
     }
 }

@@ -1,9 +1,32 @@
 {
-  "extends": "./jsconfig.paths.json",
-  "include": [
-    "src"
-  ],
   "compilerOptions": {
-    "baseUrl": "src"
-  }
+    "baseUrl": "src",
+    "paths": {
+      "@/components/*": [
+        "components/*"
+      ],
+      "@/storybook/*": [
+        "storybook/*"
+      ],
+      "@/utils/*": [
+        "utils/*"
+      ],
+      "@/hooks/*": [
+        "hooks/*"
+      ],
+      "@/page/*": [
+        "page/*"
+      ],
+      "@/layout/*": [
+        "layout/*"
+      ],
+      "@/constants/*": [
+        "constants/*"
+      ]
+    }
+  },
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }
