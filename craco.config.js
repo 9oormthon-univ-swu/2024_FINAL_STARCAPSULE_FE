@@ -5,9 +5,9 @@ module.exports = {
         {
             plugin: CracoAliasPlugin,
             options: {
-                source: 'jsconfig',
+                source: 'jsconfig', // JavaScript에서는 jsconfig 사용
                 baseUrl: './src',
-                tsConfigPath: './jsconfig.paths.json', // 위에서 작성한 tsconfig.paths.json입니다.
+                jsConfigPath: './jsconfig.json', // jsconfig.json을 참조
             },
         },
     ],
