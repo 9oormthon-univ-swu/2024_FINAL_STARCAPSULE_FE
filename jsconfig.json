@@ -2,5 +2,8 @@
   "extends": "./jsconfig.paths.json",
   "include": [
     "src"
-  ]
+  ],
+  "compilerOptions": {
+    "baseUrl": "src"
+  }
 }
