@@ -62,13 +62,13 @@ const AlertModal = ({
                             <CloseIcon />
                         </IconButton>
                     </Stack>
-                    <Box style={{ padding: '0 3rem' }}>{children}</Box>
+                    <Box sx={{ px: '3rem' }}>{children}</Box>
                 </Stack>
                 <Button
                     variant='contained'
                     color='primary'
                     onClick={onButtonClick}
-                    style={{ padding: '1.25rem 0', borderRadius: 0 }}
+                    sx={{ py: '1.25rem', borderRadius: 0 }}
                 >
                     <Typography>{buttonText}</Typography>
                 </Button>
