@@ -21,7 +21,7 @@ const Default = {
         buttonText: '확인', // 버튼 텍스트는 '확인'으로 설정
         onButtonClick: () => {}, // onButtonClick 함수는 비어있는 함수로 설정
         children: (
-            <Typography align='center'>
+            <Typography align='center' variant='title2'>
                 보관 후에는 수정이 불가해요.
                 <br />
                 이대로 전달할까요?
