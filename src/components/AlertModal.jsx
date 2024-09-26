@@ -31,6 +31,7 @@ const style = {
     borderRadius: '1.25rem',
     height: 'fit-content',
     width: ['80vw', 'fit-content'],
+    maxWidth: '20rem',
     overflow: 'hidden',
 };
 
