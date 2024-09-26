@@ -40,8 +40,8 @@ const SnowballPage = () => {
   return (
     <Container>
       <IconWrapper>
-        {/* 여기에 눈사람 아이콘 삽입 가능 */}
-        ⛄
+       
+        
       </IconWrapper>
       <Title>스노우볼 만들기</Title>
       <SubTitle>질문에 대한 답변을 매일 작성하고<br />주변 사람들에게 추억을 전달받아요</SubTitle>

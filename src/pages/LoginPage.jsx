@@ -41,21 +41,21 @@ const KakaoIcon = styled.span`
 `;
 
 const LoginPage = () => {
-  const [modalOpen, setModalOpen] = useState(false); // 모달 상태 관리
+  const [modalOpen, setModalOpen] = useState(false); 
 
   return (
     <Container>
       <Title>Snow Log</Title>
       <SubTitle>추억을 보관하고 공유받아 나만의 스노우볼을 완성해요</SubTitle>
-      <KakaoButton onClick={() => setModalOpen(true)}> {/* 모달 열기 */}
+      <KakaoButton onClick={() => setModalOpen(true)}> 
         <KakaoIcon>💬</KakaoIcon>카카오 로그인
       </KakaoButton>
       <TransmissionModal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
         onConfirm={() => {
-          setModalOpen(false); // 확인 버튼을 클릭하면 모달 닫기
-          console.log("모달의 확인을 눌렀을 때의 액션을 처리"); // 확인 시 행동 추가
+          setModalOpen(false); 
+          console.log("모달의 확인을 눌렀을 때의 액션을 처리"); 
         }}
       />
     </Container>
