@@ -27,10 +27,10 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    // width: 400,
-    bgcolor: 'background.paper',
     boxShadow: 24,
     borderRadius: '1.25rem',
+    height: 'fit-content',
+    width: ['80vw', 'fit-content'],
     overflow: 'hidden',
 };
 
@@ -50,19 +50,31 @@ const AlertModal = ({
             {...props}
         >
             <Stack sx={style} direction={'column'} justifyContent={'center'}>
-                <Stack direction={'column'} p={2} spacing={3} mb={3}>
+                <Stack
+                    direction={'column'}
+                    p={2}
+                    spacing={3}
+                    sx={{
+                        bgcolor: 'background.paper',
+                    }}
+                >
                     <Stack direction={'row'} justifyContent={'flex-end'}>
                         <IconButton
                             onClick={onClose}
-                            style={{
-                                width: '1.5rem',
-                                height: '1.5rem',
+                            sx={{
+                                w: '1.5rem',
+                                h: '1.5rem',
                             }}
                         >
                             <CloseIcon />
                         </IconButton>
                     </Stack>
-                    <Box sx={{ px: '3rem' }}>{children}</Box>
+                    <Box
+                        sx={{ px: [2, 6], pb: 3, wordBreak: 'keep-all' }}
+                        id='alert-modal-description'
+                    >
+                        {children}
+                    </Box>
                 </Stack>
                 <Button
                     variant='contained'
