@@ -26,7 +26,7 @@ const Template = (args) => <args.component {...args} />;
 export const Calendar = Template.bind({});
 Calendar.args = {
     component: CalendarIcon,
-    color: 'custom.main1',
+    color: 'primary',
 };
 
 export const Share = Template.bind({});
