@@ -3,7 +3,7 @@ import { Typography } from '@mui/material';
 import AlertModal from '@/components/AlertModal';
 
 const meta = {
-    title: 'common/AlertModal',
+    title: 'components/AlertModal',
     component: AlertModal,
     tags: ['autodocs'],
     argTypes: {

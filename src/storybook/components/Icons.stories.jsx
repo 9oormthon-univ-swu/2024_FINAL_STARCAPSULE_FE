@@ -2,7 +2,7 @@ import React from 'react';
 import { CalendarIcon, ShareIcon } from '@/components/icons';
 
 const meta = {
-    title: 'Icons',
+    title: 'components/Icons',
     argTypes: {
         color: {
             control: { type: 'select' },
