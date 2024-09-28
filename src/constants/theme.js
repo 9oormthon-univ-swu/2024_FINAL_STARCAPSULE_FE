@@ -17,7 +17,6 @@ const theme = createTheme({
             'Kaisei Decol',
         ].join(','),
         ...textStyles,
-        fontSize: 16,
     },
 });
 
