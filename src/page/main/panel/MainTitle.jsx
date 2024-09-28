@@ -7,13 +7,13 @@ const MainTitle = ({ nickname }) => {
     const isRow = nickname.length < 5;
     return (
         <Stack
-            spacing={0.5}
+            spacing={isRow ? 0.5 : 0.25}
             alignItems={isRow ? 'center' : 'flex-start'}
             justifyContent={isRow ? 'flex-start' : 'row'}
             direction={isRow ? 'row' : 'column'}
         >
             <Typography variant='Heading1' fontSize={'1.5rem'}>
-                <span color={palette.main2}>{nickname}</span>
+                <span style={{ color: palette.main2 }}>{nickname}</span>
                 님의
             </Typography>
             <Stack direction={'row'} alignItems={'center'} spacing={'0.25rem'}>
