@@ -16,11 +16,11 @@ const Default = {
     },
 };
 
-const NicknameLong = {
+const Nickname6Letters = {
     args: {
         nickname: '미르미미르미',
     },
 };
 
 export default meta;
-export { Default, NicknameLong };
+export { Default, Nickname6Letters };

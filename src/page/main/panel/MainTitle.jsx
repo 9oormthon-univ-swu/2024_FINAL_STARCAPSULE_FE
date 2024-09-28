@@ -4,7 +4,7 @@ import { IconButton, Stack, Typography } from '@mui/material';
 import React from 'react';
 
 const MainTitle = ({ nickname }) => {
-    const isRow = nickname.length < 5;
+    const isRow = nickname.length <= 5;
     return (
         <Stack
             spacing={isRow ? 0.5 : 0.25}
