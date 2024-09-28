@@ -30,6 +30,13 @@ const handleShare = (title, url, content, message) => {
     }
 };
 
+/**
+ * 공유하기 버튼. 임시로 처리하였으며 추후 시간이 남거나 업그레이드 시, native.share가 지원되지 않는 브라우저를 위한 코드가 추가될 예정입니다.
+ * @param {string} title - 공유할 제목
+ * @param {string} url - 공유할 url
+ * @param {string} text - 공유할 내용
+ */
+//
 const ShareButton = ({ title, url, text }) => {
     const message = `${title}\n\n${text}\n\n${url}`;
 
