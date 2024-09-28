@@ -35,4 +35,10 @@ Share.args = {
     color: 'custom.main1',
 };
 
+export const Edit = Template.bind({});
+Edit.args = {
+    component: ShareIcon,
+    color: 'custom.main2',
+};
+
 export default meta;
