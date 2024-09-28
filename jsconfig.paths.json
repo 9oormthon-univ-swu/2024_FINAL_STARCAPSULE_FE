@@ -19,6 +19,9 @@
             ],
             "@/layout/*": [
                 "src/layout/*"
+            ],
+            "@/constants/*": [
+                "src/constants/*"
             ]
         }
     }
