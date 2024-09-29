@@ -22,7 +22,7 @@ import CloseIcon from '@mui/icons-material/Close';
  * @returns
  */
 
-const style = {
+const modalStyle = {
     position: 'absolute',
     top: '50%',
     left: '50%',
@@ -33,6 +33,18 @@ const style = {
     width: ['80vw', 'fit-content'],
     maxWidth: '20rem',
     overflow: 'hidden',
+};
+
+const modalDescriptionStyle = {
+    px: [2, 6],
+    pb: 3,
+    wordBreak: 'keep-all',
+};
+
+const buttonStyle = {
+    py: '1.25rem',
+    borderRadius: 0,
+    backgroundColor: 'custom.button1',
 };
 
 const AlertModal = ({
@@ -50,7 +62,11 @@ const AlertModal = ({
             aria-describedby='alert-modal-description'
             {...props}
         >
-            <Stack sx={style} direction={'column'} justifyContent={'center'}>
+            <Stack
+                sx={modalStyle}
+                direction={'column'}
+                justifyContent={'center'}
+            >
                 <Stack
                     direction={'column'}
                     p={2}
@@ -71,7 +87,7 @@ const AlertModal = ({
                         </IconButton>
                     </Stack>
                     <Box
-                        sx={{ px: [2, 6], pb: 3, wordBreak: 'keep-all' }}
+                        sx={modalDescriptionStyle}
                         id='alert-modal-description'
                     >
                         {children}
@@ -81,9 +97,9 @@ const AlertModal = ({
                     variant='contained'
                     color='primary'
                     onClick={onButtonClick}
-                    sx={{ py: '1.25rem', borderRadius: 0 }}
+                    sx={buttonStyle}
                 >
-                    <Typography>{buttonText}</Typography>
+                    <Typography variant='title2'>{buttonText}</Typography>
                 </Button>
             </Stack>
         </Modal>
