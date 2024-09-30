@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import TransmissionModal from '../../components/TransmissionModal';
 import Snowfall from 'react-snowfall';  
+import backgroundBottom from '../../assets/background_bottom.png'; 
 
 const Container = styled.div`
   display: flex;
@@ -9,23 +10,36 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   height: 100vh;
+  width: 100vw;
+  max-width: 480px; 
   background: linear-gradient(180deg, #0B0A1B 0%, #27405E 100%); 
   position: relative;
   overflow: hidden;
+  margin: 0 auto; 
+  background-color: white; 
 `;
 
 const Title = styled.h1`
-  font-family: 'Dancing Script', cursive;
-  font-size: 48px;
+  font-family: Italic;
+  font-size: 55px;
   color: #fff;
-  margin-bottom: 10px;
+  position: absolute; 
+  top: 130px; 
+  left: 180px; 
+  transform: translateX(-50%); 
+  white-space: nowrap; 
 `;
 
+
 const SubTitle = styled.p`
-  font-size: 16px;
+  font-size: 17px;
   color: #fff;
-  margin-bottom: 40px;
+  position: absolute; 
+  top: 240px; 
+  transform: translateX(-50%);
+  left: 160px; 
 `;
+
 
 const KakaoButton = styled.button`
   background-color: #FEE500; 
@@ -42,6 +56,9 @@ const KakaoButton = styled.button`
   font-weight: bold;
   cursor: pointer;
   box-shadow: 0px 0px 4px 0px rgba(40, 40, 40, 0.20);
+  position: absolute;
+  bottom: 40px;
+  z-index: 10;
   
   &:hover {
     background-color: #F7DF00;
@@ -67,6 +84,16 @@ const KakaoSVG = () => (
   </svg>
 );
 
+const BottomImage = styled.img`
+  position: absolute;
+  bottom: 0;
+  height: 100vh;
+  bottom: -335px; 
+  width: 100vw;
+  max-width: 480px; 
+  object-fit: contain; //눈 이미지 수정해야 됨
+`;
+
 const LoginPage = () => {
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -80,7 +107,10 @@ const LoginPage = () => {
         radius={[0.5, 3]}    
       />
       <Title>Snow Log</Title>
-      <SubTitle>추억을 보관하고 공유받아 나만의 스노우볼을 완성해요</SubTitle>
+      <SubTitle>
+  추억을 보관하고 공유받아<br />
+  나만의 스노우볼을 완성해요
+</SubTitle>
       <KakaoButton onClick={() => setModalOpen(true)}>
         <KakaoIcon>
           <KakaoSVG />  
@@ -92,9 +122,9 @@ const LoginPage = () => {
         onClose={() => setModalOpen(false)}
         onConfirm={() => {
           setModalOpen(false);
-          console.log('모달의 확인을 눌렀을 때의 액션을 처리');
         }}
       />
+      <BottomImage src={backgroundBottom} alt="Snow background" /> 
     </Container>
   );
 };
