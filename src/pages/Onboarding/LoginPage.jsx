@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import TransmissionModal from '../../components/TransmissionModal';
 import Snowfall from 'react-snowfall';  
 import backgroundBottom from '../../assets/background_bottom.png'; 
 
@@ -95,7 +94,11 @@ const BottomImage = styled.img`
 `;
 
 const LoginPage = () => {
-  const [modalOpen, setModalOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleKakaoLogin = () => {
+    navigate('/snowballmake');
+  };
 
   return (
     <Container>
@@ -111,19 +114,12 @@ const LoginPage = () => {
   추억을 보관하고 공유받아<br />
   나만의 스노우볼을 완성해요
 </SubTitle>
-      <KakaoButton onClick={() => setModalOpen(true)}>
+<KakaoButton onClick={handleKakaoLogin}>
         <KakaoIcon>
           <KakaoSVG />  
         </KakaoIcon>
         카카오 로그인
       </KakaoButton>
-      <TransmissionModal
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
-        onConfirm={() => {
-          setModalOpen(false);
-        }}
-      />
       <BottomImage src={backgroundBottom} alt="Snow background" /> 
     </Container>
   );
