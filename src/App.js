@@ -1,14 +1,28 @@
-import './App.css';
-import { ThemeProvider, Typography } from '@mui/material';
+import './App.css'; 
+import { ThemeProvider } from '@mui/material';
 import theme from './constants/theme';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import LoginPage from './pages/Onboarding/LoginPage';
+import PopupPage from './pages/Onboarding/PopupPage';
+import SnowballMake from './pages/Onboarding/SnowballMake'; 
+import Text from './pages/text';        
+import TextMessage from './pages/textmessage';
 
 function App() {
     return (
         <ThemeProvider theme={theme}>
-            <Typography variant='subtitle3'>Hello, World!</Typography>
+            <Router>
+                <Routes>
+                    <Route path="/" element={<LoginPage />} />
+                    <Route path="/popup" element={<PopupPage />} />
+                    <Route path="/snowballmake" element={<SnowballMake />} /> 
+                    <Route path="/text" element={<Text />} />               
+                    <Route path="/textmessage" element={<TextMessage />} /> 
+                </Routes>
+            </Router>
         </ThemeProvider>
     );
 }
 
 export default App;
-

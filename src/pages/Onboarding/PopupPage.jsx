@@ -7,7 +7,7 @@ const PopupWrapper = styled.div`
   align-items: center;
   height: 100vh;
   background-color: #2B3B52;
-`;
+`; 
 
 const PopupContent = styled.div`
   background-color: #F6ECE1;
