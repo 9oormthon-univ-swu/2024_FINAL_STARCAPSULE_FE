@@ -52,6 +52,7 @@
         ]
     },
     "devDependencies": {
+        "@babel/plugin-transform-private-property-in-object": "^7.24.7",
         "@babel/preset-react": "^7.24.7",
         "@chromatic-com/storybook": "^1.9.0",
         "@craco/craco": "^7.1.0",
