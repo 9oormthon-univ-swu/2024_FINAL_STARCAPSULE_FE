@@ -48,10 +48,6 @@ const Button = styled.button`
   position: absolute;
   bottom: 40px;
   z-index: 10;
-  
-  &:hover {
-    background-color: #F7DF00;
-  }
 `;
 
 
