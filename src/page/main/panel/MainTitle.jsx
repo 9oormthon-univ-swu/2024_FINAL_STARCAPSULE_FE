@@ -4,6 +4,13 @@ import useModal from '@/hooks/useModal';
 import { Check } from '@mui/icons-material';
 import { IconButton, Stack, styled, Typography } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
+import ReplayIcon from '@mui/icons-material/Replay';
+
+const StyledIconButton = styled(IconButton)(() => ({
+    w: '1.5rem !important',
+    h: '1.5rem !important',
+    p: 0,
+}));
 
 // eslint-disable-next-line no-unused-vars
 const MainTitle = ({ nickname, setNickname }) => {
@@ -12,7 +19,7 @@ const MainTitle = ({ nickname, setNickname }) => {
     const divRef = useRef(null);
     const nicknameRef = useRef(nickname);
 
-    const Input = styled('div')(({ theme }) => ({
+    const Input = styled('span')(({ theme }) => ({
         color: theme.palette.custom.main2,
         display: 'inline-block',
         width: 'fit-content',
@@ -20,6 +27,16 @@ const MainTitle = ({ nickname, setNickname }) => {
         border: 'none',
         textDecoration: isEditable ? 'underline' : 'none',
         ...theme.typography.Heading1,
+        '&:empty:before': {
+            content: 'attr(placeholder)',
+            color: theme.palette.custom.grey,
+            textDecoration: 'underline',
+        },
+        '&:after': {
+            content: '""',
+            display: 'inline-block',
+            width: 0,
+        },
     }));
 
     useEffect(() => {
@@ -60,7 +77,6 @@ const MainTitle = ({ nickname, setNickname }) => {
 
     const handleEditClick = () => {
         setIsEditable('plaintext-only');
-        // 다음 렌더링이 완료된 후에 포커스 설정
         setCursorToEnd();
     };
 
@@ -76,9 +92,16 @@ const MainTitle = ({ nickname, setNickname }) => {
         }
     };
 
-    // const handleBlur = () => {
-    // cancelModal.openModal();
-    // };
+    const handleReBtnClick = () => {
+        divRef.current.innerText = nickname;
+        nicknameRef.current = nickname;
+    };
+
+    const handleConfirmClick = () => {
+        setNickname(nicknameRef.current);
+        setIsEditable(false);
+        window.alert('닉네임이 변경되었습니다.');
+    };
 
     return (
         <>
@@ -94,11 +117,16 @@ const MainTitle = ({ nickname, setNickname }) => {
                         ref={divRef}
                         contentEditable={isEditable}
                         suppressContentEditableWarning={true}
-                        style={{}}
                         spellCheck={false}
+                        placeholder={'닉네임을 입력해주세요'}
                     >
                         {nickname.current ?? nickname}
                     </Input>
+                    {isEditable && (
+                        <StyledIconButton onClick={handleReBtnClick}>
+                            <ReplayIcon color='custom.grey' />
+                        </StyledIconButton>
+                    )}
                     님의
                 </Typography>
                 <Stack
@@ -108,21 +136,13 @@ const MainTitle = ({ nickname, setNickname }) => {
                 >
                     <Typography variant='Heading1'>스노우볼</Typography>
                     {!isEditable ? (
-                        <IconButton
-                            onClick={handleEditClick}
-                            suppressContentEditableWarning={true}
-                            sx={{
-                                w: '1.5rem !important',
-                                h: '1.5rem !important',
-                                p: 0,
-                            }}
-                        >
+                        <StyledIconButton onClick={handleEditClick}>
                             <EditIcon color='custom.white' />
-                        </IconButton>
+                        </StyledIconButton>
                     ) : (
-                        <IconButton>
+                        <StyledIconButton onClick={handleConfirmClick}>
                             <Check color='custom.white' />
-                        </IconButton>
+                        </StyledIconButton>
                     )}
                 </Stack>
             </Stack>
