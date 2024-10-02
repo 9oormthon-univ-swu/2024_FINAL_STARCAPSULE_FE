@@ -1,5 +1,10 @@
 import React from 'react';
-import { CalendarIcon, EditIcon, ShareIcon } from '@/components/icons';
+import {
+    CalendarIcon,
+    CheckIcon,
+    EditIcon,
+    ShareIcon,
+} from '@/components/icons';
 
 const meta = {
     title: 'components/Icons',
@@ -27,6 +32,12 @@ export const Calendar = Template.bind({});
 Calendar.args = {
     component: CalendarIcon,
     color: 'primary',
+};
+
+export const Check = Template.bind({});
+Check.args = {
+    component: CheckIcon,
+    color: 'custom.main1',
 };
 
 export const Share = Template.bind({});
