@@ -1,22 +1,35 @@
 import AlertModal from '@/components/AlertModal';
 import { EditIcon } from '@/components/icons';
-import palette from '@/constants/palette';
-import textStyles from '@/constants/textStyles';
 import useModal from '@/hooks/useModal';
 import { Check } from '@mui/icons-material';
-import { IconButton, Stack, Typography } from '@mui/material';
-import React, { useRef, useState } from 'react';
+import { IconButton, Stack, styled, Typography } from '@mui/material';
+import React, { useEffect, useRef, useState } from 'react';
 
-const MainTitle = ({ nickname }) => {
-    const isRow = nickname.length <= 5;
-    // const [currNickname, setCurrNickname] = useState(nickname);
+// eslint-disable-next-line no-unused-vars
+const MainTitle = ({ nickname, setNickname }) => {
+    const [isRow, setIsRow] = useState(nickname.length <= 5);
     const [isEditable, setIsEditable] = useState(false);
     const divRef = useRef(null);
     const nicknameRef = useRef(nickname);
 
-    // useEffect(() => {
-    //     nicknameRef.current = nickname;
-    // }, []);
+    const Input = styled('div')(({ theme }) => ({
+        color: theme.palette.custom.main2,
+        display: 'inline-block',
+        width: 'fit-content',
+        outline: 'none',
+        border: 'none',
+        textDecoration: isEditable ? 'underline' : 'none',
+        ...theme.typography.Heading1,
+    }));
+
+    useEffect(() => {
+        nicknameRef.current = nickname;
+    }, [nickname]);
+
+    useEffect(() => {
+        setIsRow(nicknameRef.current.length <= 5);
+        console.log(nicknameRef.current.length);
+    }, [nicknameRef.current.length]);
 
     const cancelModal = useModal();
 
@@ -40,7 +53,6 @@ const MainTitle = ({ nickname }) => {
     };
 
     const onUseOriginalNickname = () => {
-        // setCurrNickname(nickname);
         divRef.current.innerText = nickname;
         setIsEditable(false);
         cancelModal.closeModal();
@@ -51,15 +63,22 @@ const MainTitle = ({ nickname }) => {
         // 다음 렌더링이 완료된 후에 포커스 설정
         setCursorToEnd();
     };
-    // contentEditable에서 텍스트 변경을 감지하여 상태 업데이트
-    const handleInput = () => {
-        const newNickname = divRef.current.innerText; // 현재 텍스트를 가져옴
-        nicknameRef.current = newNickname; // 변경된 닉네임을 저장
+
+    const handleInput = (e) => {
+        const newValue = e.target.innerText;
+        nicknameRef.current = newValue;
+        if (newValue.length > 5) {
+            setIsRow(false);
+            setCursorToEnd();
+        } else {
+            setIsRow(true);
+            setCursorToEnd();
+        }
     };
 
-    const handleBlur = () => {
-        cancelModal.openModal();
-    };
+    // const handleBlur = () => {
+    // cancelModal.openModal();
+    // };
 
     return (
         <>
@@ -70,23 +89,16 @@ const MainTitle = ({ nickname }) => {
                 direction={isRow ? 'row' : 'column'}
             >
                 <Typography variant='Heading1'>
-                    <div
+                    <Input
                         onInput={handleInput}
                         ref={divRef}
                         contentEditable={isEditable}
-                        style={{
-                            color: palette.main2,
-                            display: 'inline-block',
-                            width: 'fit-content',
-                            outline: 'none',
-                            border: 'none',
-                            textDecoration: isEditable ? 'underline' : 'none',
-                            ...textStyles.Heading1,
-                        }}
-                        onBlur={handleBlur}
+                        suppressContentEditableWarning={true}
+                        style={{}}
+                        spellCheck={false}
                     >
                         {nickname.current ?? nickname}
-                    </div>
+                    </Input>
                     님의
                 </Typography>
                 <Stack

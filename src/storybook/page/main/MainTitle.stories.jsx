@@ -6,6 +6,7 @@ const meta = {
     tags: ['autodocs'],
     argTypes: {
         nickname: { control: 'text', description: '닉네임' },
+        setNickname: { action: 'setNickname', description: '닉네임 설정 함수' },
     },
 };
 
@@ -13,12 +14,14 @@ const meta = {
 const Default = {
     args: {
         nickname: '미르미',
+        setNickname: () => {},
     },
 };
 
 const Nickname6Letters = {
     args: {
         nickname: '미르미미르미',
+        setNickname: () => {},
     },
 };
 
