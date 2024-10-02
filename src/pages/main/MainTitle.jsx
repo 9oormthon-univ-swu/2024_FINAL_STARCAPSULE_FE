@@ -1,17 +1,18 @@
-import AlertModal from '@/components/AlertModal';
+import React, { useRef, useState } from 'react';
 import { EditIcon, CheckIcon } from '@/components/icons';
-import useModal from '@/hooks/useModal';
 import { IconButton, Stack, styled, Typography } from '@mui/material';
-import React, { useEffect, useRef, useState } from 'react';
-import ReplayIcon from '@mui/icons-material/Replay';
 
 const StyledIconButton = styled(IconButton)(() => ({
-    w: '1.5rem !important',
-    h: '1.5rem !important',
-    p: 0,
+    width: '2rem',
+    height: '2rem',
+    boxSizing: 'border-box',
 }));
 
-// eslint-disable-next-line no-unused-vars
+const StyledTypography = styled(Typography)(({ theme }) => ({
+    color: theme.palette.custom.white,
+    padding: '0.25rem 0',
+}));
+
 const MainTitle = ({ nickname, setNickname }) => {
     const [isRow, setIsRow] = useState(nickname.length <= 5);
     const [isEditable, setIsEditable] = useState(false);
@@ -24,30 +25,12 @@ const MainTitle = ({ nickname, setNickname }) => {
         width: 'fit-content',
         outline: 'none',
         border: 'none',
-        textDecoration: isEditable ? 'underline' : 'none',
         ...theme.typography.Heading1,
         '&:empty:before': {
             content: 'attr(placeholder)',
             color: theme.palette.custom.grey,
-            textDecoration: 'underline',
-        },
-        '&:after': {
-            content: '""',
-            display: 'inline-block',
-            width: 0,
         },
     }));
-
-    useEffect(() => {
-        nicknameRef.current = nickname;
-    }, [nickname]);
-
-    useEffect(() => {
-        setIsRow(nicknameRef.current.length <= 5);
-        console.log(nicknameRef.current.length);
-    }, [nicknameRef.current.length]);
-
-    const cancelModal = useModal();
 
     const setCursorToEnd = () => {
         setTimeout(() => {
@@ -63,17 +46,6 @@ const MainTitle = ({ nickname, setNickname }) => {
         }, 0);
     };
 
-    const onCancelModalClose = () => {
-        cancelModal.closeModal();
-        setCursorToEnd();
-    };
-
-    const onUseOriginalNickname = () => {
-        divRef.current.innerText = nickname;
-        setIsEditable(false);
-        cancelModal.closeModal();
-    };
-
     const handleEditClick = () => {
         setIsEditable('plaintext-only');
         setCursorToEnd();
@@ -83,14 +55,17 @@ const MainTitle = ({ nickname, setNickname }) => {
         const newValue = e.target.innerText;
         nicknameRef.current = newValue;
         if (newValue.length > 5) {
+            if (newValue.length > 10) {
+                divRef.current.innerText = newValue.slice(0, 10);
+            }
             setIsRow(false);
-            setCursorToEnd();
         } else {
             setIsRow(true);
-            setCursorToEnd();
         }
+        setCursorToEnd();
     };
 
+    // eslint-disable-next-line no-unused-vars
     const handleReBtnClick = () => {
         divRef.current.innerText = nickname;
         nicknameRef.current = nickname;
@@ -104,63 +79,61 @@ const MainTitle = ({ nickname, setNickname }) => {
         }
     };
 
+    const handleOnBlur = () => {
+        nicknameRef.current = nickname;
+        setIsEditable(false);
+    };
+
     return (
-        <>
-            <Stack
-                spacing={isRow ? 0.5 : 0.25}
-                alignItems={isRow ? 'center' : 'flex-start'}
-                justifyContent={isRow ? 'flex-start' : 'row'}
-                direction={isRow ? 'row' : 'column'}
+        <Stack
+            direction={isRow < 6 ? 'row' : 'column'}
+            spacing={isRow < 6 ? 1 : 0}
+            alignItems={isRow < 6 ? 'center' : 'flex-start'}
+            justifyContent={isRow < 6 ? 'flex-start' : 'row'}
+        >
+            <StyledTypography
+                variant='Heading1'
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'flex-start',
+                    flexDirection: 'row',
+                }}
             >
-                <Typography variant='Heading1'>
-                    <Input
-                        onInput={handleInput}
-                        ref={divRef}
-                        contentEditable={isEditable}
-                        suppressContentEditableWarning={true}
-                        spellCheck={false}
-                        placeholder={'닉네임을 입력해주세요'}
-                    >
-                        {nicknameRef.current ?? nickname}
-                    </Input>
-                    {isEditable && (
-                        <StyledIconButton onClick={handleReBtnClick}>
-                            <ReplayIcon color='custom.grey' />
-                        </StyledIconButton>
-                    )}
-                    님의
-                </Typography>
-                <Stack
-                    direction={'row'}
-                    alignItems={'center'}
-                    spacing={'0.25rem'}
+                <Input
+                    onInput={handleInput}
+                    ref={divRef}
+                    contentEditable={isEditable}
+                    suppressContentEditableWarning={true}
+                    spellCheck={false}
+                    placeholder={'닉네임을 입력해주세요'}
+                    onBlur={handleOnBlur}
                 >
-                    <Typography variant='Heading1'>스노우볼</Typography>
-                    {!isEditable ? (
-                        <StyledIconButton onClick={handleEditClick}>
-                            <EditIcon sx={{ color: 'custom.white' }} />
-                        </StyledIconButton>
-                    ) : (
-                        <StyledIconButton
-                            onClick={handleConfirmClick}
-                            color='main1'
-                        >
-                            <CheckIcon sx={{ color: 'custom.main1' }} />
-                        </StyledIconButton>
-                    )}
-                </Stack>
+                    {nicknameRef.current ?? nickname}
+                </Input>
+                {/* {isEditable && (
+                    <StyledIconButton onClick={handleReBtnClick}>
+                        <CheckIcon sx={{ color: 'custom.main1' }} />
+                    </StyledIconButton>
+                )} */}
+                님의
+            </StyledTypography>
+            <Stack direction={'row'} alignItems={'center'} spacing={'0.25rem'}>
+                <StyledTypography variant='Heading1'>스노우볼</StyledTypography>
+                {!isEditable ? (
+                    <StyledIconButton onClick={handleEditClick}>
+                        <EditIcon sx={{ color: 'custom.white' }} />
+                    </StyledIconButton>
+                ) : (
+                    <StyledIconButton
+                        onClick={handleConfirmClick}
+                        color='main1'
+                    >
+                        <CheckIcon sx={{ color: 'custom.main1' }} />
+                    </StyledIconButton>
+                )}
             </Stack>
-            <AlertModal
-                open={cancelModal.isOpen}
-                onClose={onCancelModalClose}
-                buttonText={'기존 닉네임 쓰기'}
-                onButtonClick={onUseOriginalNickname}
-            >
-                <Typography variant='Subtitle2'>
-                    원래의 닉네임을 사용할까요?
-                </Typography>
-            </AlertModal>
-        </>
+        </Stack>
     );
 };
 
