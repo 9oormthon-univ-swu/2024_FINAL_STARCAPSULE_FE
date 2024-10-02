@@ -1,6 +1,13 @@
-import React, { useRef, useState } from 'react';
-import { EditIcon, CheckIcon } from '@/components/icons';
-import { IconButton, Stack, styled, Typography } from '@mui/material';
+import { CheckIcon, EditIcon } from '@/components/icons';
+import { Box, IconButton, styled, Typography } from '@mui/material';
+import React, { useState, useEffect, useRef } from 'react';
+
+const StyledTypography = styled(Typography)(({ theme }) => ({
+    color: theme.palette.custom.white,
+    padding: '0.25rem 0',
+    wordBreak: 'keep-all',
+    whiteSpace: 'pre-wrap',
+}));
 
 const StyledIconButton = styled(IconButton)(() => ({
     width: '2rem',
@@ -8,128 +15,82 @@ const StyledIconButton = styled(IconButton)(() => ({
     boxSizing: 'border-box',
 }));
 
-const StyledTypography = styled(Typography)(({ theme }) => ({
-    color: theme.palette.custom.white,
-    padding: '0.25rem 0',
+const Input = styled('input')(({ theme }) => ({
+    color: theme.palette.custom.main2,
+    display: 'inline-block',
+    outline: 'none',
+    border: 'none',
+    backgroundColor: 'transparent',
+    padding: '0',
+    '&:empty:before': {
+        content: 'attr(placeholder)',
+        color: theme.palette.custom.grey,
+    },
+    ...theme.typography.Heading1,
 }));
 
-const MainTitle = ({ nickname, setNickname }) => {
-    const [isRow, setIsRow] = useState(nickname.length <= 5);
-    const [isEditable, setIsEditable] = useState(false);
-    const divRef = useRef(null);
-    const nicknameRef = useRef(nickname);
+// 스노우볼 컴포넌트
+const MainTitle = () => {
+    const [nickname, setNickname] = useState('사용자'); // 기본 닉네임 설정
+    const [isEditing, setIsEditing] = useState(false); // 닉네임 수정 상태 관리
+    const [inputWidth, setInputWidth] = useState(0); // 입력 필드 넓이 관리
+    const inputRef = useRef(null);
 
-    const Input = styled('span')(({ theme }) => ({
-        color: theme.palette.custom.main2,
-        display: 'inline-block',
-        width: 'fit-content',
-        outline: 'none',
-        border: 'none',
-        ...theme.typography.Heading1,
-        maxWidth: '10ch',
-        '&:empty:before': {
-            content: 'attr(placeholder)',
-            color: theme.palette.custom.grey,
-        },
-    }));
-
-    const setCursorToEnd = () => {
-        setTimeout(() => {
-            if (divRef.current) {
-                divRef.current.focus();
-                const range = document.createRange();
-                const selection = window.getSelection();
-                range.selectNodeContents(divRef.current);
-                range.collapse(false);
-                selection.removeAllRanges();
-                selection.addRange(range);
-            }
-        }, 0);
+    const handleNicknameChange = (event) => {
+        setNickname(event.target.value);
     };
 
-    const handleEditClick = () => {
-        setIsEditable('plaintext-only');
-        setCursorToEnd();
+    const toggleEditing = () => {
+        setIsEditing(!isEditing);
     };
 
-    const handleInput = (e) => {
-        const newValue = e.target.innerText;
-        nicknameRef.current = newValue;
-        if (newValue.length > 10) {
-            divRef.current.innerText = newValue.slice(0, 10);
-            nicknameRef.current = newValue.slice(0, 10);
+    const calculateInputWidth = () => {
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        const font = window.getComputedStyle(inputRef.current).font;
+        context.font = font;
+        const textWidth = context.measureText(nickname).width;
+        setInputWidth(textWidth);
+    };
+
+    // 닉네임이 변경될 때마다 입력 필드 크기 계산
+    useEffect(() => {
+        if (isEditing) {
+            calculateInputWidth();
         }
-        setCursorToEnd();
-    };
-
-    // eslint-disable-next-line no-unused-vars
-    const handleReBtnClick = () => {
-        divRef.current.innerText = nickname;
-        nicknameRef.current = nickname;
-    };
-
-    const handleConfirmClick = () => {
-        setIsEditable(false);
-        if (nicknameRef.current !== nickname) {
-            setNickname(nicknameRef.current);
-            if (nicknameRef.current.length > 5) {
-                setIsRow(false);
-            } else {
-                setIsRow(true);
-            }
-        }
-    };
-
-    const handleOnBlur = () => {
-        nicknameRef.current = nickname;
-        setIsEditable(false);
-    };
+    }, [nickname, isEditing]);
 
     return (
-        <Stack
-            direction={isRow < 6 ? 'row' : 'column'}
-            spacing={isRow < 6 ? 1 : 0}
-            alignItems={isRow < 6 ? 'center' : 'flex-start'}
-            justifyContent={isRow < 6 ? 'flex-start' : 'row'}
-        >
-            <StyledTypography
-                variant='Heading1'
-                sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'flex-start',
-                    flexDirection: 'row',
-                }}
-            >
+        <StyledTypography variant='Heading1'>
+            {isEditing ? (
                 <Input
-                    onInput={handleInput}
-                    ref={divRef}
-                    contentEditable={isEditable}
-                    suppressContentEditableWarning={true}
-                    spellCheck={false}
-                    placeholder={'닉네임을 입력해주세요'}
-                    onBlur={handleOnBlur}
-                >
-                    {nicknameRef.current ?? nickname}
-                </Input>
-                님의
-            </StyledTypography>
-            <Stack direction={'row'} alignItems={'center'} spacing={'0.25rem'}>
-                <StyledTypography variant='Heading1'>스노우볼</StyledTypography>
-                {!isEditable ? (
-                    <StyledIconButton onClick={handleEditClick}>
-                        <EditIcon sx={{ color: 'custom.white' }} />
-                    </StyledIconButton>
-                ) : (
-                    <StyledIconButton
-                        onClick={handleConfirmClick}
-                        color='main1'
-                    >
-                        <CheckIcon sx={{ color: 'custom.main1' }} />
-                    </StyledIconButton>
-                )}
-            </Stack>
-        </Stack>
+                    ref={inputRef}
+                    type='text'
+                    value={nickname}
+                    onChange={handleNicknameChange}
+                    onBlur={toggleEditing} // 입력이 끝나면 수정 모드 종료
+                    style={{
+                        width: `${inputWidth}px`, // 유동적인 width 설정
+                    }}
+                />
+            ) : (
+                <Box component={'span'} sx={{ color: 'custom.main1' }}>
+                    {nickname}
+                </Box>
+            )}
+            님의
+            {nickname.length > 5 ? <br /> : ' '}
+            스노우볼
+            {!isEditing ? (
+                <StyledIconButton>
+                    <EditIcon sx={{ color: 'custom.white' }} />
+                </StyledIconButton>
+            ) : (
+                <StyledIconButton>
+                    <CheckIcon sx={{ color: 'custom.main1' }} />
+                </StyledIconButton>
+            )}
+        </StyledTypography>
     );
 };
 
