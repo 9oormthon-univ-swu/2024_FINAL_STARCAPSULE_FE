@@ -120,7 +120,7 @@ const MainTitle = ({ nickname, setNickname }) => {
                         spellCheck={false}
                         placeholder={'닉네임을 입력해주세요'}
                     >
-                        {nickname.current ?? nickname}
+                        {nicknameRef.current ?? nickname}
                     </Input>
                     {isEditable && (
                         <StyledIconButton onClick={handleReBtnClick}>
