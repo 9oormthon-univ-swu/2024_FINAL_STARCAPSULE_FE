@@ -6,7 +6,7 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
     color: theme.palette.custom.white,
     padding: '0.25rem 0',
     wordBreak: 'keep-all',
-    whiteSpace: 'pre-wrap',
+    whiteSpace: 'pre',
 }));
 
 const StyledIconButton = styled(IconButton)(() => ({
@@ -30,18 +30,23 @@ const Input = styled('input')(({ theme }) => ({
 }));
 
 // 스노우볼 컴포넌트
-const MainTitle = () => {
-    const [nickname, setNickname] = useState('사용자'); // 기본 닉네임 설정
+const MainTitle = ({ nickname, setNickname }) => {
     const [isEditing, setIsEditing] = useState(false); // 닉네임 수정 상태 관리
     const [inputWidth, setInputWidth] = useState(0); // 입력 필드 넓이 관리
     const inputRef = useRef(null);
+    const [currNickname, setCurrNickname] = useState(nickname);
 
     const handleNicknameChange = (event) => {
-        setNickname(event.target.value);
+        setCurrNickname(event.target.value.slice(0, 10)); // 10자 이상 입력 방지
     };
 
-    const toggleEditing = () => {
-        setIsEditing(!isEditing);
+    const handleEdit = () => {
+        setIsEditing(true);
+        setTimeout(() => {
+            if (inputRef.current) {
+                inputRef.current.focus(); // input에 포커스
+            }
+        }, 0);
     };
 
     const calculateInputWidth = () => {
@@ -49,16 +54,29 @@ const MainTitle = () => {
         const context = canvas.getContext('2d');
         const font = window.getComputedStyle(inputRef.current).font;
         context.font = font;
-        const textWidth = context.measureText(nickname).width;
+        const textWidth = context.measureText(
+            currNickname.length ? currNickname : '이름'
+        ).width;
         setInputWidth(textWidth);
     };
 
-    // 닉네임이 변경될 때마다 입력 필드 크기 계산
     useEffect(() => {
         if (isEditing) {
             calculateInputWidth();
         }
-    }, [nickname, isEditing]);
+    }, [currNickname, isEditing]);
+
+    const onConfirmClick = () => {
+        setNickname(currNickname);
+        setIsEditing(false);
+    };
+
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault(); // 기본 엔터 동작 방지
+            onConfirmClick(); // 저장 동작 실행
+        }
+    };
 
     return (
         <StyledTypography variant='Heading1'>
@@ -66,28 +84,42 @@ const MainTitle = () => {
                 <Input
                     ref={inputRef}
                     type='text'
-                    value={nickname}
+                    defaultValue={nickname}
+                    value={currNickname}
                     onChange={handleNicknameChange}
-                    onBlur={toggleEditing} // 입력이 끝나면 수정 모드 종료
+                    onBlur={handleEdit} // 입력이 끝나면 수정 모드 종료
+                    spellCheck='false'
+                    onKeyDown={handleKeyDown}
                     style={{
                         width: `${inputWidth}px`, // 유동적인 width 설정
+                        transition: 'width 0.2s',
                     }}
+                    placeholder='이름'
                 />
             ) : (
-                <Box component={'span'} sx={{ color: 'custom.main1' }}>
+                <Box component={'span'} sx={{ color: 'custom.main2' }}>
                     {nickname}
                 </Box>
             )}
             님의
-            {nickname.length > 5 ? <br /> : ' '}
+            {currNickname.length > 5 ? <br /> : ' '}
             스노우볼
-            {!isEditing ? (
-                <StyledIconButton>
-                    <EditIcon sx={{ color: 'custom.white' }} />
+            {isEditing ? (
+                <StyledIconButton
+                    onClick={onConfirmClick}
+                    disabled={!currNickname.length}
+                >
+                    <CheckIcon
+                        sx={{
+                            color: currNickname.length
+                                ? 'custom.main1'
+                                : 'custom.grey',
+                        }}
+                    />
                 </StyledIconButton>
             ) : (
-                <StyledIconButton>
-                    <CheckIcon sx={{ color: 'custom.main1' }} />
+                <StyledIconButton onClick={handleEdit}>
+                    <EditIcon sx={{ color: 'custom.white' }} />
                 </StyledIconButton>
             )}
         </StyledTypography>
