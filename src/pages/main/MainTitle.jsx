@@ -1,7 +1,6 @@
 import AlertModal from '@/components/AlertModal';
-import { EditIcon } from '@/components/icons';
+import { EditIcon, CheckIcon } from '@/components/icons';
 import useModal from '@/hooks/useModal';
-import { Check } from '@mui/icons-material';
 import { IconButton, Stack, styled, Typography } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
 import ReplayIcon from '@mui/icons-material/Replay';
@@ -139,11 +138,14 @@ const MainTitle = ({ nickname, setNickname }) => {
                     <Typography variant='Heading1'>스노우볼</Typography>
                     {!isEditable ? (
                         <StyledIconButton onClick={handleEditClick}>
-                            <EditIcon color='custom.white' />
+                            <EditIcon sx={{ color: 'custom.white' }} />
                         </StyledIconButton>
                     ) : (
-                        <StyledIconButton onClick={handleConfirmClick}>
-                            <Check color='custom.white' />
+                        <StyledIconButton
+                            onClick={handleConfirmClick}
+                            color='main1'
+                        >
+                            <CheckIcon sx={{ color: 'custom.main1' }} />
                         </StyledIconButton>
                     )}
                 </Stack>

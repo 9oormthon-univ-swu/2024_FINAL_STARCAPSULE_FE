@@ -1,6 +1,7 @@
 import React from 'react';
-import { ThemeProvider } from '@emotion/react';
+import { ThemeProvider } from '@mui/material';
 import theme from '../src/constants/theme';
+import '../src/App.css';
 
 /** @type { import('@storybook/react').Preview } */
 const preview = {
