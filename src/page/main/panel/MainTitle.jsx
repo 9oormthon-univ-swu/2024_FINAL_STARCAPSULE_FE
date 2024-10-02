@@ -98,9 +98,11 @@ const MainTitle = ({ nickname, setNickname }) => {
     };
 
     const handleConfirmClick = () => {
-        setNickname(nicknameRef.current);
         setIsEditable(false);
-        window.alert('닉네임이 변경되었습니다.');
+        if (nicknameRef.current !== nickname) {
+            setNickname(nicknameRef.current);
+            window.alert('닉네임이 변경되었습니다.');
+        }
     };
 
     return (
