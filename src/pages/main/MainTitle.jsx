@@ -26,6 +26,7 @@ const MainTitle = ({ nickname, setNickname }) => {
         outline: 'none',
         border: 'none',
         ...theme.typography.Heading1,
+        maxWidth: '10ch',
         '&:empty:before': {
             content: 'attr(placeholder)',
             color: theme.palette.custom.grey,
@@ -54,13 +55,9 @@ const MainTitle = ({ nickname, setNickname }) => {
     const handleInput = (e) => {
         const newValue = e.target.innerText;
         nicknameRef.current = newValue;
-        if (newValue.length > 5) {
-            if (newValue.length > 10) {
-                divRef.current.innerText = newValue.slice(0, 10);
-            }
-            setIsRow(false);
-        } else {
-            setIsRow(true);
+        if (newValue.length > 10) {
+            divRef.current.innerText = newValue.slice(0, 10);
+            nicknameRef.current = newValue.slice(0, 10);
         }
         setCursorToEnd();
     };
@@ -75,7 +72,11 @@ const MainTitle = ({ nickname, setNickname }) => {
         setIsEditable(false);
         if (nicknameRef.current !== nickname) {
             setNickname(nicknameRef.current);
-            window.alert('닉네임이 변경되었습니다.');
+            if (nicknameRef.current.length > 5) {
+                setIsRow(false);
+            } else {
+                setIsRow(true);
+            }
         }
     };
 
@@ -111,11 +112,6 @@ const MainTitle = ({ nickname, setNickname }) => {
                 >
                     {nicknameRef.current ?? nickname}
                 </Input>
-                {/* {isEditable && (
-                    <StyledIconButton onClick={handleReBtnClick}>
-                        <CheckIcon sx={{ color: 'custom.main1' }} />
-                    </StyledIconButton>
-                )} */}
                 님의
             </StyledTypography>
             <Stack direction={'row'} alignItems={'center'} spacing={'0.25rem'}>
