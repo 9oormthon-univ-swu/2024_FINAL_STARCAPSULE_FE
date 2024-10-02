@@ -1,4 +1,4 @@
-import DDayTitle from '@/page/main/panel/DDayTitle';
+import DDayTitle from '@/pages/main/DDayTitle';
 
 const meta = {
     title: 'main/DDayTitle',

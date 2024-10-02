@@ -1,4 +1,4 @@
-import MainTitle from '@/page/main/panel/MainTitle';
+import MainTitle from '@/pages/main/MainTitle';
 
 const meta = {
     title: 'main/MainTitle',

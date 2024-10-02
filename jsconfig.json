@@ -2,8 +2,23 @@
   "compilerOptions": {
     "baseUrl": "src",
     "paths": {
+      "@/assets/*": [
+        "assets/*"
+      ],
       "@/components/*": [
         "components/*"
+      ],
+      "@/constants/*": [
+        "constants/*"
+      ],
+      "@/hooks/*": [
+        "hooks/*"
+      ],
+      "@/layouts/*": [
+        "layouts/*"
+      ],
+      "@/pages/*": [
+        "pages/*"
       ],
       "@/storybook/*": [
         "storybook/*"
@@ -11,18 +26,6 @@
       "@/utils/*": [
         "utils/*"
       ],
-      "@/hooks/*": [
-        "hooks/*"
-      ],
-      "@/page/*": [
-        "page/*"
-      ],
-      "@/layout/*": [
-        "layout/*"
-      ],
-      "@/constants/*": [
-        "constants/*"
-      ]
     }
   },
   "exclude": [
