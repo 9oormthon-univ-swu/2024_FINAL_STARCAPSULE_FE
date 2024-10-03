@@ -1,7 +1,7 @@
 import React from 'react';
 import SnowballImage from '@/assets/snowball_image.svg';
 import { styled } from '@mui/material';
-import { EditIcon } from '@/components/icons';
+import SnowballChip from './SnowballChip';
 
 const SnowballContainer = styled('div')(({ theme }) => ({
     color: theme.palette.custom.white,
@@ -11,12 +11,22 @@ const SnowballContainer = styled('div')(({ theme }) => ({
     backgroundPosition: 'center',
     width: '100%',
     aspectRatio: '5/6',
+    position: 'relative',
 }));
 
-const Snowball = () => {
+const Snowball = ({ current, total }) => {
     return (
         <SnowballContainer>
-            <EditIcon sx={{ color: 'custom.white' }} />
+            <SnowballChip
+                current={current}
+                total={total}
+                sx={{
+                    position: 'absolute',
+                    top: '1rem',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                }}
+            />
         </SnowballContainer>
     );
 };
