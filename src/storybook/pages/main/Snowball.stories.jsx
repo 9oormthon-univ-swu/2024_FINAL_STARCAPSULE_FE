@@ -33,7 +33,7 @@ const meta = {
 const Default = {
     args: {
         current: 1,
-        total: 5,
+        total: 1,
     },
 };
 

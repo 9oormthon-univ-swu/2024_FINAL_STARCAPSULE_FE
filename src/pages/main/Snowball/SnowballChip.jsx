@@ -5,15 +5,18 @@ const SnowballChipContainer = styled(Stack)(() => ({
     backgroundColor: '#FFFFFF1A',
     borderRadius: '1.5rem',
     padding: '0.125rem 0.5rem',
-    minWidth: '2.5rem',
-    color: 'custom.white',
+    minWidth: 'fit-content',
+}));
+
+const ChipText = styled('p')(({ theme }) => ({
+    color: theme.palette.custom.white,
     textAlign: 'center',
     fontFamily: 'Noto Sans',
     fontSize: '0.75rem',
     fontStyle: 'normal',
     fontWeight: 700,
     lineHeight: '1.25rem',
-    letterSpacing: '0.2475rem',
+    minWidth: 0,
 }));
 
 const SnowballChip = ({ current, total, sx }) => {
@@ -24,7 +27,7 @@ const SnowballChip = ({ current, total, sx }) => {
             alignItems={'center'}
             sx={sx}
         >
-            {`${current}/${total}`}
+            <ChipText>{`${current} / ${total}`}</ChipText>
         </SnowballChipContainer>
     );
 };
