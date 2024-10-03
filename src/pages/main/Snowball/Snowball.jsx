@@ -28,16 +28,7 @@ const Snowball = ({ current, total, received, self, memories }) => {
     ];
     return (
         <SnowballContainer>
-            <SnowballChip
-                current={current}
-                total={total}
-                sx={{
-                    position: 'absolute',
-                    top: '1rem',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                }}
-            />
+            <SnowballChip current={current} total={total} />
             {memories.map((memory, index) => (
                 <SnowballObject
                     key={memory.id}

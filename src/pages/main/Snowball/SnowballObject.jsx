@@ -36,6 +36,17 @@ const SnowballObjectContainer = styled(Stack)(() => ({
     width: '27%',
 }));
 
+const ImageBox = styled(Box)(() => ({
+    minWidth: '3.375rem',
+    width: '67.5%',
+    maxHeight: '5.625rem',
+    aspectRatio: '1/1',
+    '& img': {
+        width: '100%',
+        height: '100%',
+    },
+}));
+
 const SnowballObject = ({ writer, variant, sx, black }) => {
     return (
         <SnowballObjectContainer spacing={0.5} sx={sx}>
@@ -47,21 +58,12 @@ const SnowballObject = ({ writer, variant, sx, black }) => {
             >
                 {writer}
             </WriterText>
-            <Box
-                sx={{
-                    minWidth: '3.375rem',
-                    width: '67.5%',
-                    maxHeight: '5.625rem',
-                    aspectRatio: '1/1',
-                }}
-            >
+            <ImageBox>
                 <img
                     src={SnowballObjects[variant]}
                     alt={`${writer}가 남긴 추억`}
-                    width={'100%'}
-                    height={'100%'}
                 />
-            </Box>
+            </ImageBox>
         </SnowballObjectContainer>
     );
 };
