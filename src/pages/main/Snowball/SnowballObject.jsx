@@ -1,4 +1,4 @@
-import { Stack, styled, Typography } from '@mui/material';
+import { Box, Stack, styled, Typography } from '@mui/material';
 import React from 'react';
 import christmas_tree from '@/assets/object/christmas_tree.svg';
 import gingerbread_house from '@/assets/object/gingerbread_house.svg';
@@ -31,8 +31,9 @@ const WriterText = styled(Typography)(() => ({
 const SnowballObjectContainer = styled(Stack)(() => ({
     flexDirection: 'column',
     alignItems: 'center',
-    width: '5rem',
+    minWidth: '5rem',
     position: 'absolute',
+    width: '27%',
 }));
 
 const SnowballObject = ({ writer, variant, sx, black }) => {
@@ -46,14 +47,21 @@ const SnowballObject = ({ writer, variant, sx, black }) => {
             >
                 {writer}
             </WriterText>
-            <img
-                src={SnowballObjects[variant]}
-                alt={`${writer}가 남긴 추억`}
-                style={{
-                    width: '3.375rem',
-                    height: '3.375rem',
+            <Box
+                sx={{
+                    minWidth: '3.375rem',
+                    width: '67.5%',
+                    maxHeight: '5.625rem',
+                    aspectRatio: '1/1',
                 }}
-            />
+            >
+                <img
+                    src={SnowballObjects[variant]}
+                    alt={`${writer}가 남긴 추억`}
+                    width={'100%'}
+                    height={'100%'}
+                />
+            </Box>
         </SnowballObjectContainer>
     );
 };
