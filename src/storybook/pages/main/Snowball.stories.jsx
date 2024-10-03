@@ -8,7 +8,7 @@ const meta = {
     tags: ['autodocs'],
     decorators: [
         (Story) => (
-            <Box sx={{ width: '600px' }}>
+            <Box sx={{ maxWidth: '600px', width: '100%' }}>
                 <Story />
             </Box>
         ),
@@ -26,6 +26,24 @@ const meta = {
                 type: 'number',
             },
         },
+        received: {
+            description: '받은 추억 수',
+            control: {
+                type: 'number',
+            },
+        },
+        self: {
+            description: '자신의 추억 수',
+            control: {
+                type: 'number',
+            },
+        },
+        memories: {
+            description: '추억 목록',
+            control: {
+                type: 'object',
+            },
+        },
     },
 };
 
@@ -34,6 +52,32 @@ const Default = {
     args: {
         current: 1,
         total: 1,
+        received: 1,
+        self: 1,
+        memories: [
+            { id: 1, writer_name: '닉네임', object_name: 'snowman' },
+            {
+                id: 2,
+                writer_name: '닉네임',
+                object_name: 'snowman',
+            },
+            {
+                id: 3,
+                writer_name: '닉네임',
+                object_name: 'moon',
+            },
+            {
+                id: 4,
+                writer_name: '닉네임',
+                object_name: 'santa',
+            },
+            { id: 5, writer_name: '닉네임', object_name: 'snowflake' },
+            {
+                id: 6,
+                writer_name: '닉네임',
+                object_name: 'santa_sleigh',
+            },
+        ],
     },
 };
 

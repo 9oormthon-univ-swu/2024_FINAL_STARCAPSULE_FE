@@ -20,8 +20,7 @@ const SnowballObjects = {
     snowflake: snowflake,
 };
 
-const WriterText = styled(Typography)(({ theme }) => ({
-    color: theme.palette.custom.white,
+const WriterText = styled(Typography)(() => ({
     textAlign: 'center',
     overflow: 'hidden',
     whiteSpace: 'nowrap',
@@ -29,10 +28,24 @@ const WriterText = styled(Typography)(({ theme }) => ({
     maxWidth: '5rem',
 }));
 
-const SnowballObject = ({ writer, variant }) => {
+const SnowballObjectContainer = styled(Stack)(() => ({
+    flexDirection: 'column',
+    alignItems: 'center',
+    width: '5rem',
+    position: 'absolute',
+}));
+
+const SnowballObject = ({ writer, variant, sx, black }) => {
     return (
-        <Stack direction={'column'} alignItems={'center'} width={'5rem'}>
-            <WriterText variant={'body3'}>{writer}</WriterText>
+        <SnowballObjectContainer spacing={0.5} sx={sx}>
+            <WriterText
+                variant={'body3'}
+                sx={{
+                    color: black ? 'custom.font' : 'custom.white',
+                }}
+            >
+                {writer}
+            </WriterText>
             <img
                 src={SnowballObjects[variant]}
                 alt={`${writer}가 남긴 추억`}
@@ -41,7 +54,7 @@ const SnowballObject = ({ writer, variant }) => {
                     height: '3.375rem',
                 }}
             />
-        </Stack>
+        </SnowballObjectContainer>
     );
 };
 
