@@ -2,3 +2,15 @@ body {
     background-color: white; 
     min-height: 100svh;
 }
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Rochester&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bigshot+One&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Rochester&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bigshot+One&family=Kings&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Rochester&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bigshot+One&family=Kaisei+Decol:wght@400;500;700&family=Kings&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Rochester&display=swap');
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css');
+
+@font-face {
+    font-family: 'Griun NltoTAENGG';
+    src: url('./assets/fonts/Griun_NoltoTAENGGU-Rg.ttf');
+}

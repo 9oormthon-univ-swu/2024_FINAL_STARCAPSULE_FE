@@ -137,11 +137,11 @@ const textStyles = {
         textDecorationLine: 'underline',
     },
     number1: {
-        /* number/number1 */
-        fontFamily: 'Noto Sans',
-        fontSize: '1.5rem',
+        /* number/number 1 */
+        fontFamily: 'Rochester',
+        fontSize: '1.875rem',
         fontStyle: 'normal',
-        fontWeight: 700,
+        fontWeight: 400,
         lineHeight: 'normal',
     },
     number2: {

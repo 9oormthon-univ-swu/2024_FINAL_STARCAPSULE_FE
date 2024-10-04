@@ -15,7 +15,7 @@ const DDayTitle = () => {
 
     return (
         <Typography variant='title3' sx={{ color: 'custom.grey' }}>
-            {'편지가 '}
+            {'추억이 '}
             <span
                 style={{
                     color: palette.main2,
