@@ -18,7 +18,15 @@ const SnowballContainer = styled('div')(({ theme }) => ({
 }));
 
 // memories: [{ id, writer_name, object_name }]
-const Snowball = ({ current, total, received, self, memories }) => {
+const Snowball = ({
+    current,
+    total,
+    received,
+    self,
+    memories,
+    onLeftClick,
+    onRightClick,
+}) => {
     const memoryPosition = [
         { bottom: '25%', right: '20%' },
         { top: '42%', left: '9%' },
@@ -39,7 +47,12 @@ const Snowball = ({ current, total, received, self, memories }) => {
                     black={index == 0}
                 />
             ))}
-            <NavigationButton />
+            <NavigationButton
+                current={current}
+                total={total}
+                onLeftClick={onLeftClick}
+                onRightClick={onRightClick}
+            />
             <MemoryCount received={received} self={self} />
         </SnowballContainer>
     );

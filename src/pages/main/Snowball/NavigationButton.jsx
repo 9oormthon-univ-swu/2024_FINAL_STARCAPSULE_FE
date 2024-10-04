@@ -13,7 +13,7 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
     },
 }));
 
-const NavigationButton = () => {
+const NavigationButton = ({ current, total, onLeftClick, onRightClick }) => {
     return (
         <Stack
             direction={'row'}
@@ -30,10 +30,22 @@ const NavigationButton = () => {
                 maxHeight: '3rem',
             }}
         >
-            <StyledIconButton>
+            <StyledIconButton
+                sx={{
+                    visibility: total === 1 ? 'hidden' : 'visible',
+                }}
+                disabled={current === 1}
+                onClick={onLeftClick}
+            >
                 <ChevronLeftIcon />
             </StyledIconButton>
-            <StyledIconButton>
+            <StyledIconButton
+                sx={{
+                    visibility: total === 1 ? 'hidden' : 'visible',
+                }}
+                disabled={current === total}
+                onClick={onRightClick}
+            >
                 <ChevronRightIcon />
             </StyledIconButton>
         </Stack>
