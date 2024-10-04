@@ -10,7 +10,7 @@ const CountText = styled('p')(({ theme }) => ({
 
 const CountContainer = styled('div')(() => ({
     position: 'absolute',
-    bottom: '5%',
+    top: '84%',
     left: '50%',
     transform: 'translateX(-50%)',
     display: 'flex',
