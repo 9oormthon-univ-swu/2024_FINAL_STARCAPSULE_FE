@@ -20,20 +20,23 @@ const SnowballObjects = {
     snowflake: snowflake,
 };
 
-const WriterText = styled(Typography)(() => ({
+const WriterText = styled(Typography)(({ theme }) => ({
+    ...theme.typography.body3,
+    fontSize: 'clamp(1.125rem, 5vw, 2.25rem)',
     textAlign: 'center',
     overflow: 'hidden',
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
-    maxWidth: '5rem',
+    width: '100%',
 }));
 
 const SnowballObjectContainer = styled(Stack)(() => ({
+    position: 'absolute',
     flexDirection: 'column',
     alignItems: 'center',
     minWidth: '5rem',
-    position: 'absolute',
     width: '27%',
+    maxWidth: '10rem',
 }));
 
 const ImageBox = styled(Box)(() => ({
