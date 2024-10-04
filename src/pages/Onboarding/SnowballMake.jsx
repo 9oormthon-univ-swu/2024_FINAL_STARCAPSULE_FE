@@ -20,13 +20,14 @@ const Container = styled.div`
 
 
 const SubTitle = styled.p`
-  font-size: 17px;
+  font-size: 19px;
   color: #fff;
   position: absolute; 
   bottom: 300px;
   transform: translateX(-50%);
   left: 50%; 
   white-space: nowrap; 
+  line-height: 1.5;
 `;
 
 
