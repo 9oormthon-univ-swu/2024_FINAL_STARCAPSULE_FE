@@ -3,6 +3,7 @@ import SnowballImage from '@/assets/snowball_image.svg';
 import { styled } from '@mui/material';
 import SnowballChip from './SnowballChip';
 import SnowballObject from './SnowballObject';
+import MemoryCount from './MemoryCount';
 
 const SnowballContainer = styled('div')(({ theme }) => ({
     color: theme.palette.custom.white,
@@ -38,6 +39,7 @@ const Snowball = ({ current, total, received, self, memories }) => {
                     black={index == 0}
                 />
             ))}
+            <MemoryCount received={received} self={self} />
         </SnowballContainer>
     );
 };
