@@ -4,11 +4,13 @@ import React from 'react';
 
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
     color: theme.palette.custom.white,
-    p: 0,
-    width: '1.5rem',
-    height: '1.5rem',
-    minWidth: '1.5rem',
-    minHeight: '1.5rem',
+    padding: 0,
+    height: '100%',
+    aspectRatio: '1/1',
+    '& svg': {
+        width: '100%',
+        height: '100%',
+    },
 }));
 
 const NavigationButton = () => {
@@ -23,6 +25,9 @@ const NavigationButton = () => {
                 left: '50%',
                 transform: 'translateX(-50%)',
                 width: '105%',
+                minHeight: '1.5rem',
+                height: '7%',
+                maxHeight: '3rem',
             }}
         >
             <StyledIconButton>
