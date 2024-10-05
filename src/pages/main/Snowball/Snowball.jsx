@@ -3,6 +3,8 @@ import SnowballImage from '@/assets/snowball_image.svg';
 import { styled } from '@mui/material';
 import SnowballChip from './SnowballChip';
 import SnowballObject from './SnowballObject';
+import MemoryCount from './MemoryCount';
+import NavigationButton from './NavigationButton';
 
 const SnowballContainer = styled('div')(({ theme }) => ({
     color: theme.palette.custom.white,
@@ -16,8 +18,15 @@ const SnowballContainer = styled('div')(({ theme }) => ({
 }));
 
 // memories: [{ id, writer_name, object_name }]
-// eslint-disable-next-line no-unused-vars
-const Snowball = ({ current, total, received, self, memories }) => {
+const Snowball = ({
+    current,
+    total,
+    received,
+    self,
+    memories,
+    onLeftClick,
+    onRightClick,
+}) => {
     const memoryPosition = [
         { bottom: '25%', right: '20%' },
         { top: '42%', left: '9%' },
@@ -38,6 +47,13 @@ const Snowball = ({ current, total, received, self, memories }) => {
                     black={index == 0}
                 />
             ))}
+            <NavigationButton
+                current={current}
+                total={total}
+                onLeftClick={onLeftClick}
+                onRightClick={onRightClick}
+            />
+            <MemoryCount received={received} self={self} />
         </SnowballContainer>
     );
 };

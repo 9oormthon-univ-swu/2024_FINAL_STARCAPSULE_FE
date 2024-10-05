@@ -50,6 +50,18 @@ Check.args = {
     sx: { color: 'custom.font' },
 };
 
+export const ChevronLeft = Template.bind({});
+ChevronLeft.args = {
+    component: ChevronLeftIcon,
+    sx: { color: 'custom.font' },
+};
+
+export const ChevronRight = Template.bind({});
+ChevronRight.args = {
+    component: ChevronRightIcon,
+    sx: { color: 'custom.font' },
+};
+
 export const Edit = Template.bind({});
 Edit.args = {
     component: EditIcon,
