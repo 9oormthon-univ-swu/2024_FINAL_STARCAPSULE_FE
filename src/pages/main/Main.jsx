@@ -19,15 +19,15 @@ const memories = [
 ];
 
 const getData = async (url) => {
-    console.log(`fetching data ${url}`);
+    console.log(`fetching page ${url}`);
     return {
         capsule: {
             id: 1,
             snowball_name: '나의 캡슐',
             received: 15,
             self: 3,
-            page: 1,
-            total_page: 3,
+            page: parseInt(url),
+            total_page: 5,
             memories: memories,
         },
     };
@@ -53,8 +53,24 @@ const StyledButton = styled(Button)(({ theme }) => ({
 }));
 
 const Main = () => {
+    const [page, setPage] = useState(1);
     const [nickname, setNickname] = useState('닉네임');
-    const { data } = useSWR('data', getData);
+    const { data, isLoading } = useSWR(`${page}`, getData);
+
+    const onLeftClick = () => {
+        setPage((prev) => (prev === 1 ? 1 : prev - 1));
+    };
+
+    const onRightClick = () => {
+        setPage((prev) =>
+            prev === data.capsule.total_page
+                ? data.capsule.total_page
+                : prev + 1
+        );
+    };
+
+    if (isLoading) return <div>loading...</div>;
+
     return (
         <Layout sx={{ overflow: 'hidden' }}>
             <MainContainer
@@ -74,8 +90,8 @@ const Main = () => {
                     total={data.capsule.total_page}
                     received={data.capsule.received}
                     self={data.capsule.self}
-                    onLeftClick={() => console.log('clicked left')}
-                    onRightClick={() => console.log('clicked right')}
+                    onLeftClick={onLeftClick}
+                    onRightClick={onRightClick}
                 />
                 <StyledButton variant={'contained'} sx={{}}>
                     <Typography variant='title2'>추억 전달하기</Typography>
