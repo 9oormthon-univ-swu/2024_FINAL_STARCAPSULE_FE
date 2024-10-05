@@ -88,7 +88,7 @@ const Main = () => {
                         alignItems={'center'}
                     >
                         <DDayTitle />
-                        <Stack direction={'row'} spacing={1}>
+                        <Stack direction={'row'} spacing={2}>
                             <IconButton
                                 sx={{
                                     color: 'custom.grey',
