@@ -5,6 +5,9 @@ import textStyles from '@/constants/textStyles.js';
 const theme = createTheme({
     palette: {
         custom: palette,
+        action: {
+            disabled: '#FFFCFAA0',
+        },
     },
     typography: {
         fontFamily: [
