@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Snowfall from 'react-snowfall';  
-import backgroundBottom from '../../assets/background_bottom.png'; 
+import backgroundBottom from '../../assets/background_bottom.svg'; 
 
 const Container = styled.div`
   display: flex;
@@ -59,7 +59,7 @@ const BottomImage = styled.img`
   bottom: -335px; 
   width: 100vw;
   max-width: 480px; 
-  object-fit: contain; //눈 이미지 수정해야 됨
+  object-fit: contain; 
 `;
 
 const SnowballPage = () => {
