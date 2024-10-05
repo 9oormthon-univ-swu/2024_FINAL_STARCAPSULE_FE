@@ -74,7 +74,7 @@ const Main = () => {
     if (isLoading) return <div>loading...</div>;
 
     return (
-        <Layout sx={{ overflow: 'hidden' }}>
+        <Layout sx={{ overflow: 'hidden' }} snow>
             <MainContainer
                 direction={'column'}
                 justifyContent={'space-between'}
