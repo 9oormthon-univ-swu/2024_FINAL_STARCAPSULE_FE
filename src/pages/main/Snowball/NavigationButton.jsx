@@ -13,22 +13,23 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
     },
 }));
 
+const NavigationButtonContainer = styled(Stack)(() => ({
+    position: 'absolute',
+    top: '84%',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    width: '105%',
+    minHeight: '1.5rem',
+    height: '7%',
+    maxHeight: '3rem',
+}));
+
 const NavigationButton = ({ current, total, onLeftClick, onRightClick }) => {
     return (
-        <Stack
+        <NavigationButtonContainer
             direction={'row'}
             justifyContent={'space-between'}
             alignItems={'center'}
-            sx={{
-                position: 'absolute',
-                top: '84%',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                width: '105%',
-                minHeight: '1.5rem',
-                height: '7%',
-                maxHeight: '3rem',
-            }}
         >
             <StyledIconButton
                 sx={{
@@ -48,7 +49,7 @@ const NavigationButton = ({ current, total, onLeftClick, onRightClick }) => {
             >
                 <ChevronRightIcon />
             </StyledIconButton>
-        </Stack>
+        </NavigationButtonContainer>
     );
 };
 
