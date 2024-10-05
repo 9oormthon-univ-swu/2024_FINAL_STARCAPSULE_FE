@@ -8,6 +8,13 @@ import NavigationButton from './NavigationButton';
 
 const SnowballContainer = styled('div')(() => ({
     padding: '0 0.375rem',
+    height: 'fit-content',
+    width: '100%',
+    boxSizing: 'border-box',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
     flexGrow: 1,
 }));
 
@@ -18,6 +25,7 @@ const SnowballBackground = styled('div')(({ theme }) => ({
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
     width: '100%',
+    maxWidth: '28rem',
     aspectRatio: '5/6',
     position: 'relative',
 }));

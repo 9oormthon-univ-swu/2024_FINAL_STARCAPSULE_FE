@@ -19,23 +19,32 @@ const memories = [
 const Main = () => {
     const [nickname, setNickname] = useState('닉네임');
     return (
-        <Layout>
+        <Layout
+            sx={{
+                overflow: 'hidden',
+            }}
+        >
             <Stack
                 direction={'column'}
                 justifyContent={'space-between'}
-                minHeight={'100svh'}
+                alignContent={'center'}
                 spacing={1}
+                height={'100svh'}
                 sx={{
                     pt: '1rem',
                     pb: '2.25rem',
+                    boxSizing: 'border-box',
+                    flexGrow: 2,
                 }}
             >
                 <Stack
                     direction={'column'}
                     spacing={1}
-                    sx={{
-                        flexGrow: 2,
-                    }}
+                    sx={
+                        {
+                            // flexGrow: 2,
+                        }
+                    }
                 >
                     <DDayTitle />
                     <MainTitle nickname={nickname} setNickname={setNickname} />
