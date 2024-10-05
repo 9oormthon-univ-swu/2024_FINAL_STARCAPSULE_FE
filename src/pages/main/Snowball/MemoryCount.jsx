@@ -4,7 +4,7 @@ import React from 'react';
 const CountText = styled('p')(({ theme }) => ({
     ...theme.typography.number8,
     color: theme.palette.custom.font,
-    fontSize: 'clamp(0.875rem, 4vw, 1.5rem)',
+    fontSize: 'clamp(0.875rem, 4vw, 1.3rem)',
     textAlign: 'center',
 }));
 

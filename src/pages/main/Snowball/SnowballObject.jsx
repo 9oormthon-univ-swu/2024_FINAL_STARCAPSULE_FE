@@ -22,7 +22,7 @@ const SnowballObjects = {
 
 const WriterText = styled(Typography)(({ theme }) => ({
     ...theme.typography.body3,
-    fontSize: 'clamp(1.125rem, 5vw, 2.25rem)',
+    fontSize: 'clamp(1.125rem, 5vw, 1.68rem)',
     textAlign: 'center',
     overflow: 'hidden',
     whiteSpace: 'nowrap',
