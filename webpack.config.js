@@ -14,5 +14,11 @@ module.exports = {
             '@/constants': path.resolve(__dirname, 'src/constants'),
         },
         extensions: ['.js', '.jsx'], // 확장자 생략 가능하게 설정
+        fallback: {
+            http: require.resolve('stream-http'),
+            https: require.resolve('https-browserify'),
+            stream: require.resolve('stream-browserify'),
+            zlib: require.resolve('browserify-zlib'),
+        },
     },
 };
