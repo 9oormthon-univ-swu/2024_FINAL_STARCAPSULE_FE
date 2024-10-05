@@ -8,7 +8,7 @@ import PopupPage from './pages/Onboarding/PopupPage';
 import SnowballMake from './pages/Onboarding/SnowballMake'; 
 import Text from './pages/text';        
 import TextMessage from './pages/textmessage';
-import Redirection from './Redirection'; // Redirection 컴포넌트 import 추가
+import Redirection from './Redirection'; 
 
 function App() {
     return (
@@ -20,7 +20,7 @@ function App() {
                     <Route path="/snowballmake" element={<SnowballMake />} /> 
                     <Route path="/text" element={<Text />} />               
                     <Route path="/textmessage" element={<TextMessage />} /> 
-                    <Route path="/kakao/callback" element={<Redirection />} /> {/* Redirection 추가 */}
+                    <Route path="/kakao/callback" element={<Redirection />} /> 
                 </Routes>
             </Router>
         </ThemeProvider>
