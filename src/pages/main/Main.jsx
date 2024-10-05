@@ -62,15 +62,18 @@ const Main = () => {
                 <Button
                     variant={'contained'}
                     sx={{
+                        boxSizing: 'border-box',
                         width: '100%',
-                        height: '3rem',
-                        backgroundColor: 'custom.main',
+                        height: '3.875rem',
+                        backgroundColor: 'custom.button1',
                         color: 'custom.white',
-                        borderRadius: '1.5rem',
+                        borderRadius: '1.25rem',
                         flexGrow: 0,
+                        py: '1.25rem',
+                        boxShadow: '0px 0px 4px 0px rgba(40, 40, 40, 0.20)',
                     }}
                 >
-                    <Typography>추억 전달하기</Typography>
+                    <Typography variant='title2'>추억 전달하기</Typography>
                 </Button>
             </Stack>
         </Layout>
