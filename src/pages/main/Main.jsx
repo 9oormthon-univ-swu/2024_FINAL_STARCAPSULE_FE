@@ -1,4 +1,4 @@
-import { Stack } from '@mui/material';
+import { Button, Stack, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import DDayTitle from './DDayTitle';
 import MainTitle from './MainTitle';
@@ -20,19 +20,50 @@ const Main = () => {
     const [nickname, setNickname] = useState('닉네임');
     return (
         <Layout>
-            <Stack direction={'column'} spacing={1}>
-                <DDayTitle />
-                <MainTitle nickname={nickname} setNickname={setNickname} />
+            <Stack
+                direction={'column'}
+                justifyContent={'space-between'}
+                minHeight={'100svh'}
+                spacing={1}
+                sx={{
+                    pt: '1rem',
+                    pb: '2.25rem',
+                }}
+            >
+                <Stack
+                    direction={'column'}
+                    spacing={1}
+                    sx={{
+                        flexGrow: 2,
+                    }}
+                >
+                    <DDayTitle />
+                    <MainTitle nickname={nickname} setNickname={setNickname} />
+                </Stack>
+
+                <Snowball
+                    memories={memories}
+                    current={1}
+                    total={3}
+                    received={5}
+                    self={3}
+                    onLeftClick={() => console.log('clicked left')}
+                    onRightClick={() => console.log('clicked right')}
+                />
+                <Button
+                    variant={'contained'}
+                    sx={{
+                        width: '100%',
+                        height: '3rem',
+                        backgroundColor: 'custom.main',
+                        color: 'custom.white',
+                        borderRadius: '1.5rem',
+                        flexGrow: 0,
+                    }}
+                >
+                    <Typography>추억 전달하기</Typography>
+                </Button>
             </Stack>
-            <Snowball
-                memories={memories}
-                current={1}
-                total={3}
-                received={5}
-                self={3}
-                onLeftClick={() => console.log('clicked left')}
-                onRightClick={() => console.log('clicked right')}
-            />
         </Layout>
     );
 };
