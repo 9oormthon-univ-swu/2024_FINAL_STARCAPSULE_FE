@@ -4,6 +4,7 @@ import DDayTitle from './DDayTitle';
 import MainTitle from './MainTitle';
 import Snowball from './Snowball/Snowball';
 import { ObjectNames } from '@/constants/ObjectNames';
+import Layout from '@/layouts/Layout';
 
 // 임시 적용 데이터
 const memories = [
@@ -18,9 +19,11 @@ const memories = [
 const Main = () => {
     const [nickname, setNickname] = useState('닉네임');
     return (
-        <Stack direction={'column'}>
-            <DDayTitle />
-            <MainTitle nickname={nickname} setNickname={setNickname} />
+        <Layout>
+            <Stack direction={'column'} spacing={1}>
+                <DDayTitle />
+                <MainTitle nickname={nickname} setNickname={setNickname} />
+            </Stack>
             <Snowball
                 memories={memories}
                 current={1}
@@ -30,7 +33,7 @@ const Main = () => {
                 onLeftClick={() => console.log('clicked left')}
                 onRightClick={() => console.log('clicked right')}
             />
-        </Stack>
+        </Layout>
     );
 };
 
