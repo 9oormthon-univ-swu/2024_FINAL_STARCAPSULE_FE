@@ -14,7 +14,10 @@ const DDayTitle = () => {
     );
 
     return (
-        <Typography variant='title3' sx={{ color: 'custom.grey' }}>
+        <Typography
+            variant='title3'
+            sx={{ color: 'custom.grey', height: '1.5rem' }}
+        >
             {'추억이 '}
             <span
                 style={{

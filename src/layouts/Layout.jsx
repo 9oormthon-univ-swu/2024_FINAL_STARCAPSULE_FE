@@ -6,8 +6,9 @@ const Layout = ({ sx, children }) => {
         <Container
             maxWidth={'sm'}
             sx={{
-                minHeight: '100svh',
+                minHeight: '100dvh',
                 boxSizing: 'border-box',
+                background: 'linear-gradient(0deg, #27405e 0%, #0b0a1b 100%)',
                 ...sx,
             }}
         >

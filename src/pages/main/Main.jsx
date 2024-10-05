@@ -1,4 +1,4 @@
-import { Button, Stack, styled, Typography } from '@mui/material';
+import { Button, IconButton, Stack, styled, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import DDayTitle from './DDayTitle';
 import MainTitle from './MainTitle';
@@ -6,6 +6,8 @@ import Snowball from './Snowball/Snowball';
 import { ObjectNames } from '@/constants/ObjectNames';
 import Layout from '@/layouts/Layout';
 import useSWR from 'swr';
+import { CalendarIcon } from '@/components/icons';
+import ShareButton from '@/components/ShareButton';
 
 // 임시 적용 데이터
 
@@ -37,7 +39,7 @@ const MainContainer = styled(Stack)(() => ({
     padding: '1rem 0 2.25rem 0',
     boxSizing: 'border-box',
     flexGrow: 2,
-    height: '100svh',
+    height: '100dvh',
 }));
 
 const StyledButton = styled(Button)(({ theme }) => ({
@@ -80,7 +82,30 @@ const Main = () => {
                 spacing={1}
             >
                 <Stack direction={'column'} spacing={1} sx={{ flexGrow: 2 }}>
-                    <DDayTitle />
+                    <Stack
+                        direction={'row'}
+                        justifyContent={'space-between'}
+                        alignItems={'center'}
+                    >
+                        <DDayTitle />
+                        <Stack direction={'row'} spacing={1}>
+                            <IconButton
+                                sx={{
+                                    color: 'custom.grey',
+                                    width: '1.5rem',
+                                    height: '1.5rem',
+                                }}
+                            >
+                                <CalendarIcon />
+                            </IconButton>
+                            <ShareButton
+                                title={
+                                    '스노우볼에 오늘의 추억이 보관되었어요!\nSNS에 링크를 공유해 친구들에게 함께한 추억을 전달받아보세요☃️\n'
+                                }
+                                url={'www.google.com'}
+                            />
+                        </Stack>
+                    </Stack>
                     <MainTitle nickname={nickname} setNickname={setNickname} />
                 </Stack>
 
@@ -93,7 +118,7 @@ const Main = () => {
                     onLeftClick={onLeftClick}
                     onRightClick={onRightClick}
                 />
-                <StyledButton variant={'contained'} sx={{}}>
+                <StyledButton variant={'contained'}>
                     <Typography variant='title2'>추억 전달하기</Typography>
                 </StyledButton>
             </MainContainer>

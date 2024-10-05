@@ -13,7 +13,7 @@ const SnowballContainer = styled('div')(() => ({
     boxSizing: 'border-box',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     flexGrow: 1,
 }));
