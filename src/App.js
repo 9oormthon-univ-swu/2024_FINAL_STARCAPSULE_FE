@@ -10,6 +10,7 @@ import RecordForm from './pages/Record/RecordForm';
 import Text from './pages/text';        
 import TextMessage from './pages/textmessage';
 import Redirection from './Redirection'; 
+import CreationComplete from './pages/MyRecord/CreationComplete';
 
 function App() {
     return (
@@ -22,6 +23,8 @@ function App() {
                     <Route path="/text" element={<Text />} />               
                     <Route path="/textmessage" element={<TextMessage />} /> 
                     <Route path="/record" element={<RecordForm/>} />
+                    <Route path="/complete" element={<CreationComplete/>} />
+                    <Route path="/kakao/callback" element={<Redirection />} /> 
                 </Routes>
             </Router>
         </ThemeProvider>
