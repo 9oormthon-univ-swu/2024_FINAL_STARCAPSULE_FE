@@ -9,6 +9,8 @@ import SnowballMake from './pages/Onboarding/SnowballMake';
 import Text from './pages/text';
 import RecordForm from './pages/Record/RecordForm';
 import TextMessage from './pages/textmessage';
+import Redirection from './Redirection'; 
+import CreationComplete from './pages/MyRecord/CreationComplete';
 import Main from './pages/main/Main';
 
 function App() {
@@ -16,13 +18,15 @@ function App() {
         <ThemeProvider theme={theme}>
             <Router>
                 <Routes>
-                    <Route path='/' element={<LoginPage />} />
-                    <Route path='/popup' element={<PopupPage />} />
-                    <Route path='/snowballmake' element={<SnowballMake />} />
-                    <Route path='/text' element={<Text />} />
-                    <Route path='/textmessage' element={<TextMessage />} />
-                    <Route path='/main' element={<Main />} />
-                    <Route path='/record' element={<RecordForm />} />
+                    <Route path="/" element={<LoginPage />} />
+                    <Route path="/popup" element={<PopupPage />} />
+                    <Route path="/snowballmake" element={<SnowballMake />} /> 
+                    <Route path="/text" element={<Text />} />               
+                    <Route path="/textmessage" element={<TextMessage />} /> 
+                    <Route path="/main" element={<Main />} />
+                    <Route path="/record" element={<RecordForm />} />
+                    <Route path="/complete" element={<CreationComplete />} />
+                    <Route path="/kakao/callback" element={<Redirection />} /> 
                 </Routes>
             </Router>
         </ThemeProvider>
@@ -30,4 +34,3 @@ function App() {
 }
 
 export default App;
-
