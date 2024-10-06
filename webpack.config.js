@@ -2,6 +2,14 @@ const path = require('path');
 
 module.exports = {
     // 기존 webpack 설정이 여기에 있습니다
+    module: {
+        rules: [
+            {
+                test: /\.(png|jpe?g|gif|svg)$/i, // 이미지 파일을 처리하는 룰 추가
+                type: 'asset/resource', // 파일을 별도 리소스로 처리
+            },
+        ],
+    },
     resolve: {
         alias: {
             '@': path.resolve(__dirname, 'src'), // base URL을 src로 설정
