@@ -43,10 +43,10 @@ const ShareButton = ({ title, url, text }) => {
     return (
         <IconButton
             aria-label='공유하기'
-            sx={{ w: 3, h: 3 }}
+            sx={{ width: '1.5rem', height: '1.5rem' }}
             onClick={() => handleShare(title, url, text, message)}
         >
-            <ShareIcon color='custom.grey' />
+            <ShareIcon sx={{ color: 'custom.grey' }} />
         </IconButton>
     );
 };
