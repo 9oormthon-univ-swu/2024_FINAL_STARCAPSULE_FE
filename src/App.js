@@ -7,6 +7,7 @@ import LoginPage from './pages/Onboarding/LoginPage';
 import PopupPage from './pages/Onboarding/PopupPage';
 import SnowballMake from './pages/Onboarding/SnowballMake';
 import Text from './pages/text';
+import RecordForm from './pages/Record/RecordForm';
 import TextMessage from './pages/textmessage';
 import Main from './pages/main/Main';
 
@@ -21,6 +22,7 @@ function App() {
                     <Route path='/text' element={<Text />} />
                     <Route path='/textmessage' element={<TextMessage />} />
                     <Route path='/main' element={<Main />} />
+                    <Route path='/record' element={<RecordForm />} />
                 </Routes>
             </Router>
         </ThemeProvider>
