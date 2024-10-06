@@ -8,6 +8,7 @@
     "@babel/plugin-transform-numeric-separator": "^7.24.7",
     "@babel/plugin-transform-optional-chaining": "^7.24.8",
     "@babel/plugin-transform-private-methods": "^7.25.4",
+    "@dotlottie/player-component": "^2.7.12",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@jridgewell/sourcemap-codec": "^1.5.0",
