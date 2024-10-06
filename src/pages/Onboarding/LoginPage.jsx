@@ -1,8 +1,7 @@
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Snowfall from 'react-snowfall';  
-import backgroundBottom from '../../assets/background_bottom.png'; 
-import ShareIcon from '../../components/icons/ShareIcon'; // ShareIcon import 추가
+import backgroundBottom from '../../assets/background_bottom.svg'; 
+import ShareIcon from '../../components/icons/ShareIcon'; 
 
 const Container = styled.div`
   display: flex;
@@ -38,8 +37,8 @@ const SubTitle = styled.p`
   top: 240px; 
   transform: translateX(-50%);
   left: 145px; 
-  line-height: 1.4; /* Adjusted line-height for spacing */
-  margin: 5px 0; /* Added margin for spacing between lines */
+  line-height: 1.4; 
+  margin: 5px 0; 
 `;
 
 const KakaoButton = styled.button`
@@ -107,19 +106,12 @@ const BottomImage = styled.img`
   bottom: -335px; 
   width: 100vw;
   max-width: 480px; 
-  object-fit: contain; //눈 이미지 수정해야 됨
+  object-fit: contain;
 `;
 
 const LoginPage = () => {
-  const navigate = useNavigate();
-
-  const handleKakaoLogin = () => {
-    navigate('/snowballmake');
-  };
-
-  const handleShare = () => {
-    // 공유 기능을 여기에 추가
-    console.log('Share button clicked!');
+  const handleButtonClick = () => {
+      window.location.href = 'http://34.64.85.134:8888/oauth2/authorization/kakao';
   };
 
   return (
@@ -136,10 +128,10 @@ const LoginPage = () => {
         추억을 보관하고 공유받아<br />
         나만의 스노우볼을 완성해요
       </SubTitle>
-      <ShareButton onClick={handleShare}>
+      <ShareButton onClick={() => console.log('Share button clicked!')}>
         <ShareIcon />
       </ShareButton>
-      <KakaoButton onClick={handleKakaoLogin}>
+      <KakaoButton onClick={handleButtonClick}>
         <KakaoIcon>
           <KakaoSVG />  
         </KakaoIcon>
@@ -150,4 +142,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage; 
+export default LoginPage;
