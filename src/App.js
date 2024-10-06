@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import LoginPage from './pages/Onboarding/LoginPage';
 import PopupPage from './pages/Onboarding/PopupPage';
 import SnowballMake from './pages/Onboarding/SnowballMake'; 
+import RecordForm from './pages/Record/RecordForm';
 import Text from './pages/text';        
 import TextMessage from './pages/textmessage';
 import Redirection from './Redirection'; 
@@ -20,7 +21,7 @@ function App() {
                     <Route path="/snowballmake" element={<SnowballMake />} /> 
                     <Route path="/text" element={<Text />} />               
                     <Route path="/textmessage" element={<TextMessage />} /> 
-                    <Route path="/kakao/callback" element={<Redirection />} /> 
+                    <Route path="/record" element={<RecordForm/>} />
                 </Routes>
             </Router>
         </ThemeProvider>
