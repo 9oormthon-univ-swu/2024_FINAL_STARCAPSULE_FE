@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import Snowfall from 'react-snowfall';  
 import backgroundBottom from '../../assets/background_bottom.svg'; 
 
+import '@dotlottie/player-component';
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -18,7 +20,6 @@ const Container = styled.div`
   background-color: white; 
 `;
 
-
 const SubTitle = styled.p`
   font-size: 19px;
   color: #fff;
@@ -29,7 +30,6 @@ const SubTitle = styled.p`
   white-space: nowrap; 
   line-height: 1.5;
 `;
-
 
 const Button = styled.button`
   display: inline-flex;
@@ -50,7 +50,6 @@ const Button = styled.button`
   bottom: 40px;
   z-index: 10;
 `;
-
 
 const BottomImage = styled.img`
   position: absolute;
@@ -78,13 +77,26 @@ const SnowballPage = () => {
         wind={[0, 0.5]}      
         radius={[0.5, 3]}    
       />
+      
+      {/* Lottie 애니메이션 추가 */}
+      <dotlottie-player 
+        src="https://lottie.host/699c976a-3836-4dd2-9858-edaa2d16b866/KDNntsFKi1.json" 
+        background="transparent" 
+        speed="1" 
+        style={{ width: '300px', height: '300px', position: 'absolute', bottom: '410px', left: '50%', transform: 'translateX(-50%)' }} 
+        loop 
+        autoplay>
+      </dotlottie-player>
+
       <SubTitle>
-  질문에 대한 답변을 매일 작성하고<br />
-  주변 사람들에게 추억을 전달받아요
-</SubTitle>
-<Button onClick={handleKakaoLogin}>
-     스노우볼 만들기
+        질문에 대한 답변을 매일 작성하고<br />
+        주변 사람들에게 추억을 전달받아요
+      </SubTitle>
+
+      <Button onClick={handleKakaoLogin}>
+        스노우볼 만들기
       </Button>
+      
       <BottomImage src={backgroundBottom} alt="Snow background" /> 
     </Container>
   );
