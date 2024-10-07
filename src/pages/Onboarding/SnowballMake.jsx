@@ -1,7 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import Snowfall from 'react-snowfall';  
-import backgroundBottom from '../../assets/background_bottom.png'; 
+import Snowfall from 'react-snowfall';
+import axios from 'axios';  
+import backgroundBottom from '../../assets/background_bottom.svg'; 
+
+import '@dotlottie/player-component';
 
 const Container = styled.div`
   display: flex;
@@ -18,17 +21,16 @@ const Container = styled.div`
   background-color: white; 
 `;
 
-
 const SubTitle = styled.p`
-  font-size: 17px;
+  font-size: 19px;
   color: #fff;
   position: absolute; 
   bottom: 300px;
   transform: translateX(-50%);
   left: 50%; 
   white-space: nowrap; 
+  line-height: 1.5;
 `;
-
 
 const Button = styled.button`
   display: inline-flex;
@@ -50,7 +52,6 @@ const Button = styled.button`
   z-index: 10;
 `;
 
-
 const BottomImage = styled.img`
   position: absolute;
   bottom: 0;
@@ -58,14 +59,38 @@ const BottomImage = styled.img`
   bottom: -335px; 
   width: 100vw;
   max-width: 480px; 
-  object-fit: contain; //눈 이미지 수정해야 됨
+  object-fit: contain; 
 `;
 
 const SnowballPage = () => {
   const navigate = useNavigate();
 
-  const handleKakaoLogin = () => {
-    navigate('/popup');
+  // URL에서 토큰 가져오기
+  const getTokenFromURL = () => {
+    return new URL(window.location.href).searchParams.get('token');
+  };
+
+   // 버튼 클릭 시 스노우볼 생성 API 호출
+   const handleCreateSnowball = () => {
+    const token = getTokenFromURL(); // URL에서 토큰 추출
+    const snowballAPI = 'http://34.64.85.134:8888/api/capsule'; 
+
+    if (token) {
+      axios.post(snowballAPI, {}, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Authorization 헤더에 토큰 포함
+        },
+      })
+      .then((response) => {
+        console.log('스노우볼 생성 성공:', response.data);
+        navigate('/popup'); 
+      })
+      .catch((error) => {
+        console.error('스노우볼 생성 실패:', error);
+      });
+    } else {
+      console.error('토큰이 URL에 없습니다');
+    }
   };
 
   return (
@@ -77,13 +102,26 @@ const SnowballPage = () => {
         wind={[0, 0.5]}      
         radius={[0.5, 3]}    
       />
+      
+      {/* Lottie 애니메이션 추가 */}
+      <dotlottie-player 
+        src="https://lottie.host/699c976a-3836-4dd2-9858-edaa2d16b866/KDNntsFKi1.json" 
+        background="transparent" 
+        speed="1" 
+        style={{ width: '300px', height: '300px', position: 'absolute', bottom: '410px', left: '50%', transform: 'translateX(-50%)' }} 
+        loop 
+        autoplay>
+      </dotlottie-player>
+
       <SubTitle>
-  질문에 대한 답변을 매일 작성하고<br />
-  주변 사람들에게 추억을 전달받아요
-</SubTitle>
-<Button onClick={handleKakaoLogin}>
-     스노우볼 만들기
+        질문에 대한 답변을 매일 작성하고<br />
+        주변 사람들에게 추억을 전달받아요
+      </SubTitle>
+
+      <Button onClick={handleCreateSnowball}>
+        스노우볼 만들기
       </Button>
+      
       <BottomImage src={backgroundBottom} alt="Snow background" /> 
     </Container>
   );

@@ -1,6 +1,6 @@
 import { Container } from '@mui/material';
 import React from 'react';
-import background_bottom from '@/assets/background_bottom.png';
+import background_bottom from '@/assets/background_bottom.svg';
 
 const Layout = ({ sx, snow, children }) => {
     return (
