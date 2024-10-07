@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import Snowfall from 'react-snowfall';  
+import Snowfall from 'react-snowfall';
+import axios from 'axios';  
 import backgroundBottom from '../../assets/background_bottom.svg'; 
 
 import '@dotlottie/player-component';
@@ -64,8 +65,32 @@ const BottomImage = styled.img`
 const SnowballPage = () => {
   const navigate = useNavigate();
 
-  const handleKakaoLogin = () => {
-    navigate('/popup');
+  // URL에서 토큰 가져오기
+  const getTokenFromURL = () => {
+    return new URL(window.location.href).searchParams.get('token');
+  };
+
+   // 버튼 클릭 시 스노우볼 생성 API 호출
+   const handleCreateSnowball = () => {
+    const token = getTokenFromURL(); // URL에서 토큰 추출
+    const snowballAPI = 'http://34.64.85.134:8888/api/capsule'; 
+
+    if (token) {
+      axios.post(snowballAPI, {}, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Authorization 헤더에 토큰 포함
+        },
+      })
+      .then((response) => {
+        console.log('스노우볼 생성 성공:', response.data);
+        navigate('/popup'); 
+      })
+      .catch((error) => {
+        console.error('스노우볼 생성 실패:', error);
+      });
+    } else {
+      console.error('토큰이 URL에 없습니다');
+    }
   };
 
   return (
@@ -93,7 +118,7 @@ const SnowballPage = () => {
         주변 사람들에게 추억을 전달받아요
       </SubTitle>
 
-      <Button onClick={handleKakaoLogin}>
+      <Button onClick={handleCreateSnowball}>
         스노우볼 만들기
       </Button>
       
