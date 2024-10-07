@@ -37,14 +37,14 @@ const getData = async (url) => {
     };
 };
 
-const MainContainer = styled(Stack)(() => ({
+export const MainContainer = styled(Stack)(() => ({
     padding: '1rem 0 2.25rem 0',
     boxSizing: 'border-box',
     flexGrow: 2,
     height: '100dvh',
 }));
 
-const StyledButton = styled(Button)(({ theme }) => ({
+export const StyledButton = styled(Button)(({ theme }) => ({
     boxSizing: 'border-box',
     width: '100%',
     height: '3.875rem',

@@ -2,7 +2,7 @@ import { CheckIcon, EditIcon } from '@/components/icons';
 import { Box, IconButton, styled, Typography } from '@mui/material';
 import React, { useState, useEffect, useRef } from 'react';
 
-const StyledTypography = styled(Typography)(({ theme }) => ({
+export const StyledTypography = styled(Typography)(({ theme }) => ({
     color: theme.palette.custom.white,
     padding: '0.25rem 0',
     wordBreak: 'keep-all',

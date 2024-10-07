@@ -11,6 +11,7 @@ import RecordForm from './pages/Record/RecordForm';
 import TextMessage from './pages/textmessage';
 import CreationComplete from './pages/MyRecord/CreationComplete';
 import Main from './pages/main/Main';
+import Guest from './pages/guest/Guest';
 
 function App() {
     return (
@@ -22,9 +23,8 @@ function App() {
                     <Route path='/snowballmake' element={<SnowballMake />} />
                     <Route path='/text' element={<Text />} />
                     <Route path='/textmessage' element={<TextMessage />} />
-                    <Route path='/main' element={<Main />} />{' '}
-                    {/* 사용자 ID를 포함한 경로 */}
-                    <Route path='/main/:id' element={<Main />} />{' '}
+                    <Route path='/main' element={<Main />} />
+                    <Route path='/guest/:id' element={<Guest />} />
                     <Route path='/record' element={<RecordForm />} />
                     <Route path='/complete' element={<CreationComplete />} />
                 </Routes>
