@@ -70,5 +70,5 @@ const RecordTitle = ({question, setquestion}) => {
   //Design
   const titlestyle = {
     color: 'custom.white',
-    marginBottom: '0.75rem',
+    margin: '2.25rem 0rem 0.75rem',
   }

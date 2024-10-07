@@ -34,7 +34,7 @@ const ImgUploadButton = ({
 
     return(
         <Button component="label" sx={imgBtnstyle} disabled={disabled}>
-          <IconButton component="span" disabled="none">
+          <IconButton sx={iconBtnStyle} component="span" disabled="none">
             <PhotoIcon></PhotoIcon>
           </IconButton>
           {children}
@@ -56,11 +56,15 @@ export default ImgUploadButton;
 //Design
 const imgBtnstyle = {
   display: 'flex',
-  width: '3.5rem',
-  height: '3.5rem',
-  padding: '1.5rem',
+  width: '4rem',
+  height: '4rem',
   justifyContent: 'center',
   alignItems: 'center',
   background: '#FFFCFA',
   boxShadow: '0px 0px 4px 0px rgba(40, 40, 40, 0.20)',
 };
+
+const iconBtnStyle = {
+  width: '100%',
+  height: '100%',
+}

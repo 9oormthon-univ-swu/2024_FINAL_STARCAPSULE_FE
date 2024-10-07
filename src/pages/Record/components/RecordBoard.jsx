@@ -47,7 +47,7 @@ const RecordBoard = ({
                 />
             </Stack>
             <Stack>
-                <div style={{ textAlign:'right' }}>
+                <div style={{ textAlign:'right'}}>
                     <span>{inputCount}</span>
                     <span>/200</span>
                 </div>
