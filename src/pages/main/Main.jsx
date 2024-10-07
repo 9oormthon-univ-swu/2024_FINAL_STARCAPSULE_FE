@@ -8,6 +8,7 @@ import Layout from '@/layouts/Layout';
 import useSWR from 'swr';
 import { CalendarIcon } from '@/components/icons';
 import ShareButton from '@/components/ShareButton';
+import Loading from '@/components/Loading';
 
 // 임시 적용 데이터
 
@@ -77,7 +78,7 @@ const Main = () => {
         );
     };
 
-    if (isLoading) return <div>loading...</div>;
+    if (isLoading) return <Loading />;
 
     return (
         <Layout sx={{ overflow: 'hidden' }} snow>
