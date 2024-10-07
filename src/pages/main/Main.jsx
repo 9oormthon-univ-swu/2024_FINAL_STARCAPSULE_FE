@@ -54,6 +54,12 @@ const StyledButton = styled(Button)(({ theme }) => ({
     boxShadow: '0px 0px 4px 0px rgba(40, 40, 40, 0.20)',
 }));
 
+const StyledIconButton = styled(IconButton)(({ theme }) => ({
+    color: theme.palette.custom.grey,
+    width: '1.5rem',
+    height: '1.5rem',
+}));
+
 const Main = () => {
     const [page, setPage] = useState(1);
     const [nickname, setNickname] = useState('닉네임');
@@ -89,15 +95,9 @@ const Main = () => {
                     >
                         <DDayTitle />
                         <Stack direction={'row'} spacing={2}>
-                            <IconButton
-                                sx={{
-                                    color: 'custom.grey',
-                                    width: '1.5rem',
-                                    height: '1.5rem',
-                                }}
-                            >
+                            <StyledIconButton>
                                 <CalendarIcon />
-                            </IconButton>
+                            </StyledIconButton>
                             <ShareButton
                                 title={
                                     '스노우볼에 오늘의 추억이 보관되었어요!\nSNS에 링크를 공유해 친구들에게 함께한 추억을 전달받아보세요☃️\n'
