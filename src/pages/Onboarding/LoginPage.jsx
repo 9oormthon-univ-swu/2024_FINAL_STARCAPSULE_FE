@@ -1,7 +1,7 @@
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Snowfall from 'react-snowfall';  
-import backgroundBottom from '../../assets/background_bottom.png'; 
+import backgroundBottom from '../../assets/background_bottom.svg'; 
+import ShareIcon from '../../components/icons/ShareIcon'; 
 
 const Container = styled.div`
   display: flex;
@@ -19,26 +19,27 @@ const Container = styled.div`
 `;
 
 const Title = styled.h1`
-  font-family: Italic;
-  font-size: 55px;
+  font-family: 'Rage';
+  src: url('/assets/fonts/RAGE_1.TTF') format('truetype');
+  font-size: 70px;
   color: #fff;
   position: absolute; 
   top: 130px; 
-  left: 180px; 
+  left: 165px; 
   transform: translateX(-50%); 
   white-space: nowrap; 
 `;
 
-
 const SubTitle = styled.p`
-  font-size: 17px;
+  font-size: 18px;
   color: #fff;
   position: absolute; 
   top: 240px; 
   transform: translateX(-50%);
-  left: 160px; 
+  left: 145px; 
+  line-height: 1.4; 
+  margin: 5px 0; 
 `;
-
 
 const KakaoButton = styled.button`
   background-color: #FEE500; 
@@ -83,6 +84,21 @@ const KakaoSVG = () => (
   </svg>
 );
 
+const ShareButton = styled.button`
+  position: absolute;
+  top: 50px;
+  right: 12px;
+  background-color: transparent;
+  color: #D5D1CD;
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+
+  &:hover {
+    opacity: 0.7;
+  }
+`;
+
 const BottomImage = styled.img`
   position: absolute;
   bottom: 0;
@@ -90,14 +106,12 @@ const BottomImage = styled.img`
   bottom: -335px; 
   width: 100vw;
   max-width: 480px; 
-  object-fit: contain; //눈 이미지 수정해야 됨
+  object-fit: contain;
 `;
 
 const LoginPage = () => {
-  const navigate = useNavigate();
-
-  const handleKakaoLogin = () => {
-    navigate('/snowballmake');
+  const handleButtonClick = () => {
+      window.location.href = 'http://34.64.85.134:8888/oauth2/authorization/kakao';
   };
 
   return (
@@ -111,10 +125,13 @@ const LoginPage = () => {
       />
       <Title>Snow Log</Title>
       <SubTitle>
-  추억을 보관하고 공유받아<br />
-  나만의 스노우볼을 완성해요
-</SubTitle>
-<KakaoButton onClick={handleKakaoLogin}>
+        추억을 보관하고 공유받아<br />
+        나만의 스노우볼을 완성해요
+      </SubTitle>
+      <ShareButton onClick={() => console.log('Share button clicked!')}>
+        <ShareIcon />
+      </ShareButton>
+      <KakaoButton onClick={handleButtonClick}>
         <KakaoIcon>
           <KakaoSVG />  
         </KakaoIcon>
