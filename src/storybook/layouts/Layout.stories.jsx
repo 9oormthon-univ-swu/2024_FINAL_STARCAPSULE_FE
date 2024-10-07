@@ -3,7 +3,7 @@ import Layout from '@/layouts/Layout';
 const meta = {
     title: 'layouts/Layout',
     component: Layout,
-    tags: ['layout', 'autodocs'],
+    tags: ['autodocs'],
     argTypes: {
         sx: { control: 'object', description: 'sx prop' },
         snow: { control: 'boolean', description: 'snow prop' },
