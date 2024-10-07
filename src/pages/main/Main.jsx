@@ -26,7 +26,6 @@ const getData = async (url) => {
         capsule: {
             id: 1,
             snowball_name: '나의 캡슐',
-            shared_link: 'http://example.com/shared-link',
             received: 15,
             self: 3,
             page: parseInt(url),
@@ -60,38 +59,31 @@ const Main = () => {
     const [nickname, setNickname] = useState('닉네임');
     const { data, isLoading } = useSWR(`${page}`, getData);
     const [isPopupOpen, setPopupOpen] = useState(false); 
-    
-    // URL에서 토큰과 사용자 정보를 추출하여 로컬 스토리지에 저장하고, URL에서 제거하는 함수
-    const saveTokenAndUserInfo = () => {
+
+    // URL에서 토큰을 추출하여 로컬 스토리지에 저장하고, URL에서 토큰을 제거하는 함수
+    const saveTokenAndRemoveFromURL = () => {
         const url = new URL(window.location.href);
         const token = url.searchParams.get('token');
         
-        if (token && data) {
+        if (token) {
             // 로컬 스토리지에 토큰 저장
             localStorage.setItem('token', token);
+            console.log('토큰이 저장되었습니다:', token);
 
-            // 사용자 정보 저장
-            const userData = {
-                id: data.capsule.id,
-                snowball_name: data.capsule.snowball_name,
-                shared_link: data.capsule.shared_link
-            };
-            localStorage.setItem('user', JSON.stringify(userData));
-            console.log('사용자 정보가 저장되었습니다:', userData);
-
-            // URL에서 토큰 제거
+             // URL에서 토큰 제거
             url.searchParams.delete('token');
-            window.history.replaceState({}, document.title, url.pathname); 
+            window.history.replaceState({}, document.title, url.pathname); // 페이지 리로드 없이 URL 갱신
             console.log('URL에서 토큰이 제거되었습니다');
         }
     };
 
     useEffect(() => {
+
         setPopupOpen(true);
 
-        // 토큰과 사용자 정보를 저장하고 URL에서 제거
-        saveTokenAndUserInfo();
-    }, [data]); // data가 변경될 때 실행되도록 의존성 추가
+       // 토큰을 저장하고 URL에서 토큰 제거
+        saveTokenAndRemoveFromURL();
+    }, []);
 
     const onLeftClick = () => {
         setPage((prev) => (prev === 1 ? 1 : prev - 1));
@@ -136,7 +128,7 @@ const Main = () => {
                                 title={
                                     '스노우볼에 오늘의 추억이 보관되었어요!\nSNS에 링크를 공유해 친구들에게 함께한 추억을 전달받아보세요☃️\n'
                                 }
-                                url={data.capsule.shared_link} // 공유 링크 사용
+                                url={'www.google.com'}
                             />
                         </Stack>
                     </Stack>
@@ -157,7 +149,7 @@ const Main = () => {
                 </StyledButton>
             </MainContainer>
 
-            <PopupPage isOpen={isPopupOpen} onClose={() => setPopupOpen(false)} /> 
+            <PopupPage isOpen={isPopupOpen} onClose={() => setPopupOpen(false)} /> {/* 팝업 추가 */}
         </Layout>
     );
 };
