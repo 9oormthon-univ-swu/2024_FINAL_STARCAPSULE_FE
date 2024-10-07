@@ -22,7 +22,8 @@ const SelectSnowballObject = ({ snowballObject, setSnowballObject, mine }) => {
             value={object}
             key={object}
             sx={{
-                padding: 0,
+                padding: '0',
+                backgroundColor: 'transparent !important',
             }}
         >
             <ObjectInSnowball
@@ -42,6 +43,12 @@ const SelectSnowballObject = ({ snowballObject, setSnowballObject, mine }) => {
             value={snowballObject}
             exclusive
             fullWidth
+            sx={{
+                '& .MuiToggleButtonGroup-grouped': {
+                    // backgroundColor: 'transparent !important',
+                    border: 'none',
+                },
+            }}
         >
             {mine
                 ? myObjects.map(selectButtons)
