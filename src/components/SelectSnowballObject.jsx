@@ -18,7 +18,13 @@ const SelectSnowballObject = ({ snowballObject, setSnowballObject, mine }) => {
     ];
 
     const selectButtons = (object) => (
-        <ToggleButton value={object} key={object}>
+        <ToggleButton
+            value={object}
+            key={object}
+            sx={{
+                padding: 0,
+            }}
+        >
             <ObjectInSnowball
                 variant={object}
                 selected={object == snowballObject}
@@ -35,6 +41,7 @@ const SelectSnowballObject = ({ snowballObject, setSnowballObject, mine }) => {
             onChange={handleChange}
             value={snowballObject}
             exclusive
+            fullWidth
         >
             {mine
                 ? myObjects.map(selectButtons)

@@ -2,11 +2,19 @@ import SelectSnowballObject from '@/components/SelectSnowballObject';
 import React from 'react';
 import { useState } from '@storybook/preview-api';
 import { ObjectNames } from '@/constants/ObjectNames';
+import Layout from '@/layouts/Layout';
 
 const meta = {
     title: 'components/SelectSnowballObject',
     tags: ['autodocs'],
     component: SelectSnowballObject,
+    decorators: [
+        (Story) => (
+            <Layout sx={{ padding: 0 }}>
+                <Story />
+            </Layout>
+        ),
+    ],
 };
 
 const Mine = {
