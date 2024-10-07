@@ -73,7 +73,7 @@ const textStyles = {
     },
     subtitle3: {
         /* subtitle/subtitle3 */
-        fontFamily: 'Griun NoltoTAENGGU',
+        fontFamily: 'Griun NltoTAENGG',
         fontSize: '1.75rem',
         fontStyle: 'normal',
         fontWeight: 400,
@@ -81,7 +81,7 @@ const textStyles = {
     },
     subtitle4: {
         /* subtitle/subtitle 4 */
-        fontFamily: 'Griun NoltoTAENGGU',
+        fontFamily: 'Griun NltoTAENGG',
         fontSize: '1.5rem',
         fontStyle: 'normal',
         fontWeight: 400,
@@ -89,7 +89,7 @@ const textStyles = {
     },
     body1: {
         /* body/body1 */
-        fontFamily: 'Griun NoltoTAENGGU',
+        fontFamily: 'Griun NltoTAENGG',
         fontSize: '1.25rem',
         fontStyle: 'normal',
         fontWeight: 400,
@@ -97,7 +97,7 @@ const textStyles = {
     },
     body2: {
         /* body/body2 */
-        fontFamily: 'Griun NoltoTAENGGU',
+        fontFamily: 'Griun NltoTAENGG',
         fontSize: '1.125rem',
         fontStyle: 'normal',
         fontWeight: 400,
@@ -105,7 +105,7 @@ const textStyles = {
     },
     body3: {
         /* body/body3 */
-        fontFamily: 'Griun NoltoTAENGGU',
+        fontFamily: 'Griun NltoTAENGG',
         fontSize: '1.125rem',
         fontStyle: 'normal',
         fontWeight: 400,
@@ -113,7 +113,7 @@ const textStyles = {
     },
     body4: {
         /* body/body4 */
-        fontFamily: 'Griun NoltoTAENGGU',
+        fontFamily: 'Griun NltoTAENGG',
         fontSize: '1rem',
         fontStyle: 'normal',
         fontWeight: 400,
@@ -121,7 +121,7 @@ const textStyles = {
     },
     body5: {
         /* body/body5 */
-        fontFamily: 'Griun NoltoTAENGGU',
+        fontFamily: 'Griun NltoTAENGG',
         fontSize: '0.875rem',
         fontStyle: 'normal',
         fontWeight: 400,
