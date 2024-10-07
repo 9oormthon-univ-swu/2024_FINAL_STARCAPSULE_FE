@@ -5,9 +5,10 @@ import {
     IconButton,
     Modal,
     Stack,
+    styled,
     Typography,
 } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
+import { CloseIcon } from './icons';
 
 /**
  * AlertModal 컴포넌트는 modal을 띄우고 확인, 취소 버튼을 제공합니다.
@@ -22,7 +23,7 @@ import CloseIcon from '@mui/icons-material/Close';
  * @returns
  */
 
-const modalStyle = {
+const ModalContainer = styled(Stack)(() => ({
     position: 'absolute',
     top: '50%',
     left: '50%',
@@ -33,19 +34,20 @@ const modalStyle = {
     width: ['80vw', 'fit-content'],
     maxWidth: '20rem',
     overflow: 'hidden',
-};
+}));
 
+// mui의 반응형 적용을 위해 그대로 두었음
 const modalDescriptionStyle = {
     px: [2, 6],
     pb: 3,
     wordBreak: 'keep-all',
 };
 
-const buttonStyle = {
-    py: '1.25rem',
+const ModalButton = styled(Button)(({ theme }) => ({
+    padding: '1.25rem 0',
     borderRadius: 0,
-    backgroundColor: 'custom.button1',
-};
+    backgroundColor: theme.palette.custom.button1,
+}));
 
 const AlertModal = ({
     open,
@@ -62,11 +64,7 @@ const AlertModal = ({
             aria-describedby='alert-modal-description'
             {...props}
         >
-            <Stack
-                sx={modalStyle}
-                direction={'column'}
-                justifyContent={'center'}
-            >
+            <ModalContainer direction={'column'} justifyContent={'center'}>
                 <Stack
                     direction={'column'}
                     p={2}
@@ -93,15 +91,10 @@ const AlertModal = ({
                         {children}
                     </Box>
                 </Stack>
-                <Button
-                    variant='contained'
-                    color='primary'
-                    onClick={onButtonClick}
-                    sx={buttonStyle}
-                >
+                <ModalButton variant='contained' onClick={onButtonClick}>
                     <Typography variant='title2'>{buttonText}</Typography>
-                </Button>
-            </Stack>
+                </ModalButton>
+            </ModalContainer>
         </Modal>
     );
 };
