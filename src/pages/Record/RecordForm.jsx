@@ -10,7 +10,7 @@ import SelectSnowballObject from "@/components/SelectSnowballObject";
 
 const RecordForm = () => {
   // useState로 상태 관리
-  const [question, setquestion] = useState('가장 행복했던 일은 무엇인가요?');
+  const [question, setquestion] = useState('"가장 행복했던 일은 무엇인가요?"');
   const [text, setText] = useState("");
   const [inputCount, setInputCount] = useState(0);
   const [uploadedImage, setUploadedImage] = useState(null);
@@ -18,7 +18,7 @@ const RecordForm = () => {
   const [mine, ismine] = useState(true);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarText, setSnackbarText] = useState('');
-  const [openModal, setopenModal] = useState(false); //모달 상태 추가
+  const [openModal, setopenModal] = useState(false); 
   // RecordBoard 참조 (자동스크롤)
   const recordBoardRef = useRef(null); // RecordBoard 참조
   const selectObjectRef = useRef(null); //SelectSnowballObject 참조
@@ -27,7 +27,7 @@ const RecordForm = () => {
 
   // 업로드 파일 관리
     const handleSetImage = (uploadedImage) => {
-      setUploadedImage(uploadedImage); // Set uploaded image file
+      setUploadedImage(uploadedImage); 
   };
 
   // 텍스트 변경 및 글자수 계산 처리 함수
@@ -117,11 +117,11 @@ const RecordForm = () => {
           />
         )}
         </Stack>
-        <Stack>
+        <Stack ref={recordBoardRef}>
           <RecordTitle question={question} setquestion={setquestion}></RecordTitle>
         </Stack>
         <form onSubmit={handleSubmit}>
-            <Stack ref={recordBoardRef}>
+            <Stack>
               <RecordBoard
                 handleSetImage={handleSetImage}
                 text={text}

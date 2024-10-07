@@ -58,9 +58,7 @@ const imgBtnstyle = {
   display: 'flex',
   width: '4rem',
   height: '4rem',
-  justifyContent: 'center',
-  alignItems: 'center',
-  background: '#FFFCFA',
+  color: 'custom.white',
   boxShadow: '0px 0px 4px 0px rgba(40, 40, 40, 0.20)',
 };
 
