@@ -9,6 +9,7 @@ import useSWR from 'swr';
 import { CalendarIcon } from '@/components/icons';
 import ShareButton from '@/components/ShareButton';
 import Loading from '@/components/Loading';
+import { getDaysBeforeOpen } from '@/utils/getDaysBeforeOpen';
 
 // 임시 적용 데이터
 
@@ -50,7 +51,6 @@ const StyledButton = styled(Button)(({ theme }) => ({
     backgroundColor: theme.palette.custom.button1,
     color: theme.palette.custom.white,
     borderRadius: '1.25rem',
-    flexGrow: 0,
     padding: '1.25rem 0',
     boxShadow: '0px 0px 4px 0px rgba(40, 40, 40, 0.20)',
 }));
@@ -65,6 +65,8 @@ const Main = () => {
     const [page, setPage] = useState(1);
     const [nickname, setNickname] = useState('닉네임');
     const { data, isLoading } = useSWR(`${page}`, getData);
+
+    const daysLeft = getDaysBeforeOpen();
 
     const onLeftClick = () => {
         setPage((prev) => (prev === 1 ? 1 : prev - 1));
@@ -119,9 +121,40 @@ const Main = () => {
                     onLeftClick={onLeftClick}
                     onRightClick={onRightClick}
                 />
-                <StyledButton variant={'contained'}>
-                    <Typography variant='title2'>추억 전달하기</Typography>
-                </StyledButton>
+                {daysLeft ? (
+                    <StyledButton
+                        variant={'contained'}
+                        sx={{
+                            flexGrow: 0,
+                        }}
+                    >
+                        <Typography variant='title2'>추억 전달하기</Typography>
+                    </StyledButton>
+                ) : (
+                    <Stack
+                        direction={'row'}
+                        justifyContent={'space-between'}
+                        spacing={'1rem'}
+                        sx={{
+                            flexGrow: 0,
+                        }}
+                    >
+                        <StyledButton
+                            variant={'contained'}
+                            sx={{ flexGrow: 1, width: 'fit-content' }}
+                        >
+                            <Typography variant='title2'>팀 소개</Typography>
+                        </StyledButton>
+                        <StyledButton
+                            variant={'contained'}
+                            sx={{ flexGrow: 2, width: 'fit-content' }}
+                        >
+                            <Typography variant='title2'>
+                                추억 보관하기
+                            </Typography>
+                        </StyledButton>
+                    </Stack>
+                )}
             </MainContainer>
         </Layout>
     );

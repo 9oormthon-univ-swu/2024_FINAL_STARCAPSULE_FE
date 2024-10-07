@@ -1,4 +1,5 @@
 import palette from '@/constants/palette';
+import { getDaysBeforeOpen } from '@/utils/getDaysBeforeOpen';
 import { styled, Typography } from '@mui/material';
 import React from 'react';
 
@@ -8,17 +9,9 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
 }));
 
 const DDayTitle = () => {
-    const today = new Date();
-    const year = today.getFullYear();
+    const daysLeft = getDaysBeforeOpen();
 
-    const startDate = new Date(year, 10, 30);
-    const endDate = new Date(year, 11, 31);
-    const dec30 = new Date(year, 11, 30);
-
-    if (today >= startDate && today <= dec30) {
-        const timeDiff = endDate - today;
-        const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-
+    if (daysLeft) {
         return (
             <StyledTypography variant='title3'>
                 {'추억이 '}
