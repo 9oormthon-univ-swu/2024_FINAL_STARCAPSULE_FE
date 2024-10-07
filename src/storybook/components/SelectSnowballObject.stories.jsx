@@ -1,24 +1,48 @@
 import SelectSnowballObject from '@/components/SelectSnowballObject';
-import React, { useState } from 'react';
+import React from 'react';
+import { useState } from '@storybook/preview-api';
+import { ObjectNames } from '@/constants/ObjectNames';
 
 const meta = {
     title: 'components/SelectSnowballObject',
     tags: ['autodocs'],
-    components: SelectSnowballObject,
-    decorators: [
-        (Story) => {
-            const [snowballObject, setSnowballObject] = useState('');
-            return (
-                <Story
-                    snowballObject={snowballObject}
-                    setSnowballObject={setSnowballObject}
-                />
-            );
-        },
-    ],
+    component: SelectSnowballObject,
 };
 
-const Default = {};
+const Mine = {
+    args: {
+        mine: true,
+    },
+    render: function Render(args) {
+        const [snowballObject, setSnowballObject] = useState(
+            ObjectNames.CHRISTMAS_TREE
+        );
+        return (
+            <SelectSnowballObject
+                {...args}
+                snowballObject={snowballObject}
+                setSnowballObject={setSnowballObject}
+            />
+        );
+    },
+};
+const Friends = {
+    args: {
+        mine: false,
+    },
+    render: function Render(args) {
+        const [snowballObject, setSnowballObject] = useState(
+            ObjectNames.SNOWFLAKE
+        );
+        return (
+            <SelectSnowballObject
+                {...args}
+                snowballObject={snowballObject}
+                setSnowballObject={setSnowballObject}
+            />
+        );
+    },
+};
 
 export default meta;
-export { Default };
+export { Mine, Friends };
