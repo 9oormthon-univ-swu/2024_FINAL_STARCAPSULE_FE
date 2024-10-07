@@ -1,5 +1,5 @@
 import { Button, IconButton, Stack, styled, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DDayTitle from './DDayTitle';
 import MainTitle from './MainTitle';
 import Snowball from './Snowball/Snowball';
@@ -8,9 +8,9 @@ import Layout from '@/layouts/Layout';
 import useSWR from 'swr';
 import { CalendarIcon } from '@/components/icons';
 import ShareButton from '@/components/ShareButton';
+import PopupPage from '../Onboarding/PopupPage'; // 팝업 컴포넌트 가져오기
 
 // 임시 적용 데이터
-
 const memories = [
     { id: 1, writer_name: '닉네임', object_name: ObjectNames.SNOWMAN },
     { id: 2, writer_name: '닉네임', object_name: ObjectNames.SNOWMAN },
@@ -58,6 +58,32 @@ const Main = () => {
     const [page, setPage] = useState(1);
     const [nickname, setNickname] = useState('닉네임');
     const { data, isLoading } = useSWR(`${page}`, getData);
+    const [isPopupOpen, setPopupOpen] = useState(false); // 팝업 상태 관리
+
+    // URL에서 토큰을 추출하여 로컬 스토리지에 저장하고, URL에서 토큰을 제거하는 함수
+    const saveTokenAndRemoveFromURL = () => {
+        const url = new URL(window.location.href);
+        const token = url.searchParams.get('token');
+        
+        if (token) {
+            // 로컬 스토리지에 토큰 저장
+            localStorage.setItem('token', token);
+            console.log('토큰이 저장되었습니다:', token);
+
+            // URL에서 토큰 제거
+            url.searchParams.delete('token');
+            window.history.replaceState({}, document.title, url.pathname); 
+            console.log('URL에서 토큰이 제거되었습니다');
+        }
+    };
+
+    useEffect(() => {
+        
+        setPopupOpen(true);
+
+        // 토큰을 저장하고 URL에서 토큰 제거
+        saveTokenAndRemoveFromURL();
+    }, [])
 
     const onLeftClick = () => {
         setPage((prev) => (prev === 1 ? 1 : prev - 1));
@@ -122,6 +148,8 @@ const Main = () => {
                     <Typography variant='title2'>추억 전달하기</Typography>
                 </StyledButton>
             </MainContainer>
+
+            <PopupPage isOpen={isPopupOpen} onClose={() => setPopupOpen(false)} /> 
         </Layout>
     );
 };

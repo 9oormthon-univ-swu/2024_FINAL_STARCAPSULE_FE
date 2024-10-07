@@ -22,7 +22,7 @@ function App() {
                     <Route path="/snowballmake" element={<SnowballMake />} /> 
                     <Route path="/text" element={<Text />} />               
                     <Route path="/textmessage" element={<TextMessage />} /> 
-                    <Route path="/main/:id" element={<Main />} /> {/* 사용자 ID를 포함한 경로 */}
+                    <Route path="/main/:userId" element={<Main />} />
                     <Route path="/record" element={<RecordForm />} />
                     <Route path="/complete" element={<CreationComplete />} />
                 </Routes>
