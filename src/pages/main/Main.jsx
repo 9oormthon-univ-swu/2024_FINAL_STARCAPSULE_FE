@@ -8,7 +8,7 @@ import Layout from '@/layouts/Layout';
 import useSWR from 'swr';
 import { CalendarIcon } from '@/components/icons';
 import ShareButton from '@/components/ShareButton';
-import PopupPage from '../Onboarding/PopupPage'; // 팝업 컴포넌트 가져오기
+import PopupPage from '../Onboarding/PopupPage'; 
 
 // 임시 적용 데이터
 const memories = [
