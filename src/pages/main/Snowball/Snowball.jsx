@@ -36,7 +36,7 @@ const Snowball = ({
     total,
     received,
     self,
-    memories,
+    memories = [],
     onLeftClick,
     onRightClick,
 }) => {
@@ -52,15 +52,16 @@ const Snowball = ({
         <SnowballContainer>
             <SnowballBackground>
                 <SnowballChip current={current} total={total} />
-                {memories.map((memory, index) => (
-                    <SnowballObject
-                        key={memory.id}
-                        writer={memory.writer_name}
-                        variant={memory.object_name}
-                        sx={memoryPosition[index]}
-                        black={index == 0}
-                    />
-                ))}
+                {memories.length > 0 &&
+                    memories.map((memory, index) => (
+                        <SnowballObject
+                            key={memory.id}
+                            writer={memory.writer_name}
+                            variant={memory.object_name}
+                            sx={memoryPosition[index]}
+                            black={index == 0}
+                        />
+                    ))}
                 <NavigationButton
                     current={current}
                     total={total}
