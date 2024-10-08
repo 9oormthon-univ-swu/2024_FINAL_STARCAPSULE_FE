@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import DDayTitle from './DDayTitle';
 import MainTitle from './MainTitle';
 import Snowball from './Snowball/Snowball';
-import { ObjectNames } from '@/constants/ObjectNames';
+// import { ObjectNames } from '@/constants/ObjectNames';
 import Layout from '@/layouts/Layout';
 import useSWR from 'swr';
 import { CalendarIcon } from '@/components/icons';
@@ -11,31 +11,6 @@ import ShareButton from '@/components/ShareButton';
 import Loading from '@/components/Loading';
 import { getDaysBeforeOpen } from '@/utils/getDaysBeforeOpen';
 import PopupPage from '../Onboarding/PopupPage';
-
-// 임시 적용 데이터
-const memories = [
-    { id: 1, writer_name: '닉네임', object_name: ObjectNames.SNOWMAN },
-    { id: 2, writer_name: '닉네임', object_name: ObjectNames.SNOWMAN },
-    { id: 3, writer_name: '닉네임', object_name: ObjectNames.MOON },
-    { id: 4, writer_name: '닉네임', object_name: ObjectNames.SANTA },
-    { id: 5, writer_name: '닉네임', object_name: ObjectNames.SNOWFLAKE },
-    { id: 6, writer_name: '닉네임', object_name: ObjectNames.SANTA_SLEIGH },
-];
-
-const getData = async (url) => {
-    console.log(`fetching page ${url}`);
-    return {
-        capsule: {
-            id: 1,
-            snowball_name: '나의 캡슐',
-            received: 15,
-            self: 3,
-            page: parseInt(url),
-            total_page: 5,
-            memories: memories,
-        },
-    };
-};
 
 export const MainContainer = styled(Stack)(() => ({
     padding: '1rem 0 2.25rem 0',

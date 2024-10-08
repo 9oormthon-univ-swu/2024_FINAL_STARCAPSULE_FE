@@ -29,6 +29,8 @@ module.exports = {
                 '@/page': path.resolve(__dirname, 'src/page'),
                 '@/layout': path.resolve(__dirname, 'src/layout'),
                 '@/constants': path.resolve(__dirname, 'src/constants'),
+                '@/assets': path.resolve(__dirname, 'src/assets'),
+                '@/stores': path.resolve(__dirname, 'src/stores'),
             },
             extensions: ['.js', '.jsx'], // 확장자 생략 가능하게 설정
         },
