@@ -13,6 +13,9 @@ import PopupPage from '../Onboarding/PopupPage';
 import { useParams } from 'react-router-dom';
 import { useUserStore } from 'stores/useUserStore';
 import { defaultGetFetcher } from '@/utils/getFetcher';
+import { saveTokenFromURL } from '@/utils/saveTokenFromURL';
+import useAuthStore from 'stores/useAuthStore';
+import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 
 export const MainContainer = styled(Stack)(() => ({
     padding: '1rem 0 2.25rem 0',
@@ -41,39 +44,50 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
 const Main = () => {
     // eslint-disable-next-line no-unused-vars
     const [page, setPage] = useState(1);
-    const [nickname, setNickname] = useState('닉네임');
     const [isPopupOpen, setPopupOpen] = useState(false);
 
     const param = useParams();
 
     const { setUserId } = useUserStore();
 
-    // URL에서 토큰을 추출하여 로컬 스토리지에 저장하고, URL에서 토큰을 제거하는 함수
-    const saveTokenAndRemoveFromURL = () => {
-        const url = new URL(window.location.href);
-        const token = url.searchParams.get('token');
-
-        if (token) {
-            // 로컬 스토리지에 토큰 저장
-            localStorage.setItem('token', token);
-
-            // URL에서 토큰 제거
-            url.searchParams.delete('token');
-            window.history.replaceState({}, document.title, url.pathname); // 페이지 리로드 없이 URL 갱신
-        }
-    };
+    const { login } = useAuthStore(); // useAuthStore에서 login 메서드 가져오기
 
     useEffect(() => {
         setPopupOpen(true);
         setUserId(param.userId);
-        saveTokenAndRemoveFromURL();
-    }, []);
+        saveTokenFromURL(login); // URL에서 토큰을 추출하고 상태에 저장
+    }, [login, param.userId, setUserId]);
 
     const { data, isLoading, error } = useSWR(
-        // `${process.env.REACT_APP_API_URL}/api/capsule/90b0afad-9ab7-4650-b6cf-cd887c506c69?page=${page}`,
-        'http://34.64.85.134:8888/api/capsule/199f3022-be24-4641-a907-0b10c1e730e8?page=1',
-        defaultGetFetcher
+        `${process.env.REACT_APP_API_URL}/api/capsule/${param.userId}?page=${page}`,
+        defaultGetFetcher,
+        {
+            onError: (error) => {
+                console.error('API 호출 중 에러 발생:', error);
+                console.log(data);
+                // 추가적인 에러 처리 로직
+            },
+            shouldRetryOnError: false, // 에러 발생 시 재시도 하지 않음
+        }
     );
+
+    const axiosInstance = useAxiosWithAuth(); // axiosInstance 가져오기
+    const setSnowballName = async (newName) => {
+        if (newName) {
+            try {
+                await axiosInstance.post(
+                    `/api/capsule/changeSnowballName?name=${newName}`,
+                    null
+                );
+                // 성공 시 처리할 로직 추가 가능
+            } catch (error) {
+                console.error('스노우볼 이름 변경 실패:', error);
+                // 에러 처리 로직 추가 가능
+            }
+        } else {
+            console.error('스노우볼 이름이 유효하지 않습니다.');
+        }
+    };
 
     const daysLeft = getDaysBeforeOpen();
 
@@ -91,8 +105,6 @@ const Main = () => {
 
     if (isLoading) return <Loading />;
     if (error) return <div>failed to load</div>;
-
-    console.log(data);
 
     return (
         <Layout sx={{ overflow: 'hidden' }} snow>
@@ -121,15 +133,18 @@ const Main = () => {
                             />
                         </Stack>
                     </Stack>
-                    <MainTitle nickname={nickname} setNickname={setNickname} />
+                    <MainTitle
+                        snowball={data.snowball_name}
+                        setSnowballName={setSnowballName}
+                    />
                 </Stack>
 
                 <Snowball
-                    memories={data.result.memories}
+                    memories={data.memories}
                     current={page}
-                    total={parseInt(data.result.total_page)}
-                    received={data.result.received}
-                    self={data.result.self}
+                    total={parseInt(data.total_page)}
+                    received={data.received}
+                    self={data.self}
                     onLeftClick={onLeftClick}
                     onRightClick={onRightClick}
                 />
