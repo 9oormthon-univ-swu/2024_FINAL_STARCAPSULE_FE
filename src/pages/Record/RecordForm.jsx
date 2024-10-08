@@ -153,16 +153,17 @@ export default RecordForm;
 
 
 //Design
-const contentstyle={
+const contentstyle = {
   display: 'flex',
   alignItems: 'center',
   height: '100%',
   width: '100%',
-  maxWidth: '37.5rem',
+  maxWidth: '600px', 
   background: '#4D4D4D',
   margin: '0 auto',
   padding: '1.5rem',
-}
+  boxSizing: 'border-box',
+};
 
 const modaltextstyle1={
   fontFamily: "Noto Sans",

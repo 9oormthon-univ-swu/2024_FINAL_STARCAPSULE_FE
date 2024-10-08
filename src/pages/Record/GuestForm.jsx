@@ -10,18 +10,18 @@ import SelectSnowballObject from "@/components/SelectSnowballObject";
 
 const GuestForm = ({nickname}) => {
   // useState로 상태 관리
-  const [text, setText] = useState("");
+  const [answer, setAnswer] = useState("");
   const [inputCount, setInputCount] = useState(0);
   const [writer, setWriter] = useState('');
   const [uploadedImage, setUploadedImage] = useState(null);
-  const [snowballObject, setSnowballObject] = useState('');
+  const [object_name, setObjectName] = useState('');
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarText, setSnackbarText] = useState('');
   const [openModal, setopenModal] = useState(false); 
   // RecordBoard 참조 (자동스크롤)
   const recordBoardRef = useRef(null); // RecordBoard 참조
   const writerRef = useRef(null); //Writer 참조
-  const selectObjectRef = useRef(null); //SelectSnowballObject 참조
+  const selectObjectRef = useRef(null); 
 
 
 
@@ -31,8 +31,8 @@ const GuestForm = ({nickname}) => {
   };
 
   // 텍스트 변경 및 글자수 계산 처리 함수
-  const handleTextChange = (e) => {
-    setText(e.target.value.slice(0,199));
+  const handleAnswerChange = (e) => {
+    setAnswer(e.target.value.slice(0,199));
     setInputCount(e.target.value.length);
   };
 
@@ -51,15 +51,15 @@ const GuestForm = ({nickname}) => {
   const handleAcceptModal = () => {
     // FormData 객체를 사용해 이미지 파일과 텍스트 데이터를 서버로 전송
     const formData = new FormData();
-    formData.append("answer", text);
+    formData.append("answer", answer);
     formData.append("image", uploadedImage);
     formData.append("writer", writer)
-    formData.append("object_name", snowballObject)
+    formData.append("object_name", object_name)
     
-    console.log("텍스트:", text);
-    console.log("이미지:", uploadedImage);
-    console.log("작성자:", writer);
-    console.log("장식:", snowballObject)
+    console.log("answer:", answer);
+    console.log("image:", uploadedImage);
+    console.log("writer:", writer);
+    console.log("object_name:", object_name)
   }
 
   // 모달 닫기 처리 함수
@@ -73,7 +73,7 @@ const GuestForm = ({nickname}) => {
     e.preventDefault();
 
     // 폼 데이터 확인
-    if (!text) {
+    if (!answer) {
       setOpenSnackbar(true); //기록한 내용이 없을 경우 스낵바 True
       setSnackbarText('추억이 작성되지 않았어요.')
       recordBoardRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -86,14 +86,14 @@ const GuestForm = ({nickname}) => {
         return;
     }
     //장식이 없을 경우
-    else if(!snowballObject) {
+    else if(!object_name) {
       setOpenSnackbar(true); //기록한 내용이 없을 경우 스낵바 True
       setSnackbarText('장식이 선택되지 않았어요.')
       selectObjectRef.current.scrollIntoView({ behavior: 'smooth' });
       return;
     }
 
-    //text가 있을 경우 모달 오픈
+    //answer 있을 경우 모달 오픈
     setopenModal(true);
   };
 
@@ -108,8 +108,8 @@ const GuestForm = ({nickname}) => {
             </Stack>
             <Stack>
               <SelectSnowballObject
-                snowballObject={snowballObject}
-                setSnowballObject={setSnowballObject}
+                snowballObject={object_name}
+                setSnowballObject={setObjectName}
               />
             </Stack>
             <Stack>
@@ -119,9 +119,9 @@ const GuestForm = ({nickname}) => {
                 <Stack ref={recordBoardRef}>
                     <RecordBoard
                     handleSetImage={handleSetImage}
-                    text={text}
+                    answer={answer}
                     inputCount={inputCount}
-                    handleTextChange={handleTextChange}
+                    handleTextChange={handleAnswerChange}
                     />
                 </Stack>
                 <Stack ref={writerRef}>

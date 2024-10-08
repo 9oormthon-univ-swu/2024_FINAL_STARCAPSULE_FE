@@ -4,7 +4,7 @@ import ImgUploadButton from "./ImgUploadButton";
 
 const RecordBoard = ({
     children,
-    text, 
+    answer, 
     inputCount, 
     handleTextChange,
     handleSetImage,
@@ -37,8 +37,8 @@ const RecordBoard = ({
 
             <Stack>
                 <TextField sx={Textfieldstyle}
-                  id="text"
-                  value={text}
+                  id="answer"
+                  value={answer}
                   onChange={handleTextChange}
                   placeholder="기록을 오늘의 질문 대신  다른 내용을 기록해도 좋아요! 자유롭게 남기고 싶은 추억을 작성해주세요:)"
                   multiline
@@ -76,13 +76,13 @@ const imgcontainer = {
 };
 
 const RecordBgstyle = {
-    minWidth: '17rem',
-    maxWidth: '19.5rem',
-    height: 'fit-content',
-    minHeight: '27rem',
-    
+    display: 'flex',
+    flexDirection: 'column',
     padding: '1.5rem',
     borderRadius: '1.25rem',
     background: '#FFFCFA',
+    boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
+    width: '100%',
     margin: '0 auto',
+    boxSizing: 'border-box'
   };
