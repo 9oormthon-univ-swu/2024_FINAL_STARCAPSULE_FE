@@ -15,8 +15,8 @@ import { useUserStore } from 'stores/useUserStore';
 import { defaultGetFetcher } from '@/utils/getFetcher';
 import { saveTokenFromURL } from '@/utils/saveTokenFromURL';
 import useAuthStore from 'stores/useAuthStore';
-// import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
-import axios from 'axios';
+import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
+// import axios from 'axios';
 
 export const MainContainer = styled(Stack)(() => ({
     padding: '1rem 0 2.25rem 0',
@@ -59,26 +59,26 @@ const Main = () => {
         saveTokenFromURL(login); // URL에서 토큰을 추출하고 상태에 저장
     }, [login, param.userId, setUserId]);
 
-    const { data, isLoading, error } = useSWR(
+    const { data, isLoading, error, mutate } = useSWR(
         `${process.env.REACT_APP_API_URL}/api/capsule/${param.userId}?page=${page}`,
         defaultGetFetcher
     );
 
-    // const axiosInstance = useAxiosWithAuth();
-    const { token } = useAuthStore();
+    const axiosInstance = useAxiosWithAuth();
     const setSnowballName = async (newName) => {
-        await axios.post(
-            `${process.env.REACT_APP_API_URL}/api/capsule/changeSnowballName`,
-            null,
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-                params: {
-                    name: newName, // 새로 입력한 닉네임을 API로 전송
-                },
-            }
-        );
+        await axiosInstance
+            .post(
+                `${process.env.REACT_APP_API_URL}/api/capsule/changeSnowballName`,
+                null,
+                {
+                    params: {
+                        name: newName, // 새로 입력한 닉네임을 API로 전송
+                    },
+                }
+            )
+            .then(() => {
+                mutate();
+            });
         // 성공 시 처리할 로직 추가 가능
     };
 

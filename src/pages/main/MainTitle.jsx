@@ -88,7 +88,6 @@ const MainTitle = ({ snowball, setSnowballName }) => {
                 <Input
                     ref={inputRef}
                     type='text'
-                    defaultValue={snowball}
                     value={currSnowball}
                     onChange={handleSnowballChange}
                     onBlur={handleEdit}
