@@ -51,6 +51,7 @@ const Button = styled.button`
   position: absolute;
   bottom: 40px;
   z-index: 10;
+  
 `;
 
 const BottomImage = styled.img`
