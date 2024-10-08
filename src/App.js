@@ -4,11 +4,12 @@ import theme from './constants/theme';
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import LoginPage from './pages/Onboarding/LoginPage';
-import PopupPage from './pages/Onboarding/PopupPage';
+//import PopupPage from './pages/Onboarding/PopupPage';
 import SnowballMake from './pages/Onboarding/SnowballMake'; 
 import RecordForm from './pages/Record/RecordForm';
 import CreationComplete from './pages/MyRecord/CreationComplete';
 import Main from './pages/main/Main';
+import Calendar from './pages/main/Calendar';
 
 function App() {
     return (
@@ -16,11 +17,12 @@ function App() {
             <Router>
                 <Routes>
                     <Route path="/" element={<LoginPage />} />
-                    <Route path="/popup" element={<PopupPage />} />
+                  
                     <Route path="/snowballmake" element={<SnowballMake />} /> 
                     <Route path="/main/:userId" element={<Main />} />
                     <Route path="/record" element={<RecordForm />} />
                     <Route path="/complete" element={<CreationComplete />} />
+                    <Route path="/calendar" element={<Calendar />} />
                 </Routes>
             </Router>
         </ThemeProvider>
