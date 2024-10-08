@@ -12,7 +12,7 @@ const theme = createTheme({
     typography: {
         fontFamily: [
             'Noto Sans',
-            'Griun NltoTAENGG',
+            'Griun NltoTAENGGU',
             'Rochester',
             'Bigshot One',
             'Kings',
