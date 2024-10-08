@@ -68,11 +68,10 @@ const RecordTitle = ({question, setquestion}) => {
   export default RecordTitle;
 
   //Design
-  const titlestyle = {
-    color: '#fff',
+  const titlestyle={
+    margin: '2.25rem 0rem 0.75rem',
+    color: '#fffcfa',
+    fontFamily: 'Griun NoltoTAENGGU',
     fontSize: '1.25rem',
-    fontStyle: 'normal',
-    fontWeight: '400',
     lineHeight: '1.75rem',
-    marginBottom: '0.75rem'
   }
