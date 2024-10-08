@@ -87,6 +87,12 @@ const Main = () => {
     useEffect(() => {
         setPopupOpen(true);
 
+        // 로컬 스토리지에서 저장된 닉네임 (snowball_name)을 가져와 설정
+        const storedSnowballName = localStorage.getItem('snowball_name');
+        if (storedSnowballName) {
+            setNickname(storedSnowballName); // 닉네임이 있으면 설정
+        }
+
         // 토큰을 저장하고 URL에서 토큰 제거
         saveTokenAndRemoveFromURL();
     }, []);
