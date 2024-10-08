@@ -59,7 +59,7 @@ const StyledTitle = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: 28px;
-  font-family: 'Griun NltoTAENGG', sans-serif; 
+  font-family: 'Griun NltoTAENGGU', sans-serif; 
 `;
 
 
