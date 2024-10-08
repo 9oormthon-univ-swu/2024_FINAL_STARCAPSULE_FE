@@ -68,6 +68,8 @@ const MainTitle = ({ nickname, setNickname }) => {
 
     const onConfirmClick = () => {
         const token = localStorage.getItem('token'); 
+        console.log('가져온 토큰:', token);
+        
         if (token && currNickname) {
             axios.post(`http://34.64.85.134:8888/api/capsule/changeSnowballName`, null, {
                 headers: {

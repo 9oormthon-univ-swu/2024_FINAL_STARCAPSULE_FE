@@ -8,7 +8,8 @@ import Layout from '@/layouts/Layout';
 import useSWR from 'swr';
 import { CalendarIcon } from '@/components/icons';
 import ShareButton from '@/components/ShareButton';
-import PopupPage from '../Onboarding/PopupPage'; 
+import PopupPage from '../Onboarding/PopupPage';
+import { useNavigate } from 'react-router-dom'; 
 
 // 임시 적용 데이터
 const memories = [
@@ -55,6 +56,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
 }));
 
 const Main = () => {
+    const navigate = useNavigate();
     const [page, setPage] = useState(1);
     const [nickname, setNickname] = useState('닉네임');
     const { data, isLoading } = useSWR(`${page}`, getData);
@@ -70,7 +72,7 @@ const Main = () => {
             localStorage.setItem('token', token);
             console.log('토큰이 저장되었습니다:', token);
 
-             // URL에서 토큰 제거
+            // URL에서 토큰 제거
             url.searchParams.delete('token');
             window.history.replaceState({}, document.title, url.pathname); // 페이지 리로드 없이 URL 갱신
             console.log('URL에서 토큰이 제거되었습니다');
@@ -78,17 +80,23 @@ const Main = () => {
     };
 
     useEffect(() => {
-        setPopupOpen(true);
-    
         // 로컬 스토리지에서 저장된 닉네임 (snowball_name)을 가져와 설정
         const storedSnowballName = localStorage.getItem('snowball_name');
         if (storedSnowballName) {
             setNickname(storedSnowballName); // 닉네임이 있으면 설정
         }
-    
-        // 토큰을 저장하고 URL에서 토큰 제거
+
+       
         saveTokenAndRemoveFromURL();
-    }, []);
+
+       
+        const timer = setTimeout(() => {
+            setPopupOpen(true);
+        }, 1000); 
+
+        
+        return () => clearTimeout(timer);
+    }, []); // 의존성 배열을 비워두어 컴포넌트가 마운트될 때만 실행
 
     const onLeftClick = () => {
         setPage((prev) => (prev === 1 ? 1 : prev - 1));
@@ -126,6 +134,7 @@ const Main = () => {
                                     width: '1.5rem',
                                     height: '1.5rem',
                                 }}
+                                onClick={() => navigate('/calendar')} 
                             >
                                 <CalendarIcon />
                             </IconButton>
@@ -154,7 +163,7 @@ const Main = () => {
                 </StyledButton>
             </MainContainer>
 
-            <PopupPage isOpen={isPopupOpen} onClose={() => setPopupOpen(false)} /> {/* 팝업 추가 */}
+            <PopupPage isOpen={isPopupOpen} onClose={() => setPopupOpen(false)} /> 
         </Layout>
     );
 };
