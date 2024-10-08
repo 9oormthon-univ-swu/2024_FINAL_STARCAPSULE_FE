@@ -13,6 +13,10 @@ import PopupPage from '../Onboarding/PopupPage';
 import { useParams } from 'react-router-dom';
 import { useUserStore } from 'stores/useUserStore';
 import { defaultGetFetcher } from '@/utils/getFetcher';
+import { saveTokenFromURL } from '@/utils/saveTokenFromURL';
+import useAuthStore from 'stores/useAuthStore';
+import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
+// import axios from 'axios';
 
 export const MainContainer = styled(Stack)(() => ({
     padding: '1rem 0 2.25rem 0',
@@ -39,44 +43,45 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
 }));
 
 const Main = () => {
-    const [page, setPage] = useState(0);
-    const [nickname, setNickname] = useState('닉네임');
+    // eslint-disable-next-line no-unused-vars
+    const [page, setPage] = useState(1);
     const [isPopupOpen, setPopupOpen] = useState(false);
 
     const param = useParams();
 
     const { setUserId } = useUserStore();
 
-    // URL에서 토큰을 추출하여 로컬 스토리지에 저장하고, URL에서 토큰을 제거하는 함수
-    const saveTokenAndRemoveFromURL = () => {
-        const url = new URL(window.location.href);
-        const token = url.searchParams.get('token');
-
-        if (token) {
-            // 로컬 스토리지에 토큰 저장
-            localStorage.setItem('token', token);
-
-            // URL에서 토큰 제거
-            url.searchParams.delete('token');
-            window.history.replaceState({}, document.title, url.pathname); // 페이지 리로드 없이 URL 갱신
-        }
-    };
+    const { login } = useAuthStore(); // useAuthStorㅌe에서 login 메서드 가져오기
 
     useEffect(() => {
         setPopupOpen(true);
         setUserId(param.userId);
-        saveTokenAndRemoveFromURL();
-    }, []);
+        saveTokenFromURL(login); // URL에서 토큰을 추출하고 상태에 저장
+    }, [login, param.userId, setUserId]);
 
-    const { data, isLoading, error } = useSWR(
-        `${process.env.REACT_APP_API_URL}/api/capsule/90b0afad-9ab7-4650-b6cf-cd887c506c69?page=${page}`,
+    const { data, isLoading, error, mutate } = useSWR(
+        `${process.env.REACT_APP_API_URL}/api/capsule/${param.userId}?page=${page}`,
         defaultGetFetcher
     );
+
+    const axiosInstance = useAxiosWithAuth();
+    const setSnowballName = async (newName) => {
+        await axiosInstance
+            .post(`/api/capsule/changeSnowballName`, null, {
+                params: {
+                    name: newName, // 새로 입력한 닉네임을 API로 전송
+                },
+            })
+            .then(() => {
+                mutate();
+            });
+        // 성공 시 처리할 로직 추가 가능
+    };
 
     const daysLeft = getDaysBeforeOpen();
 
     const onLeftClick = () => {
-        setPage((prev) => (prev === 0 ? 0 : prev - 1));
+        setPage((prev) => (prev === 1 ? 1 : prev - 1));
     };
 
     const onRightClick = () => {
@@ -89,8 +94,6 @@ const Main = () => {
 
     if (isLoading) return <Loading />;
     if (error) return <div>failed to load</div>;
-
-    console.log(data);
 
     return (
         <Layout sx={{ overflow: 'hidden' }} snow>
@@ -119,15 +122,18 @@ const Main = () => {
                             />
                         </Stack>
                     </Stack>
-                    <MainTitle nickname={nickname} setNickname={setNickname} />
+                    <MainTitle
+                        snowball={data.snowball_name}
+                        setSnowballName={setSnowballName}
+                    />
                 </Stack>
 
                 <Snowball
-                    memories={data.capsule.memories}
-                    current={data.capsule.page}
-                    total={data.capsule.total_page}
-                    received={data.capsule.received}
-                    self={data.capsule.self}
+                    memories={data.memories}
+                    current={page}
+                    total={parseInt(data.total_page)}
+                    received={data.received}
+                    self={data.self}
                     onLeftClick={onLeftClick}
                     onRightClick={onRightClick}
                 />
