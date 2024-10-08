@@ -3,7 +3,7 @@ import { Box, IconButton, styled, Typography } from '@mui/material';
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 
-const StyledTypography = styled(Typography)(({ theme }) => ({
+export const StyledTypography = styled(Typography)(({ theme }) => ({
     color: theme.palette.custom.white,
     padding: '0.25rem 0',
     wordBreak: 'keep-all',
@@ -71,29 +71,40 @@ const MainTitle = ({ nickname, setNickname }) => {
         console.log('가져온 토큰:', token);
         
         if (token && currNickname) {
-            axios.post(`http://34.64.85.134:8888/api/capsule/changeSnowballName`, null, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                },
-                params: {
-                    name: currNickname // 새로 입력한 닉네임을 API로 전송
-                }
-            })
-            .then((response) => {
-                const resultData = response.data.result; // result로 데이터가 반환되기에 이렇게 데이터 추출
-                console.log('닉네임 수정 성공:', response.data);
+            axios
+                .post(
+                    `http://34.64.85.134:8888/api/capsule/changeSnowballName`,
+                    null,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                        params: {
+                            name: currNickname, // 새로 입력한 닉네임을 API로 전송
+                        },
+                    }
+                )
+                .then((response) => {
+                    const resultData = response.data.result; // result로 데이터가 반환되기에 이렇게 데이터 추출
+                    console.log('닉네임 수정 성공:', response.data);
 
-                // 수정된 데이터를 로컬 스토리지에 각각 저장
-                localStorage.setItem('snowball_id', resultData.id);
-                localStorage.setItem('snowball_name', resultData.snowball_name);
-                localStorage.setItem('snowball_link', resultData.shared_link);
-                
-                setNickname(currNickname); // 닉네임 업데이트
-                setIsEditing(false); // 수정 모드 종료
-            })
-            .catch((error) => {
-                console.error('닉네임 수정 실패:', error);
-            });
+                    // 수정된 데이터를 로컬 스토리지에 각각 저장
+                    localStorage.setItem('snowball_id', resultData.id);
+                    localStorage.setItem(
+                        'snowball_name',
+                        resultData.snowball_name
+                    );
+                    localStorage.setItem(
+                        'snowball_link',
+                        resultData.shared_link
+                    );
+
+                    setNickname(currNickname); // 닉네임 업데이트
+                    setIsEditing(false); // 수정 모드 종료
+                })
+                .catch((error) => {
+                    console.error('닉네임 수정 실패:', error);
+                });
         }
     };
 
