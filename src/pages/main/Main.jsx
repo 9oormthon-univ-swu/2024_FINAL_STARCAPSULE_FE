@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import DDayTitle from './DDayTitle';
 import MainTitle from './MainTitle';
 import Snowball from './Snowball/Snowball';
-// import { ObjectNames } from '@/constants/ObjectNames';
 import Layout from '@/layouts/Layout';
 import useSWR from 'swr';
 import { CalendarIcon } from '@/components/icons';
@@ -11,6 +10,9 @@ import ShareButton from '@/components/ShareButton';
 import Loading from '@/components/Loading';
 import { getDaysBeforeOpen } from '@/utils/getDaysBeforeOpen';
 import PopupPage from '../Onboarding/PopupPage';
+import { useParams } from 'react-router-dom';
+import { useUserStore } from 'stores/useUserStore';
+import { defaultGetFetcher } from '@/utils/getFetcher';
 
 export const MainContainer = styled(Stack)(() => ({
     padding: '1rem 0 2.25rem 0',
@@ -37,10 +39,13 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
 }));
 
 const Main = () => {
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(0);
     const [nickname, setNickname] = useState('닉네임');
-    const { data, isLoading } = useSWR(`${page}`, getData);
     const [isPopupOpen, setPopupOpen] = useState(false);
+
+    const param = useParams();
+
+    const { setUserId } = useUserStore();
 
     // URL에서 토큰을 추출하여 로컬 스토리지에 저장하고, URL에서 토큰을 제거하는 함수
     const saveTokenAndRemoveFromURL = () => {
@@ -50,32 +55,28 @@ const Main = () => {
         if (token) {
             // 로컬 스토리지에 토큰 저장
             localStorage.setItem('token', token);
-            console.log('토큰이 저장되었습니다:', token);
 
             // URL에서 토큰 제거
             url.searchParams.delete('token');
             window.history.replaceState({}, document.title, url.pathname); // 페이지 리로드 없이 URL 갱신
-            console.log('URL에서 토큰이 제거되었습니다');
         }
     };
 
     useEffect(() => {
         setPopupOpen(true);
-
-        // 로컬 스토리지에서 저장된 닉네임 (snowball_name)을 가져와 설정
-        const storedSnowballName = localStorage.getItem('snowball_name');
-        if (storedSnowballName) {
-            setNickname(storedSnowballName); // 닉네임이 있으면 설정
-        }
-
-        // 토큰을 저장하고 URL에서 토큰 제거
+        setUserId(param.userId);
         saveTokenAndRemoveFromURL();
     }, []);
+
+    const { data, isLoading } = useSWR(
+        `${process.env.REACT_APP_API_URL}/api/capsule/${param.userId}?page=${page}`,
+        defaultGetFetcher
+    );
 
     const daysLeft = getDaysBeforeOpen();
 
     const onLeftClick = () => {
-        setPage((prev) => (prev === 1 ? 1 : prev - 1));
+        setPage((prev) => (prev === 0 ? 0 : prev - 1));
     };
 
     const onRightClick = () => {
@@ -87,6 +88,8 @@ const Main = () => {
     };
 
     if (isLoading) return <Loading />;
+
+    console.log(data);
 
     return (
         <Layout sx={{ overflow: 'hidden' }} snow>
