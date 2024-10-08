@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Snowfall from 'react-snowfall';  
 import backgroundBottom from '../../assets/background_bottom.svg'; 
@@ -110,8 +112,23 @@ const BottomImage = styled.img`
 `;
 
 const LoginPage = () => {
+  const navigate = useNavigate();
+
+
+  const getTokenFromURL = () => {
+    const token = new URL(window.location.href).searchParams.get('token');
+    if (token) {
+      localStorage.setItem('token', token);  
+      navigate('/main'); 
+    }
+  };
+
+  useEffect(() => {
+    getTokenFromURL(); 
+  }, []);
+
   const handleButtonClick = () => {
-      window.location.href = 'http://34.64.85.134:8888/oauth2/authorization/kakao';
+    window.location.href = 'http://34.64.85.134:8888/oauth2/authorization/kakao';
   };
 
   return (

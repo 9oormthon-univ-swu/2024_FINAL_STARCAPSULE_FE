@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import Snowfall from 'react-snowfall';
 import axios from 'axios';  
@@ -65,20 +66,28 @@ const BottomImage = styled.img`
 const SnowballPage = () => {
   const navigate = useNavigate();
 
-  // URL에서 토큰 가져오기
+  // URL에서 토큰 가져오기 및 로컬 스토리지에 저장
   const getTokenFromURL = () => {
-    return new URL(window.location.href).searchParams.get('token');
+    const token = new URL(window.location.href).searchParams.get('token');
+    if (token) {
+      localStorage.setItem('token', token);  // 토큰 로컬 스토리지에 저장
+    }
+    return token;
   };
 
-   // 버튼 클릭 시 스노우볼 생성 API 호출
-   const handleCreateSnowball = () => {
-    const token = getTokenFromURL(); // URL에서 토큰 추출
-    const snowballAPI = 'http://34.64.85.134:8888/api/capsule'; 
+  
+  useEffect(() => {
+    getTokenFromURL();
+  }, []);
 
+  // 버튼 클릭 시 스노우볼 생성 API 호출
+  const handleCreateSnowball = () => {
+    const token = localStorage.getItem('token'); 
+    const snowballAPI = 'http://34.64.85.134:8888/api/capsule'
     if (token) {
       axios.post(snowballAPI, {}, {
         headers: {
-          Authorization: `Bearer ${token}`, // Authorization 헤더에 토큰 포함
+          Authorization: `Bearer ${localStorage.getItem('token')}`, // Authorization 헤더에 토큰 포함
         },
       })
       .then((response) => {

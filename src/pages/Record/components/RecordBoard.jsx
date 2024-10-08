@@ -30,7 +30,7 @@ const RecordBoard = ({
                     <img
                         src={imagePreview} 
                         alt="Upload Img" 
-                        style={{ width: '100%', marginTop: '1rem', borderRadius:'0.75rem',}} />
+                        style={{ width: '100%', borderRadius:'0.75rem',}} />
                     </div>
                 )}
             </Stack>
@@ -47,7 +47,7 @@ const RecordBoard = ({
                 />
             </Stack>
             <Stack>
-                <div style={{ textAlign:'right' }}>
+                <div style={{ textAlign:'right'}}>
                     <span>{inputCount}</span>
                     <span>/200</span>
                 </div>

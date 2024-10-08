@@ -23,8 +23,8 @@ function App() {
                     <Route path='/snowballmake' element={<SnowballMake />} />
                     <Route path='/text' element={<Text />} />
                     <Route path='/textmessage' element={<TextMessage />} />
-                    <Route path='/main' element={<Main />} />
-                    <Route path='/guest/:id' element={<Guest />} />
+                    <Route path='/main/:userId' element={<Main />} />
+                    <Route path='/guest' element={<Guest />} />
                     <Route path='/record' element={<RecordForm />} />
                     <Route path='/complete' element={<CreationComplete />} />
                 </Routes>

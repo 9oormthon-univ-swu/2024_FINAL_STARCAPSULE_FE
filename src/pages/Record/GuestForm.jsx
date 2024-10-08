@@ -2,25 +2,26 @@ import React, { useState, useRef } from "react";
 import { Stack, Typography } from '@mui/material'
 import RecordBoard from "./components/RecordBoard";
 import RecordSaveButton from "./components/RecordSaveButton";
-import RecordTitle from "./components/RecordTitle";
+import Writer from "./components/Writer";
 import RecordUpper from "./components/RecordUpper";
 import SnackBar from "@/components/SnackBar";
 import AlertModal from "@/components/AlertModal";
 import SelectSnowballObject from "@/components/SelectSnowballObject";
 
-const RecordForm = () => {
+const GuestForm = ({nickname}) => {
   // useState로 상태 관리
-  const [question, setquestion] = useState('"가장 행복했던 일은 무엇인가요?"');
   const [text, setText] = useState("");
   const [inputCount, setInputCount] = useState(0);
+  const [writer, setWriter] = useState('');
   const [uploadedImage, setUploadedImage] = useState(null);
   const [snowballObject, setSnowballObject] = useState(null);
-  const [mine, ismine] = useState(true);
+  const [mine, ismine] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarText, setSnackbarText] = useState('');
   const [openModal, setopenModal] = useState(false); 
   // RecordBoard 참조 (자동스크롤)
   const recordBoardRef = useRef(null); // RecordBoard 참조
+  const writerRef = useRef(null); //Writer 참조
   const selectObjectRef = useRef(null); //SelectSnowballObject 참조
 
 
@@ -55,13 +56,13 @@ const RecordForm = () => {
     const formData = new FormData();
     formData.append("answer", text);
     formData.append("image", uploadedImage);
-    formData.append("title", question);
+    formData.append("writer", writer)
     formData.append("object_name", snowballObject)
     
-    console.log("제목:", question);
     console.log("텍스트:", text);
     console.log("이미지:", uploadedImage);
-    console.log("장식:",snowballObject)
+    console.log("작성자:", writer);
+    console.log("장식:", snowballObject)
   }
 
   // 모달 닫기 처리 함수
@@ -81,6 +82,12 @@ const RecordForm = () => {
       recordBoardRef.current.scrollIntoView({ behavior: 'smooth' });
       return;
     }
+    else if(!writer){
+        setOpenSnackbar(true); //작성자가 없을 경우 스낵바 True
+        setSnackbarText('이름을 작성해주세요.')
+        writerRef.current.scrollIntoView({ behavior: 'smooth' });
+        return;
+    }
     //장식이 없을 경우
     else if(!snowballObject) {
       setOpenSnackbar(true); //기록한 내용이 없을 경우 스낵바 True
@@ -98,56 +105,58 @@ const RecordForm = () => {
   
   return (
     <Stack sx={contentstyle}>
-      <Stack>
-        <Stack ref={selectObjectRef}>
-          <RecordUpper sx={{float:'left'}}></RecordUpper>
-        </Stack>
         <Stack>
-          {ismine ? (
-            <SelectSnowballObject
-            snowballObject={snowballObject}
-            setSnowballObject={setSnowballObject}
-            mine={mine}
-          />
-        ): (
-          <SelectSnowballObject
-            snowballObject={snowballObject}
-            setSnowballObject={setSnowballObject}
-            mine={mine}
-          />
-        )}
-        </Stack>
-        <Stack ref={recordBoardRef}>
-          <RecordTitle question={question} setquestion={setquestion}></RecordTitle>
-        </Stack>
-        <form onSubmit={handleSubmit}>
-            <Stack>
-              <RecordBoard
-                handleSetImage={handleSetImage}
-                text={text}
-                inputCount={inputCount}
-                handleTextChange={handleTextChange}
-              />
+            <Stack ref={selectObjectRef}>
+                <RecordUpper sx={{textAlign: 'left'}}></RecordUpper>
             </Stack>
+            <Stack>
+                {ismine? (
+                    <SelectSnowballObject
+                    snowballObject={snowballObject}
+                    setSnowballObject={setSnowballObject}
+                    mine={mine}
+                />
+                ):(
+                    <SelectSnowballObject
+                    snowballObject={snowballObject}
+                    setSnowballObject={setSnowballObject}
+                    mine={mine}
+                />
+                )}
+            </Stack>
+            <Stack>
+                <Typography sx={titlestyle}>TO.&nbsp;{nickname}</Typography>
+            </Stack>
+            <form onSubmit={handleSubmit}>
+                <Stack ref={recordBoardRef}>
+                    <RecordBoard
+                    handleSetImage={handleSetImage}
+                    text={text}
+                    inputCount={inputCount}
+                    handleTextChange={handleTextChange}
+                    />
+                </Stack>
+                <Stack ref={writerRef}>
+                    <Writer fwriter={writer} setfwriter={setWriter}></Writer>
+                </Stack>
             <RecordSaveButton></RecordSaveButton>
         </form>
-      </Stack>
-      
-      <Stack>
-        <SnackBar
-          openSnackbar={openSnackbar}
-          handleCloseSnackbar={handleCloseSnackbar}
-          snackbarText={snackbarText}
-          setSnackbarText={handleSnackTextChange}
-        />
-      </Stack>
-      <AlertModal
-        open={openModal}
-        onClose={handleCloseModal}
-        buttonText="확인"
-        onButtonClick={handleAcceptModal}
-      >
-       <Stack sx={{alignItems:'center'}}>
+        </Stack>
+        <Stack>
+            <SnackBar
+            openSnackbar={openSnackbar}
+            handleCloseSnackbar={handleCloseSnackbar}
+            snackbarText={snackbarText}
+            setSnackbarText={handleSnackTextChange}
+            />
+        </Stack>
+        <AlertModal
+            open={openModal}
+            onClose={handleCloseModal}
+            buttonText="추억 보관하기"
+            onButtonClick={handleAcceptModal}
+        >
+        <Stack>
             <Typography sx={modaltextstyle1}>보관후에는 수정이 불가해요.</Typography>
             <Typography sx={modaltextstyle2}>이대로 전달할까요?</Typography>
         </Stack>
@@ -156,31 +165,37 @@ const RecordForm = () => {
   );
 };
 
-export default RecordForm;
+export default GuestForm;
 
 
 //Design
 const contentstyle={
-  display: 'flex',
-  alignItems: 'center',
-  height: '100%',
-  width: '37.5rem',
-  background: '#4D4D4D',
-  margin: '0 auto',
-  padding: '1.5rem'
+    display: 'flex',
+    alignItems: 'center',
+    height: '100%',
+    width: '37.5rem',
+    background: '#4D4D4D',
+    margin: '0 auto',
+    padding: '1.5rem'
+}
+
+const titlestyle={
+    color:'custom.white',
+    float: 'left',
+    margin: '1rem 1rem'
 }
 
 const modaltextstyle1={
-  fontFamily: "Noto Sans",
-  fontSize: '0.92rem',
-  fontWeight: '700',
-  textAlign: 'center',    
-  color:'#7F5539'
+    fontFamily: "Noto Sans",
+    fontSize: '0.92rem',
+    fontWeight: '700',
+    textAlign: 'center',    
+    color:'#7F5539'
 }
 const modaltextstyle2={
-  fontFamily: "Noto Sans",
-  fontSize: '0.92rem',
-  fontWeight: '700',
-  textAlign: 'center',    
-  color:'#282828'
+    fontFamily: "Noto Sans",
+    fontSize: '0.92rem',
+    fontWeight: '700',
+    textAlign: 'center',    
+    color:'#282828'
 }
