@@ -68,7 +68,7 @@ const Main = () => {
         saveTokenAndRemoveFromURL();
     }, []);
 
-    const { data, isLoading } = useSWR(
+    const { data, isLoading, error } = useSWR(
         `${process.env.REACT_APP_API_URL}/api/capsule/90b0afad-9ab7-4650-b6cf-cd887c506c69?page=${page}`,
         defaultGetFetcher
     );
@@ -88,6 +88,7 @@ const Main = () => {
     };
 
     if (isLoading) return <Loading />;
+    if (error) return <div>failed to load</div>;
 
     console.log(data);
 
