@@ -39,7 +39,8 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
 }));
 
 const Main = () => {
-    const [page, setPage] = useState(0);
+    // eslint-disable-next-line no-unused-vars
+    const [page, setPage] = useState(1);
     const [nickname, setNickname] = useState('닉네임');
     const [isPopupOpen, setPopupOpen] = useState(false);
 
@@ -69,14 +70,15 @@ const Main = () => {
     }, []);
 
     const { data, isLoading, error } = useSWR(
-        `${process.env.REACT_APP_API_URL}/api/capsule/90b0afad-9ab7-4650-b6cf-cd887c506c69?page=${page}`,
+        // `${process.env.REACT_APP_API_URL}/api/capsule/90b0afad-9ab7-4650-b6cf-cd887c506c69?page=${page}`,
+        'http://34.64.85.134:8888/api/capsule/199f3022-be24-4641-a907-0b10c1e730e8?page=1',
         defaultGetFetcher
     );
 
     const daysLeft = getDaysBeforeOpen();
 
     const onLeftClick = () => {
-        setPage((prev) => (prev === 0 ? 0 : prev - 1));
+        setPage((prev) => (prev === 1 ? 1 : prev - 1));
     };
 
     const onRightClick = () => {
@@ -123,11 +125,11 @@ const Main = () => {
                 </Stack>
 
                 <Snowball
-                    memories={data.capsule.memories}
-                    current={data.capsule.page}
-                    total={data.capsule.total_page}
-                    received={data.capsule.received}
-                    self={data.capsule.self}
+                    memories={data.result.memories}
+                    current={page}
+                    total={parseInt(data.result.total_page)}
+                    received={data.result.received}
+                    self={data.result.self}
                     onLeftClick={onLeftClick}
                     onRightClick={onRightClick}
                 />

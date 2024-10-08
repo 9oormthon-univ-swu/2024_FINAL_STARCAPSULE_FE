@@ -33,7 +33,7 @@ const NavigationButton = ({ current, total, onLeftClick, onRightClick }) => {
         >
             <StyledIconButton
                 sx={{
-                    visibility: total === 1 ? 'hidden' : 'visible',
+                    visibility: total <= 1 ? 'hidden' : 'visible',
                 }}
                 disabled={current === 1}
                 onClick={onLeftClick}
@@ -42,7 +42,7 @@ const NavigationButton = ({ current, total, onLeftClick, onRightClick }) => {
             </StyledIconButton>
             <StyledIconButton
                 sx={{
-                    visibility: total === 1 ? 'hidden' : 'visible',
+                    visibility: total <= 1 ? 'hidden' : 'visible',
                 }}
                 disabled={current === total}
                 onClick={onRightClick}
