@@ -67,15 +67,11 @@ const Main = () => {
     const axiosInstance = useAxiosWithAuth();
     const setSnowballName = async (newName) => {
         await axiosInstance
-            .post(
-                `${process.env.REACT_APP_API_URL}/api/capsule/changeSnowballName`,
-                null,
-                {
-                    params: {
-                        name: newName, // 새로 입력한 닉네임을 API로 전송
-                    },
-                }
-            )
+            .post(`/api/capsule/changeSnowballName`, null, {
+                params: {
+                    name: newName, // 새로 입력한 닉네임을 API로 전송
+                },
+            })
             .then(() => {
                 mutate();
             });
