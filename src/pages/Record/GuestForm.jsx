@@ -14,8 +14,7 @@ const GuestForm = ({nickname}) => {
   const [inputCount, setInputCount] = useState(0);
   const [writer, setWriter] = useState('');
   const [uploadedImage, setUploadedImage] = useState(null);
-  const [snowballObject, setSnowballObject] = useState(null);
-  const [mine, ismine] = useState(false);
+  const [snowballObject, setSnowballObject] = useState('');
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarText, setSnackbarText] = useState('');
   const [openModal, setopenModal] = useState(false); 
@@ -36,8 +35,6 @@ const GuestForm = ({nickname}) => {
     setText(e.target.value.slice(0,199));
     setInputCount(e.target.value.length);
   };
-
-
 
   // 스낵바 텍스트 변경
   const handleSnackTextChange = (e) => {
@@ -110,19 +107,10 @@ const GuestForm = ({nickname}) => {
                 <RecordUpper sx={{textAlign: 'left'}}></RecordUpper>
             </Stack>
             <Stack>
-                {ismine? (
-                    <SelectSnowballObject
-                    snowballObject={snowballObject}
-                    setSnowballObject={setSnowballObject}
-                    mine={mine}
-                />
-                ):(
-                    <SelectSnowballObject
-                    snowballObject={snowballObject}
-                    setSnowballObject={setSnowballObject}
-                    mine={mine}
-                />
-                )}
+              <SelectSnowballObject
+                snowballObject={snowballObject}
+                setSnowballObject={setSnowballObject}
+              />
             </Stack>
             <Stack>
                 <Typography sx={titlestyle}>TO.&nbsp;{nickname}</Typography>
@@ -170,19 +158,20 @@ export default GuestForm;
 
 //Design
 const contentstyle={
-    display: 'flex',
-    alignItems: 'center',
-    height: '100%',
-    width: '37.5rem',
-    background: '#4D4D4D',
-    margin: '0 auto',
-    padding: '1.5rem'
+  display: 'flex',
+  alignItems: 'center',
+  height: '100%',
+  width: '100%',
+  maxWidth: '37.5rem',
+  background: '#4D4D4D',
+  margin: '0 auto',
+  padding: '1.5rem',
 }
 
 const titlestyle={
     color:'custom.white',
     float: 'left',
-    margin: '1rem 1rem'
+    margin: '2.25rem 1rem 1rem'
 }
 
 const modaltextstyle1={

@@ -10,12 +10,12 @@ import SelectSnowballObject from "@/components/SelectSnowballObject";
 
 const RecordForm = () => {
   // useState로 상태 관리
-  const [question, setquestion] = useState('"가장 행복했던 일은 무엇인가요?"');
+  const [question, setquestion] = useState('" c가요?"');
   const [text, setText] = useState("");
   const [inputCount, setInputCount] = useState(0);
   const [uploadedImage, setUploadedImage] = useState(null);
-  const [snowballObject, setSnowballObject] = useState(null);
-  const [mine, ismine] = useState(true);
+  const [snowballObject, setSnowballObject] = useState('');
+  const ismine = useState(true); 
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarText, setSnackbarText] = useState('');
   const [openModal, setopenModal] = useState(false); 
@@ -103,19 +103,12 @@ const RecordForm = () => {
           <RecordUpper sx={{float:'left'}}></RecordUpper>
         </Stack>
         <Stack>
-          {ismine ? (
             <SelectSnowballObject
             snowballObject={snowballObject}
             setSnowballObject={setSnowballObject}
-            mine={mine}
+            mine={ismine}
           />
-        ): (
-          <SelectSnowballObject
-            snowballObject={snowballObject}
-            setSnowballObject={setSnowballObject}
-            mine={mine}
-          />
-        )}
+        
         </Stack>
         <Stack ref={recordBoardRef}>
           <RecordTitle question={question} setquestion={setquestion}></RecordTitle>
@@ -164,10 +157,11 @@ const contentstyle={
   display: 'flex',
   alignItems: 'center',
   height: '100%',
-  width: '37.5rem',
+  width: '100%',
+  maxWidth: '37.5rem',
   background: '#4D4D4D',
   margin: '0 auto',
-  padding: '1.5rem'
+  padding: '1.5rem',
 }
 
 const modaltextstyle1={

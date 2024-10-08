@@ -7,6 +7,7 @@ import LoginPage from './pages/Onboarding/LoginPage';
 import PopupPage from './pages/Onboarding/PopupPage';
 import SnowballMake from './pages/Onboarding/SnowballMake'; 
 import Text from './pages/text';
+import GuestForm from './pages/Record/GuestForm';
 import RecordForm from './pages/Record/RecordForm';
 import TextMessage from './pages/textmessage';
 import CreationComplete from './pages/MyRecord/CreationComplete';
@@ -23,7 +24,8 @@ function App() {
                     <Route path="/text" element={<Text />} />               
                     <Route path="/textmessage" element={<TextMessage />} /> 
                     <Route path="/main/:userId" element={<Main />} />
-                    <Route path="/record" element={<RecordForm />} />
+                    <Route path="/myrecord" element={<RecordForm />} />
+                    <Route path='/guestrecord' element={<GuestForm/>}/>
                     <Route path="/complete" element={<CreationComplete />} />
                 </Routes>
             </Router>

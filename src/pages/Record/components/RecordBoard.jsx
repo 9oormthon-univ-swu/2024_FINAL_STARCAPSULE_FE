@@ -76,11 +76,13 @@ const imgcontainer = {
 };
 
 const RecordBgstyle = {
-    width: '19.5rem',
+    minWidth: '17rem',
+    maxWidth: '19.5rem',
     height: 'fit-content',
     minHeight: '27rem',
+    
     padding: '1.5rem',
     borderRadius: '1.25rem',
     background: '#FFFCFA',
-    margin: '0 auto'
+    margin: '0 auto',
   };
