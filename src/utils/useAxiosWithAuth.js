@@ -10,6 +10,10 @@ const useAxiosWithAuth = () => {
         baseURL: process.env.REACT_APP_API_URL,
     });
 
+    if (!token) {
+        navigate('/');
+    }
+
     // 무한 요청 방지 flag
     let isRefreshing = false;
 
@@ -32,20 +36,18 @@ const useAxiosWithAuth = () => {
             return response;
         },
         async (error) => {
-            const currentPageUrl = window.location.pathname;
-
             // 401 에러 처리 (인증 실패)
             if (error.response?.status === 401) {
                 if (!token || isRefreshing) {
                     // 이미 리프레시 중이거나 토큰이 없으면 로그아웃 후 리디렉션
                     useAuthStore.getState().logout(isRefreshing);
-                    navigate('/login?redirect=' + currentPageUrl);
+                    navigate('/');
                 } else {
                     isRefreshing = true; // 무한 호출 방지 플래그
                     try {
                         // 만료된 토큰으로 인한 로그아웃 처리
                         useAuthStore.getState().logout();
-                        navigate('/login?redirect=' + currentPageUrl); // 로그인 페이지로 리디렉션
+                        navigate('/'); // 로그인 페이지로 리디렉션
                     } catch (logoutError) {
                         console.error(
                             '로그아웃 처리 중 오류 발생:',

@@ -15,7 +15,8 @@ import { useUserStore } from 'stores/useUserStore';
 import { defaultGetFetcher } from '@/utils/getFetcher';
 import { saveTokenFromURL } from '@/utils/saveTokenFromURL';
 import useAuthStore from 'stores/useAuthStore';
-import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
+// import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
+import axios from 'axios';
 
 export const MainContainer = styled(Stack)(() => ({
     padding: '1rem 0 2.25rem 0',
@@ -50,7 +51,7 @@ const Main = () => {
 
     const { setUserId } = useUserStore();
 
-    const { login } = useAuthStore(); // useAuthStore에서 login 메서드 가져오기
+    const { login } = useAuthStore(); // useAuthStorㅌe에서 login 메서드 가져오기
 
     useEffect(() => {
         setPopupOpen(true);
@@ -60,33 +61,25 @@ const Main = () => {
 
     const { data, isLoading, error } = useSWR(
         `${process.env.REACT_APP_API_URL}/api/capsule/${param.userId}?page=${page}`,
-        defaultGetFetcher,
-        {
-            onError: (error) => {
-                console.error('API 호출 중 에러 발생:', error);
-                console.log(data);
-                // 추가적인 에러 처리 로직
-            },
-            shouldRetryOnError: false, // 에러 발생 시 재시도 하지 않음
-        }
+        defaultGetFetcher
     );
 
-    const axiosInstance = useAxiosWithAuth(); // axiosInstance 가져오기
+    // const axiosInstance = useAxiosWithAuth();
+    const { token } = useAuthStore();
     const setSnowballName = async (newName) => {
-        if (newName) {
-            try {
-                await axiosInstance.post(
-                    `/api/capsule/changeSnowballName?name=${newName}`,
-                    null
-                );
-                // 성공 시 처리할 로직 추가 가능
-            } catch (error) {
-                console.error('스노우볼 이름 변경 실패:', error);
-                // 에러 처리 로직 추가 가능
+        await axios.post(
+            `${process.env.REACT_APP_API_URL}/api/capsule/changeSnowballName`,
+            null,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                params: {
+                    name: newName, // 새로 입력한 닉네임을 API로 전송
+                },
             }
-        } else {
-            console.error('스노우볼 이름이 유효하지 않습니다.');
-        }
+        );
+        // 성공 시 처리할 로직 추가 가능
     };
 
     const daysLeft = getDaysBeforeOpen();

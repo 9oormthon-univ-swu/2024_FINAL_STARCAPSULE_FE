@@ -66,8 +66,13 @@ const MainTitle = ({ snowball, setSnowballName }) => {
     }, [currSnowball, isEditing]);
 
     const onConfirmClick = () => {
+        if (!currSnowball.length) return;
         // 에러 핸들링 필요
-        setSnowballName(currSnowball).then(() => setIsEditing(false));
+        setSnowballName(currSnowball)
+            .then(() => setIsEditing(false))
+            .catch((e) => {
+                console.log('error', e);
+            });
     };
 
     const handleKeyDown = (event) => {
