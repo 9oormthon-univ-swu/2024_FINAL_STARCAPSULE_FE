@@ -69,7 +69,7 @@ const Main = () => {
     }, []);
 
     const { data, isLoading } = useSWR(
-        `${process.env.REACT_APP_API_URL}/api/capsule/${param.userId}?page=${page}`,
+        `${process.env.REACT_APP_API_URL}/api/capsule/90b0afad-9ab7-4650-b6cf-cd887c506c69?page=${page}`,
         defaultGetFetcher
     );
 
