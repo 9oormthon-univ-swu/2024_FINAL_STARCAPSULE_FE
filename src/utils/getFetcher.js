@@ -5,7 +5,7 @@ export const defaultGetFetcher = (url) =>
         .get(url)
         .then((res) => {
             console.log('res:', res);
-            return res.data;
+            return res.data.result;
         })
         .catch((error) => {
             throw error;

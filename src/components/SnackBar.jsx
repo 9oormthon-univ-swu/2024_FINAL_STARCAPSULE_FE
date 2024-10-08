@@ -1,26 +1,18 @@
 import React from 'react';
 import { Snackbar, Alert } from '@mui/material';
 
-const SnackBar = ({
-    openSnackbar,
-    handleCloseSnackbar,
-    snackbarText,
-}) => {
-    return(
-        <Snackbar 
+const SnackBar = ({ openSnackbar, handleCloseSnackbar, snackbarText }) => {
+    return (
+        <Snackbar
             open={openSnackbar}
             autoHideDuration={3000}
             onClose={handleCloseSnackbar}
             anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         >
-            <Alert 
-                severity="error" 
-                sx={snackbarstyle}>
-
+            <Alert severity='error' sx={snackbarstyle}>
                 {snackbarText}
-
             </Alert>
-      </Snackbar>
+        </Snackbar>
     );
 };
 
@@ -39,5 +31,5 @@ const snackbarstyle = {
     color: '#282828',
     fontSize: '0.875rem',
     fontWeight: '700',
-    fontFamily: "Noto Sans",
+    fontFamily: 'Noto Sans',
 };

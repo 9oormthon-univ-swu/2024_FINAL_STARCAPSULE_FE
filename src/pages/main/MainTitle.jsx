@@ -1,7 +1,6 @@
 import { CheckIcon, EditIcon } from '@/components/icons';
 import { Box, IconButton, styled, Typography } from '@mui/material';
 import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
 
 export const StyledTypography = styled(Typography)(({ theme }) => ({
     color: theme.palette.custom.white,
@@ -30,14 +29,14 @@ const Input = styled('input')(({ theme }) => ({
     ...theme.typography.Heading1,
 }));
 
-const MainTitle = ({ nickname, setNickname }) => {
+const MainTitle = ({ snowball, setSnowballName }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [inputWidth, setInputWidth] = useState(0);
     const inputRef = useRef(null);
-    const [currNickname, setCurrNickname] = useState(nickname);
+    const [currSnowball, setCurrSnowball] = useState(snowball);
 
-    const handleNicknameChange = (event) => {
-        setCurrNickname(event.target.value.slice(0, 10)); // 10자 이상 입력 방지
+    const handleSnowballChange = (event) => {
+        setCurrSnowball(event.target.value.slice(0, 10)); // 10자 이상 입력 방지
     };
 
     const handleEdit = () => {
@@ -55,7 +54,7 @@ const MainTitle = ({ nickname, setNickname }) => {
         const font = window.getComputedStyle(inputRef.current).font;
         context.font = font;
         const textWidth = context.measureText(
-            currNickname.length ? currNickname : '이름'
+            currSnowball.length ? currSnowball : '이름'
         ).width;
         setInputWidth(textWidth);
     };
@@ -64,46 +63,16 @@ const MainTitle = ({ nickname, setNickname }) => {
         if (isEditing) {
             calculateInputWidth();
         }
-    }, [currNickname, isEditing]);
+    }, [currSnowball, isEditing]);
 
     const onConfirmClick = () => {
-        const token = localStorage.getItem('token');
-        if (token && currNickname) {
-            axios
-                .post(
-                    `http://34.64.85.134:8888/api/capsule/changeSnowballName`,
-                    null,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                        params: {
-                            name: currNickname, // 새로 입력한 닉네임을 API로 전송
-                        },
-                    }
-                )
-                .then((response) => {
-                    const resultData = response.data.result; // result로 데이터가 반환되기에 이렇게 데이터 추출
-                    console.log('닉네임 수정 성공:', response.data);
-
-                    // 수정된 데이터를 로컬 스토리지에 각각 저장
-                    localStorage.setItem('snowball_id', resultData.id);
-                    localStorage.setItem(
-                        'snowball_name',
-                        resultData.snowball_name
-                    );
-                    localStorage.setItem(
-                        'snowball_link',
-                        resultData.shared_link
-                    );
-
-                    setNickname(currNickname); // 닉네임 업데이트
-                    setIsEditing(false); // 수정 모드 종료
-                })
-                .catch((error) => {
-                    console.error('닉네임 수정 실패:', error);
-                });
-        }
+        if (!currSnowball.length) return;
+        // 에러 핸들링 필요
+        setSnowballName(currSnowball)
+            .then(() => setIsEditing(false))
+            .catch((e) => {
+                console.log('error', e);
+            });
     };
 
     const handleKeyDown = (event) => {
@@ -119,9 +88,8 @@ const MainTitle = ({ nickname, setNickname }) => {
                 <Input
                     ref={inputRef}
                     type='text'
-                    defaultValue={nickname}
-                    value={currNickname}
-                    onChange={handleNicknameChange}
+                    value={currSnowball}
+                    onChange={handleSnowballChange}
                     onBlur={handleEdit}
                     spellCheck='false'
                     onKeyDown={handleKeyDown}
@@ -133,20 +101,20 @@ const MainTitle = ({ nickname, setNickname }) => {
                 />
             ) : (
                 <Box component={'span'} sx={{ color: 'custom.main2' }}>
-                    {nickname}
+                    {snowball}
                 </Box>
             )}
             님의
-            {currNickname.length > 5 ? <br /> : ' '}
+            {currSnowball.length > 5 ? <br /> : ' '}
             스노우볼
             {isEditing ? (
                 <StyledIconButton
                     onClick={onConfirmClick}
-                    disabled={!currNickname.length}
+                    disabled={!currSnowball.length}
                 >
                     <CheckIcon
                         sx={{
-                            color: currNickname.length
+                            color: currSnowball.length
                                 ? 'custom.main1'
                                 : 'custom.grey',
                         }}
