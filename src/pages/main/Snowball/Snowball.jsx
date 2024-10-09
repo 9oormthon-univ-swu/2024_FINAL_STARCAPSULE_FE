@@ -68,7 +68,7 @@ const Snowball = ({
         <SnowballContainer>
             <SnowballBackground>
                 <SnowballChip current={current} total={total} />
-                <AnimatePresence mode='wait'>
+                <AnimatePresence>
                     {isLoading && (
                         <Backdrop open={isLoading}>
                             <CircularProgress
