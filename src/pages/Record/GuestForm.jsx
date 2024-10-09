@@ -7,13 +7,6 @@ import RecordUpper from './components/RecordUpper';
 import SnackBar from '@/components/SnackBar';
 import AlertModal from '@/components/AlertModal';
 import SelectSnowballObject from '@/components/SelectSnowballObject';
-// import axios from "axios";
-
-// //api 연동
-// axios({
-//     method: 'post',
-//     url:
-// })
 
 const GuestForm = ({ nickname }) => {
     // useState로 상태 관리
@@ -110,6 +103,7 @@ const GuestForm = ({ nickname }) => {
                         <SelectSnowballObject
                             snowballObject={object_name}
                             setSnowballObject={setObjectName}
+                            mine
                         />
                     </Stack>
                     <Stack>
@@ -124,6 +118,7 @@ const GuestForm = ({ nickname }) => {
                                 answer={answer}
                                 inputCount={inputCount}
                                 handleTextChange={handleAnswerChange}
+                                showplaceholder='오늘의 질문 대신 다른 내용을 기록해도 좋아요! 자유롭게 남기고 싶은 추억을 작성해주세요:)'
                             />
                         </Stack>
                         <Stack ref={writerRef}>
@@ -169,10 +164,11 @@ const contentstyle = {
     alignItems: 'center',
     height: '100%',
     width: '100%',
-    maxWidth: '37.5rem',
+    maxWidth: '600px',
     background: '#4D4D4D',
     margin: '0 auto',
     padding: '1.5rem',
+    boxSizing: 'border-box',
 };
 
 const titlestyle = {

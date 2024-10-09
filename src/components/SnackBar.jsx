@@ -26,27 +26,6 @@ const SnackbarContent = styled(Alert)(({ theme }) => ({
     },
 }));
 
-const snackbarStyle = {
-    width: 'calc(100vw - 3rem)',
-    maxWidth: '34.5rem',
-    top: '4.25rem !important',
-    left: '50% !important',
-    transform: 'translateX(-50%)',
-    height: '3.875rem',
-};
-
-const alertStyle = {
-    backgroundColor: 'custom.main2',
-    width: '100%',
-    maxWidth: '34.5rem',
-    height: '3.875rem',
-    borderRadius: '1.25rem',
-    display: 'flex',
-    padding: '0 1rem',
-    flexDirection: 'row',
-    alignItems: 'center',
-};
-
 const SnackBar = ({
     openSnackbar,
     handleCloseSnackbar,
@@ -59,11 +38,9 @@ const SnackBar = ({
             autoHideDuration={5000}
             onClose={handleCloseSnackbar}
             anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-            sx={snackbarStyle}
         >
             <SnackbarContent
                 severity={severity}
-                sx={alertStyle}
                 iconMapping={{
                     success: <span>✅</span>,
                     error: <span>❌</span>,

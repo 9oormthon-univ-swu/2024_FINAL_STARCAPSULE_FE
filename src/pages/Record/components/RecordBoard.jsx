@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { Stack, TextField } from '@mui/material'
-import ImgUploadButton from "./ImgUploadButton";
+import { Stack } from '@mui/material';
+import ImgUploadButton from './ImgUploadButton';
 
 const RecordBoard = ({
-    children,
-    answer, 
-    inputCount, 
+    answer,
+    inputCount,
     handleTextChange,
     handleSetImage,
+    showplaceholder,
 }) => {
     //이미지 나타나기
     const [imagePreview, setImagePreview] = useState(null);
@@ -17,42 +17,45 @@ const RecordBoard = ({
         setImagePreview(imageUrl); // Set image preview URL
     };
 
-    return(
+    return (
         <div style={RecordBgstyle}>
             <Stack sx={imgcontainer}>
                 <ImgUploadButton
                     setImage={handleSetImage}
                     setPreviewImage={handleSetPreviewImage}
-                    hideButton={!!imagePreview} >
-                </ImgUploadButton>
+                    hideButton={!!imagePreview}
+                ></ImgUploadButton>
                 {imagePreview && (
-                    <div> 
-                    <img
-                        src={imagePreview} 
-                        alt="Upload Img" 
-                        style={{ width: '100%', borderRadius:'0.75rem',}} />
+                    <div>
+                        <img
+                            src={imagePreview}
+                            alt='Upload Img'
+                            style={{
+                                maxWidth: '15rem',
+                                maxHeight: '15rem',
+                                borderRadius: '0.75rem',
+                                backgroundSize: 'contain',
+                            }}
+                        />
                     </div>
                 )}
             </Stack>
 
             <Stack>
-                <TextField sx={Textfieldstyle}
-                  id="answer"
-                  value={answer}
-                  onChange={handleTextChange}
-                  placeholder="기록을 오늘의 질문 대신  다른 내용을 기록해도 좋아요! 자유롭게 남기고 싶은 추억을 작성해주세요:)"
-                  multiline
-                  variant="standard"
-                  InputProps={{ disableUnderline: true }}
+                <textarea
+                    id='answer'
+                    value={answer}
+                    onChange={handleTextChange}
+                    placeholder={showplaceholder}
+                    style={Textfieldstyle}
                 />
             </Stack>
             <Stack>
-                <div style={{ textAlign:'right'}}>
+                <div style={{ textAlign: 'right' }}>
                     <span>{inputCount}</span>
                     <span>/200</span>
                 </div>
             </Stack>
-            {children && <Stack>{children}</Stack>}
         </div>
     );
 };
@@ -63,10 +66,14 @@ export default RecordBoard;
 const Textfieldstyle = {
     width: '100%',
     height: '16.5rem',
+    background: '#fffcfa',
     color: '#282828',
     fontSize: '1.125rem',
     lineHeight: '1.75rem',
-    opacity: '0.8',
+    fontFamily: 'Griun NoltoTAENGGU',
+    resize: 'none',
+    border: 'none',
+    outline: 'none',
 };
 
 const imgcontainer = {
@@ -85,5 +92,5 @@ const RecordBgstyle = {
     width: '100%',
     maxWidth: '312px',
     margin: '0 auto',
-    boxSizing: 'border-box'
-  };
+    boxSizing: 'border-box',
+};
