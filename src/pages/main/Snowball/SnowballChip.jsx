@@ -30,7 +30,7 @@ const SnowballChip = ({ current, total }) => {
             justifyContent={'center'}
             alignItems={'center'}
         >
-            <ChipText>{`${current - 1} / ${total}`}</ChipText>
+            <ChipText>{`${total ? current : 0} / ${total}`}</ChipText>
         </SnowballChipContainer>
     );
 };
