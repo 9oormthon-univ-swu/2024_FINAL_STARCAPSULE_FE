@@ -4,10 +4,19 @@ import styled from 'styled-components';
 import Snowfall from 'react-snowfall';
 import axios from 'axios';
 import backgroundBottom from '../../assets/background_bottom.svg';
-
 import '@dotlottie/player-component';
 import useAuthStore from 'stores/useAuthStore';
 import { saveTokenFromURL } from '@/utils/saveTokenFromURL';
+
+const FullScreenSnowfall = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+`;
 
 const Container = styled.div`
     display: flex;
@@ -16,12 +25,13 @@ const Container = styled.div`
     justify-content: center;
     height: 100vh;
     width: 100vw;
-    max-width: 480px;
+    max-width: 600px;
     background: linear-gradient(180deg, #0b0a1b 0%, #27405e 100%);
     position: relative;
     overflow: hidden;
     margin: 0 auto;
     background-color: white;
+    z-index: 1;
 `;
 
 const SubTitle = styled.p`
@@ -62,7 +72,7 @@ const BottomImage = styled.img`
     height: 100vh;
     bottom: -335px;
     width: 100vw;
-    max-width: 480px;
+    max-width: 600px;
     object-fit: contain;
 `;
 
@@ -131,10 +141,20 @@ const SnowballPage = () => {
     };
 
     return (
+        <>
+        <FullScreenSnowfall>
+          <Snowfall
+            color='#ffffffaa'
+            snowflakeCount={70}
+            speed={[0, 0.5]}
+            wind={[0, 0.5]}
+            radius={[0.5, 3]}
+          />
+        </FullScreenSnowfall>
         <Container>
             <Snowfall
-                color='white'
-                snowflakeCount={33}
+                color='#ffffffaa'
+                snowflakeCount={70}
                 speed={[0, 0.5]}
                 wind={[0, 0.5]}
                 radius={[0.5, 3]}
@@ -167,6 +187,7 @@ const SnowballPage = () => {
 
             <BottomImage src={backgroundBottom} alt='Snow background' />
         </Container>
+        </>
     );
 };
 

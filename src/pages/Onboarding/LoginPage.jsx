@@ -12,7 +12,7 @@ const Container = styled.div`
   justify-content: center;
   height: 100vh;
   width: 100vw;
-  max-width: 480px; 
+  max-width: 600px; 
   background: linear-gradient(180deg, #0B0A1B 0%, #27405E 100%); 
   position: relative;
   overflow: hidden;
@@ -23,22 +23,22 @@ const Container = styled.div`
 const Title = styled.h1`
   font-family: 'Rage';
   src: url('/assets/fonts/RAGE_1.TTF') format('truetype');
-  font-size: 70px;
+  font-size: 76px;
   color: #fff;
   position: absolute; 
-  top: 130px; 
-  left: 165px; 
+  top: 150px; 
+  left: 190px; 
   transform: translateX(-50%); 
   white-space: nowrap; 
 `;
 
 const SubTitle = styled.p`
-  font-size: 18px;
+  font-size: 22px;
   color: #fff;
   position: absolute; 
-  top: 240px; 
+  top: 270px; 
   transform: translateX(-50%);
-  left: 145px; 
+  left: 185px; 
   line-height: 1.4; 
   margin: 5px 0; 
 `;
@@ -89,7 +89,7 @@ const KakaoSVG = () => (
 const ShareButton = styled.button`
   position: absolute;
   top: 50px;
-  right: 12px;
+  right: 22px;
   background-color: transparent;
   color: #D5D1CD;
   border: none;
@@ -107,13 +107,12 @@ const BottomImage = styled.img`
   height: 100vh;
   bottom: -335px; 
   width: 100vw;
-  max-width: 480px; 
+  max-width: 600px; 
   object-fit: contain;
 `;
 
 const LoginPage = () => {
   const navigate = useNavigate();
-
 
   const getTokenFromURL = () => {
     const token = new URL(window.location.href).searchParams.get('token');
@@ -127,6 +126,19 @@ const LoginPage = () => {
     getTokenFromURL(); 
   }, []);
 
+  const handleShare = async () => {
+    try {
+      await navigator.share({
+        title: 'Snow Log',
+        text: '스노우볼에 오늘의 추억을 공유해보세요!',
+        url: 'http://localhost:3000',
+      });
+      console.log('공유되었습니다!');
+    } catch (err) {
+      console.error('공유 실패:', err);
+    }
+  };
+
   const handleButtonClick = () => {
     window.location.href = 'http://34.64.85.134:8888/oauth2/authorization/kakao';
   };
@@ -134,19 +146,19 @@ const LoginPage = () => {
   return (
     <Container>
       <Snowfall 
-        color="white" 
-        snowflakeCount={33}  
-        speed={[0, 0.5]}    
-        wind={[0, 0.5]}      
-        radius={[0.5, 3]}    
+        color='#ffffffaa'
+        snowflakeCount={70}
+        speed={[0, 0.5]}
+        wind={[0, 0.5]}
+        radius={[0.5, 3]}   
       />
       <Title>Snow Log</Title>
       <SubTitle>
         추억을 보관하고 공유받아<br />
         나만의 스노우볼을 완성해요
       </SubTitle>
-      <ShareButton onClick={() => console.log('Share button clicked!')}>
-        <ShareIcon />
+      <ShareButton onClick={handleShare}>
+        <ShareIcon style={{ width: '33px', height: '33px' }} />
       </ShareButton>
       <KakaoButton onClick={handleButtonClick}>
         <KakaoIcon>
