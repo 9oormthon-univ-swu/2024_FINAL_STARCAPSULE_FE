@@ -6,9 +6,11 @@ import RecordTitle from "./components/RecordTitle";
 import RecordUpper from "./components/RecordUpper";
 import SnackBar from "@/components/SnackBar";
 import AlertModal from "@/components/AlertModal";
+import { useNavigate } from 'react-router-dom';
 import SelectSnowballObject from "@/components/SelectSnowballObject";
 
 const RecordForm = () => {
+  const navigate = useNavigate(); 
   // useState로 상태 관리
   const [question, setquestion] = useState('"가장 행복했던 일은 무엇인가요?"');
   const [text, setText] = useState("");
@@ -62,6 +64,8 @@ const RecordForm = () => {
     console.log("텍스트:", text);
     console.log("이미지:", uploadedImage);
     console.log("장식:",snowballObject)
+
+    navigate('/complete');
   }
 
   // 모달 닫기 처리 함수
