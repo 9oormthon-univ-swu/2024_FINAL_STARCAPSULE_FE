@@ -177,7 +177,7 @@ const Main = () => {
                 isOpen={isPopupOpen}
                 onClose={() => setPopupOpen(false)}
             />{' '}
-            {/* 팝업 추가 */}
+           
         </Layout>
     );
 };

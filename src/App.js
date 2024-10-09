@@ -10,7 +10,7 @@ import RecordForm from './pages/Record/RecordForm';
 import CreationComplete from './pages/MyRecord/CreationComplete';
 import Main from './pages/main/Main';
 import Guest from './pages/guest/Guest';
-import Calendar from './pages/main/Calendar';
+import CalendarPage from './pages/main/CalendarPage';
 
 function App() {
     return (
@@ -23,7 +23,7 @@ function App() {
                     <Route path='/main/:userId' element={<Main />} />
                     <Route path='/guest' element={<Guest />} />
                     <Route path='/record' element={<RecordForm />} />
-                    <Route path="/calendar" element={<Calendar />} />
+                    <Route path="/calendar" element={<CalendarPage />} />
                     <Route path='/complete' element={<CreationComplete />} />
                 </Routes>
             </Router>
