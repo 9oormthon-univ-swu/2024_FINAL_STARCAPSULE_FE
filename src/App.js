@@ -7,7 +7,8 @@ import LoginPage from './pages/Onboarding/LoginPage';
 import PopupPage from './pages/Onboarding/PopupPage';
 import SnowballMake from './pages/Onboarding/SnowballMake';
 import RecordForm from './pages/Record/RecordForm';
-import CreationComplete from './pages/MyRecord/CreationComplete';
+import CreationComplete from './pages/RecordComplete/CreationComplete';
+import MyCreationComplete from './pages/RecordComplete/MyCreationComplete';
 import Main from './pages/main/Main';
 import Guest from './pages/guest/Guest';
 import CalendarPage from './pages/main/CalendarPage';
@@ -25,6 +26,7 @@ function App() {
                     <Route path='/record' element={<RecordForm />} />
                     <Route path='/calendar' element={<CalendarPage />} />
                     <Route path='/complete' element={<CreationComplete />} />
+                    <Route path='/mycomplete' element={<MyCreationComplete />} />
                 </Routes>
             </Router>
         </ThemeProvider>
