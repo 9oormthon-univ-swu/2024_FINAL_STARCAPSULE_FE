@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'; 
 import styled from 'styled-components';
 import { ReactComponent as Popup } from '../../assets/Popup.svg'; 
 import PopupButton from './PopupButton';
@@ -83,20 +83,18 @@ const StyledBodyText = styled.div`
 `;
 
 const PopupPage = ({ isOpen, onClose }) => {
-  const [question, setQuestion] = useState('올해 가장 행복했던 일은 무엇인가요?'); // 기본 질문 설정
+  const [question, setQuestion] = useState(''); 
   const [date, setDate] = useState('');
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
       console.log('로그인 하세요.');
-      
       return;
     }
 
     const fetchQuestion = async () => {
       try {
-        
         console.log('Token:', token);
 
         const response = await axios.get('http://34.64.85.134:8888/api/question', {
@@ -106,23 +104,24 @@ const PopupPage = ({ isOpen, onClose }) => {
           }
         });
 
-        console.log('Response:', response.data); // 서버에서 받은 데이터 출력
-        setQuestion(response.data.question || question); // 질문이 있을 경우 업데이트
+        console.log('Response:', response.data); 
 
-        // 날짜 포맷팅
-        const formattedDate = new Date(response.data.date).toLocaleDateString('ko-KR', {
-          year: 'numeric', month: 'long', day: 'numeric'
-        });
-        setDate(formattedDate);
+        const result = response.data.result;
+
+        // 질문이 있으면 설정하고, 없으면 빈 문자열 유지
+        setQuestion(result.question || ''); 
+
+        // 날짜를 "MM-DD" 형식으로 변환
+        const apiDate = result.date;
+        if (apiDate) {
+          const dateObj = new Date(apiDate);
+          const formattedDate = `${dateObj.getMonth() + 1}월 ${dateObj.getDate()}일`;
+          setDate(formattedDate); 
+        }
       } catch (error) {
         if (error.response) {
           console.error('Error response data:', error.response.data);
           console.error('Error status:', error.response.status);
-          if (error.response.status === 401) {
-            // 401 에러 발생 시, 로그인 페이지로 리다이렉트하는 로직 추가 안해도 될듯
-            console.log('인증 오류: 다시 로그인해주세요.');
-           
-          }
         } else if (error.request) {
           console.error('Error request:', error.request);
         } else {
@@ -132,7 +131,7 @@ const PopupPage = ({ isOpen, onClose }) => {
     };
 
     fetchQuestion();
-  }, []); // 의존성 배열을 비워두어 컴포넌트가 마운트될 때만 실행
+  }, []); 
 
   return (
     <PopupWrapper isOpen={isOpen}>
@@ -141,11 +140,11 @@ const PopupPage = ({ isOpen, onClose }) => {
           <Popup /> 
           <CloseButton onClick={onClose}>✕</CloseButton>
           <TextWrapper>
-            <StyledTitle gutterBottom>
-              {question} 
+            <StyledTitle>
+              {question || '질문을 불러오는 중입니다...'} 
             </StyledTitle>
-            <StyledBodyText gutterBottom>
-              <span>{date.split(' ')[1] || '11'}</span>월 <span>{date.split(' ')[2] || '30'}</span>일 질문에 대한<br />
+            <StyledBodyText>
+              <span>{date.split('월')[0] || '01'}</span>월 <span>{date.split('월 ')[1]?.split('일')[0] || '01'}</span>일 질문에 대한<br />
               추억을 기록하러 가볼까요?
             </StyledBodyText>
           </TextWrapper>
