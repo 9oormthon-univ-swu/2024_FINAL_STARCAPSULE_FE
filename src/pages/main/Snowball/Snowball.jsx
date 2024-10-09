@@ -57,9 +57,9 @@ const Snowball = ({
     isLoading,
 }) => {
     const memoryPosition = [
-        { bottom: '25%', right: '20%' },
+        { bottom: '26.25%', right: '20%' },
         { top: '42%', left: '9%' },
-        { top: '35.3%', right: 0 },
+        { top: '35.3%', right: '2.5%' },
         { top: '32.5%', left: '38%' },
         { top: '18%', left: '12%' },
         { top: '11%', right: '18%' },
