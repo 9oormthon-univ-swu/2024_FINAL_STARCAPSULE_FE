@@ -2,6 +2,7 @@ import { CheckIcon, EditIcon } from '@/components/icons';
 import { Box, IconButton, styled, Typography } from '@mui/material';
 import React, { useState, useEffect, useRef } from 'react';
 
+
 export const StyledTypography = styled(Typography)(({ theme }) => ({
     color: theme.palette.custom.white,
     padding: '0.25rem 0',
@@ -66,8 +67,8 @@ const MainTitle = ({ snowball, setSnowballName }) => {
     }, [currSnowball, isEditing]);
 
     const onConfirmClick = () => {
+
         if (!currSnowball.length) return;
-        // 에러 핸들링 필요
         setSnowballName(currSnowball)
             .then(() => setIsEditing(false))
             .catch((e) => {
@@ -77,8 +78,8 @@ const MainTitle = ({ snowball, setSnowballName }) => {
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
-            event.preventDefault(); // 기본 엔터 동작 방지
-            onConfirmClick(); // 저장 동작 실행
+            event.preventDefault();
+            onConfirmClick();
         }
     };
 
