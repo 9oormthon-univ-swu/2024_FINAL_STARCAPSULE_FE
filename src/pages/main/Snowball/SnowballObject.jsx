@@ -1,23 +1,15 @@
 import { Box, Stack, styled, Typography } from '@mui/material';
 import React from 'react';
-import christmas_tree from '@/assets/object/christmas_tree.svg';
-import gingerbread_house from '@/assets/object/gingerbread_house.svg';
-import lamplight from '@/assets/object/lamplight.svg';
-import moon from '@/assets/object/moon.svg';
-import santa_sleigh from '@/assets/object/santa_sleigh.svg';
-import santa from '@/assets/object/santa.svg';
-import snowman from '@/assets/object/snowman.svg';
-import snowflake from '@/assets/object/snowflake.svg';
 
 const SnowballObjects = {
-    christmas_tree: christmas_tree,
-    gingerbread_house: gingerbread_house,
-    lamplight: lamplight,
-    moon: moon,
-    santa_sleigh: santa_sleigh,
-    santa: santa,
-    snowman: snowman,
-    snowflake: snowflake,
+    christmas_tree: '/assets/snowball/object/christmas_tree.svg',
+    gingerbread_house: '/assets/snowball/object/gingerbread_house.svg',
+    lamplight: '/assets/snowball/object/lamplight.svg',
+    moon: '/assets/snowball/object/moon.svg',
+    santa_sleigh: '/assets/snowball/object/santa_sleigh.svg',
+    santa: '/assets/snowball/object/santa.svg',
+    snowman: '/assets/snowball/object/snowman.svg',
+    snowflake: '/assets/snowball/object/snowflake.svg',
 };
 
 const WriterText = styled(Typography)(({ theme }) => ({
