@@ -1,4 +1,11 @@
-import { Button, IconButton, Stack, styled, Typography } from '@mui/material';
+import {
+    Button,
+    IconButton,
+    Skeleton,
+    Stack,
+    styled,
+    Typography,
+} from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import DDayTitle from './DDayTitle';
 import MainTitle from './MainTitle';
@@ -7,17 +14,16 @@ import Layout from '@/layouts/Layout';
 import useSWR from 'swr';
 import { CalendarIcon } from '@/components/icons';
 import ShareButton from '@/components/ShareButton';
-import Loading from '@/components/Loading';
 import { getDaysBeforeOpen } from '@/utils/getDaysBeforeOpen';
 import PopupPage from '../Onboarding/PopupPage';
 import { useParams } from 'react-router-dom';
 import { useUserStore } from 'stores/useUserStore';
-import { defaultGetFetcher } from '@/utils/getFetcher';
 import { saveTokenFromURL } from '@/utils/saveTokenFromURL';
 import useAuthStore from 'stores/useAuthStore';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import { useNavigate } from 'react-router-dom';
 import SnackBar from '@/components/SnackBar';
+import { defaultGetFetcher } from '@/utils/getFetcher';
 
 export const MainContainer = styled(Stack)(() => ({
     padding: '2rem 0 2.25rem 0',
@@ -106,21 +112,24 @@ const Main = () => {
         // 성공 시 처리할 로직 추가 가능
     };
 
-    const daysLeft = getDaysBeforeOpen(data.server_time);
+    const daysLeft = getDaysBeforeOpen(data?.server_time);
 
     const onLeftClick = () => {
-        setPage((prev) => (prev === 1 ? 1 : prev - 1));
-    };
-
-    const onRightClick = () => {
-        setPage((prev) =>
-            prev === data.capsule.total_page
-                ? data.capsule.total_page
-                : prev + 1
+        setTimeout(
+            setPage((prev) => (prev === 1 ? 1 : prev - 1)),
+            500
         );
     };
 
-    if (isLoading) return <Loading />;
+    const onRightClick = () => {
+        setTimeout(
+            setPage((prev) =>
+                prev === data?.total_page ? data?.total_page : prev + 1
+            ),
+            500
+        );
+    };
+
     if (error) return <div>failed to load</div>;
 
     return (
@@ -152,19 +161,31 @@ const Main = () => {
                             />
                         </Stack>
                     </Stack>
-                    <MainTitle
-                        snowball={data.snowball_name}
-                        setSnowballName={setSnowballName}
-                        onError={onError}
-                    />
+
+                    {isLoading ? (
+                        <Skeleton variant='text'>
+                            <MainTitle
+                                snowball={data?.snowball_name ?? ''}
+                                setSnowballName={setSnowballName}
+                                onError={onError}
+                            />
+                        </Skeleton>
+                    ) : (
+                        <MainTitle
+                            snowball={data?.snowball_name ?? ''}
+                            setSnowballName={setSnowballName}
+                            onError={onError}
+                        />
+                    )}
                 </Stack>
 
                 <Snowball
-                    memories={data.memories}
+                    isLoading={isLoading}
+                    memories={data?.memories}
                     current={page}
-                    total={parseInt(data.total_page)}
-                    received={data.received}
-                    self={data.self}
+                    total={isLoading ? 0 : parseInt(data.total_page)}
+                    received={data?.received}
+                    self={data?.self}
                     onLeftClick={onLeftClick}
                     onRightClick={onRightClick}
                 />

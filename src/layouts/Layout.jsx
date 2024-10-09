@@ -33,7 +33,7 @@ const Layout = ({ sx, snow, snowflake, children }) => {
             )}
             {snowflake && (
                 <Snowfall
-                    color='white'
+                    color='#ffffffaa'
                     snowflakeCount={70}
                     speed={[0, 0.5]}
                     wind={[0, 0.5]}

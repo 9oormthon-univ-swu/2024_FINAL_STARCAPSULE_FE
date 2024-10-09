@@ -1,10 +1,11 @@
 import React from 'react';
 import SnowballImage from '@/assets/snowball_image.svg';
-import { styled } from '@mui/material';
+import { Backdrop, CircularProgress, styled } from '@mui/material';
 import SnowballChip from './SnowballChip';
 import SnowballObject from './SnowballObject';
 import MemoryCount from './MemoryCount';
 import NavigationButton from './NavigationButton';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const SnowballContainer = styled('div')(() => ({
     padding: '0 0.375rem',
@@ -30,6 +31,20 @@ const SnowballBackground = styled('div')(({ theme }) => ({
     position: 'relative',
 }));
 
+const snowballContainerVariants = {
+    animate: {
+        transition: {
+            staggerChildren: 0.2, // 각 SnowballObject가 0.2초 간격으로 나타남
+        },
+    },
+};
+
+const snowballObjectVariants = {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+    exit: { opacity: 0, y: -20, transition: { duration: 0.5 } },
+};
+
 // memories: [{ id, writer_name, object_name }]
 const Snowball = ({
     current,
@@ -39,6 +54,7 @@ const Snowball = ({
     memories = [],
     onLeftClick,
     onRightClick,
+    isLoading,
 }) => {
     const memoryPosition = [
         { bottom: '25%', right: '20%' },
@@ -52,16 +68,44 @@ const Snowball = ({
         <SnowballContainer>
             <SnowballBackground>
                 <SnowballChip current={current} total={total} />
-                {memories.length > 0 &&
-                    memories.map((memory, index) => (
-                        <SnowballObject
-                            key={memory.id}
-                            writer={memory.writer_name}
-                            variant={memory.object_name}
-                            sx={memoryPosition[index]}
-                            black={index == 0}
-                        />
-                    ))}
+                <AnimatePresence mode='wait'>
+                    {isLoading && (
+                        <Backdrop open={isLoading}>
+                            <CircularProgress
+                                sx={{
+                                    color: 'custom.main1',
+                                }}
+                            />
+                        </Backdrop>
+                    )}
+                    <motion.div
+                        variants={snowballContainerVariants}
+                        initial='initial'
+                        animate='animate'
+                        exit='exit'
+                        key={JSON.stringify(memories)}
+                    >
+                        {memories.length > 0 &&
+                            memories.map((memory, index) => (
+                                <motion.div
+                                    key={memory.id}
+                                    variants={snowballObjectVariants}
+                                    style={{
+                                        position: 'absolute',
+                                        ...memoryPosition[index],
+                                    }}
+                                >
+                                    <SnowballObject
+                                        key={memory.id}
+                                        id={memory.id}
+                                        writer={memory.writer_name}
+                                        variant={memory.object_name}
+                                        black={index == 0}
+                                    />
+                                </motion.div>
+                            ))}
+                    </motion.div>
+                </AnimatePresence>
                 <NavigationButton
                     current={current}
                     total={total}

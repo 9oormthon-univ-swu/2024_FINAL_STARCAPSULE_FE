@@ -35,6 +35,10 @@ const MainTitle = ({ snowball, setSnowballName, onError }) => {
     const inputRef = useRef(null);
     const [currSnowball, setCurrSnowball] = useState(snowball);
 
+    useEffect(() => {
+        setCurrSnowball(snowball);
+    }, [snowball]);
+
     const handleSnowballChange = (event) => {
         setCurrSnowball(event.target.value.slice(0, 10)); // 10자 이상 입력 방지
     };
