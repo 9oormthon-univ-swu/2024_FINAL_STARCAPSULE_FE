@@ -117,6 +117,11 @@ const PopupPage = ({ isOpen, onClose }) => {
           const dateObj = new Date(apiDate);
           const formattedDate = `${dateObj.getMonth() + 1}월 ${dateObj.getDate()}일`;
           setDate(formattedDate); 
+          
+          // 질문, 날짜, ID를 로컬 스토리지에 저장
+          localStorage.setItem('dailyQuestion', result.question);
+          localStorage.setItem('dailyDate', formattedDate);
+          localStorage.setItem('dailyQuestionId', result.id); // 질문 ID 저장
         }
       } catch (error) {
         if (error.response) {
