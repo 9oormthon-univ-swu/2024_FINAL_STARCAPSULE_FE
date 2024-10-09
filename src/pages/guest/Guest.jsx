@@ -41,7 +41,7 @@ const Guest = () => {
     const daysLeft = getDaysBeforeOpen(data.server_time);
 
     return (
-        <Layout sx={{ overflow: 'hidden' }} snow>
+        <Layout sx={{ overflow: 'hidden' }} snow snowflake>
             <MainContainer
                 direction={'column'}
                 justifyContent={'space-between'}
