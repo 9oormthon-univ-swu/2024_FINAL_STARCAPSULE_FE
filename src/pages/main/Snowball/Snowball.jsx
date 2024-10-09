@@ -83,7 +83,7 @@ const Snowball = ({
                         initial='initial'
                         animate='animate'
                         exit='exit'
-                        key={JSON.stringify(memories)}
+                        key={current}
                     >
                         {memories.length > 0 &&
                             memories.map((memory, index) => (
