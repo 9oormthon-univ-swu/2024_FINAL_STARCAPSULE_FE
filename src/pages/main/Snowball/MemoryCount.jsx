@@ -1,5 +1,5 @@
 import { styled } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 const CountText = styled('p')(({ theme }) => ({
     ...theme.typography.number8,
@@ -20,10 +20,22 @@ const CountContainer = styled('div')(() => ({
 }));
 
 const MemoryCount = ({ received, self }) => {
+    const [cache, setCache] = useState({ received: 0, self: 0 });
+    useEffect(() => {
+        if (received !== undefined && self !== undefined) {
+            if (received !== cache.received) {
+                setCache((prev) => ({ ...prev, received }));
+            }
+            if (self !== cache.self) {
+                setCache((prev) => ({ ...prev, self }));
+            }
+        }
+    }, [received, self]);
+
     return (
         <CountContainer>
-            <CountText>{`received ${received}`}</CountText>
-            <CountText>{`self ${self}`}</CountText>
+            <CountText>{`received ${cache.received}`}</CountText>
+            <CountText>{`self ${cache.self}`}</CountText>
         </CountContainer>
     );
 };
