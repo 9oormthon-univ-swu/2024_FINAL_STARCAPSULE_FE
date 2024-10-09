@@ -16,7 +16,7 @@ import { defaultGetFetcher } from '@/utils/getFetcher';
 import { saveTokenFromURL } from '@/utils/saveTokenFromURL';
 import useAuthStore from 'stores/useAuthStore';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
-// import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; 
 
 export const MainContainer = styled(Stack)(() => ({
     padding: '1rem 0 2.25rem 0',
@@ -46,6 +46,7 @@ const Main = () => {
     // eslint-disable-next-line no-unused-vars
     const [page, setPage] = useState(1);
     const [isPopupOpen, setPopupOpen] = useState(false);
+    const navigate = useNavigate();
 
     const param = useParams();
 
@@ -112,7 +113,7 @@ const Main = () => {
                         <DDayTitle />
                         <Stack direction={'row'} spacing={2}>
                             <StyledIconButton>
-                                <CalendarIcon />
+                                <CalendarIcon  onClick={() => navigate('/calendar')} />
                             </StyledIconButton>
                             <ShareButton
                                 title={
@@ -176,7 +177,7 @@ const Main = () => {
                 isOpen={isPopupOpen}
                 onClose={() => setPopupOpen(false)}
             />{' '}
-            {/* 팝업 추가 */}
+           
         </Layout>
     );
 };

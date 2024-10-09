@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react'; 
 import styled from 'styled-components';
 import { ReactComponent as Popup } from '../../assets/Popup.svg'; 
+import PopupButton from './PopupButton';
+import axios from 'axios';
 
 const PopupWrapper = styled.div`
   display: ${(props) => (props.isOpen ? 'flex' : 'none')};
@@ -14,7 +16,6 @@ const PopupWrapper = styled.div`
   background-color: rgba(0, 0, 0, 0.6); 
   z-index: 1000; 
 `;
-
 
 const PopupContent = styled.div`
   position: relative;
@@ -34,16 +35,17 @@ const SvgWrapper = styled.div`
 
 const CloseButton = styled.span`
   position: absolute;
-  top: 15px;
-  right: 35px;
+  top: 28px;
+  right: 38px;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 21px;
+  font-weight: bold; 
   z-index: 1; 
 `;
 
 const TextWrapper = styled.div`
   position: absolute;
-  top: 50px; 
+  top: 60px; 
   left: 50%;
   transform: translateX(-50%); 
   text-align: center; 
@@ -51,63 +53,103 @@ const TextWrapper = styled.div`
 `;
 
 const StyledTitle = styled.div`
-  color: var(--button1, #7F5539);
+  color: #7F5539;
   text-align: center;
-  -webkit-text-stroke-width: 0.3px;
+  -webkit-text-stroke-width: 0.7px;
   -webkit-text-stroke-color: var(--button1, #7F5539);
-  font-size: 20px;
+  font-size: 23px;
   font-style: normal;
-  font-weight: 400;
+  margin-top: 13px; 
   line-height: 28px;
-  font-family: 'Griun NltoTAENGG', sans-serif; 
+  font-family: 'Griun NltoTAENGGU', sans-serif; 
 `;
-
 
 const StyledBodyText = styled.div`
   color: var(--font, #282828);
   text-align: center;
-  font-family: "Noto Sans";
-  font-size: 14px;
+  font-family: "Noto Sans", sans-serif;
+  font-size: 18px;
   font-style: normal;
   font-weight: 700;
-  line-height: normal;
-`;
+  margin-top: 20px; 
+  line-height: 1.4;
+  width: 220px; 
+  white-space: normal; 
+  word-break: break-word;
 
-
-const StyledButton = styled.button`
-  border-radius: 20px;
-  background: var(--button1, #7F5539); 
-  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.25);
-  color: white; 
-  padding: 10px 20px; 
-  border: none; 
-  cursor: pointer; 
-  width: 185.915px; 
-  height: 50.905px; 
-  flex-shrink: 0; 
-  margin-top: -70px; 
-  z-index: 1; 
+  span {
+    font-family: "Bigshot One", cursive; 
+  }
 `;
 
 const PopupPage = ({ isOpen, onClose }) => {
+  const [question, setQuestion] = useState(''); 
+  const [date, setDate] = useState('');
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.log('로그인 하세요.');
+      return;
+    }
+
+    const fetchQuestion = async () => {
+      try {
+        console.log('Token:', token);
+
+        const response = await axios.get('http://34.64.85.134:8888/api/question', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Accept': '*/*'
+          }
+        });
+
+        console.log('Response:', response.data); 
+
+        const result = response.data.result;
+
+        // 질문이 있으면 설정하고, 없으면 빈 문자열 유지
+        setQuestion(result.question || ''); 
+
+        // 날짜를 "MM-DD" 형식으로 변환
+        const apiDate = result.date;
+        if (apiDate) {
+          const dateObj = new Date(apiDate);
+          const formattedDate = `${dateObj.getMonth() + 1}월 ${dateObj.getDate()}일`;
+          setDate(formattedDate); 
+        }
+      } catch (error) {
+        if (error.response) {
+          console.error('Error response data:', error.response.data);
+          console.error('Error status:', error.response.status);
+        } else if (error.request) {
+          console.error('Error request:', error.request);
+        } else {
+          console.error('Error message:', error.message);
+        }
+      }
+    };
+
+    fetchQuestion();
+  }, []); 
+
   return (
     <PopupWrapper isOpen={isOpen}>
       <PopupContent>
         <SvgWrapper>
-          <Popup /> {/* SVG 렌더링 */}
+          <Popup /> 
           <CloseButton onClick={onClose}>✕</CloseButton>
           <TextWrapper>
-            <StyledTitle gutterBottom>
-              올해 가장 행복했던 일은 무엇인가요?
+            <StyledTitle>
+              {question || '질문을 불러오는 중입니다...'} 
             </StyledTitle>
-            <StyledBodyText gutterBottom>
-              11월 30일 질문에 대한 추억을 기록하러 가볼까요?
+            <StyledBodyText>
+              <span>{date.split('월')[0] || '01'}</span>월 <span>{date.split('월 ')[1]?.split('일')[0] || '01'}</span>일 질문에 대한<br />
+              추억을 기록하러 가볼까요?
             </StyledBodyText>
           </TextWrapper>
         </SvgWrapper>
-        <StyledButton onClick={onClose}>
-          추억 기록하기
-        </StyledButton>
+        <PopupButton onClick={onClose} /> 
       </PopupContent>
     </PopupWrapper>
   );

@@ -36,23 +36,24 @@ const SubTitle = styled.p`
 `;
 
 const Button = styled.button`
-    display: inline-flex;
-    height: 62px;
-    padding: 20px 109px;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    flex-shrink: 0;
-    border: none;
-    border-radius: 20px;
-    background: var(--main2, #ddb892);
-    box-shadow: 0px 0px 4px 0px rgba(40, 40, 40, 0.2);
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    position: absolute;
-    bottom: 40px;
-    z-index: 10;
+  display: inline-flex;
+  height: 62px;
+  padding: 20px 109px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 20px;
+  background: var(--main2, #DDB892);
+  box-shadow: 0px 0px 4px 0px rgba(40, 40, 40, 0.20);
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  position: absolute;
+  bottom: 40px;
+  z-index: 10;
+  
 `;
 
 const BottomImage = styled.img`
