@@ -61,7 +61,16 @@ const Main = () => {
 
     const { data, isLoading, error, mutate } = useSWR(
         `${process.env.REACT_APP_API_URL}/api/capsule/${param.userId}?page=${page}`,
-        defaultGetFetcher
+        defaultGetFetcher,
+        {
+            onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
+                if (error.status === 404) return;
+                if (retryCount >= 3) return;
+            },
+            onError: (error) => {
+                console.error(error);
+            },
+        }
     );
 
     const axiosInstance = useAxiosWithAuth();
