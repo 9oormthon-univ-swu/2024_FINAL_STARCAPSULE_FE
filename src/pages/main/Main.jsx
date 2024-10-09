@@ -22,8 +22,8 @@ import SnackBar from '@/components/SnackBar';
 export const MainContainer = styled(Stack)(() => ({
     padding: '2rem 0 2.25rem 0',
     boxSizing: 'border-box',
-    flexGrow: 2,
     height: '100dvh',
+    overflow: 'hidden',
 }));
 
 export const StyledButton = styled(Button)(({ theme }) => ({
@@ -128,7 +128,7 @@ const Main = () => {
     if (error) return <div>failed to load</div>;
 
     return (
-        <Layout sx={{ overflow: 'hidden' }} snow>
+        <Layout sx={{ overflow: 'hidden' }} snow snowflake>
             <MainContainer
                 direction={'column'}
                 justifyContent={'space-between'}
