@@ -7,6 +7,8 @@ import RecordUpper from './components/RecordUpper';
 import SnackBar from '@/components/SnackBar';
 import AlertModal from '@/components/AlertModal';
 import SelectSnowballObject from '@/components/SelectSnowballObject';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 const GuestForm = ({ nickname }) => {
     // useState로 상태 관리
@@ -22,6 +24,8 @@ const GuestForm = ({ nickname }) => {
     const recordBoardRef = useRef(null); // RecordBoard 참조
     const writerRef = useRef(null); //Writer 참조
     const selectObjectRef = useRef(null);
+
+    const params = useParams();
 
     // 업로드 파일 관리
     const handleSetImage = (uploadedImage) => {
@@ -45,18 +49,35 @@ const GuestForm = ({ nickname }) => {
     };
 
     //모달 확인 버튼 처리 함수
-    const handleAcceptModal = () => {
+    const handleAcceptModal = async () => {
         // FormData 객체를 사용해 이미지 파일과 텍스트 데이터를 서버로 전송
         const formData = new FormData();
-        formData.append('answer', answer);
+        // formData.append('answer', answer);
         formData.append('image', uploadedImage);
-        formData.append('writer', writer);
-        formData.append('object_name', object_name);
+        // formData.append('writer', writer);
+        // formData.append('object_name', object_name);
 
         console.log('answer:', answer);
         console.log('image:', uploadedImage);
         console.log('writer:', writer);
         console.log('object_name:', object_name);
+
+        await axios.post(
+            `${process.env.REACT_APP_API_URL}/api/record`,
+            formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                params: {
+                    title: writer,
+                    answer: answer,
+                    object_name: object_name,
+                    writer: writer,
+                    user_id: params.userId,
+                },
+            }
+        );
     };
 
     // 모달 닫기 처리 함수

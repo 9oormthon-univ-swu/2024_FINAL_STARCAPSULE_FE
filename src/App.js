@@ -24,7 +24,10 @@ function App() {
                     <Route path='/main/:userId' element={<Main />} />
                     <Route path='/guest/:userId' element={<Guest />} />
                     <Route path='/record' element={<RecordForm />} />
-                    <Route path='/guestrecord' element={<GuestForm />} />
+                    <Route
+                        path='/guestrecord/:userId'
+                        element={<GuestForm />}
+                    />
                     <Route path='/calendar' element={<CalendarPage />} />
                     <Route path='/complete' element={<CreationComplete />} />
                     <Route path='*' element={<div>Not Found</div>} />t{' '}

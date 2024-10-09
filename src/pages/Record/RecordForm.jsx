@@ -8,6 +8,7 @@ import SnackBar from '@/components/SnackBar';
 import AlertModal from '@/components/AlertModal';
 import { useNavigate } from 'react-router-dom';
 import SelectSnowballObject from '@/components/SelectSnowballObject';
+import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 
 const RecordForm = () => {
     const navigate = useNavigate();
@@ -45,21 +46,45 @@ const RecordForm = () => {
         setOpenSnackbar(false);
     };
 
-    //모달 확인 버튼 처리 함수
-    const handleAcceptModal = () => {
+    //모달 확인 버튼 처리 함수 & 데이터 전달
+    const axiosInstance = useAxiosWithAuth();
+    const handleAcceptModal = async () => {
         // FormData 객체를 사용해 이미지 파일과 텍스트 데이터를 서버로 전송
+        console.log(typeof image);
+
         const formData = new FormData();
-        formData.append('answer', answer);
+        // formData.append('answer', answer);
         formData.append('image', image);
-        formData.append('title', title);
-        formData.append('object_name', object_name);
+        // formData.append('title', title);
+        // formData.append('object_name', object_name);
 
-        console.log('제목:', title);
-        console.log('텍스트:', answer);
-        console.log('이미지:', image);
-        console.log('장식:', object_name);
+        console.log('answer', answer);
+        console.log('image', image);
+        console.log('title', title);
+        console.log('object_name', object_name);
+        console.log('formData', formData);
 
-        navigate('/complete');
+        await axiosInstance
+            .post(`/api/my_memory/write?`, formData, {
+                params: {
+                    title: title,
+                    answer: answer,
+                    shapeName: object_name,
+                },
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            })
+            .then(() => {
+                setOpenSnackbar(true);
+                setSnackbarText('스노우볼에 추억 담는 중');
+                navigate('/complete');
+            })
+            .catch((error) => {
+                console.log(error);
+                setOpenSnackbar(true);
+                setSnackbarText('오류가 발생했습니다.');
+            });
     };
 
     // 모달 닫기 처리 함수
