@@ -16,13 +16,14 @@ import { defaultGetFetcher } from '@/utils/getFetcher';
 import { saveTokenFromURL } from '@/utils/saveTokenFromURL';
 import useAuthStore from 'stores/useAuthStore';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
+import SnackBar from '@/components/SnackBar';
 
 export const MainContainer = styled(Stack)(() => ({
-    padding: '1rem 0 2.25rem 0',
+    padding: '2rem 0 2.25rem 0',
     boxSizing: 'border-box',
-    flexGrow: 2,
     height: '100dvh',
+    overflow: 'hidden',
 }));
 
 export const StyledButton = styled(Button)(({ theme }) => ({
@@ -47,22 +48,43 @@ const Main = () => {
     const [page, setPage] = useState(1);
     const [isPopupOpen, setPopupOpen] = useState(false);
     const navigate = useNavigate();
+    const [snackbarProps, setSnackbarProps] = useState({
+        openSnackbar: false,
+        snackbarText: '',
+        severity: '',
+    });
+
+    const successMessage = '스노우볼 이름이 변경되었어요.';
+    const errorMessage = '스노우볼 이름 변경에 실패했어요. 다시 시도해주세요.';
+
+    const onError = () => {
+        setSnackbarProps({
+            openSnackbar: true,
+            snackbarText: errorMessage,
+            severity: 'error',
+        });
+    };
 
     const param = useParams();
 
     const { setUserId } = useUserStore();
 
-    const { login } = useAuthStore(); // useAuthStorㅌe에서 login 메서드 가져오기
+    const { login } = useAuthStore();
 
     useEffect(() => {
         setPopupOpen(true);
         setUserId(param.userId);
-        saveTokenFromURL(login); // URL에서 토큰을 추출하고 상태에 저장
+        saveTokenFromURL(login);
     }, [login, param.userId, setUserId]);
 
     const { data, isLoading, error, mutate } = useSWR(
         `${process.env.REACT_APP_API_URL}/api/capsule/${param.userId}?page=${page}`,
-        defaultGetFetcher
+        defaultGetFetcher,
+        {
+            onError: (error) => {
+                console.error(error);
+            },
+        }
     );
 
     const axiosInstance = useAxiosWithAuth();
@@ -74,12 +96,17 @@ const Main = () => {
                 },
             })
             .then(() => {
+                setSnackbarProps({
+                    openSnackbar: true,
+                    snackbarText: successMessage,
+                    severity: 'success',
+                });
                 mutate();
             });
         // 성공 시 처리할 로직 추가 가능
     };
 
-    const daysLeft = getDaysBeforeOpen();
+    const daysLeft = getDaysBeforeOpen(data.server_time);
 
     const onLeftClick = () => {
         setPage((prev) => (prev === 1 ? 1 : prev - 1));
@@ -97,7 +124,7 @@ const Main = () => {
     if (error) return <div>failed to load</div>;
 
     return (
-        <Layout sx={{ overflow: 'hidden' }} snow>
+        <Layout sx={{ overflow: 'hidden' }} snow snowflake>
             <MainContainer
                 direction={'column'}
                 justifyContent={'space-between'}
@@ -113,19 +140,22 @@ const Main = () => {
                         <DDayTitle />
                         <Stack direction={'row'} spacing={2}>
                             <StyledIconButton>
-                                <CalendarIcon  onClick={() => navigate('/calendar')} />
+                                <CalendarIcon
+                                    onClick={() => navigate('/calendar')}
+                                />
                             </StyledIconButton>
                             <ShareButton
                                 title={
                                     '스노우볼에 오늘의 추억이 보관되었어요!\nSNS에 링크를 공유해 친구들에게 함께한 추억을 전달받아보세요☃️\n'
                                 }
-                                url={'www.google.com'}
+                                url={`${process.env.PUBLIC_URL}/guest/${param.userId}`}
                             />
                         </Stack>
                     </Stack>
                     <MainTitle
                         snowball={data.snowball_name}
                         setSnowballName={setSnowballName}
+                        onError={onError}
                     />
                 </Stack>
 
@@ -176,8 +206,16 @@ const Main = () => {
             <PopupPage
                 isOpen={isPopupOpen}
                 onClose={() => setPopupOpen(false)}
-            />{' '}
-           
+            />
+            <SnackBar
+                {...snackbarProps}
+                handleCloseSnackbar={() =>
+                    setSnackbarProps((prev) => ({
+                        ...prev,
+                        openSnackbar: false,
+                    }))
+                }
+            />
         </Layout>
     );
 };
