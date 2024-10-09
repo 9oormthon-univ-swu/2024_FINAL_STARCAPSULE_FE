@@ -2,7 +2,6 @@ import { CheckIcon, EditIcon } from '@/components/icons';
 import { Box, IconButton, styled, Typography } from '@mui/material';
 import React, { useState, useEffect, useRef } from 'react';
 
-
 export const StyledTypography = styled(Typography)(({ theme }) => ({
     color: theme.palette.custom.white,
     padding: '0.25rem 0',
@@ -30,7 +29,7 @@ const Input = styled('input')(({ theme }) => ({
     ...theme.typography.Heading1,
 }));
 
-const MainTitle = ({ snowball, setSnowballName }) => {
+const MainTitle = ({ snowball, setSnowballName, onError }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [inputWidth, setInputWidth] = useState(0);
     const inputRef = useRef(null);
@@ -67,12 +66,11 @@ const MainTitle = ({ snowball, setSnowballName }) => {
     }, [currSnowball, isEditing]);
 
     const onConfirmClick = () => {
-
         if (!currSnowball.length) return;
         setSnowballName(currSnowball)
             .then(() => setIsEditing(false))
             .catch((e) => {
-                console.log('error', e);
+                onError(e);
             });
     };
 

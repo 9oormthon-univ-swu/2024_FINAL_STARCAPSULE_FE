@@ -1,5 +1,5 @@
-const getDaysBeforeOpen = () => {
-    const today = new Date();
+const getDaysBeforeOpen = (todayISOString) => {
+    const today = new Date(todayISOString);
     const year = today.getFullYear();
 
     const startDate = new Date(year, 10, 30);
