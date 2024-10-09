@@ -81,10 +81,6 @@ const Main = () => {
         `${process.env.REACT_APP_API_URL}/api/capsule/${param.userId}?page=${page}`,
         defaultGetFetcher,
         {
-            onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
-                if (error.status === 404) return;
-                if (retryCount >= 3) return;
-            },
             onError: (error) => {
                 console.error(error);
             },
@@ -110,7 +106,7 @@ const Main = () => {
         // 성공 시 처리할 로직 추가 가능
     };
 
-    const daysLeft = getDaysBeforeOpen();
+    const daysLeft = getDaysBeforeOpen(data.server_time);
 
     const onLeftClick = () => {
         setPage((prev) => (prev === 1 ? 1 : prev - 1));

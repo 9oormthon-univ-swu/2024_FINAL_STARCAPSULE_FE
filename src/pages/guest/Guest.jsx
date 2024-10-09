@@ -2,46 +2,28 @@ import { Stack, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import DDayTitle from '@/pages/main/DDayTitle';
 import Snowball from '@/pages/main/Snowball/Snowball';
-import { ObjectNames } from '@/constants/ObjectNames';
 import Layout from '@/layouts/Layout';
 import useSWR from 'swr';
 import Loading from '@/components/Loading';
 import { StyledButton, MainContainer } from '@/pages/main/Main';
 import Title from './Title';
 import { useParams } from 'react-router-dom';
-
-// 임시 적용 데이터
-
-const memories = [
-    { id: 1, writer_name: '닉네임', object_name: ObjectNames.SNOWMAN },
-    { id: 2, writer_name: '닉네임', object_name: ObjectNames.SNOWMAN },
-    { id: 3, writer_name: '닉네임', object_name: ObjectNames.MOON },
-    { id: 4, writer_name: '닉네임', object_name: ObjectNames.SANTA },
-    { id: 5, writer_name: '닉네임', object_name: ObjectNames.SNOWFLAKE },
-    { id: 6, writer_name: '닉네임', object_name: ObjectNames.SANTA_SLEIGH },
-];
-
-const getData = async (url) => {
-    console.log(`fetching page ${url}`);
-    return {
-        capsule: {
-            id: 1,
-            snowball_name: '나의 캡슐',
-            received: 15,
-            self: 3,
-            page: parseInt(url),
-            total_page: 5,
-            memories: memories,
-        },
-    };
-};
+import { defaultGetFetcher } from '@/utils/getFetcher';
+import { getDaysBeforeOpen } from '@/utils/getDaysBeforeOpen';
 
 const Guest = () => {
     const [page, setPage] = useState(1);
-    const { data, isLoading } = useSWR(`${page}`, getData);
     const params = useParams();
 
-    console.log('params:', params);
+    const { data, isLoading, error } = useSWR(
+        `${process.env.REACT_APP_API_URL}/api/capsule/${params.userId}?page=${page}`,
+        defaultGetFetcher,
+        {
+            onError: (error) => {
+                console.error(error);
+            },
+        }
+    );
 
     const onLeftClick = () => {
         setPage((prev) => (prev === 1 ? 1 : prev - 1));
@@ -49,13 +31,14 @@ const Guest = () => {
 
     const onRightClick = () => {
         setPage((prev) =>
-            prev === data.capsule.total_page
-                ? data.capsule.total_page
-                : prev + 1
+            prev === data.total_page ? data.total_page : prev + 1
         );
     };
 
     if (isLoading) return <Loading />;
+    if (error) return <div>failed to load</div>;
+
+    const daysLeft = getDaysBeforeOpen(data.server_time);
 
     return (
         <Layout sx={{ overflow: 'hidden' }} snow>
@@ -73,26 +56,52 @@ const Guest = () => {
                     >
                         <DDayTitle />
                     </Stack>
-                    <Title nickname={data.capsule.snowball_name} />
+                    <Title nickname={data.snowball_name} />
                 </Stack>
 
                 <Snowball
-                    memories={data.capsule.memories}
-                    current={data.capsule.page}
-                    total={data.capsule.total_page}
-                    received={data.capsule.received}
-                    self={data.capsule.self}
+                    memories={data.memories}
+                    current={data.page}
+                    total={data.total_page}
+                    received={data.received}
+                    self={data.self}
                     onLeftClick={onLeftClick}
                     onRightClick={onRightClick}
                 />
-                <StyledButton
-                    variant={'contained'}
-                    sx={{
-                        flexGrow: 0,
-                    }}
-                >
-                    <Typography variant='title2'>추억 전달하기</Typography>
-                </StyledButton>
+                {daysLeft ? (
+                    <StyledButton
+                        variant={'contained'}
+                        sx={{
+                            flexGrow: 0,
+                        }}
+                    >
+                        <Typography variant='title2'>추억 전달하기</Typography>
+                    </StyledButton>
+                ) : (
+                    <Stack
+                        direction={'row'}
+                        justifyContent={'space-between'}
+                        spacing={'1rem'}
+                        sx={{
+                            flexGrow: 0,
+                        }}
+                    >
+                        <StyledButton
+                            variant={'contained'}
+                            sx={{ flexGrow: 1, width: 'fit-content' }}
+                        >
+                            <Typography variant='title2'>팀 소개</Typography>
+                        </StyledButton>
+                        <StyledButton
+                            variant={'contained'}
+                            sx={{ flexGrow: 2, width: 'fit-content' }}
+                        >
+                            <Typography variant='title2'>
+                                추억 보관하기
+                            </Typography>
+                        </StyledButton>
+                    </Stack>
+                )}
             </MainContainer>
         </Layout>
     );

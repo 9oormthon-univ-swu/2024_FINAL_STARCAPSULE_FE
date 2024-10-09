@@ -21,9 +21,9 @@ function App() {
                     <Route path='/popup' element={<PopupPage />} />
                     <Route path='/snowballmake' element={<SnowballMake />} />
                     <Route path='/main/:userId' element={<Main />} />
-                    <Route path='/guest' element={<Guest />} />
+                    <Route path='/guest/:userId' element={<Guest />} />
                     <Route path='/record' element={<RecordForm />} />
-                    <Route path="/calendar" element={<CalendarPage />} />
+                    <Route path='/calendar' element={<CalendarPage />} />
                     <Route path='/complete' element={<CreationComplete />} />
                 </Routes>
             </Router>
