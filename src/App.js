@@ -12,7 +12,6 @@ import Main from './pages/main/Main';
 import GuestForm from './pages/Record/GuestForm';
 import Guest from './pages/guest/Guest';
 import CalendarPage from './pages/main/CalendarPage';
-import Test from './pages/Record/Test';
 
 function App() {
     return (
@@ -28,7 +27,6 @@ function App() {
                     <Route path='/guestrecord' element={<GuestForm />} />
                     <Route path='/calendar' element={<CalendarPage />} />
                     <Route path='/complete' element={<CreationComplete />} />
-                    <Route path='/test' element={<Test />} />
                     <Route path='*' element={<div>Not Found</div>} />t{' '}
                 </Routes>
             </Router>
