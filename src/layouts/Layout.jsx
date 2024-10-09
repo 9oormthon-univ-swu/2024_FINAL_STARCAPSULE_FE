@@ -34,18 +34,10 @@ const Layout = ({ sx, snow, snowflake, children }) => {
             {snowflake && (
                 <Snowfall
                     color='white'
-                    snowflakeCount={33}
+                    snowflakeCount={70}
                     speed={[0, 0.5]}
                     wind={[0, 0.5]}
                     radius={[0.5, 3]}
-                    style={{
-                        width: '100%',
-                        maxWidth: '37.5rem',
-                        height: '100dvh',
-                        position: 'absolute',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                    }}
                 />
             )}
             {children}
