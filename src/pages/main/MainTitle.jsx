@@ -1,7 +1,7 @@
 import { CheckIcon, EditIcon } from '@/components/icons';
 import { Box, IconButton, styled, Typography } from '@mui/material';
 import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios'; // axios import 추가
+
 
 export const StyledTypography = styled(Typography)(({ theme }) => ({
     color: theme.palette.custom.white,
@@ -67,44 +67,6 @@ const MainTitle = ({ snowball, setSnowballName }) => {
     }, [currSnowball, isEditing]);
 
     const onConfirmClick = () => {
-        const token = localStorage.getItem('token'); 
-        console.log('가져온 토큰:', token);
-
-        if (token && currSnowball) { // currNickname -> currSnowball로 변경
-            axios
-                .post(
-                    `http://34.64.85.134:8888/api/capsule/changeSnowballName`,
-                    null,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                        params: {
-                            name: currSnowball, // 스노우볼 이름을 API로 전송
-                        },
-                    }
-                )
-                .then((response) => {
-                    const resultData = response.data.result;
-                    console.log('닉네임 수정 성공:', response.data);
-
-                    localStorage.setItem('snowball_id', resultData.id);
-                    localStorage.setItem(
-                        'snowball_name',
-                        resultData.snowball_name
-                    );
-                    localStorage.setItem(
-                        'snowball_link',
-                        resultData.shared_link
-                    );
-
-                    setSnowballName(currSnowball); // 닉네임 업데이트
-                    setIsEditing(false); // 수정 모드 종료
-                })
-                .catch((error) => {
-                    console.error('닉네임 수정 실패:', error);
-                });
-        }
 
         if (!currSnowball.length) return;
         setSnowballName(currSnowball)
