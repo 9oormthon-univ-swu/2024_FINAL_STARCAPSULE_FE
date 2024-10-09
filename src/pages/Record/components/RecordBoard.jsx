@@ -18,7 +18,7 @@ const RecordBoard = ({
     };
 
     return(
-        <Stack sx={RecordBgstyle}>
+        <div style={RecordBgstyle}>
             <Stack sx={imgcontainer}>
                 <ImgUploadButton
                     setImage={handleSetImage}
@@ -53,7 +53,7 @@ const RecordBoard = ({
                 </div>
             </Stack>
             {children && <Stack>{children}</Stack>}
-        </Stack>
+        </div>
     );
 };
 
@@ -70,7 +70,7 @@ const Textfieldstyle = {
 };
 
 const imgcontainer = {
-    width: '100%',
+    maxWidth: ' 100%',
     textAlign: 'center',
     marginBottom: '1rem',
 };
@@ -78,11 +78,12 @@ const imgcontainer = {
 const RecordBgstyle = {
     display: 'flex',
     flexDirection: 'column',
-    padding: '1.5rem',
+    padding: '24px',
     borderRadius: '1.25rem',
     background: '#FFFCFA',
     boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
     width: '100%',
+    maxWidth: '312px',
     margin: '0 auto',
     boxSizing: 'border-box'
   };
