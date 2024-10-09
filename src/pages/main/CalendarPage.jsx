@@ -34,25 +34,35 @@ const CloseButton = styled.button`
   border: none;
   cursor: pointer;
   position: absolute;
-  top: 10px;
-  margin-left: -500px;
+  top: 26px;
+  margin-left: -490px;
   color: #D5D1CD; 
 `;
 
 const TitleWrapper = styled.div`
   text-align: center;
-  margin-top: 40px; 
+  margin-top: 110px; 
+  margin-left: -220px;
 `;
 
 const Title = styled.h1`
-  font-size: 18px;
-  font-weight: bold;
-  color: #fff;
+  color: var(--grey, #D5D1CD);
+font-family: "Noto Sans";
+font-size: 16px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
 `;
 
 const SubTitle = styled.p`
-  font-size: 14px;
-  color: #fff;
+  color: var(--white, #FFFCFA);
+font-family: "Noto Sans";
+font-size: 20px;
+font-style: normal;
+font-weight: 700;
+line-height: normal;
+  margin-left: -83px;
+  margin-top: 5px;
 `;
 
 const CalendarPage = () => {
@@ -66,11 +76,11 @@ const CalendarPage = () => {
     <CalendarPageWrapper>
       <Header>
         <CloseButton onClick={handleClose}> 
-          <StyledCloseIcon width="24px" height="24px" />
+          <StyledCloseIcon style={{ width: '30px', height: '30px' }} />
         </CloseButton>
-        <TitleWrapper>
+        <TitleWrapper> 
           <Title>당신의 추억을 모아 퍼즐을 완성하세요!</Title>
-          <SubTitle>보관된 추억 조각 2개</SubTitle>
+          <SubTitle>보관된 추억 조각 0개</SubTitle>
         </TitleWrapper>
       </Header>
       <Calendar />
