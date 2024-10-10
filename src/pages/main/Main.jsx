@@ -71,9 +71,7 @@ const Main = () => {
     };
 
     const param = useParams();
-
     const { setUserId } = useUserStore();
-
     const { login } = useAuthStore();
 
     useEffect(() => {
@@ -92,12 +90,19 @@ const Main = () => {
         }
     );
 
+    // 닉네임을 로컬 스토리지에 저장하는 useEffect
+    useEffect(() => {
+        if (data && data.snowball_name) {
+            localStorage.setItem('snowballName', data.snowball_name);
+        }
+    }, [data]);
+
     const axiosInstance = useAxiosWithAuth();
     const setSnowballName = async (newName) => {
         await axiosInstance
             .post(`/api/capsule/changeSnowballName`, null, {
                 params: {
-                    name: newName, // 새로 입력한 닉네임을 API로 전송
+                    name: newName,
                 },
             })
             .then(() => {
@@ -108,7 +113,6 @@ const Main = () => {
                 });
                 mutate();
             });
-        // 성공 시 처리할 로직 추가 가능
     };
 
     const daysLeft = getDaysBeforeOpen(data?.server_time);
@@ -130,12 +134,13 @@ const Main = () => {
     };
 
     const onRecordClick = () => {
-        navigate('/record');
+        navigate(`/record/${param.userId}`);
     };
 
     if (error) return <div>failed to load</div>;
 
     return (
+      
         <Layout sx={{ overflow: 'hidden' }} snow snowflake>
             <MainContainer
                 direction={'column'}

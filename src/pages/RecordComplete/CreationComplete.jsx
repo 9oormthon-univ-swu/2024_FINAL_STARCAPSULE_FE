@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 import frameSVG from '../../assets/Frame_26085556.svg'; 
+import React from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
   display: flex;
@@ -17,13 +19,20 @@ const Container = styled.div`
 
 const SubTitle = styled.p`
   font-size: 24px;
-  color: #fff;
   position: absolute; 
   bottom: 550px;
   transform: translateX(-50%);
   left: 50%; 
+  color: white;
   white-space: nowrap; 
   line-height: 1.5;
+  text-align: center; 
+  font-family: "Noto Sans";
+  font-weight: 700;
+`;
+
+const SnowballName = styled.span`
+  color: #DDB892; 
 `;
 
 const SVGImage = styled.img`
@@ -36,13 +45,22 @@ const SVGImage = styled.img`
 `;
 
 const CreationComplete = () => {
+  const { userId } = useParams(); 
+  const navigate = useNavigate(); 
+
+  const snowballName = localStorage.getItem('snowballName') || '이름'; 
+
+  
+  const handleClick = () => {
+    navigate(`/main/${userId}`); 
+  };
+
   return (
-    <Container>
+    <Container onClick={handleClick}> 
       <SubTitle>
-        님과의<br />
+        <SnowballName>{snowballName}</SnowballName>님과의<br />
         추억이 전달되었어요
       </SubTitle>
-     
       <SVGImage src={frameSVG} alt="Frame SVG" />
     </Container>
   );

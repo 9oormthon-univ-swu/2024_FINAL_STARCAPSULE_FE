@@ -1,13 +1,22 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'; 
 import { useEffect } from 'react';
 import styled from 'styled-components';
 import Snowfall from 'react-snowfall';
 import axios from 'axios';
 import backgroundBottom from '../../assets/background_bottom.svg';
-
 import '@dotlottie/player-component';
 import useAuthStore from 'stores/useAuthStore';
 import { saveTokenFromURL } from '@/utils/saveTokenFromURL';
+
+const FullScreenSnowfall = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+`;
 
 const Container = styled.div`
     display: flex;
@@ -16,12 +25,13 @@ const Container = styled.div`
     justify-content: center;
     height: 100vh;
     width: 100vw;
-    max-width: 480px;
+    max-width: 600px;
     background: linear-gradient(180deg, #0b0a1b 0%, #27405e 100%);
     position: relative;
     overflow: hidden;
     margin: 0 auto;
     background-color: white;
+    z-index: 1;
 `;
 
 const SubTitle = styled.p`
@@ -53,7 +63,6 @@ const Button = styled.button`
   position: absolute;
   bottom: 40px;
   z-index: 10;
-  
 `;
 
 const BottomImage = styled.img`
@@ -62,7 +71,7 @@ const BottomImage = styled.img`
     height: 100vh;
     bottom: -335px;
     width: 100vw;
-    max-width: 480px;
+    max-width: 600px;
     object-fit: contain;
 `;
 
@@ -77,7 +86,7 @@ const SnowballPage = () => {
     // 버튼 클릭 시 스노우볼 생성 API 호출
     const handleCreateSnowball = () => {
         const token = localStorage.getItem('token');
-        const snowballAPI = 'http://34.64.85.134:8888/api/capsule';
+        const snowballAPI = `${process.env.REACT_APP_API_URL}/api/capsule`; 
         if (token) {
             axios
                 .post(
@@ -119,7 +128,7 @@ const SnowballPage = () => {
                         );
                     }
 
-                    // 메인 페이지로 이동 사실 없어도 되는 코드
+                    // 메인 페이지로 이동
                     navigate(`/main/${snowballData.id}`);
                 })
                 .catch((error) => {
@@ -131,10 +140,20 @@ const SnowballPage = () => {
     };
 
     return (
+        <>
+        <FullScreenSnowfall>
+          <Snowfall
+            color='#ffffffaa'
+            snowflakeCount={70}
+            speed={[0, 0.5]}
+            wind={[0, 0.5]}
+            radius={[0.5, 3]}
+          />
+        </FullScreenSnowfall>
         <Container>
             <Snowfall
-                color='white'
-                snowflakeCount={33}
+                color='#ffffffaa'
+                snowflakeCount={70}
                 speed={[0, 0.5]}
                 wind={[0, 0.5]}
                 radius={[0.5, 3]}
@@ -167,6 +186,7 @@ const SnowballPage = () => {
 
             <BottomImage src={backgroundBottom} alt='Snow background' />
         </Container>
+        </>
     );
 };
 

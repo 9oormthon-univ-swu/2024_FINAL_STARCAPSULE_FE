@@ -78,7 +78,7 @@ const RecordForm = () => {
             .then(() => {
                 setOpenSnackbar(true);
                 setSnackbarText('스노우볼에 추억 담는 중');
-                navigate('/complete');
+                navigate('/mycomplete');
             })
             .catch((error) => {
                 console.log(error);
