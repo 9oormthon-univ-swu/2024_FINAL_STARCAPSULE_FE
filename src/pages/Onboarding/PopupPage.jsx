@@ -98,7 +98,7 @@ const PopupPage = ({ isOpen, onClose }) => {
                 console.log('Token:', token);
 
                 const response = await axios.get(
-                    'http://34.64.85.134:8888/api/question',
+                    `${process.env.REACT_APP_API_URL}/api/question`, 
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -114,53 +114,53 @@ const PopupPage = ({ isOpen, onClose }) => {
                 // 질문이 있으면 설정하고, 없으면 빈 문자열 유지
                 setQuestion(result.question || '');
 
-        // 날짜를 "MM-DD" 형식으로 변환
-        const apiDate = result.date;
-        if (apiDate) {
-          const dateObj = new Date(apiDate);
-          const formattedDate = `${dateObj.getMonth() + 1}월 ${dateObj.getDate()}일`;
-          setDate(formattedDate); 
-          
-          // 질문, 날짜, ID를 로컬 스토리지에 저장
-          localStorage.setItem('dailyQuestion', result.question);
-          localStorage.setItem('dailyDate', formattedDate);
-          localStorage.setItem('dailyQuestionId', result.id); // 질문 ID 저장
-        }
-      } catch (error) {
-        if (error.response) {
-          console.error('Error response data:', error.response.data);
-          console.error('Error status:', error.response.status);
-        } else if (error.request) {
-          console.error('Error request:', error.request);
-        } else {
-          console.error('Error message:', error.message);
-        }
-      }
-    };
+                // 날짜를 "MM-DD" 형식으로 변환
+                const apiDate = result.date;
+                if (apiDate) {
+                    const dateObj = new Date(apiDate);
+                    const formattedDate = `${dateObj.getMonth() + 1}월 ${dateObj.getDate()}일`;
+                    setDate(formattedDate); 
+                    
+                    // 질문, 날짜, ID를 로컬 스토리지에 저장
+                    localStorage.setItem('dailyQuestion', result.question);
+                    localStorage.setItem('dailyDate', formattedDate);
+                    localStorage.setItem('dailyQuestionId', result.id); // 질문 ID 저장
+                }
+            } catch (error) {
+                if (error.response) {
+                    console.error('Error response data:', error.response.data);
+                    console.error('Error status:', error.response.status);
+                } else if (error.request) {
+                    console.error('Error request:', error.request);
+                } else {
+                    console.error('Error message:', error.message);
+                }
+            }
+        };
 
         fetchQuestion();
     }, []);
 
-  return (
-    <PopupWrapper isOpen={isOpen}>
-      <PopupContent>
-        <SvgWrapper>
-          <Popup /> 
-          <CloseButton onClick={onClose}>✕</CloseButton>
-          <TextWrapper>
-            <StyledTitle>
-              {question || '질문을 불러오는 중입니다...'} 
-            </StyledTitle>
-            <StyledBodyText>
-              <span>{date.split('월')[0] || '01'}</span>월 <span>{date.split('월 ')[1]?.split('일')[0] || '01'}</span>일 질문에 대한<br />
-              추억을 기록하러 가볼까요?
-            </StyledBodyText>
-          </TextWrapper>
-        </SvgWrapper>
-        <PopupButton onClick={onClose} /> 
-      </PopupContent> 
-    </PopupWrapper>
-  );
+    return (
+        <PopupWrapper isOpen={isOpen}>
+            <PopupContent>
+                <SvgWrapper>
+                    <Popup /> 
+                    <CloseButton onClick={onClose}>✕</CloseButton>
+                    <TextWrapper>
+                        <StyledTitle>
+                            {question || '질문을 불러오는 중입니다...'} 
+                        </StyledTitle>
+                        <StyledBodyText>
+                            <span>{date.split('월')[0] || '01'}</span>월 <span>{date.split('월 ')[1]?.split('일')[0] || '01'}</span>일 질문에 대한<br />
+                            추억을 기록하러 가볼까요?
+                        </StyledBodyText>
+                    </TextWrapper>
+                </SvgWrapper>
+                <PopupButton onClick={onClose} /> 
+            </PopupContent> 
+        </PopupWrapper>
+    );
 };
 
 export default PopupPage;

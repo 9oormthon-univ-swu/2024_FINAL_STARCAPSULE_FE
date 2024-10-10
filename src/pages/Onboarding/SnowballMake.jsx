@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'; 
 import { useEffect } from 'react';
 import styled from 'styled-components';
 import Snowfall from 'react-snowfall';
@@ -63,7 +63,6 @@ const Button = styled.button`
   position: absolute;
   bottom: 40px;
   z-index: 10;
-  
 `;
 
 const BottomImage = styled.img`
@@ -87,7 +86,7 @@ const SnowballPage = () => {
     // 버튼 클릭 시 스노우볼 생성 API 호출
     const handleCreateSnowball = () => {
         const token = localStorage.getItem('token');
-        const snowballAPI = 'http://34.64.85.134:8888/api/capsule';
+        const snowballAPI = `${process.env.REACT_APP_API_URL}/api/capsule`; 
         if (token) {
             axios
                 .post(
@@ -129,7 +128,7 @@ const SnowballPage = () => {
                         );
                     }
 
-                    // 메인 페이지로 이동 사실 없어도 되는 코드
+                    // 메인 페이지로 이동
                     navigate(`/main/${snowballData.id}`);
                 })
                 .catch((error) => {
