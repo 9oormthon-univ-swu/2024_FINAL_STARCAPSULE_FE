@@ -155,7 +155,7 @@ const PopupPage = ({ isOpen, onClose }) => {
           </TextWrapper>
         </SvgWrapper>
         <PopupButton onClick={onClose} /> 
-      </PopupContent>
+      </PopupContent> 
     </PopupWrapper>
   );
 };
