@@ -8,7 +8,7 @@ import SnackBar from '@/components/SnackBar';
 import AlertModal from '@/components/AlertModal';
 import SelectSnowballObject from '@/components/SelectSnowballObject';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const GuestForm = ({ nickname }) => {
     // useState로 상태 관리
@@ -26,6 +26,7 @@ const GuestForm = ({ nickname }) => {
     const selectObjectRef = useRef(null);
 
     const params = useParams();
+    const navigate = useNavigate();
 
     // 업로드 파일 관리
     const handleSetImage = (uploadedImage) => {
@@ -78,6 +79,7 @@ const GuestForm = ({ nickname }) => {
                 },
             }
         );
+        navigate('/complete');
     };
 
     // 모달 닫기 처리 함수
@@ -155,7 +157,7 @@ const GuestForm = ({ nickname }) => {
             <AlertModal
                 open={openModal}
                 onClose={handleCloseModal}
-                buttonText='추억 보관하기'
+                buttonText='추억 전달하기'
                 onButtonClick={handleAcceptModal}
             >
                 <Stack>
