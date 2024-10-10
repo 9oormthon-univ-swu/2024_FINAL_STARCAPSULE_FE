@@ -10,6 +10,7 @@ import RecordForm from './pages/Record/RecordForm';
 import CreationComplete from './pages/RecordComplete/CreationComplete';
 import MyCreationComplete from './pages/RecordComplete/MyCreationComplete';
 import Main from './pages/main/Main';
+import GuestForm from './pages/Record/GuestForm';
 import Guest from './pages/guest/Guest';
 import CalendarPage from './pages/main/CalendarPage';
 
@@ -24,6 +25,10 @@ function App() {
                     <Route path='/main/:userId' element={<Main />} />
                     <Route path='/guest/:userId' element={<Guest />} />
                     <Route path='/record' element={<RecordForm />} />
+                    <Route
+                        path='/guestrecord/:userId'
+                        element={<GuestForm />}
+                    />
                     <Route path='/calendar' element={<CalendarPage />} />
                     <Route path='/complete' element={<CreationComplete />} />
                     <Route path='/mycomplete' element={<MyCreationComplete />} />

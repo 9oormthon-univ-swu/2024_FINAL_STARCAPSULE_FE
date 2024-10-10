@@ -1,21 +1,20 @@
 import { IconButton, Stack, Typography, Box } from '@mui/material';
 import React from 'react';
 import { CloseIcon } from '@/components/icons';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const RecordUpper = () =>{
-    // 아이콘 Close 버튼을 위한 변수
-    // const navigate = useNavigate(); 
+    const navigate = useNavigate();
 
-    // 이전페이지로 이동
-    // const handleGoBack = () => {
-    //     navigate(-1); // 이동할 메인링크연결 필요
-    // };
+    //이전페이지로 이동
+    const handleGoBack = () => {
+        navigate(-1); // 이동할 메인링크연결 필요
+    };
 
     return(
         <Stack>
             <Box component='span'>
-                <IconButton sx={iconstyle} >
+                <IconButton sx={iconstyle} onClick={handleGoBack}>
                     <CloseIcon/>
                 </IconButton>
             </Box>

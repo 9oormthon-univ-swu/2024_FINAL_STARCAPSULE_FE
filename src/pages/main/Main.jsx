@@ -133,6 +133,10 @@ const Main = () => {
         );
     };
 
+    const onRecordClick = () => {
+        navigate('/record');
+    };
+
     if (error) return <div>failed to load</div>;
 
     return (
@@ -219,6 +223,7 @@ const Main = () => {
                         <StyledButton
                             variant={'contained'}
                             sx={{ flexGrow: 2, width: 'fit-content' }}
+                            onClick={onRecordClick}
                         >
                             <Typography variant='title2'>
                                 추억 보관하기
