@@ -32,6 +32,7 @@ function App() {
                     <Route path='/calendar' element={<CalendarPage />} />
                     <Route path='/complete' element={<CreationComplete />} />
                     <Route path='/mycomplete' element={<MyCreationComplete />} />
+                    <Route path='*' element={<div>Not Found</div>} />t{' '}
                 </Routes>
             </Router>
         </ThemeProvider>
