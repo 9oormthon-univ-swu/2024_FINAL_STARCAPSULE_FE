@@ -50,7 +50,6 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
 }));
 
 const Main = () => {
-    // eslint-disable-next-line no-unused-vars
     const [page, setPage] = useState(1);
     const [isPopupOpen, setPopupOpen] = useState(false);
     const navigate = useNavigate();
@@ -128,6 +127,10 @@ const Main = () => {
             ),
             500
         );
+    };
+
+    const onRecordClick = () => {
+        navigate('/record');
     };
 
     if (error) return <div>failed to load</div>;
@@ -216,6 +219,7 @@ const Main = () => {
                         <StyledButton
                             variant={'contained'}
                             sx={{ flexGrow: 2, width: 'fit-content' }}
+                            onClick={onRecordClick}
                         >
                             <Typography variant='title2'>
                                 추억 보관하기

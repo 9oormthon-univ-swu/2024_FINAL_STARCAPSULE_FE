@@ -9,6 +9,7 @@ import SnowballMake from './pages/Onboarding/SnowballMake';
 import RecordForm from './pages/Record/RecordForm';
 import CreationComplete from './pages/MyRecord/CreationComplete';
 import Main from './pages/main/Main';
+import GuestForm from './pages/Record/GuestForm';
 import Guest from './pages/guest/Guest';
 import CalendarPage from './pages/main/CalendarPage';
 
@@ -23,8 +24,13 @@ function App() {
                     <Route path='/main/:userId' element={<Main />} />
                     <Route path='/guest/:userId' element={<Guest />} />
                     <Route path='/record' element={<RecordForm />} />
+                    <Route
+                        path='/guestrecord/:userId'
+                        element={<GuestForm />}
+                    />
                     <Route path='/calendar' element={<CalendarPage />} />
                     <Route path='/complete' element={<CreationComplete />} />
+                    <Route path='*' element={<div>Not Found</div>} />t{' '}
                 </Routes>
             </Router>
         </ThemeProvider>
