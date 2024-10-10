@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import frameSVG from '../../assets/Frame_26085556.svg'; 
 import React from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
   display: flex;
@@ -44,16 +45,22 @@ const SVGImage = styled.img`
 `;
 
 const CreationComplete = () => {
-  
+  const { userId } = useParams(); 
+  const navigate = useNavigate(); 
+
   const snowballName = localStorage.getItem('snowballName') || '이름'; 
 
+  
+  const handleClick = () => {
+    navigate(`/main/${userId}`); 
+  };
+
   return (
-    <Container>
+    <Container onClick={handleClick}> 
       <SubTitle>
         <SnowballName>{snowballName}</SnowballName>님과의<br />
         추억이 전달되었어요
       </SubTitle>
-     
       <SVGImage src={frameSVG} alt="Frame SVG" />
     </Container>
   );

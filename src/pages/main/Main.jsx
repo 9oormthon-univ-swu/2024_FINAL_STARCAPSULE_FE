@@ -134,12 +134,13 @@ const Main = () => {
     };
 
     const onRecordClick = () => {
-        navigate('/record');
+        navigate(`/record/${param.userId}`);
     };
 
     if (error) return <div>failed to load</div>;
 
     return (
+      
         <Layout sx={{ overflow: 'hidden' }} snow snowflake>
             <MainContainer
                 direction={'column'}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'; 
 import styled from 'styled-components';
 import frameSVG from '../../assets/Frame_26085556.svg';
+import { useParams, useNavigate } from 'react-router-dom'; 
 
 const Container = styled.div`
   display: flex;
@@ -69,7 +70,7 @@ const SubTitle = styled.p`
 
 const SVGImage = styled.img`
   position: fixed; 
-  top: calc(40% ); 
+  top: calc(40%); 
   left: 50%;
   transform: translateX(-50%);
   width: 250px; 
@@ -77,11 +78,13 @@ const SVGImage = styled.img`
 `;
 
 const MyCreationComplete = () => {
+  const { userId } = useParams(); 
+  const navigate = useNavigate(); 
+  
   const [questionId, setQuestionId] = useState('');
   const [question, setQuestion] = useState('');
 
   useEffect(() => {
-   
     const storedQuestionId = localStorage.getItem('dailyQuestionId');
     const storedQuestion = localStorage.getItem('dailyQuestion');
 
@@ -93,8 +96,13 @@ const MyCreationComplete = () => {
     }
   }, []);
 
+  
+  const handleClick = () => {
+    navigate(`/main/${userId}`); 
+  };
+
   return (
-    <Container>
+    <Container onClick={handleClick}> 
       <Title>self {questionId || '1'}</Title>
       <QuestionText>{question || '가장 행복했던 일은 무엇인가요?'}</QuestionText>
       <SubTitle>추억이 보관되었어요</SubTitle>

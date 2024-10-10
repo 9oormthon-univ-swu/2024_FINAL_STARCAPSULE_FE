@@ -24,14 +24,14 @@ function App() {
                     <Route path='/snowballmake' element={<SnowballMake />} />
                     <Route path='/main/:userId' element={<Main />} />
                     <Route path='/guest/:userId' element={<Guest />} />
-                    <Route path='/record' element={<RecordForm />} />
+                    <Route path='/record/:userId' element={<RecordForm />} />
                     <Route
                         path='/guestrecord/:userId'
                         element={<GuestForm />}
                     />
                     <Route path='/calendar' element={<CalendarPage />} />
-                    <Route path='/complete' element={<CreationComplete />} />
-                    <Route path='/mycomplete' element={<MyCreationComplete />} />
+                    <Route path='/complete/:userId' element={<CreationComplete />} />
+                    <Route path='/mycomplete/:userId' element={<MyCreationComplete />} />
                     <Route path='*' element={<div>Not Found</div>} />t{' '}
                 </Routes>
             </Router>
