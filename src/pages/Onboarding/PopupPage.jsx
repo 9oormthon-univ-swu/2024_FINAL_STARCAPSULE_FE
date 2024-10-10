@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { ReactComponent as Popup } from '../../assets/Popup.svg';
 import PopupButton from './PopupButton';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; 
 
 const PopupWrapper = styled.div`
     display: ${(props) => (props.isOpen ? 'flex' : 'none')};
@@ -85,6 +86,7 @@ const StyledBodyText = styled.div`
 const PopupPage = ({ isOpen, onClose }) => {
     const [question, setQuestion] = useState('');
     const [date, setDate] = useState('');
+    const navigate = useNavigate(); 
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -124,7 +126,7 @@ const PopupPage = ({ isOpen, onClose }) => {
                     // 질문, 날짜, ID를 로컬 스토리지에 저장
                     localStorage.setItem('dailyQuestion', result.question);
                     localStorage.setItem('dailyDate', formattedDate);
-                    localStorage.setItem('dailyQuestionId', result.id); // 질문 ID 저장
+                    localStorage.setItem('dailyQuestionId', result.id); 
                 }
             } catch (error) {
                 if (error.response) {
@@ -140,6 +142,12 @@ const PopupPage = ({ isOpen, onClose }) => {
 
         fetchQuestion();
     }, []);
+
+   
+    const handleButtonClick = () => {
+        onClose(); 
+        navigate('/record'); 
+    };
 
     return (
         <PopupWrapper isOpen={isOpen}>
@@ -157,7 +165,7 @@ const PopupPage = ({ isOpen, onClose }) => {
                         </StyledBodyText>
                     </TextWrapper>
                 </SvgWrapper>
-                <PopupButton onClick={onClose} /> 
+                <PopupButton onClick={handleButtonClick} /> 
             </PopupContent> 
         </PopupWrapper>
     );
