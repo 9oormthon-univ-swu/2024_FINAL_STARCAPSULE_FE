@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { ReactComponent as Popup } from '../../assets/Popup.svg';
 import PopupButton from './PopupButton';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; 
+import { useParams, useNavigate } from 'react-router-dom'; 
 
 const PopupWrapper = styled.div`
     display: ${(props) => (props.isOpen ? 'flex' : 'none')};
@@ -86,6 +86,7 @@ const StyledBodyText = styled.div`
 const PopupPage = ({ isOpen, onClose }) => {
     const [question, setQuestion] = useState('');
     const [date, setDate] = useState('');
+    const { userId } = useParams(); 
     const navigate = useNavigate(); 
 
     useEffect(() => {
@@ -146,7 +147,7 @@ const PopupPage = ({ isOpen, onClose }) => {
    
     const handleButtonClick = () => {
         onClose(); 
-        navigate('/record'); 
+        navigate(`/record/${userId}`); 
     };
 
     return (
