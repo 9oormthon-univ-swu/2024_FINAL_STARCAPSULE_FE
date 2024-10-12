@@ -4,7 +4,7 @@ import { Snackbar, Alert, Typography, styled } from '@mui/material';
 const SnackbarContainer = styled(Snackbar)({
     width: 'calc(100vw - 3rem)',
     maxWidth: '34.5rem',
-    top: '4.25rem !important',
+    top: '2.25rem !important',
     left: '50% !important',
     transform: 'translateX(-50%)',
     height: '3.875rem',
