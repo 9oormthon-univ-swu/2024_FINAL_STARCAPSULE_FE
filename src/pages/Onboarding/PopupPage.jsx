@@ -152,7 +152,7 @@ const PopupPage = ({ isOpen, onClose }) => {
         <PopupWrapper isOpen={isOpen}>
             <PopupContent>
                 <SvgWrapper>
-                    <img src='/assets/popup.svg' alt='popup' />
+                    <img src='/assets/Popup.svg' alt='popup' />
                     <CloseButton onClick={onClose}>✕</CloseButton>
                     <TextWrapper>
                         <StyledTitle>

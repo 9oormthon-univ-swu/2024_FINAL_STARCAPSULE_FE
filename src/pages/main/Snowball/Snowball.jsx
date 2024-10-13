@@ -20,7 +20,7 @@ const SnowballContainer = styled('div')(() => ({
 
 const SnowballBackground = styled('div')(({ theme }) => ({
     color: theme.palette.custom.white,
-    backgroundImage: `url(${'/assets/snowball_background.svg'})`,
+    backgroundImage: `url(${'/assets/snowball_image.svg'})`,
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
