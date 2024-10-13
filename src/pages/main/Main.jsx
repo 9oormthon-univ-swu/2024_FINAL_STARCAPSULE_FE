@@ -140,7 +140,6 @@ const Main = () => {
     if (error) return <div>failed to load</div>;
 
     return (
-      
         <Layout sx={{ overflow: 'hidden' }} snow snowflake>
             <MainContainer
                 direction={'column'}

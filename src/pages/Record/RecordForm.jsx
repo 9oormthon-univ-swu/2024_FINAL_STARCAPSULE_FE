@@ -13,7 +13,7 @@ import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 const RecordForm = () => {
     const navigate = useNavigate();
     // useState로 상태 관리
-    const [title, setTitle] = useState('" c가요?"');
+    const [title, setTitle] = useState('');
     const [answer, setAnswer] = useState('');
     const [inputCount, setInputCount] = useState(0);
     const [image, setImage] = useState(null);
@@ -55,6 +55,7 @@ const RecordForm = () => {
         const formData = new FormData();
         // formData.append('answer', answer);
         formData.append('image', image);
+        // formData.append('imageName ', image.name);
         // formData.append('title', title);
         // formData.append('object_name', object_name);
 
@@ -62,10 +63,9 @@ const RecordForm = () => {
         console.log('image', image);
         console.log('title', title);
         console.log('object_name', object_name);
-        console.log('formData', formData);
 
         await axiosInstance
-            .post(`/api/my_memory/write?`, formData, {
+            .post(`/api/my_memory/write`, formData, {
                 params: {
                     title: title,
                     answer: answer,
@@ -76,9 +76,9 @@ const RecordForm = () => {
                 },
             })
             .then(() => {
-                setOpenSnackbar(true);
-                setSnackbarText('스노우볼에 추억 담는 중');
-                navigate('/mycomplete');
+                // setOpenSnackbar(true);
+                // setSnackbarText('스노우볼에 추억 담는 중');
+                navigate('/complete/:userId');
             })
             .catch((error) => {
                 console.log(error);
@@ -97,17 +97,17 @@ const RecordForm = () => {
         e.preventDefault();
 
         // 폼 데이터 확인
-        if (!answer) {
-            setOpenSnackbar(true); //기록한 내용이 없을 경우 스낵바 True
-            setSnackbarText('추억이 작성되지 않았어요.');
-            recordBoardRef.current.scrollIntoView({ behavior: 'smooth' });
-            return;
-        }
-        //장식이 없을 경우
-        else if (!object_name) {
+        if (!object_name) {
             setOpenSnackbar(true); //기록한 내용이 없을 경우 스낵바 True
             setSnackbarText('장식이 선택되지 않았어요.');
             selectObjectRef.current.scrollIntoView({ behavior: 'smooth' });
+            return;
+        }
+        //장식이 없을 경우
+        else if (!answer) {
+            setOpenSnackbar(true); //기록한 내용이 없을 경우 스낵바 True
+            setSnackbarText('추억이 작성되지 않았어요.');
+            recordBoardRef.current.scrollIntoView({ behavior: 'smooth' });
             return;
         }
 
@@ -118,8 +118,8 @@ const RecordForm = () => {
     return (
         <>
             <Stack sx={contentstyle}>
-                <Stack>
-                    <Stack ref={selectObjectRef}>
+                <Stack ref={selectObjectRef}>
+                    <Stack>
                         <RecordUpper sx={{ float: 'left' }}></RecordUpper>
                     </Stack>
                     <Stack>
@@ -131,8 +131,8 @@ const RecordForm = () => {
                     </Stack>
                     <Stack ref={recordBoardRef}>
                         <RecordTitle
-                            question={title}
-                            setquestion={setTitle}
+                            title={title}
+                            setTitle={setTitle}
                         ></RecordTitle>
                     </Stack>
                     <form onSubmit={handleSubmit}>

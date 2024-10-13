@@ -13,6 +13,7 @@ import Main from './pages/main/Main';
 import GuestForm from './pages/Record/GuestForm';
 import Guest from './pages/guest/Guest';
 import CalendarPage from './pages/main/CalendarPage';
+import Test from './pages/Record/Test';
 
 function App() {
     return (
@@ -30,9 +31,16 @@ function App() {
                         element={<GuestForm />}
                     />
                     <Route path='/calendar' element={<CalendarPage />} />
-                    <Route path='/complete/:userId' element={<CreationComplete />} />
-                    <Route path='/mycomplete/:userId' element={<MyCreationComplete />} />
+                    <Route
+                        path='/complete/:userId'
+                        element={<CreationComplete />}
+                    />
+                    <Route
+                        path='/mycomplete/:userId'
+                        element={<MyCreationComplete />}
+                    />
                     <Route path='*' element={<div>Not Found</div>} />t{' '}
+                    <Route path='/test' element={<Test />} />
                 </Routes>
             </Router>
         </ThemeProvider>

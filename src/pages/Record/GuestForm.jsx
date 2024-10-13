@@ -7,10 +7,11 @@ import RecordUpper from './components/RecordUpper';
 import SnackBar from '@/components/SnackBar';
 import AlertModal from '@/components/AlertModal';
 import SelectSnowballObject from '@/components/SelectSnowballObject';
-import axios from 'axios';
+import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useNicknameStore } from 'stores/useNicknameStore';
 
-const GuestForm = ({ nickname }) => {
+const GuestForm = () => {
     // useState로 상태 관리
     const [answer, setAnswer] = useState('');
     const [inputCount, setInputCount] = useState(0);
@@ -27,6 +28,8 @@ const GuestForm = ({ nickname }) => {
 
     const params = useParams();
     const navigate = useNavigate();
+
+    const { nickname } = useNicknameStore(); // {nickname, setNickname}
 
     // 업로드 파일 관리
     const handleSetImage = (uploadedImage) => {
@@ -49,7 +52,8 @@ const GuestForm = ({ nickname }) => {
         setOpenSnackbar(false);
     };
 
-    //모달 확인 버튼 처리 함수
+    //모달 확인 버튼 처리 함수&데이터전달
+    const axiosInstance = useAxiosWithAuth();
     const handleAcceptModal = async () => {
         // FormData 객체를 사용해 이미지 파일과 텍스트 데이터를 서버로 전송
         const formData = new FormData();
@@ -63,10 +67,8 @@ const GuestForm = ({ nickname }) => {
         console.log('writer:', writer);
         console.log('object_name:', object_name);
 
-        await axios.post(
-            `${process.env.REACT_APP_API_URL}/api/record`,
-            formData,
-            {
+        await axiosInstance
+            .post(`/api/share_memory/${params.userId}/write`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -77,9 +79,15 @@ const GuestForm = ({ nickname }) => {
                     writer: writer,
                     user_id: params.userId,
                 },
-            }
-        );
-        navigate('/complete');
+            })
+            .then(() => {
+                navigate('/complete/:userId');
+            })
+            .catch((error) => {
+                console.log(error);
+                setOpenSnackbar(true);
+                setSnackbarText('오류가 발생했습니다.');
+            });
     };
 
     // 모달 닫기 처리 함수
@@ -92,22 +100,22 @@ const GuestForm = ({ nickname }) => {
         e.preventDefault();
 
         // 폼 데이터 확인
-        if (!answer) {
+        if (!object_name) {
+            setOpenSnackbar(true); //장식이 없을 경우 스낵바 True
+            setSnackbarText('장식이 선택되지 않았어요.');
+            selectObjectRef.current.scrollIntoView({ behavior: 'smooth' });
+            return;
+        } else if (!answer) {
             setOpenSnackbar(true); //기록한 내용이 없을 경우 스낵바 True
             setSnackbarText('추억이 작성되지 않았어요.');
             recordBoardRef.current.scrollIntoView({ behavior: 'smooth' });
             return;
-        } else if (!writer) {
+        }
+        //장식이 없을 경우
+        else if (!writer) {
             setOpenSnackbar(true); //작성자가 없을 경우 스낵바 True
             setSnackbarText('이름을 작성해주세요.');
             writerRef.current.scrollIntoView({ behavior: 'smooth' });
-            return;
-        }
-        //장식이 없을 경우
-        else if (!object_name) {
-            setOpenSnackbar(true); //기록한 내용이 없을 경우 스낵바 True
-            setSnackbarText('장식이 선택되지 않았어요.');
-            selectObjectRef.current.scrollIntoView({ behavior: 'smooth' });
             return;
         }
 

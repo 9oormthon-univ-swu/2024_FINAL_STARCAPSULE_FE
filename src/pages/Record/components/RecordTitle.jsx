@@ -3,12 +3,11 @@ import { Input, Typography, IconButton, Box } from '@mui/material';
 import { EditIcon, CheckIcon } from '@/components/icons';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 
-const RecordTitle = () => {
+const RecordTitle = ({ title, setTitle }) => {
     // 제목(질문), 수정상태 관리
-    const [title, setTitle] = useState('');
     const [isTitleEdit, setIsTitleEdit] = useState(false);
 
-    // 제목 변경 핸들러
+    //제목 변경 핸들러
     const handleTitleChange = (e) => {
         setTitle(e.target.value.slice(0, 30)); // 제목은 20자 입력까지만
     };
@@ -38,7 +37,6 @@ const RecordTitle = () => {
     useEffect(() => {
         const getQuestion = async () => {
             await axiosInstance.get(`/api/question`).then((res) => {
-                console.log('res', res);
                 setTitle(res.data.result.question);
             });
         };
