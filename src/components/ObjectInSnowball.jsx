@@ -1,12 +1,10 @@
 import React from 'react';
 import { SnowballObjects } from '@/constants/SnowballObjects';
-import default_snowball from '@/assets/object_background/default_snowball.svg';
-import selected_snowball from '@/assets/object_background/selected_snowball.svg';
 import { styled } from '@mui/material';
 
 const ObjectInSnowball = ({ variant, selected }) => {
-    console.log('variant:', variant);
-    console.log('selected:', selected);
+    const selected_snowball = '/assets/object_background/default_snowball.svg';
+    const default_snowball = '/assets/object_background/selected_snowball.svg';
     const Snowball = styled('div')(() => ({
         width: '4rem',
         height: '5rem',

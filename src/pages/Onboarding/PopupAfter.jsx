@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import Popup from '../../assets/Popup.svg';
 
 const PopupWrapper = styled.div`
     display: ${(props) => (props.isOpen ? 'flex' : 'none')};
@@ -73,7 +72,7 @@ const PopupAfter = ({ isOpen, onClose }) => {
         <PopupWrapper isOpen={isOpen}>
             <PopupContent>
                 <SvgWrapper>
-                    <Popup />
+                    <img src={'/assets/Popup.svg'} alt='popup' />
                     <CloseButton onClick={onClose}>✕</CloseButton>
                     <TextWrapper>
                         <StyledBodyText>

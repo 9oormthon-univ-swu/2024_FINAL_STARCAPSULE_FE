@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import Popup from '@/assets/Popup.svg';
 import PopupButton from './PopupButton';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -101,7 +100,7 @@ const PopupPage = ({ isOpen, onClose }) => {
                 console.log('Token:', token);
 
                 const response = await axios.get(
-                    `${process.env.REACT_APP_API_URL}/api/question`,
+                    `${import.meta.env.VITE_API_URL}/api/question`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -153,7 +152,7 @@ const PopupPage = ({ isOpen, onClose }) => {
         <PopupWrapper isOpen={isOpen}>
             <PopupContent>
                 <SvgWrapper>
-                    <Popup />
+                    <img src='/assets/popup.svg' alt='popup' />
                     <CloseButton onClick={onClose}>✕</CloseButton>
                     <TextWrapper>
                         <StyledTitle>

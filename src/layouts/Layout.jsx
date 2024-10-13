@@ -1,6 +1,5 @@
 import { Container } from '@mui/material';
 import React from 'react';
-import background_bottom from '@/assets/background_bottom.svg';
 import Snowfall from 'react-snowfall';
 
 const Layout = ({ sx, snow, snowflake, children }) => {
@@ -18,7 +17,7 @@ const Layout = ({ sx, snow, snowflake, children }) => {
         >
             {snow && (
                 <img
-                    src={background_bottom}
+                    src={'/assets/background_bottom.svg'}
                     alt='눈 쌓인 배경 이미지'
                     aria-hidden='true'
                     style={{
