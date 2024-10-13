@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { ReactComponent as Popup } from '../../assets/Popup.svg';
+import Popup from '@/assets/Popup.svg';
 import PopupButton from './PopupButton';
 import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom'; 
+import { useParams, useNavigate } from 'react-router-dom';
 
 const PopupWrapper = styled.div`
     display: ${(props) => (props.isOpen ? 'flex' : 'none')};
@@ -86,8 +86,8 @@ const StyledBodyText = styled.div`
 const PopupPage = ({ isOpen, onClose }) => {
     const [question, setQuestion] = useState('');
     const [date, setDate] = useState('');
-    const { userId } = useParams(); 
-    const navigate = useNavigate(); 
+    const { userId } = useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -101,7 +101,7 @@ const PopupPage = ({ isOpen, onClose }) => {
                 console.log('Token:', token);
 
                 const response = await axios.get(
-                    `${process.env.REACT_APP_API_URL}/api/question`, 
+                    `${process.env.REACT_APP_API_URL}/api/question`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -122,12 +122,12 @@ const PopupPage = ({ isOpen, onClose }) => {
                 if (apiDate) {
                     const dateObj = new Date(apiDate);
                     const formattedDate = `${dateObj.getMonth() + 1}월 ${dateObj.getDate()}일`;
-                    setDate(formattedDate); 
-                    
+                    setDate(formattedDate);
+
                     // 질문, 날짜, ID를 로컬 스토리지에 저장
                     localStorage.setItem('dailyQuestion', result.question);
                     localStorage.setItem('dailyDate', formattedDate);
-                    localStorage.setItem('dailyQuestionId', result.id); 
+                    localStorage.setItem('dailyQuestionId', result.id);
                 }
             } catch (error) {
                 if (error.response) {
@@ -144,30 +144,34 @@ const PopupPage = ({ isOpen, onClose }) => {
         fetchQuestion();
     }, []);
 
-   
     const handleButtonClick = () => {
-        onClose(); 
-        navigate(`/record/${userId}`); 
+        onClose();
+        navigate(`/record/${userId}`);
     };
 
     return (
         <PopupWrapper isOpen={isOpen}>
             <PopupContent>
                 <SvgWrapper>
-                    <Popup /> 
+                    <Popup />
                     <CloseButton onClick={onClose}>✕</CloseButton>
                     <TextWrapper>
                         <StyledTitle>
-                            {question || '질문을 불러오는 중입니다...'} 
+                            {question || '질문을 불러오는 중입니다...'}
                         </StyledTitle>
                         <StyledBodyText>
-                            <span>{date.split('월')[0] || '01'}</span>월 <span>{date.split('월 ')[1]?.split('일')[0] || '01'}</span>일 질문에 대한<br />
+                            <span>{date.split('월')[0] || '01'}</span>월{' '}
+                            <span>
+                                {date.split('월 ')[1]?.split('일')[0] || '01'}
+                            </span>
+                            일 질문에 대한
+                            <br />
                             추억을 기록하러 가볼까요?
                         </StyledBodyText>
                     </TextWrapper>
                 </SvgWrapper>
-                <PopupButton onClick={handleButtonClick} /> 
-            </PopupContent> 
+                <PopupButton onClick={handleButtonClick} />
+            </PopupContent>
         </PopupWrapper>
     );
 };
