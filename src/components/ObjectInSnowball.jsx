@@ -3,8 +3,8 @@ import { SnowballObjects } from '@/constants/SnowballObjects';
 import { styled } from '@mui/material';
 
 const ObjectInSnowball = ({ variant, selected }) => {
-    const selected_snowball = '/assets/object_background/default_snowball.svg';
-    const default_snowball = '/assets/object_background/selected_snowball.svg';
+    const default_snowball = '/assets/object_background/default_snowball.svg';
+    const selected_snowball = '/assets/object_background/selected_snowball.svg';
     const Snowball = styled('div')(() => ({
         width: '4rem',
         height: '5rem',
