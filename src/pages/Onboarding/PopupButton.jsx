@@ -16,7 +16,7 @@ const PopupButton = ({onClick}) => {
 
 export default PopupButton;
 
-//Design
+
 const formbtn = {
     width: '210px',
     height: '55px',
