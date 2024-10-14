@@ -1,5 +1,4 @@
 import React from 'react';
-import SnowballImage from '@/assets/snowball_image.svg';
 import { Backdrop, CircularProgress, styled } from '@mui/material';
 import SnowballChip from './SnowballChip';
 import SnowballObject from './SnowballObject';
@@ -21,7 +20,7 @@ const SnowballContainer = styled('div')(() => ({
 
 const SnowballBackground = styled('div')(({ theme }) => ({
     color: theme.palette.custom.white,
-    backgroundImage: `url(${SnowballImage})`,
+    backgroundImage: `url(${'/assets/snowball_image.svg'})`,
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
