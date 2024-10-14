@@ -6,12 +6,13 @@ import RecordTitle from './components/RecordTitle';
 import RecordUpper from './components/RecordUpper';
 import SnackBar from '@/components/SnackBar';
 import AlertModal from '@/components/AlertModal';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import SelectSnowballObject from '@/components/SelectSnowballObject';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 
 const RecordForm = () => {
     const navigate = useNavigate();
+    const param = useParams();
     // useState로 상태 관리
     const [title, setTitle] = useState('');
     const [answer, setAnswer] = useState('');
@@ -78,7 +79,8 @@ const RecordForm = () => {
             .then(() => {
                 // setOpenSnackbar(true);
                 // setSnackbarText('스노우볼에 추억 담는 중');
-                navigate('/complete/:userId');
+                navigate(`/mycomplete/${param.userId}`);
+                // navigate(`/mycomplete/:userId`);
             })
             .catch((error) => {
                 console.log(error);

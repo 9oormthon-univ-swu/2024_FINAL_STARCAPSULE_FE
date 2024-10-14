@@ -134,7 +134,7 @@ const GuestForm = () => {
                         <SelectSnowballObject
                             snowballObject={object_name}
                             setSnowballObject={setObjectName}
-                            mine
+                            mine={false}
                         />
                     </Stack>
                     <Stack>

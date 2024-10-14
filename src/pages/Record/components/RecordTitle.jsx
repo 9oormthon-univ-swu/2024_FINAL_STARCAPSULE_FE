@@ -36,7 +36,7 @@ const RecordTitle = ({ title, setTitle }) => {
     const axiosInstance = useAxiosWithAuth();
     useEffect(() => {
         const getQuestion = async () => {
-            await axiosInstance.get(`/api/question`).then((res) => {
+            await axiosInstance.get('/api/question').then((res) => {
                 setTitle(res.data.result.question);
             });
         };

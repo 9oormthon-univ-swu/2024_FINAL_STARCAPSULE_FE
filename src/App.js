@@ -39,7 +39,7 @@ function App() {
                         path='/mycomplete/:userId'
                         element={<MyCreationComplete />}
                     />
-                    <Route path='*' element={<div>Not Found</div>} />t{' '}
+                    <Route path='*' element={<div>Not Found</div>} />{' '}
                     <Route path='/test' element={<Test />} />
                 </Routes>
             </Router>
