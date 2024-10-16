@@ -1,5 +1,5 @@
 import Day from '@/pages/main/Calendar/Day';
-import { typography } from 'storybook/internal/theming';
+import dayjs from 'dayjs';
 
 const meta = {
     title: 'main/Day',
@@ -17,53 +17,83 @@ const meta = {
     },
 };
 
-const NotWritten = {
-    args: {
-        time: '2024-01-30T00:00:00',
-        hasWritten: false,
-        date: 0,
-        styleConfig: {
-            boxStyle: {
-                width: '58px',
-                height: '51px',
-            },
-            variant: 'number2',
-            position: 'middle',
-        },
+const today = dayjs('2024-12-01').toISOString();
+const styleConfig = {
+    boxStyle: {
+        position: 'absolute',
+        width: '58px',
+        height: '51px',
+        flexShrink: 0,
+        boxSizing: 'border-box',
     },
+    variant: 'number1',
+    position: 'middle',
 };
 
-const Written = {
-    args: {
-        time: '2024-01-30T00:00:00',
-        hasWritten: true,
-        date: 0,
-        styleConfig: {
-            boxStyle: {
-                width: '58px',
-                height: '51px',
-            },
-            variant: 'number1',
-            position: 'right',
-        },
-    },
-};
+export const TodayNotWritten = () => (
+    <Day time={today} hasWritten={false} date={1} styleConfig={styleConfig} />
+);
 
-const Future = {
-    args: {
-        time: '2025-12-01T00:00:00',
-        hasWritten: false,
-        date: 1,
-        styleConfig: {
-            boxStyle: {
-                width: '58px',
-                height: '51px',
-            },
-            variant: 'number1',
-            position: 'right',
-        },
-    },
-};
+export const TodayWritten = () => (
+    <Day time={today} hasWritten={true} date={1} styleConfig={styleConfig} />
+);
+
+export const Future = () => (
+    <Day time={today} hasWritten={false} date={5} styleConfig={styleConfig} />
+);
+
+export const PastNotWritten = () => (
+    <Day
+        time={dayjs(today).add(2, 'day').toISOString()}
+        hasWritten={false}
+        date={1}
+        styleConfig={styleConfig}
+    />
+);
+
+export const PastWritten = () => (
+    <Day
+        time={dayjs(today).add(2, 'day').toISOString()}
+        hasWritten={true}
+        date={1}
+        styleConfig={styleConfig}
+    />
+);
+
+export const AfterEventNotWritten = () => (
+    <Day
+        time={dayjs('2025-02-25').toISOString()}
+        hasWritten={false}
+        date={31}
+        styleConfig={styleConfig}
+    />
+);
+
+export const AfterEventWritten = () => (
+    <Day
+        time={dayjs('2025-02-25').toISOString()}
+        hasWritten={true}
+        date={31}
+        styleConfig={styleConfig}
+    />
+);
+
+export const MiddleAligned = () => (
+    <Day
+        time={today}
+        hasWritten={false}
+        date={1}
+        styleConfig={{ ...styleConfig, position: 'middle' }}
+    />
+);
+
+export const RightAligned = () => (
+    <Day
+        time={today}
+        hasWritten={false}
+        date={1}
+        styleConfig={{ ...styleConfig, position: 'right', variant: 'number2' }}
+    />
+);
 
 export default meta;
-export { NotWritten, Written, Future };

@@ -18,9 +18,8 @@ import RecordFormAfter from './pages/Record/RecordFormAfter';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 
-dayjs.locale('ko');
-
 function App() {
+    dayjs.locale('ko');
     return (
         <ThemeProvider theme={theme}>
             <Router>

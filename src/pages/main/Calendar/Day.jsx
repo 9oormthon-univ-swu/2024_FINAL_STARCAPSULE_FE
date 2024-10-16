@@ -1,51 +1,9 @@
 import { getDaysBeforeOpen } from '@/utils/getDaysBeforeOpen';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import React from 'react';
+import dayjs from 'dayjs';
 
-const future = {
-    style: {
-        border: '1px solid',
-        borderColor: 'custom.white',
-    },
-    color: 'custom.white',
-};
-
-const todayNotWritten = {
-    style: {
-        border: '1px solid custom.white',
-        background: 'custom.white',
-    },
-    color: 'custom.font',
-};
-
-const notWritten = {
-    style: {
-        background: 'rgba(255, 252, 250, 0.1)',
-    },
-    color: 'custom.white',
-};
-
-const written = {
-    style: {
-        background: 'rgba(255, 252, 250, 0.4)',
-    },
-    color: 'custom.font',
-};
-
-const afterOpenNotWritten = {
-    style: {
-        background: 'rgba(255, 252, 250, 0.40)',
-    },
-    color: 'custom.font',
-};
-
-const afterOpenWritten = {
-    style: {
-        background: 'transparent',
-    },
-    color: 'transparent',
-};
-
+// 위치 설정
 const rightPosition = {
     position: 'absolute',
     top: 0,
@@ -59,46 +17,70 @@ const middlePosition = {
     transform: 'translate(-50%, -50%)',
 };
 
-// styleConfig: { boxStyle, variant }
+// 스타일 및 날짜 관련 설정 추상화
 const Day = ({ time, hasWritten, date, styleConfig }) => {
-    const daysLeft = getDaysBeforeOpen(time);
+    const theme = useTheme();
 
-    const today = new Date(time);
+    // const isCurrYear = dayjs(time).format('mm-dd') === '12-31' ? 0 : -1;
 
-    const todayDate = today.getDate();
-    const todayMonth = today.getMonth();
+    // 날짜 계산: 시작일과 종료일 설정
+    const startOfPeriod = dayjs(`${dayjs(time).year()}-11-30`);
+    const endOfPeriod = startOfPeriod.add(31, 'day');
+    const currentDay = startOfPeriod.add(date, 'day');
+    const today = dayjs(time);
 
-    let type = null;
+    // 기본 스타일
+    let style = {
+        position: 'relative',
+    };
+    let color = theme.palette.custom.white;
 
-    if (daysLeft === 0) {
-        // 기록 작성일 전후로는 기록에 따라 처리
-        type = hasWritten ? afterOpenWritten : afterOpenNotWritten;
-    } else if (hasWritten) {
-        // 기록 작성일 기간에는 기록 여부에 따라 처리
-        type = written;
-    } else {
-        const isToday = // 오늘 날짜인지 확인
-            (todayMonth === 10 && todayDate === 30 && date === 0) ||
-            (todayMonth === 11 && todayDate === date);
-        // 오늘 날짜인 경우 그에 해당하는 작성 안함 스타일, 미래면 미래 스타일, 아니면 작성 안함 스타일
-        type = isToday
-            ? todayNotWritten
-            : todayDate > date
-              ? future
-              : notWritten;
+    // 기록 작성 가능 기간: 11월 30일 ~ 12월 31일 (범위 내)
+    if (
+        today.isBefore(endOfPeriod.add(1, 'day')) &&
+        today.isAfter(startOfPeriod)
+    ) {
+        if (hasWritten) {
+            // 작성 완료: 오늘과 지나간 날 동일 스타일
+            style.backgroundColor = 'rgba(255, 252, 250, 0.40)';
+            color = theme.palette.custom.font;
+        } else if (currentDay.isSame(today, 'day')) {
+            // 오늘 작성 안함
+            style.border = `1px solid ${theme.palette.custom.white}`;
+            style.backgroundColor = theme.palette.custom.white;
+            color = theme.palette.custom.font;
+        } else if (currentDay.isAfter(today)) {
+            // 미래 날짜
+            style.border = `1px solid ${theme.palette.custom.white}`;
+        } else {
+            // 지나간 날짜 작성 안함
+            style.backgroundColor = 'rgba(255, 252, 250, 0.1)';
+        }
+    }
+
+    // 기록 공개 기간: 12월 31일 이후
+    if (today.isAfter(endOfPeriod) || today.isBefore(startOfPeriod)) {
+        if (hasWritten) {
+            // 작성 완료
+            style.backgroundColor = 'transparent';
+            color = 'transparent';
+        } else {
+            // 작성 안함
+            style.backgroundColor = 'rgba(255, 252, 250, 0.40)';
+            color = theme.palette.custom.font;
+        }
     }
 
     return (
         <Box
             sx={{
-                position: 'relative',
                 ...styleConfig.boxStyle,
-                ...type.style,
+                ...style,
             }}
         >
             <Typography
                 sx={{
-                    color: type.color,
+                    color: color,
                     ...(styleConfig.position === 'right'
                         ? rightPosition
                         : middlePosition),
