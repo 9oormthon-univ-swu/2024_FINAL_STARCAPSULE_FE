@@ -15,6 +15,10 @@ import Guest from './pages/guest/Guest';
 import CalendarPage from './pages/main/CalendarPage';
 import Test from './pages/Record/Test';
 import RecordFormAfter from './pages/Record/RecordFormAfter';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
+
+dayjs.locale('ko');
 
 function App() {
     return (
