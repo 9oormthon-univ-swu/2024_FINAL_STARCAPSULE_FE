@@ -1,4 +1,3 @@
-import { getDaysBeforeOpen } from '@/utils/getDaysBeforeOpen';
 import { Box, Typography, useTheme } from '@mui/material';
 import React from 'react';
 import dayjs from 'dayjs';
@@ -21,8 +20,6 @@ const middlePosition = {
 const Day = ({ time, hasWritten, date, styleConfig }) => {
     const theme = useTheme();
 
-    // const isCurrYear = dayjs(time).format('mm-dd') === '12-31' ? 0 : -1;
-
     // 날짜 계산: 시작일과 종료일 설정
     const startOfPeriod = dayjs(`${dayjs(time).year()}-11-30`);
     const endOfPeriod = startOfPeriod.add(31, 'day');
@@ -30,10 +27,9 @@ const Day = ({ time, hasWritten, date, styleConfig }) => {
     const today = dayjs(time);
 
     // 기본 스타일
-    let style = {
-        position: 'relative',
-    };
+    let style = {};
     let color = theme.palette.custom.white;
+    let imgDisplay = 'none';
 
     // 기록 작성 가능 기간: 11월 30일 ~ 12월 31일 (범위 내)
     if (
@@ -44,6 +40,7 @@ const Day = ({ time, hasWritten, date, styleConfig }) => {
             // 작성 완료: 오늘과 지나간 날 동일 스타일
             style.backgroundColor = 'rgba(255, 252, 250, 0.40)';
             color = theme.palette.custom.font;
+            imgDisplay = 'block';
         } else if (currentDay.isSame(today, 'day')) {
             // 오늘 작성 안함
             style.border = `1px solid ${theme.palette.custom.white}`;
@@ -60,6 +57,7 @@ const Day = ({ time, hasWritten, date, styleConfig }) => {
 
     // 기록 공개 기간: 12월 31일 이후
     if (today.isAfter(endOfPeriod) || today.isBefore(startOfPeriod)) {
+        imgDisplay = 'block';
         if (hasWritten) {
             // 작성 완료
             style.backgroundColor = 'transparent';
@@ -74,21 +72,44 @@ const Day = ({ time, hasWritten, date, styleConfig }) => {
     return (
         <Box
             sx={{
+                position: 'relative',
+                boxSizing: 'border-box',
                 ...styleConfig.boxStyle,
-                ...style,
             }}
         >
-            <Typography
-                sx={{
-                    color: color,
-                    ...(styleConfig.position === 'right'
-                        ? rightPosition
-                        : middlePosition),
+            <img
+                src={`/assets/calendar/puzzle_${date}.svg`}
+                style={{
+                    width: '100%',
+                    height: '100%',
+                    zIndex: 0,
+                    display: imgDisplay,
+                    pointerEvents: 'none',
+                    ...middlePosition,
                 }}
-                variant={styleConfig.variant}
+            />
+            <Box // 이후에 버튼으로 바꾸기
+                sx={{
+                    width: '100%',
+                    height: '100%',
+                    zIndex: 1,
+                    ...middlePosition,
+                    ...style,
+                }}
             >
-                {date ? date : '11.30'}
-            </Typography>
+                <Typography
+                    sx={{
+                        color: color,
+                        pointerEvents: 'none',
+                        ...(styleConfig.position === 'right'
+                            ? rightPosition
+                            : middlePosition),
+                    }}
+                    variant={styleConfig.variant}
+                >
+                    {date ? date : '11.30'}
+                </Typography>
+            </Box>
         </Box>
     );
 };

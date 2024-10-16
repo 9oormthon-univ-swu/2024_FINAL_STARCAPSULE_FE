@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 const meta = {
     title: 'main/Day',
     component: Day,
+    tags: ['autodocs'],
     argTypes: {
         time: { control: 'text', description: '서버 시간' },
         hasWritten: {
@@ -22,9 +23,8 @@ const styleConfig = {
     boxStyle: {
         position: 'absolute',
         width: '58px',
-        height: '51px',
+        height: '66px',
         flexShrink: 0,
-        boxSizing: 'border-box',
     },
     variant: 'number1',
     position: 'middle',
@@ -39,7 +39,12 @@ export const TodayWritten = () => (
 );
 
 export const Future = () => (
-    <Day time={today} hasWritten={false} date={5} styleConfig={styleConfig} />
+    <Day
+        time={dayjs('24-11-30')}
+        hasWritten={false}
+        date={1}
+        styleConfig={styleConfig}
+    />
 );
 
 export const PastNotWritten = () => (
@@ -64,7 +69,7 @@ export const AfterEventNotWritten = () => (
     <Day
         time={dayjs('2025-02-25').toISOString()}
         hasWritten={false}
-        date={31}
+        date={1}
         styleConfig={styleConfig}
     />
 );
@@ -73,7 +78,7 @@ export const AfterEventWritten = () => (
     <Day
         time={dayjs('2025-02-25').toISOString()}
         hasWritten={true}
-        date={31}
+        date={1}
         styleConfig={styleConfig}
     />
 );
