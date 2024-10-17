@@ -1,15 +1,15 @@
 import React from 'react';
 import { Button } from '@mui/material';
 
-const PopupButton = ({ onClick, text }) => { // text props 추가
+const PopupButton = ({ onClick, text }) => { 
     return (
         <Button
             variant='contained'
-            type='submit' // form 태그 내에서 사용하지 않을 경우 제거 필요
+            type='submit' 
             sx={formbtn}
             onClick={onClick}
         >
-            {text} {/* 전달받은 텍스트를 출력 */}
+            {text} 
         </Button>
     );
 };
