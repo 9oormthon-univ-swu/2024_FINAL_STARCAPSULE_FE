@@ -277,7 +277,7 @@ const Main = () => {
                     </PopupContainer>
                 </Overlay>
             ) : (
-                <PopupAfter isOpen={isPopupOpen} onClose={() => setPopupOpen(false)} />
+                <PopupAfter isOpen={isPopupOpen} onClose={() => setPopupOpen(false)} /> //이 부분
             )}
             <SnackBar
                 {...snackbarProps}
