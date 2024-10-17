@@ -96,7 +96,7 @@ const MyCreationComplete = () => {
     }, []);
 
     const handleClick = () => {
-        navigate(`/main/${userId}`);
+        navigate(`/main/${param.userId}`);
     };
 
     return (
