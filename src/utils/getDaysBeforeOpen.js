@@ -1,14 +1,16 @@
+import dayjs from 'dayjs';
+
 const getDaysBeforeOpen = (todayISOString) => {
-    const today = new Date(todayISOString);
-    const year = today.getFullYear();
+    const today = dayjs(todayISOString);
 
-    const startDate = new Date(year, 10, 30);
-    const endDate = new Date(year, 11, 31);
-    const dec30 = new Date(year, 11, 30);
+    const year =
+        today.format('12-31') === '12-31' ? today.year() : today.year() - 1;
 
-    if (today >= startDate && today <= dec30) {
-        const timeDiff = endDate - today;
-        const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+    const startDate = dayjs(`${year}-11-30`);
+    const endDate = dayjs(`${year}-12-31`);
+
+    if (today.isBetween(startDate, endDate)) {
+        const daysLeft = endDate.diff(today, 'day');
 
         return daysLeft;
     } else {

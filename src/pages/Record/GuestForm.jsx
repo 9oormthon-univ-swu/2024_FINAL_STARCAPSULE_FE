@@ -196,7 +196,7 @@ const contentstyle = {
     height: '100%',
     width: '100%',
     maxWidth: '600px',
-    background: '#4D4D4D',
+    background: 'black',
     margin: '0 auto',
     padding: '1.5rem',
     boxSizing: 'border-box',

@@ -13,7 +13,7 @@ const PopupWrapper = styled.div`
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0, 0.7);
     z-index: 1000;
 `;
 
@@ -169,7 +169,7 @@ const PopupPage = ({ isOpen, onClose }) => {
                         </StyledBodyText>
                     </TextWrapper>
                 </SvgWrapper>
-                <PopupButton onClick={handleButtonClick} />
+                <PopupButton text="추억 기록하기" onClick={handleButtonClick} />
             </PopupContent>
         </PopupWrapper>
     );

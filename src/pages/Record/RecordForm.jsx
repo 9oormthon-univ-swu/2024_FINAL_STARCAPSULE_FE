@@ -12,7 +12,9 @@ import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 
 const RecordForm = () => {
     const navigate = useNavigate();
-    const param = useParams();
+    const { userId } = useParams(); // useParams로 userId 가져오기
+    console.log('userId:', userId);
+
     // useState로 상태 관리
     const [title, setTitle] = useState('');
     const [answer, setAnswer] = useState('');
@@ -22,9 +24,10 @@ const RecordForm = () => {
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snackbarText, setSnackbarText] = useState('');
     const [openModal, setopenModal] = useState(false);
+
     // RecordBoard 참조 (자동스크롤)
     const recordBoardRef = useRef(null); // RecordBoard 참조
-    const selectObjectRef = useRef(null); //SelectSnowballObject 참조
+    const selectObjectRef = useRef(null); // SelectSnowballObject 참조
 
     // 업로드 파일 관리
     const handleSetImage = (image) => {
@@ -51,20 +54,14 @@ const RecordForm = () => {
     //모달 확인 버튼 처리 함수 & 데이터 전달
     const axiosInstance = useAxiosWithAuth();
     const handleAcceptModal = async () => {
-        // FormData 객체를 사용해 이미지 파일과 텍스트 데이터를 서버로 전송
         console.log(typeof image);
 
         const formData = new FormData();
-        // formData.append('answer', answer);
         formData.append('image', image);
-        // formData.append('imageName ', image.name);
-        // formData.append('title', title);
-        // formData.append('object_name', object_name);
-
-        console.log('answer', answer);
-        console.log('image', image);
-        console.log('title', title);
-        console.log('object_name', object_name);
+        console.log('answer:', answer);
+        console.log('image:', image);
+        console.log('title:', title);
+        console.log('object_name:', object_name);
 
         await axiosInstance
             .post(`/api/my_memory/write`, formData, {
@@ -78,13 +75,11 @@ const RecordForm = () => {
                 },
             })
             .then(() => {
-                // setOpenSnackbar(true);
-                // setSnackbarText('스노우볼에 추억 담는 중');
                 navigate(`/mycomplete/${param.userId}`);
-                // navigate(`/mycomplete/:userId`);
+                console.log('Memory successfully uploaded');
             })
             .catch((error) => {
-                console.log(error);
+                console.log('Error:', error);
                 setOpenSnackbar(true);
                 setSnackbarText('오류가 발생했습니다.');
             });
@@ -101,20 +96,18 @@ const RecordForm = () => {
 
         // 폼 데이터 확인
         if (!object_name) {
-            setOpenSnackbar(true); //기록한 내용이 없을 경우 스낵바 True
+            setOpenSnackbar(true); // 장식이 선택되지 않았을 경우
             setSnackbarText('장식이 선택되지 않았어요.');
             selectObjectRef.current.scrollIntoView({ behavior: 'smooth' });
             return;
-        }
-        //장식이 없을 경우
-        else if (!answer) {
-            setOpenSnackbar(true); //기록한 내용이 없을 경우 스낵바 True
+        } else if (!answer) {
+            setOpenSnackbar(true); // 추억이 작성되지 않았을 경우
             setSnackbarText('추억이 작성되지 않았어요.');
             recordBoardRef.current.scrollIntoView({ behavior: 'smooth' });
             return;
         }
 
-        //text가 있을 경우 모달 오픈
+        // text가 있을 경우 모달 오픈
         setopenModal(true);
     };
 
@@ -133,10 +126,7 @@ const RecordForm = () => {
                         />
                     </Stack>
                     <Stack ref={recordBoardRef}>
-                        <RecordTitle
-                            title={title}
-                            setTitle={setTitle}
-                        ></RecordTitle>
+                        <RecordTitle title={title} setTitle={setTitle} />
                     </Stack>
                     <form onSubmit={handleSubmit}>
                         <Stack>
@@ -148,7 +138,7 @@ const RecordForm = () => {
                                 showplaceholder='남기고 싶은 추억을 작성해주세요.'
                             />
                         </Stack>
-                        <RecordSaveButton></RecordSaveButton>
+                        <RecordSaveButton />
                     </form>
                 </Stack>
             </Stack>
@@ -157,7 +147,6 @@ const RecordForm = () => {
                 onClose={handleCloseModal}
                 buttonText='추억 보관하기'
                 onButtonClick={handleAcceptModal}
-                showplaceholder='남기고 싶은 추억을 작성해주세요.'
             >
                 <Stack>
                     <Typography sx={modaltextstyle1}>
@@ -180,14 +169,14 @@ const RecordForm = () => {
 
 export default RecordForm;
 
-//Design
+// Design
 const contentstyle = {
     display: 'flex',
     alignItems: 'center',
     height: '100%',
     width: '100%',
     maxWidth: '600px',
-    background: '#4D4D4D',
+    background: 'black',
     margin: '0 auto',
     padding: '1.5rem',
     boxSizing: 'border-box',
@@ -200,6 +189,7 @@ const modaltextstyle1 = {
     textAlign: 'center',
     color: '#7F5539',
 };
+
 const modaltextstyle2 = {
     fontFamily: 'Noto Sans',
     fontSize: '0.92rem',

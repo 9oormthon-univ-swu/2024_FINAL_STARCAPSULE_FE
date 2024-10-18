@@ -13,9 +13,18 @@ import Main from './pages/main/Main';
 import GuestForm from './pages/Record/GuestForm';
 import Guest from './pages/guest/Guest';
 import CalendarPage from './pages/main/CalendarPage';
-import RecordFormAfter from './pages/Record/RecordFormAfter';
+import RecordFormAfter from './pages/RecordComplete/RecordFormAfter';
+import GuestFormAfter from './pages/RecordComplete/GuestFormAfter';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
 
 function App() {
+    dayjs.locale('ko');
+    dayjs.extend(utc);
+    dayjs.extend(timezone);
+    dayjs.tz.setDefault('Asia/Seoul');
     return (
         <ThemeProvider theme={theme}>
             <Router>
@@ -29,6 +38,10 @@ function App() {
                     <Route
                         path='/recordafter/:userId'
                         element={<RecordFormAfter />}
+                    />
+                    <Route
+                        path='/guestafter/:userId'
+                        element={<GuestFormAfter />}
                     />
                     <Route
                         path='/guestrecord/:userId'
