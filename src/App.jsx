@@ -14,7 +14,8 @@ import GuestForm from './pages/Record/GuestForm';
 import Guest from './pages/guest/Guest';
 import CalendarPage from './pages/main/CalendarPage';
 import Test from './pages/Record/Test';
-import RecordFormAfter from './pages/Record/RecordFormAfter';
+import RecordFormAfter from './pages/RecordComplete/RecordFormAfter';
+import GuestFormAfter from './pages/RecordComplete/GuestFormAfter';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import utc from 'dayjs/plugin/utc'; // utc 플러그인
