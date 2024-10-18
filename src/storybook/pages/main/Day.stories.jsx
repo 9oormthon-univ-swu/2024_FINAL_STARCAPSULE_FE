@@ -18,7 +18,8 @@ const meta = {
     },
 };
 
-const today = dayjs('2024-12-01').toISOString();
+const today = dayjs('2024-12-01').format('YYYY-MM-DD');
+const november30th = dayjs('2024-11-30').format('YYYY-MM-DD');
 const styleConfig = {
     boxStyle: {
         position: 'absolute',
@@ -40,7 +41,7 @@ export const TodayWritten = () => (
 
 export const Future = () => (
     <Day
-        time={dayjs('24-11-30')}
+        time={november30th}
         hasWritten={false}
         date={1}
         styleConfig={styleConfig}

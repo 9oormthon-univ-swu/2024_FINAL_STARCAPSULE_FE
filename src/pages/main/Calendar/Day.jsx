@@ -1,6 +1,14 @@
 import { Box, Typography, useTheme } from '@mui/material';
 import React from 'react';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+
+// 플러그인 활성화
+dayjs.extend(isSameOrAfter);
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 // 위치 설정
 const rightPosition = {
@@ -20,11 +28,10 @@ const middlePosition = {
 const Day = ({ time, hasWritten, date, styleConfig }) => {
     const theme = useTheme();
 
-    // 날짜 계산: 시작일과 종료일 설정
-    const startOfPeriod = dayjs(`${dayjs(time).year()}-11-30`);
-    const endOfPeriod = startOfPeriod.add(31, 'day');
-    const currentDay = startOfPeriod.add(date, 'day');
-    const today = dayjs(time);
+    const startOfPeriod = dayjs(`${dayjs(time).year()}-11-30`).startOf('day');
+    const endOfPeriod = startOfPeriod.add(31, 'day').startOf('day');
+    const currentDay = startOfPeriod.add(date, 'day').startOf('day');
+    const today = dayjs(time).startOf('day');
 
     // 기본 스타일
     let style = {};
@@ -34,8 +41,9 @@ const Day = ({ time, hasWritten, date, styleConfig }) => {
     // 기록 작성 가능 기간: 11월 30일 ~ 12월 31일 (범위 내)
     if (
         today.isBefore(endOfPeriod.add(1, 'day')) &&
-        today.isAfter(startOfPeriod)
+        today.isSameOrAfter(startOfPeriod)
     ) {
+        console.log('기록 작성 가능 기간');
         if (hasWritten) {
             // 작성 완료: 오늘과 지나간 날 동일 스타일
             style.backgroundColor = 'rgba(255, 252, 250, 0.40)';
@@ -88,7 +96,7 @@ const Day = ({ time, hasWritten, date, styleConfig }) => {
                     ...middlePosition,
                 }}
             />
-            <Box // 이후에 버튼으로 바꾸기
+            <Box
                 sx={{
                     width: '100%',
                     height: '100%',
