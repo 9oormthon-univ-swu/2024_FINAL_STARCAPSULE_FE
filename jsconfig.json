@@ -26,8 +26,8 @@
       "@/utils/*": [
         "utils/*"
       ],
-      "@/states/*": [
-        "states/*"
+      "@/stores/*": [
+        "stores/*"
       ]
     }
   },

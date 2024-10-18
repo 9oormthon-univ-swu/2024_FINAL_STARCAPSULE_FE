@@ -15,8 +15,16 @@ import Guest from './pages/guest/Guest';
 import CalendarPage from './pages/main/CalendarPage';
 import Test from './pages/Record/Test';
 import RecordFormAfter from './pages/Record/RecordFormAfter';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
+import utc from 'dayjs/plugin/utc'; // utc 플러그인
+import timezone from 'dayjs/plugin/timezone';
 
 function App() {
+    dayjs.locale('ko');
+    dayjs.extend(utc);
+    dayjs.extend(timezone);
+    dayjs.tz.setDefault('Asia/Seoul');
     return (
         <ThemeProvider theme={theme}>
             <Router>
