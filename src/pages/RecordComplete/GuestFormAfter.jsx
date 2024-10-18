@@ -1,8 +1,9 @@
-import React, { useState } from 'react';  
+import React, { useRef, useState } from 'react';   
 import { Stack } from '@mui/material';
 import RecordBoard from '../Record/components/RecordBoard';
 import ImageSaveButton from './ImageSaveButton'; 
 import Writer from '../Record/components/Writer'; 
+import html2canvas from 'html2canvas';
 
 const contentstyle = {
     display: 'flex',
@@ -11,32 +12,73 @@ const contentstyle = {
     minHeight: '100vh', 
     width: '100%',
     maxWidth: '600px',
-    background: 'black',
     margin: '0 auto',
-    padding: '1.5rem',
+    padding: '0', 
     boxSizing: 'border-box',
+    position: 'relative',
+    overflow: 'hidden', 
 };
 
-const RecordFormAfter = () => {
+const GuestFormAfter = () => {
+    const captureRef = useRef(null); 
     const [fwriter, setfwriter] = useState(''); 
+
+    const handleSaveImage = (e) => {
+        e.preventDefault();
+
+        if (captureRef.current) {
+            const element = captureRef.current;
+            const scale = 2;  
+
+            html2canvas(element, {
+                scale: scale,
+                useCORS: true,
+                backgroundColor: null,
+            }).then((canvas) => {
+                const link = document.createElement('a');
+                link.href = canvas.toDataURL('image/png');
+                link.download = 'record.png';
+                link.click();
+            }).catch((error) => {
+                console.error('이미지 저장 중 오류 발생:', error);
+            });
+        }
+    };
 
     return (
         <>
             <Stack sx={contentstyle}>
-                <Stack>
-                    <Stack>
-                    </Stack>
-                    <form>
-                        <Stack>
-                            <RecordBoard showplaceholder='남기고 싶은 추억을 작성해주세요.' />
-                        </Stack>
-                        <ImageSaveButton /> 
-                    </form>
+                <Stack 
+                    ref={captureRef} 
+                    sx={{
+                        width: '100%',
+                        height: '100vh', 
+                        padding: '1.5rem', 
+                        boxSizing: 'border-box',
+                        background: 'linear-gradient(180deg, #0b0a1b 0%, #27405e 100%)',
+                        position: 'relative',
+                        overflow: 'hidden',
+                    }}
+                >
+                    <RecordBoard showplaceholder='남기고 싶은 추억을 작성해주세요.' />
+                    <Writer fwriter={fwriter} setfwriter={setfwriter} /> 
                 </Stack>
-                <Writer fwriter={fwriter} setfwriter={setfwriter} /> 
+
+            
+                <Stack 
+                    component="form" 
+                    sx={{
+                        position: 'absolute',
+                        bottom: '5rem', 
+                        left: '50%',
+                        transform: 'translateX(-50%)', 
+                    }}
+                >
+                    <ImageSaveButton onClick={handleSaveImage} />
+                </Stack>
             </Stack>
         </>
     );
 };
 
-export default RecordFormAfter;
+export default GuestFormAfter;
