@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import PopupButton from './PopupButton';
 
 const PopupWrapper = styled.div`
     display: ${(props) => (props.isOpen ? 'flex' : 'none')};
@@ -10,7 +11,7 @@ const PopupWrapper = styled.div`
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0, 0.7);
     z-index: 1000;
 `;
 
@@ -28,17 +29,15 @@ const SvgWrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%; 
+    height: auto; 
 `;
 
-const CloseButton = styled.span`
-    position: absolute;
-    top: 28px;
-    right: 38px;
-    cursor: pointer;
-    font-size: 21px;
-    font-weight: bold;
-    z-index: 1;
+const StyledSvg = styled.img`
+    width: 280px; 
+    height: 320px; 
 `;
+
 
 const TextWrapper = styled.div`
     position: absolute;
@@ -50,21 +49,16 @@ const TextWrapper = styled.div`
 `;
 
 const StyledBodyText = styled.div`
-    color: var(--font, #282828);
+ color: #7f5539;
     text-align: center;
-    font-family: 'Noto Sans', sans-serif;
-    font-size: 18px;
+    -webkit-text-stroke-width: 0.7px;
+    -webkit-text-stroke-color: var(--button1, #7f5539);
+    font-size: 30px;
     font-style: normal;
-    font-weight: 700;
-    margin-top: 20px;
-    line-height: 1.4;
-    width: 220px;
-    white-space: normal;
-    word-break: break-word;
-
-    span {
-        font-family: 'Bigshot One', cursive;
-    }
+    margin-top: 13px;
+    line-height: 36px;
+    font-family: 'Griun NltoTAENGGU', sans-serif;
+    white-space: nowrap;
 `;
 
 const PopupAfter = ({ isOpen, onClose }) => {
@@ -72,14 +66,15 @@ const PopupAfter = ({ isOpen, onClose }) => {
         <PopupWrapper isOpen={isOpen}>
             <PopupContent>
                 <SvgWrapper>
-                    <img src={'/assets/Popup.svg'} alt='popup' />
-                    <CloseButton onClick={onClose}>✕</CloseButton>
+                    <StyledSvg src={'/assets/Popup.svg'} alt='popup' />
                     <TextWrapper>
                         <StyledBodyText>
-                            그동안의 추억이 공개되었어요!
+                            그동안의 추억이<br />
+                            공개되었어요!
                         </StyledBodyText>
                     </TextWrapper>
                 </SvgWrapper>
+                <PopupButton text="추억 모아보기" onClick={onClose} />
             </PopupContent>
         </PopupWrapper>
     );

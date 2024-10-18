@@ -16,6 +16,7 @@ import { CalendarIcon } from '@/components/icons';
 import ShareButton from '@/components/ShareButton';
 import { getDaysBeforeOpen } from '@/utils/getDaysBeforeOpen';
 import PopupPage from '../Onboarding/PopupPage';
+import PopupAfter from '../Onboarding/PopupAfter';
 import { useParams } from 'react-router-dom';
 import { useUserStore } from 'stores/useUserStore';
 import { saveTokenFromURL } from '@/utils/saveTokenFromURL';
@@ -24,12 +25,36 @@ import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import { useNavigate } from 'react-router-dom';
 import SnackBar from '@/components/SnackBar';
 import { defaultGetFetcher } from '@/utils/getFetcher';
+import "@dotlottie/player-component"; 
 
 export const MainContainer = styled(Stack)(() => ({
     padding: '2rem 0 2.25rem 0',
     boxSizing: 'border-box',
     height: '100dvh',
     overflow: 'hidden',
+    position: 'relative',  
+}));
+
+
+const Overlay = styled('div')(() => ({
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)', 
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1000, 
+}));
+
+const PopupContainer = styled('div')(() => ({
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    textAlign: 'center',
 }));
 
 export const StyledButton = styled(Button)(({ theme }) => ({
@@ -52,6 +77,7 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
 const Main = () => {
     const [page, setPage] = useState(1);
     const [isPopupOpen, setPopupOpen] = useState(false);
+    const [showLottie, setShowLottie] = useState(true); 
     const navigate = useNavigate();
     const [snackbarProps, setSnackbarProps] = useState({
         openSnackbar: false,
@@ -135,6 +161,11 @@ const Main = () => {
 
     const onRecordClick = () => {
         navigate(`/record/${param.userId}`);
+    };
+
+    const handleLottieClick = () => {
+        setShowLottie(false); //로티 클릭하면 팝업 나타남
+        setPopupOpen(true); 
     };
 
     if (error) return <div>failed to load</div>;
@@ -232,10 +263,22 @@ const Main = () => {
                     </Stack>
                 )}
             </MainContainer>
-            <PopupPage
-                isOpen={isPopupOpen}
-                onClose={() => setPopupOpen(false)}
-            />
+            {!daysLeft && showLottie ? (
+                <Overlay onClick={handleLottieClick}>
+                    <PopupContainer>
+                        <dotlottie-player
+                            src="https://lottie.host/e35fc1c8-f985-4963-940e-0e4e0b630cd9/eNIuonSNHz.json"
+                            background="transparent"
+                            speed="1"
+                            style={{ width: '350px', height: '350px' }}
+                            loop
+                            autoplay
+                        ></dotlottie-player>
+                    </PopupContainer>
+                </Overlay>
+            ) : (
+                <PopupAfter isOpen={isPopupOpen} onClose={() => setPopupOpen(false)} /> //이 부분
+            )}
             <SnackBar
                 {...snackbarProps}
                 handleCloseSnackbar={() =>

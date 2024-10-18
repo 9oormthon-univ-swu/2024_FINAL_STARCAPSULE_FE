@@ -77,7 +77,7 @@ const SVGImage = styled.img`
 `;
 
 const MyCreationComplete = () => {
-    const { userId } = useParams();
+    const { userId } = useParams();  // userId를 useParams로 가져오기
     const navigate = useNavigate();
 
     const [questionId, setQuestionId] = useState('');
@@ -96,7 +96,7 @@ const MyCreationComplete = () => {
     }, []);
 
     const handleClick = () => {
-        navigate(`/main/${userId}`);
+        navigate(`/main/${userId}`);  // userId를 URL에 반영
     };
 
     return (
