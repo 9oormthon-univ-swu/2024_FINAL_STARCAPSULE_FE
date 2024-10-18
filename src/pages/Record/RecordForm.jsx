@@ -6,15 +6,15 @@ import RecordTitle from './components/RecordTitle';
 import RecordUpper from './components/RecordUpper';
 import SnackBar from '@/components/SnackBar';
 import AlertModal from '@/components/AlertModal';
-import { useNavigate, useParams } from 'react-router-dom';  
+import { useNavigate, useParams } from 'react-router-dom';
 import SelectSnowballObject from '@/components/SelectSnowballObject';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 
 const RecordForm = () => {
     const navigate = useNavigate();
-    const { userId } = useParams();  // useParams로 userId 가져오기
-    console.log('userId:', userId); 
-    
+    const { userId } = useParams(); // useParams로 userId 가져오기
+    console.log('userId:', userId);
+
     // useState로 상태 관리
     const [title, setTitle] = useState('');
     const [answer, setAnswer] = useState('');
@@ -31,6 +31,7 @@ const RecordForm = () => {
 
     // 업로드 파일 관리
     const handleSetImage = (image) => {
+        console.log('Setting image:', image);
         setImage(image);
     };
 
@@ -74,8 +75,8 @@ const RecordForm = () => {
                 },
             })
             .then(() => {
+                navigate(`/mycomplete/${param.userId}`);
                 console.log('Memory successfully uploaded');
-                navigate(`/mycomplete/${userId}`);  
             })
             .catch((error) => {
                 console.log('Error:', error);

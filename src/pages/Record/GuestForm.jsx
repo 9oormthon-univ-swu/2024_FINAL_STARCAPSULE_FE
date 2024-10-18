@@ -81,7 +81,7 @@ const GuestForm = () => {
                 },
             })
             .then(() => {
-                navigate('/complete/:userId');
+                navigate(`/complete/${params.userId}`);
             })
             .catch((error) => {
                 console.log(error);
@@ -134,7 +134,7 @@ const GuestForm = () => {
                         <SelectSnowballObject
                             snowballObject={object_name}
                             setSnowballObject={setObjectName}
-                            mine
+                            mine={false}
                         />
                     </Stack>
                     <Stack>

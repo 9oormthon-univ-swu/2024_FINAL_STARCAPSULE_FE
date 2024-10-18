@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+// import frameSVG from '../../assets/Frame_26085556.svg';
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
@@ -60,7 +61,7 @@ const CreationComplete = () => {
                 <br />
                 추억이 전달되었어요
             </SubTitle>
-            <SVGImage src={'/assets/Frame_26085556.svg'} alt='Frame SVG' />
+            <SVGImage src={frameSVG} alt='Frame SVG' />
         </Container>
     );
 };
