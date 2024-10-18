@@ -81,7 +81,7 @@ const Main = () => {
     }, [login, param.userId, setUserId]);
 
     const { data, isLoading, error, mutate } = useSWR(
-        `${process.env.REACT_APP_API_URL}/api/capsule/${param.userId}?page=${page}`,
+        `${import.meta.env.VITE_API_URL}/api/capsule/${param.userId}?page=${page}`,
         defaultGetFetcher,
         {
             onError: (error) => {
@@ -164,7 +164,7 @@ const Main = () => {
                                 title={
                                     '스노우볼에 오늘의 추억이 보관되었어요!\nSNS에 링크를 공유해 친구들에게 함께한 추억을 전달받아보세요☃️\n'
                                 }
-                                url={`${process.env.PUBLIC_URL}/guest/${param.userId}`}
+                                url={`${import.meta.env.BASE_URL}/guest/${param.userId}`}
                             />
                         </Stack>
                     </Stack>

@@ -14,6 +14,7 @@ import GuestForm from './pages/Record/GuestForm';
 import Guest from './pages/guest/Guest';
 import CalendarPage from './pages/main/CalendarPage';
 import Test from './pages/Record/Test';
+import RecordFormAfter from './pages/Record/RecordFormAfter';
 
 function App() {
     return (
@@ -27,6 +28,10 @@ function App() {
                     <Route path='/guest/:userId' element={<Guest />} />
                     <Route path='/record/:userId' element={<RecordForm />} />
                     <Route
+                        path='/recordafter/:userId'
+                        element={<RecordFormAfter />}
+                    />
+                    <Route
                         path='/guestrecord/:userId'
                         element={<GuestForm />}
                     />
@@ -39,7 +44,7 @@ function App() {
                         path='/mycomplete/:userId'
                         element={<MyCreationComplete />}
                     />
-                    <Route path='*' element={<div>Not Found</div>} />{' '}
+                    <Route path='*' element={<div>Not Found</div>} />
                     <Route path='/test' element={<Test />} />
                 </Routes>
             </Router>

@@ -44,7 +44,7 @@ const Guest = () => {
     };
 
     const { data, isLoading, error } = useSWR(
-        `${process.env.REACT_APP_API_URL}/api/capsule/${params.userId}?page=${page}`,
+        `${import.meta.env.VITE_API_URL}/api/capsule/${params.userId}?page=${page}`,
         nicknameGetFetcher, // (url) => fetch(url).then((res) => res.json()),
         {
             onError: (error) => {
