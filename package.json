@@ -12,6 +12,7 @@
     "@vitejs/plugin-react": "^4.3.2",
     "@vitejs/plugin-react-swc": "^3.7.1",
     "axios": "^1.7.7",
+    "dayjs": "^1.11.13",
     "framer-motion": "^11.11.7",
     "html2canvas": "^1.4.1",
     "jwt-decode": "^4.0.0",
