@@ -13,7 +13,6 @@ import Main from './pages/main/Main';
 import GuestForm from './pages/Record/GuestForm';
 import Guest from './pages/guest/Guest';
 import CalendarPage from './pages/main/CalendarPage';
-import Test from './pages/Record/Test';
 import RecordFormAfter from './pages/Record/RecordFormAfter';
 
 function App() {
@@ -45,7 +44,6 @@ function App() {
                         element={<MyCreationComplete />}
                     />
                     <Route path='*' element={<div>Not Found</div>} />
-                    <Route path='/test' element={<Test />} />
                 </Routes>
             </Router>
         </ThemeProvider>

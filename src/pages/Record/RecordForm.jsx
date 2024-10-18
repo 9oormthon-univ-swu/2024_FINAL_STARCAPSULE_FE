@@ -28,6 +28,7 @@ const RecordForm = () => {
 
     // 업로드 파일 관리
     const handleSetImage = (image) => {
+        console.log('Setting image:', image);
         setImage(image);
     };
 

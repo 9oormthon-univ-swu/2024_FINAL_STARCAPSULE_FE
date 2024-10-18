@@ -45,13 +45,13 @@ const RecordTitle = ({ title, setTitle }) => {
     }, []);
 
     return (
-        <Typography sx={titlestyle}>
+        <Typography sx={titlestyle} component='div'>
             {isTitleEdit ? (
                 <Input
                     type='text'
                     value={title}
                     onChange={handleTitleChange}
-                    onBlur={onConfirmClick} // 수정 모드 종료 및 저장
+                    onBlur={onConfirmClick}
                     spellCheck='false'
                     onKeyDown={handleKeyDown}
                     style={{ width: '16rem', color: '#fff' }}

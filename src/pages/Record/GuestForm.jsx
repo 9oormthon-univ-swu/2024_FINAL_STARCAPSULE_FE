@@ -81,7 +81,7 @@ const GuestForm = () => {
                 },
             })
             .then(() => {
-                navigate('/complete/:userId');
+                navigate(`/complete/${params.userId}`);
             })
             .catch((error) => {
                 console.log(error);

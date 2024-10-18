@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Stack } from '@mui/material';
 import ImgUploadButton from './ImgUploadButton';
 
@@ -6,39 +6,20 @@ const RecordBoard = ({
     answer,
     inputCount,
     handleTextChange,
-    handleSetImage,
     showplaceholder,
+    handleSetImage,
+    selectedImage,
+    fileInputRef,
 }) => {
-    //이미지 나타나기
-    const [imagePreview, setImagePreview] = useState(null);
-
-    // 업로드한 이미지 출력
-    const handleSetPreviewImage = (imageUrl) => {
-        setImagePreview(imageUrl); // Set image preview URL
-    };
-
     return (
         <div style={RecordBgstyle}>
             <Stack sx={imgcontainer}>
                 <ImgUploadButton
+                    id='image'
+                    selectedImage={selectedImage}
                     setImage={handleSetImage}
-                    setPreviewImage={handleSetPreviewImage}
-                    hideButton={!!imagePreview}
+                    fileInputRef={fileInputRef}
                 ></ImgUploadButton>
-                {imagePreview && (
-                    <div>
-                        <img
-                            src={imagePreview}
-                            alt='Upload Img'
-                            style={{
-                                maxWidth: '15rem',
-                                maxHeight: '15rem',
-                                borderRadius: '0.75rem',
-                                backgroundSize: 'contain',
-                            }}
-                        />
-                    </div>
-                )}
             </Stack>
 
             <Stack>

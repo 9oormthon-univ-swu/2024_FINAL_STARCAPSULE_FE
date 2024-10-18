@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import frameSVG from '../../assets/Frame_26085556.svg';
+// import frameSVG from '../../assets/Frame_26085556.svg';
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
