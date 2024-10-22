@@ -1,4 +1,4 @@
-import { Box, Typography, useTheme } from '@mui/material';
+import { Box, Stack, Typography, useTheme } from '@mui/material';
 import React from 'react';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
@@ -36,19 +36,18 @@ const Day = ({ time, hasWritten, date, styleConfig }) => {
     // 기본 스타일
     let style = {};
     let color = theme.palette.custom.white;
-    let imgDisplay = 'none';
+    let imgDisplay = false;
 
     // 기록 작성 가능 기간: 11월 30일 ~ 12월 31일 (범위 내)
     if (
         today.isBefore(endOfPeriod.add(1, 'day')) &&
         today.isSameOrAfter(startOfPeriod)
     ) {
-        console.log('기록 작성 가능 기간');
         if (hasWritten) {
             // 작성 완료: 오늘과 지나간 날 동일 스타일
             style.backgroundColor = 'rgba(255, 252, 250, 0.40)';
             color = theme.palette.custom.font;
-            imgDisplay = 'block';
+            imgDisplay = true;
         } else if (currentDay.isSame(today, 'day')) {
             // 오늘 작성 안함
             style.border = `1px solid ${theme.palette.custom.white}`;
@@ -65,7 +64,7 @@ const Day = ({ time, hasWritten, date, styleConfig }) => {
 
     // 기록 공개 기간: 12월 31일 이후
     if (today.isAfter(endOfPeriod) || today.isBefore(startOfPeriod)) {
-        imgDisplay = 'block';
+        imgDisplay = true;
         if (hasWritten) {
             // 작성 완료
             style.backgroundColor = 'transparent';
@@ -78,50 +77,49 @@ const Day = ({ time, hasWritten, date, styleConfig }) => {
     }
 
     return (
-        <Box
+        <Stack
             sx={{
-                position: 'relative',
                 boxSizing: 'border-box',
                 width: '100%',
+                height: 'auto',
                 minWidth: 0,
                 minHeight: 0,
+                backgroundImage: imgDisplay
+                    ? `url("/assets/calendar/puzzle_${date}.svg")`
+                    : 'none',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundColor: style.backgroundColor,
+                backgroundBlendMode: 'overlay', // 배경 이미지와 색상을 혼합
                 ...styleConfig.boxStyle,
             }}
+            justifyContent={'center'}
+            alignItems={'center'}
         >
-            <img
-                src={`/assets/calendar/puzzle_${date}.svg`}
-                style={{
-                    zIndex: 0,
-                    display: imgDisplay,
-                    pointerEvents: 'none',
-                    width: '100%',
-                    height: '100%',
-                    ...middlePosition,
-                }}
-            />
-            <Box
+            <Stack
                 sx={{
                     zIndex: 1,
                     width: '100%',
-                    height: '100%',
-                    ...middlePosition,
-                    ...style,
+                    p: '6px',
+                    boxSizing: 'border-box',
+                    border: style.border,
+
+                    ...styleConfig.boxStyle,
                 }}
+                justifyContent={'center'}
+                alignItems={'center'}
             >
                 <Typography
                     sx={{
                         color: color,
                         pointerEvents: 'none',
-                        ...(styleConfig.position === 'right'
-                            ? rightPosition
-                            : middlePosition),
                     }}
                     variant={styleConfig.variant}
                 >
                     {date ? date : '11.30'}
                 </Typography>
-            </Box>
-        </Box>
+            </Stack>
+        </Stack>
     );
 };
 

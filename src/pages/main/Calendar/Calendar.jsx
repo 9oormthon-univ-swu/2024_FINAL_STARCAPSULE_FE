@@ -7,21 +7,21 @@ import { dayStyle } from './Calendar.style';
 const GridContainer = styled.div`
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    grid-auto-rows: minmax(20px, auto);
     gap: 3px;
     max-width: 31.25rem;
+    grid-auto-rows: min-content;
 `;
 
 const data = {
     serverTime: '2024-12-25',
     hasWritten: [
-        true,
-        false,
-        true,
-        true,
         false,
         false,
-        true,
+        false,
+        false,
+        false,
+        false,
+        false,
         false,
         false,
         false,
@@ -52,6 +52,7 @@ const data = {
 
 const Calendar = () => {
     const today = dayjs();
+
     return (
         <GridContainer>
             {data.hasWritten.map((written, index) => (
