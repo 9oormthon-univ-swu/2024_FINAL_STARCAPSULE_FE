@@ -211,7 +211,6 @@ const dayStyle = [
     },
     {
         boxStyle: {
-            gridColumn: 'span 2',
             aspectRatio: '119/51',
         },
         position: 'middle',
@@ -219,8 +218,6 @@ const dayStyle = [
     },
     {
         boxStyle: {
-            gridColumn: 'span 3',
-
             aspectRatio: '180.5/51',
         },
         position: 'middle',

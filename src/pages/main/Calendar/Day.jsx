@@ -75,7 +75,6 @@ const Day = ({ time, hasWritten, date, styleConfig }) => {
             color = theme.palette.custom.font;
         }
     }
-
     return (
         <Stack
             sx={{

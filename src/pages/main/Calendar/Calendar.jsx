@@ -1,16 +1,9 @@
 import React from 'react';
-import styled from 'styled-components';
 import Day from './Day';
 import dayjs from 'dayjs';
 import { dayStyle } from './Calendar.style';
-
-const GridContainer = styled.div`
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 3px;
-    max-width: 31.25rem;
-    grid-auto-rows: min-content;
-`;
+import Masonry from '@mui/lab/Masonry';
+import { Box, Stack } from '@mui/material';
 
 const data = {
     serverTime: '2024-12-25',
@@ -54,17 +47,51 @@ const Calendar = () => {
     const today = dayjs();
 
     return (
-        <GridContainer>
-            {data.hasWritten.map((written, index) => (
+        <Box
+            sx={{
+                maxWidth: '495px',
+            }}
+        >
+            <Masonry
+                sequential
+                spacing={'3px'}
+                // defaultSpacing={'3px'}
+                defaultColumns={5}
+                columns={5}
+            >
+                {data.hasWritten.map((written, index) => {
+                    if (index >= 30) return null;
+                    return (
+                        <Day
+                            key={index}
+                            time={today.format('YYYY-MM-DD')}
+                            hasWritten={written}
+                            date={index}
+                            styleConfig={dayStyle[index]}
+                        />
+                    );
+                })}
+            </Masonry>
+            <Masonry
+                sequential
+                spacing={'3px'}
+                // defaultSpacing={'3px'}
+                columns={2}
+            >
                 <Day
-                    key={index}
                     time={today.format('YYYY-MM-DD')}
-                    hasWritten={written}
-                    date={index}
-                    styleConfig={dayStyle[index]}
+                    hasWritten={data.hasWritten[30]}
+                    date={30}
+                    styleConfig={dayStyle[30]}
                 />
-            ))}
-        </GridContainer>
+                <Day
+                    time={today.format('YYYY-MM-DD')}
+                    hasWritten={data.hasWritten[31]}
+                    date={31}
+                    styleConfig={dayStyle[31]}
+                />
+            </Masonry>
+        </Box>
     );
 };
 
