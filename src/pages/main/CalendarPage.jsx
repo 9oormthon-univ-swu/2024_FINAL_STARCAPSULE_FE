@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import Calendar from './Calendar';
+import Calendar from './Calendar/Calendar';
 import CloseIcon from '../../components/icons/CloseIcon';
 
 const CalendarPageWrapper = styled.div`

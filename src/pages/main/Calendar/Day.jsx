@@ -82,25 +82,28 @@ const Day = ({ time, hasWritten, date, styleConfig }) => {
             sx={{
                 position: 'relative',
                 boxSizing: 'border-box',
+                width: '100%',
+                minWidth: 0,
+                minHeight: 0,
                 ...styleConfig.boxStyle,
             }}
         >
             <img
                 src={`/assets/calendar/puzzle_${date}.svg`}
                 style={{
-                    width: '100%',
-                    height: '100%',
                     zIndex: 0,
                     display: imgDisplay,
                     pointerEvents: 'none',
+                    width: '100%',
+                    height: '100%',
                     ...middlePosition,
                 }}
             />
             <Box
                 sx={{
+                    zIndex: 1,
                     width: '100%',
                     height: '100%',
-                    zIndex: 1,
                     ...middlePosition,
                     ...style,
                 }}
