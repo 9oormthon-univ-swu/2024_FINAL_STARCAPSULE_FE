@@ -23,7 +23,8 @@ import { CloseIcon } from './icons';
  * @returns
  */
 
-const ModalContainer = styled(Stack)(() => ({
+// mui의 반응형 적용을 위해 그대로 두었음
+const modalContainerStyle = {
     position: 'absolute',
     top: '50%',
     left: '50%',
@@ -34,9 +35,8 @@ const ModalContainer = styled(Stack)(() => ({
     width: ['80vw', 'fit-content'],
     maxWidth: '20rem',
     overflow: 'hidden',
-}));
+};
 
-// mui의 반응형 적용을 위해 그대로 두었음
 const modalDescriptionStyle = {
     px: [2, 6],
     pb: 3,
@@ -64,7 +64,11 @@ const AlertModal = ({
             aria-describedby='alert-modal-description'
             {...props}
         >
-            <ModalContainer direction={'column'} justifyContent={'center'}>
+            <Stack
+                direction={'column'}
+                justifyContent={'center'}
+                sx={modalContainerStyle}
+            >
                 <Stack
                     direction={'column'}
                     p={2}
@@ -94,7 +98,7 @@ const AlertModal = ({
                 <ModalButton variant='contained' onClick={onButtonClick}>
                     <Typography variant='title2'>{buttonText}</Typography>
                 </ModalButton>
-            </ModalContainer>
+            </Stack>
         </Modal>
     );
 };
