@@ -54,7 +54,7 @@ const Calendar = () => {
         >
             <Masonry
                 sequential
-                spacing={'3px'}
+                spacing={0.375}
                 // defaultSpacing={'3px'}
                 defaultColumns={5}
                 columns={5}
@@ -72,12 +72,7 @@ const Calendar = () => {
                     );
                 })}
             </Masonry>
-            <Masonry
-                sequential
-                spacing={'3px'}
-                // defaultSpacing={'3px'}
-                columns={2}
-            >
+            <Masonry sequential spacing={1} columns={2}>
                 <Day
                     time={today.format('YYYY-MM-DD')}
                     hasWritten={data.hasWritten[30]}
