@@ -7,7 +7,6 @@ import Layout from '@/layouts/Layout';
 import { Stack } from '@mui/material';
 
 const Header = styled.div`
-    position: absolute;
     top: 20px;
     left: 20px;
     right: 20px;
@@ -65,27 +64,27 @@ const CalendarPage = () => {
     };
 
     return (
-        <Layout>
+        <Layout snow overlay>
             <Stack
                 sx={{
                     width: '100%',
-                    height: '100%',
+                    height: '100vh',
                 }}
                 direction={'column'}
                 justifyContent={'center'}
                 alignContent={'center'}
             >
-                {/* <Header>
-                <CloseButton onClick={handleClose}>
-                    <StyledCloseIcon
-                        style={{ width: '30px', height: '30px' }}
-                    />
-                </CloseButton>
-                <TitleWrapper>
-                    <Title>당신의 추억을 모아 퍼즐을 완성하세요!</Title>
-                    <SubTitle>보관된 추억 조각 0개</SubTitle>
-                </TitleWrapper>
-            </Header> */}
+                <Header>
+                    <CloseButton onClick={handleClose}>
+                        <StyledCloseIcon
+                            style={{ width: '30px', height: '30px' }}
+                        />
+                    </CloseButton>
+                    <TitleWrapper>
+                        <Title>당신의 추억을 모아 퍼즐을 완성하세요!</Title>
+                        <SubTitle>보관된 추억 조각 0개</SubTitle>
+                    </TitleWrapper>
+                </Header>
                 <Calendar />
             </Stack>
         </Layout>

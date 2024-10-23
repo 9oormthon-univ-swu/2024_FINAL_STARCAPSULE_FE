@@ -3,7 +3,7 @@ import Day from './Day';
 import dayjs from 'dayjs';
 import { dayStyle } from './Calendar.style';
 import Masonry from '@mui/lab/Masonry';
-import { Box, Grid2, Stack } from '@mui/material';
+import { Box, Grid2 } from '@mui/material';
 
 const data = {
     serverTime: '2024-12-25',
@@ -47,16 +47,21 @@ const Calendar = () => {
     const today = dayjs();
 
     return (
-        <>
+        <Box
+            Box
+            sx={{
+                m: ['0', '0 2.5rem'],
+            }}
+        >
             <Masonry
                 sequential
                 spacing={0.375}
-                // defaultSpacing={'3px'}
                 defaultColumns={5}
                 columns={5}
                 sx={{
                     width: '100%',
                     boxSizing: 'border-box',
+                    maxWidth: '30rem',
                 }}
             >
                 {data.hasWritten.map((written, index) => {
@@ -79,8 +84,9 @@ const Calendar = () => {
                 sx={{
                     boxSizing: 'border-box',
                     paddingRight: 0.4,
-                    transform: 'translateY(-4px)',
+                    transform: 'translateY(-3px)',
                     width: '100%',
+                    maxWidth: '30rem',
                 }}
             >
                 <Grid2 size={4}>
@@ -100,7 +106,7 @@ const Calendar = () => {
                     />
                 </Grid2>
             </Grid2>
-        </>
+        </Box>
     );
 };
 

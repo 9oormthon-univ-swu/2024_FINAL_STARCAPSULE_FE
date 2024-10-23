@@ -88,7 +88,8 @@ const Day = ({ time, hasWritten, date, styleConfig }) => {
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 backgroundColor: style.backgroundColor,
-                backgroundBlendMode: 'overlay', // 배경 이미지와 색상을 혼합
+                backgroundBlendMode: 'overlay',
+                overflow: 'hidden',
                 ...styleConfig.boxStyle,
             }}
             justifyContent={'center'}
