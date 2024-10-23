@@ -3,16 +3,8 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import Calendar from './Calendar/Calendar';
 import CloseIcon from '../../components/icons/CloseIcon';
-
-const CalendarPageWrapper = styled.div`
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-`;
+import Layout from '@/layouts/Layout';
+import { Stack } from '@mui/material';
 
 const Header = styled.div`
     position: absolute;
@@ -73,8 +65,17 @@ const CalendarPage = () => {
     };
 
     return (
-        <CalendarPageWrapper>
-            <Header>
+        <Layout>
+            <Stack
+                sx={{
+                    width: '100%',
+                    height: '100%',
+                }}
+                direction={'column'}
+                justifyContent={'center'}
+                alignContent={'center'}
+            >
+                {/* <Header>
                 <CloseButton onClick={handleClose}>
                     <StyledCloseIcon
                         style={{ width: '30px', height: '30px' }}
@@ -84,9 +85,10 @@ const CalendarPage = () => {
                     <Title>당신의 추억을 모아 퍼즐을 완성하세요!</Title>
                     <SubTitle>보관된 추억 조각 0개</SubTitle>
                 </TitleWrapper>
-            </Header>
-            <Calendar />
-        </CalendarPageWrapper>
+            </Header> */}
+                <Calendar />
+            </Stack>
+        </Layout>
     );
 };
 

@@ -176,21 +176,21 @@ const dayStyle = [
     },
     {
         boxStyle: {
-            aspectRatio: '58/51',
+            aspectRatio: '58/50',
         },
         position: 'right',
         variant: 'number2',
     },
     {
         boxStyle: {
-            aspectRatio: '58/56',
+            aspectRatio: '58/55',
         },
         position: 'middle',
         variant: 'number1',
     },
     {
         boxStyle: {
-            aspectRatio: '58/45',
+            aspectRatio: '58/44',
         },
         position: 'right',
         variant: 'number2',

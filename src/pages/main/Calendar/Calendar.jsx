@@ -47,17 +47,17 @@ const Calendar = () => {
     const today = dayjs();
 
     return (
-        <Box
-            sx={{
-                maxWidth: '495px',
-            }}
-        >
+        <>
             <Masonry
                 sequential
                 spacing={0.375}
                 // defaultSpacing={'3px'}
                 defaultColumns={5}
                 columns={5}
+                sx={{
+                    width: '100%',
+                    boxSizing: 'border-box',
+                }}
             >
                 {data.hasWritten.map((written, index) => {
                     if (index >= 30) return null;
@@ -79,7 +79,8 @@ const Calendar = () => {
                 sx={{
                     boxSizing: 'border-box',
                     paddingRight: 0.4,
-                    transform: 'translateY(-3px)',
+                    transform: 'translateY(-4px)',
+                    width: '100%',
                 }}
             >
                 <Grid2 size={4}>
@@ -99,7 +100,7 @@ const Calendar = () => {
                     />
                 </Grid2>
             </Grid2>
-        </Box>
+        </>
     );
 };
 
