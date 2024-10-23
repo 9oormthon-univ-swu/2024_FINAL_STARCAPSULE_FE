@@ -1,4 +1,5 @@
-import { Box, Stack, Typography, useTheme } from '@mui/material';
+import { Stack, Typography, useTheme } from '@mui/material';
+import { Button } from '@mui/base';
 import React from 'react';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
@@ -10,25 +11,37 @@ dayjs.extend(isSameOrAfter);
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
+const isRecordable = (time) => {
+    const startOfPeriod = dayjs(`${dayjs(time).year()}-11-30`).startOf('day');
+    const endOfPeriod = startOfPeriod.add(31, 'day').startOf('day');
+    const today = dayjs(time).startOf('day');
+
+    if (
+        today.isBefore(endOfPeriod.add(1, 'day')) &&
+        today.isSameOrAfter(startOfPeriod)
+    )
+        return true;
+    return false;
+};
+
 // 스타일 및 날짜 관련 설정 추상화
 const Day = ({ time, hasWritten, date, styleConfig }) => {
     const theme = useTheme();
 
     const startOfPeriod = dayjs(`${dayjs(time).year()}-11-30`).startOf('day');
-    const endOfPeriod = startOfPeriod.add(31, 'day').startOf('day');
     const currentDay = startOfPeriod.add(date, 'day').startOf('day');
     const today = dayjs(time).startOf('day');
 
     // 기본 스타일
-    let style = {};
+    let style = {
+        backgroundColor: 'transparent',
+        border: 'none',
+    };
     let color = theme.palette.custom.white;
     let imgDisplay = false;
 
     // 기록 작성 가능 기간: 11월 30일 ~ 12월 31일 (범위 내)
-    if (
-        today.isBefore(endOfPeriod.add(1, 'day')) &&
-        today.isSameOrAfter(startOfPeriod)
-    ) {
+    if (isRecordable(time)) {
         if (hasWritten) {
             // 작성 완료: 오늘과 지나간 날 동일 스타일
             style.backgroundColor = 'rgba(255, 252, 250, 0.40)';
@@ -49,7 +62,7 @@ const Day = ({ time, hasWritten, date, styleConfig }) => {
     }
 
     // 기록 공개 기간: 12월 31일 이후
-    if (today.isAfter(endOfPeriod) || today.isBefore(startOfPeriod)) {
+    if (isRecordable(time) === false) {
         imgDisplay = true;
         if (hasWritten) {
             // 작성 완료
@@ -88,6 +101,7 @@ const Day = ({ time, hasWritten, date, styleConfig }) => {
                     px: '6px',
                     boxSizing: 'border-box',
                     border: style.border,
+                    backgroundColor: `${style.backgroundColor} !important`,
                     ...styleConfig.boxStyle,
                 }}
                 justifyContent={
@@ -100,6 +114,8 @@ const Day = ({ time, hasWritten, date, styleConfig }) => {
                           ? 'end'
                           : 'start'
                 }
+                component={Button}
+                disabled={isRecordable(time)}
             >
                 <Typography
                     sx={{
