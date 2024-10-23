@@ -3,7 +3,7 @@ import Day from './Day';
 import dayjs from 'dayjs';
 import { dayStyle } from './Calendar.style';
 import Masonry from '@mui/lab/Masonry';
-import { Box, Stack } from '@mui/material';
+import { Box, Grid2, Stack } from '@mui/material';
 
 const data = {
     serverTime: '2024-12-25',
@@ -72,20 +72,33 @@ const Calendar = () => {
                     );
                 })}
             </Masonry>
-            <Masonry sequential spacing={1} columns={2}>
-                <Day
-                    time={today.format('YYYY-MM-DD')}
-                    hasWritten={data.hasWritten[30]}
-                    date={30}
-                    styleConfig={dayStyle[30]}
-                />
-                <Day
-                    time={today.format('YYYY-MM-DD')}
-                    hasWritten={data.hasWritten[31]}
-                    date={31}
-                    styleConfig={dayStyle[31]}
-                />
-            </Masonry>
+            <Grid2
+                container
+                columns={10}
+                columnSpacing={0.375}
+                sx={{
+                    boxSizing: 'border-box',
+                    paddingRight: 0.4,
+                    transform: 'translateY(-3px)',
+                }}
+            >
+                <Grid2 size={4}>
+                    <Day
+                        time={today.format('YYYY-MM-DD')}
+                        hasWritten={data.hasWritten[30]}
+                        date={30}
+                        styleConfig={dayStyle[30]}
+                    />
+                </Grid2>
+                <Grid2 size={6}>
+                    <Day
+                        time={today.format('YYYY-MM-DD')}
+                        hasWritten={data.hasWritten[31]}
+                        date={31}
+                        styleConfig={dayStyle[31]}
+                    />
+                </Grid2>
+            </Grid2>
         </Box>
     );
 };

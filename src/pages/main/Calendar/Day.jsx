@@ -10,20 +10,6 @@ dayjs.extend(isSameOrAfter);
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-// 위치 설정
-const rightPosition = {
-    position: 'absolute',
-    top: 0,
-    right: 6,
-};
-
-const middlePosition = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-};
-
 // 스타일 및 날짜 관련 설정 추상화
 const Day = ({ time, hasWritten, date, styleConfig }) => {
     const theme = useTheme();
@@ -99,14 +85,21 @@ const Day = ({ time, hasWritten, date, styleConfig }) => {
                 sx={{
                     zIndex: 1,
                     width: '100%',
-                    p: '6px',
+                    px: '6px',
                     boxSizing: 'border-box',
                     border: style.border,
-
                     ...styleConfig.boxStyle,
                 }}
-                justifyContent={'center'}
-                alignItems={'center'}
+                justifyContent={
+                    styleConfig.position === 'middle' ? 'center' : 'flex-start'
+                }
+                alignItems={
+                    styleConfig.position === 'middle'
+                        ? 'center'
+                        : styleConfig.position === 'right'
+                          ? 'end'
+                          : 'start'
+                }
             >
                 <Typography
                     sx={{
