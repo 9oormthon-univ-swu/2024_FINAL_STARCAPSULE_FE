@@ -263,22 +263,7 @@ const Main = () => {
                     </Stack>
                 )}
             </MainContainer>
-            {!daysLeft && showLottie ? (
-                <Overlay onClick={handleLottieClick}>
-                    <PopupContainer>
-                        <dotlottie-player
-                            src="https://lottie.host/e35fc1c8-f985-4963-940e-0e4e0b630cd9/eNIuonSNHz.json"
-                            background="transparent"
-                            speed="1"
-                            style={{ width: '350px', height: '350px' }}
-                            loop
-                            autoplay
-                        ></dotlottie-player>
-                    </PopupContainer>
-                </Overlay>
-            ) : (
-                <PopupAfter isOpen={isPopupOpen} onClose={() => setPopupOpen(false)} /> //이 부분
-            )}
+            <PopupPage isOpen={isPopupOpen} onClose={() => setPopupOpen(false)} />
             <SnackBar
                 {...snackbarProps}
                 handleCloseSnackbar={() =>
