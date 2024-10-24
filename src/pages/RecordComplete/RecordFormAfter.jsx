@@ -63,7 +63,7 @@ const RecordFormAfter = () => {
                 }}
             >
                <CloseIcon sx={{ cursor: 'pointer', position: 'relative', right: '-30px' }} />  {/* 오른쪽으로 30px 이동 */}
-               <span style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>
+               <span style={{ fontSize: '1.4rem' }}>
                     <span style={{ color: '#DDB892' }}>2024</span>년&nbsp;
                     <span style={{ color: '#DDB892' }}>11</span>월&nbsp;
                     <span style={{ color: '#DDB892' }}>30</span>일
