@@ -25,7 +25,7 @@ const isRecordable = (time) => {
 };
 
 // 스타일 및 날짜 관련 설정 추상화
-const Day = ({ time, hasWritten, date, styleConfig }) => {
+const Day = ({ time, hasWritten, date, styleConfig, lastDayWritten }) => {
     const theme = useTheme();
 
     const startOfPeriod = dayjs(`${dayjs(time).year()}-11-30`).startOf('day');
@@ -62,7 +62,7 @@ const Day = ({ time, hasWritten, date, styleConfig }) => {
     }
 
     // 기록 공개 기간: 12월 31일 이후
-    if (isRecordable(time) === false) {
+    if (isRecordable(time) === false || lastDayWritten) {
         imgDisplay = true;
         if (hasWritten) {
             // 작성 완료

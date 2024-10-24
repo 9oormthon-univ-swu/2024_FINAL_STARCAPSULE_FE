@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import Calendar from './Calendar/Calendar';
 import CloseIcon from '../../components/icons/CloseIcon';
 import Layout from '@/layouts/Layout';
 import { Stack } from '@mui/material';
+import useSWR from 'swr';
+import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
+import Loading from '@/components/Loading';
 
 const Header = styled.div`
     top: 20px;
@@ -59,9 +62,26 @@ const SubTitle = styled.p`
 const CalendarPage = () => {
     const navigate = useNavigate();
 
+    const axiosWithAuth = useAxiosWithAuth();
+
+    const fetcher = (url) =>
+        axiosWithAuth.get(url).then((res) => res.data.result);
+
+    const { data, isLoading, error } = useSWR(`/calendar/data`, fetcher, {
+        onError: (error) => {
+            console.log(error);
+        },
+    });
+
+    useEffect(() => {
+        console.log(data);
+    }, [data]);
+
     const handleClose = () => {
         navigate(-1);
     };
+
+    if (isLoading) return <Loading />;
 
     return (
         <Layout snow overlay>
@@ -85,7 +105,10 @@ const CalendarPage = () => {
                         <SubTitle>보관된 추억 조각 0개</SubTitle>
                     </TitleWrapper>
                 </Header>
-                <Calendar />
+                <Calendar
+                    serverTime={data.serverTime}
+                    hasWritten={data.writtenArray}
+                />
             </Stack>
         </Layout>
     );

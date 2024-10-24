@@ -5,47 +5,10 @@ import { dayStyle } from './Calendar.style';
 import Masonry from '@mui/lab/Masonry';
 import { Box, Grid2 } from '@mui/material';
 
-const data = {
-    serverTime: '2024-12-25',
-    hasWritten: [
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-    ],
-};
+const Calendar = ({ serverTime, hasWritten }) => {
+    const today = dayjs(serverTime);
 
-const Calendar = () => {
-    const today = dayjs();
-
+    let lastDayWritten = hasWritten[31];
     return (
         <Box
             Box
@@ -64,7 +27,7 @@ const Calendar = () => {
                     maxWidth: '30rem',
                 }}
             >
-                {data.hasWritten.map((written, index) => {
+                {hasWritten.map((written, index) => {
                     if (index >= 30) return null;
                     return (
                         <Day
@@ -73,6 +36,7 @@ const Calendar = () => {
                             hasWritten={written}
                             date={index}
                             styleConfig={dayStyle[index]}
+                            lastDayWritten={lastDayWritten}
                         />
                     );
                 })}
@@ -92,17 +56,19 @@ const Calendar = () => {
                 <Grid2 size={4}>
                     <Day
                         time={today.format('YYYY-MM-DD')}
-                        hasWritten={data.hasWritten[30]}
+                        hasWritten={hasWritten[30]}
                         date={30}
                         styleConfig={dayStyle[30]}
+                        lastDayWritten={lastDayWritten}
                     />
                 </Grid2>
                 <Grid2 size={6}>
                     <Day
                         time={today.format('YYYY-MM-DD')}
-                        hasWritten={data.hasWritten[31]}
+                        hasWritten={hasWritten[31]}
                         date={31}
                         styleConfig={dayStyle[31]}
+                        lastDayWritten={lastDayWritten}
                     />
                 </Grid2>
             </Grid2>
