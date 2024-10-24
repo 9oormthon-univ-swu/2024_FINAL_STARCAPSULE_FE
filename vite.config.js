@@ -3,10 +3,11 @@ import react from '@vitejs/plugin-react-swc';
 import jsconfigPaths from 'vite-jsconfig-paths';
 import path from 'path';
 import svgr from 'vite-plugin-svgr';
+import eslintPlugin from 'vite-plugin-eslint';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-    plugins: [react(), jsconfigPaths(), svgr()],
+    plugins: [react(), jsconfigPaths(), svgr(), eslintPlugin()],
     server: {
         port: 3000,
         open: true,
