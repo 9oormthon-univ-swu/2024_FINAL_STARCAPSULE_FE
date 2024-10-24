@@ -2,8 +2,9 @@ import React, { useRef } from 'react';
 import { Stack } from '@mui/material';
 import RecordBoard from '../Record/components/RecordBoard';
 import ImageSaveButton from './ImageSaveButton'; 
-import RecordTitle from '../Record/components/RecordTitle';
 import html2canvas from 'html2canvas';
+import CloseIcon from '@/components/icons/closeicon';  // 엑스 아이콘 import
+import { CalendarIcon } from '@/components/icons';    // 달력 아이콘 import
 
 const contentstyle = {
     display: 'flex',
@@ -46,7 +47,30 @@ const RecordFormAfter = () => {
 
     return (
         <Stack sx={contentstyle}>
-          
+            {/* 상단에 아이콘과 날짜 추가 */}
+            <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="space-between"
+                sx={{
+                    position: 'absolute',
+                    top: 'calc(1rem + 30px)',  // 30px 아래로 조정
+                    left: '1rem',
+                    right: '1rem',
+                    zIndex: 10,
+                    color: 'white',
+                    fontFamily: 'Griun NltoTAENGGU, sans-serif',
+                }}
+            >
+               <CloseIcon sx={{ cursor: 'pointer', position: 'relative', right: '-30px' }} />  {/* 오른쪽으로 30px 이동 */}
+               <span style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>
+                    <span style={{ color: '#DDB892' }}>2024</span>년&nbsp;
+                    <span style={{ color: '#DDB892' }}>11</span>월&nbsp;
+                    <span style={{ color: '#DDB892' }}>30</span>일
+                </span>
+                <CalendarIcon sx={{ cursor: 'pointer', position: 'relative', left: '-30px' }} />  {/* 왼쪽으로 30px 이동 */}
+            </Stack>
+
             <Stack 
                 ref={captureRef} 
                 sx={{
@@ -57,14 +81,22 @@ const RecordFormAfter = () => {
                     background: 'linear-gradient(180deg, #0b0a1b 0%, #27405e 100%)',
                     position: 'relative',
                     overflow: 'hidden',
+                    paddingTop: '12rem',
                 }}
             >
-                <Stack>
-                    <RecordTitle />
-                </Stack>
-                <Stack sx={{ width: '100%' }}>
-                    <RecordBoard showplaceholder='남기고 싶은 추억을 작성해주세요.' />
-                </Stack>
+                {/* 질문 추가 */}
+                <span style={{ 
+                    position: 'absolute',
+                    top: 'calc(10px + 9rem)', 
+                    left: '9.5rem',  // 고정된 위치
+                    color: 'white',
+                    fontSize: '1.3rem',
+                    fontFamily: 'Griun NltoTAENGGU, sans-serif',
+                }}>
+                    "질문이다다ㅏ다다ㅏ다다다ㅏ다다"
+                </span>
+
+                <RecordBoard showplaceholder='남기고 싶은 추억을 작성해주세요.' />
             </Stack>
 
             <Stack 
