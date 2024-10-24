@@ -1,63 +1,14 @@
 import React, { useEffect } from 'react';
-// import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import Calendar from './Calendar/Calendar';
-// import CloseIcon from '../../components/icons/CloseIcon';
 import Layout from '@/layouts/Layout';
-import { Stack } from '@mui/material';
+import { Button, IconButton, Stack, Typography } from '@mui/material';
 import useSWR from 'swr';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import Loading from '@/components/Loading';
-
-// const Header = styled.div`
-//     top: 20px;
-//     left: 20px;
-//     right: 20px;
-//     display: flex;
-//     flex-direction: column;
-//     align-items: center;
-//     z-index: 10000;
-// `;
-
-// const StyledCloseIcon = styled(CloseIcon)`
-//     fill: #d5d1cd;
-// `;
-
-// const CloseButton = styled.button`
-//     background: none;
-//     border: none;
-//     cursor: pointer;
-//     position: absolute;
-//     top: 26px;
-//     margin-left: -490px;
-//     color: #d5d1cd;
-// `;
-
-// const TitleWrapper = styled.div`
-//     text-align: center;
-//     margin-top: 110px;
-//     margin-left: -220px;
-// `;
-
-// const Title = styled.h1`
-//     color: var(--grey, #d5d1cd);
-//     font-family: 'Noto Sans';
-//     font-size: 16px;
-//     font-style: normal;
-//     font-weight: 400;
-//     line-height: normal;
-// `;
-
-// const SubTitle = styled.p`
-//     color: var(--white, #fffcfa);
-//     font-family: 'Noto Sans';
-//     font-size: 20px;
-//     font-style: normal;
-//     font-weight: 700;
-//     line-height: normal;
-//     margin-left: -83px;
-//     margin-top: 5px;
-// `;
+import { CloseIcon } from '@/components/icons';
+import dayjs from 'dayjs';
+import { isRecordable } from './Calendar/Day';
 
 const CalendarPage = () => {
     const navigate = useNavigate();
@@ -77,39 +28,95 @@ const CalendarPage = () => {
         console.log(data);
     }, [data]);
 
-    // const handleClose = () => {
-    //     navigate(-1);
-    // };
+    const handleClose = () => {
+        navigate(-1);
+    };
 
     if (isLoading) return <Loading />;
 
+    const lastDayWritten = data.writtenArray[31];
+
+    console.log(!isRecordable(data.serverTime) || lastDayWritten);
     return (
-        <Layout snow overlay>
+        <Layout
+            snow
+            overlay
+            sx={{
+                py: 3,
+            }}
+        >
+            <IconButton
+                sx={{
+                    color: 'custom.grey',
+                    width: '1.5rem',
+                    height: '1.5rem',
+                }}
+                handleClose={handleClose}
+            >
+                <CloseIcon />
+            </IconButton>
             <Stack
                 sx={{
+                    mt: 4,
+                    mb: 3,
                     width: '100%',
-                    height: '100vh',
                 }}
                 direction={'column'}
-                justifyContent={'center'}
-                alignContent={'center'}
+                spacing={3}
+                alignItems={'center'}
             >
-                {/* <Header>
-                    <CloseButton onClick={handleClose}>
-                        <StyledCloseIcon
-                            style={{ width: '30px', height: '30px' }}
-                        />
-                    </CloseButton>
-                    <TitleWrapper>
-                        <Title>당신의 추억을 모아 퍼즐을 완성하세요!</Title>
-                        <SubTitle>보관된 추억 조각 0개</SubTitle>
-                    </TitleWrapper>
-                </Header> */}
-
+                <Stack
+                    sx={{
+                        paddingX: ['0.1rem', '2.4rem'],
+                        width: '100%',
+                        boxSizing: 'border-box',
+                    }}
+                    spacing={0.75}
+                >
+                    <Typography variant='title3' sx={{ color: 'custom.white' }}>
+                        {'추억이 공개되었어요'}
+                    </Typography>
+                    <Typography
+                        variant='Heading2'
+                        sx={{ color: 'custom.white' }}
+                    >
+                        {'보관된 추억 조각  '}
+                        <Typography
+                            variant='Heading2'
+                            color='primary'
+                            component={'span'}
+                        >
+                            {`${data.myMemoryCount}개`}
+                        </Typography>
+                    </Typography>
+                </Stack>
                 <Calendar
                     serverTime={data.serverTime}
                     hasWritten={data.writtenArray}
                 />
+                {(!isRecordable(data.serverTime) || lastDayWritten) && (
+                    <Button
+                        variant='contained'
+                        sx={{
+                            backgroundColor: 'custom.button1',
+                            width: ['100%', '87.5%'],
+                            height: '4rem',
+                            borderRadius: '1.25rem',
+                        }}
+                        onClick={() => {
+                            navigate('/main/calendar/save');
+                        }}
+                    >
+                        <Typography
+                            variant='title2'
+                            sx={{
+                                color: 'custom.white',
+                            }}
+                        >
+                            {'이미지 저장하기'}
+                        </Typography>
+                    </Button>
+                )}
             </Stack>
         </Layout>
     );

@@ -8,12 +8,15 @@ import { Box, Grid2 } from '@mui/material';
 const Calendar = ({ serverTime, hasWritten }) => {
     const today = dayjs(serverTime);
 
-    let lastDayWritten = hasWritten[31];
+    const lastDayWritten = hasWritten[31];
     return (
         <Box
             Box
             sx={{
-                m: ['0', '0 2.5rem'],
+                pr: ['0', '2.5rem'],
+                pl: ['0.25rem', '2.5626rem'],
+                width: '100%',
+                boxSizing: 'border-box',
             }}
         >
             <Masonry

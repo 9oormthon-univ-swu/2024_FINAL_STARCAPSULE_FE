@@ -11,7 +11,7 @@ dayjs.extend(isSameOrAfter);
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-const isRecordable = (time) => {
+export const isRecordable = (time) => {
     const startOfPeriod = dayjs(`${dayjs(time).year()}-11-30`).startOf('day');
     const endOfPeriod = startOfPeriod.add(31, 'day').startOf('day');
     const today = dayjs(time).startOf('day');
