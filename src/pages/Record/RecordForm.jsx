@@ -10,6 +10,7 @@ import AlertModal from '@/components/AlertModal';
 import { useNavigate, useParams } from 'react-router-dom';
 import SelectSnowballObject from '@/components/SelectSnowballObject';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
+import Layout from '@/layouts/Layout';
 
 const RecordForm = () => {
     const navigate = useNavigate();
@@ -112,7 +113,13 @@ const RecordForm = () => {
     };
 
     return (
-        <>
+        <Layout
+            snow
+            overlay
+            sx={{
+                py: 3,
+            }}
+        >
             <Stack sx={contentstyle}>
                 <Stack ref={selectObjectRef}>
                     <Stack>
@@ -163,7 +170,7 @@ const RecordForm = () => {
                 snackbarText={snackbarText}
                 setSnackbarText={handleSnackTextChange}
             />
-        </>
+        </Layout>
     );
 };
 
@@ -176,7 +183,6 @@ const contentstyle = {
     height: '100%',
     width: '100%',
     maxWidth: '600px',
-    background: 'black',
     margin: '0 auto',
     padding: '1.5rem',
     boxSizing: 'border-box',

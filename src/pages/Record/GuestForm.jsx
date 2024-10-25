@@ -10,6 +10,7 @@ import SelectSnowballObject from '@/components/SelectSnowballObject';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useNicknameStore } from 'stores/useNicknameStore';
+import Layout from '@/layouts/Layout';
 
 const GuestForm = () => {
     // useState로 상태 관리
@@ -124,7 +125,13 @@ const GuestForm = () => {
     };
 
     return (
-        <>
+        <Layout
+            snow
+            overlay
+            sx={{
+                py: 3,
+            }}
+        >
             <Stack sx={contentstyle}>
                 <Stack>
                     <Stack ref={selectObjectRef}>
@@ -183,7 +190,7 @@ const GuestForm = () => {
                 snackbarText={snackbarText}
                 setSnackbarText={handleSnackTextChange}
             />
-        </>
+        </Layout>
     );
 };
 
@@ -196,7 +203,6 @@ const contentstyle = {
     height: '100%',
     width: '100%',
     maxWidth: '600px',
-    background: 'black',
     margin: '0 auto',
     padding: '1.5rem',
     boxSizing: 'border-box',
