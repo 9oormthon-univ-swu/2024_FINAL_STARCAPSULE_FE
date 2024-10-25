@@ -13,7 +13,6 @@ import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 const RecordForm = () => {
     const navigate = useNavigate();
     const { userId } = useParams(); // useParams로 userId 가져오기
-    console.log('userId:', userId);
 
     // useState로 상태 관리
     const [title, setTitle] = useState('');
@@ -75,7 +74,7 @@ const RecordForm = () => {
                 },
             })
             .then(() => {
-                navigate(`/mycomplete/${param.userId}`);
+                navigate(`/mycomplete/${userId}`);
                 console.log('Memory successfully uploaded');
             })
             .catch((error) => {
