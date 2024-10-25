@@ -145,7 +145,7 @@ const RecordForm = () => {
                                 showplaceholder='남기고 싶은 추억을 작성해주세요.'
                             />
                         </Stack>
-                        <RecordSaveButton />
+                        <RecordSaveButton recordsavebtnText='추억 보관하기' />
                     </form>
                 </Stack>
             </Stack>

@@ -156,7 +156,7 @@ const GuestForm = () => {
                                 answer={answer}
                                 inputCount={inputCount}
                                 handleTextChange={handleAnswerChange}
-                                showplaceholder='오늘의 질문 대신 다른 내용을 기록해도 좋아요! 자유롭게 남기고 싶은 추억을 작성해주세요:)'
+                                showplaceholder='남기고 싶은 추억을 작성해주세요.'
                             />
                         </Stack>
                         <Stack ref={writerRef}>
@@ -165,7 +165,7 @@ const GuestForm = () => {
                                 setfwriter={setWriter}
                             ></Writer>
                         </Stack>
-                        <RecordSaveButton></RecordSaveButton>
+                        <RecordSaveButton recordsavebtnText='추억 전달하기' />
                     </form>
                 </Stack>
             </Stack>
