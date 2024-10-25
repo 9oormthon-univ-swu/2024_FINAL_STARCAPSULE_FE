@@ -7,8 +7,7 @@ import useSWR from 'swr';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import Loading from '@/components/Loading';
 import { CloseIcon } from '@/components/icons';
-import dayjs from 'dayjs';
-import { isRecordable } from './Calendar/Day';
+import { isRecordable } from './Calendar/Calendar';
 
 const CalendarPage = () => {
     const navigate = useNavigate();
@@ -51,7 +50,7 @@ const CalendarPage = () => {
                     width: '1.5rem',
                     height: '1.5rem',
                 }}
-                handleClose={handleClose}
+                onClick={handleClose}
             >
                 <CloseIcon />
             </IconButton>

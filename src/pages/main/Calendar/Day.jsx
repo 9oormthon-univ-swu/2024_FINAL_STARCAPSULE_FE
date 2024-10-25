@@ -11,21 +11,15 @@ dayjs.extend(isSameOrAfter);
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-export const isRecordable = (time) => {
-    const startOfPeriod = dayjs(`${dayjs(time).year()}-11-30`).startOf('day');
-    const endOfPeriod = startOfPeriod.add(31, 'day').startOf('day');
-    const today = dayjs(time).startOf('day');
-
-    if (
-        today.isBefore(endOfPeriod.add(1, 'day')) &&
-        today.isSameOrAfter(startOfPeriod)
-    )
-        return true;
-    return false;
-};
-
 // 스타일 및 날짜 관련 설정 추상화
-const Day = ({ time, hasWritten, date, styleConfig, lastDayWritten }) => {
+const Day = ({
+    time,
+    hasWritten,
+    date,
+    styleConfig,
+    lastDayWritten,
+    recordable,
+}) => {
     const theme = useTheme();
 
     const startOfPeriod = dayjs(`${dayjs(time).year()}-11-30`).startOf('day');
@@ -41,7 +35,7 @@ const Day = ({ time, hasWritten, date, styleConfig, lastDayWritten }) => {
     let imgDisplay = false;
 
     // 기록 작성 가능 기간: 11월 30일 ~ 12월 31일 (범위 내)
-    if (isRecordable(time)) {
+    if (recordable) {
         if (hasWritten) {
             // 작성 완료: 오늘과 지나간 날 동일 스타일
             style.backgroundColor = 'rgba(255, 252, 250, 0.40)';
@@ -62,7 +56,7 @@ const Day = ({ time, hasWritten, date, styleConfig, lastDayWritten }) => {
     }
 
     // 기록 공개 기간: 12월 31일 이후
-    if (isRecordable(time) === false || lastDayWritten) {
+    if (recordable === false || lastDayWritten) {
         imgDisplay = true;
         if (hasWritten) {
             // 작성 완료
@@ -116,7 +110,7 @@ const Day = ({ time, hasWritten, date, styleConfig, lastDayWritten }) => {
                           : 'start'
                 }
                 component={Button}
-                disabled={isRecordable(time)}
+                disabled={recordable || !lastDayWritten}
             >
                 <Typography
                     sx={{
