@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'; 
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import PopupButton from './PopupButton';
 import axios from 'axios';
@@ -113,7 +113,7 @@ const ButtonWrapper = styled.div`
 const PopupPage = ({ isOpen, onClose }) => {
     const [question, setQuestion] = useState('');
     const [date, setDate] = useState('');
-    const [isChecked, setIsChecked] = useState(false); // 체크박스 상태
+    const [isChecked, setIsChecked] = useState(false);
     const { userId } = useParams();
     const navigate = useNavigate();
 
@@ -126,8 +126,6 @@ const PopupPage = ({ isOpen, onClose }) => {
 
         const fetchQuestion = async () => {
             try {
-                console.log('Token:', token);
-
                 const response = await axios.get(
                     `${import.meta.env.VITE_API_URL}/api/question`,
                     {
@@ -136,8 +134,6 @@ const PopupPage = ({ isOpen, onClose }) => {
                         },
                     }
                 );
-
-                console.log('Response:', response.data);
 
                 const result = response.data.result;
                 setQuestion(result.question || '');
@@ -151,40 +147,37 @@ const PopupPage = ({ isOpen, onClose }) => {
                     localStorage.setItem('dailyQuestion', result.question);
                     localStorage.setItem('dailyDate', formattedDate);
                     localStorage.setItem('dailyQuestionId', result.id);
-
-                    // 내 추억 조회 API 호출 및 질문 ID 비교
-                    const memoryResponse = await axios.get(
-                        `${import.meta.env.VITE_API_URL}/api/my_memory/${result.id}`,
-                        {
-                            headers: {
-                                Authorization: `Bearer ${token}`,
-                            },
-                        }
-                    );
-
-                    console.log('Memory Response:', memoryResponse.data); // 내 추억 데이터 확인을 위한 콘솔 출력
-
-                    // 질문이 이미 작성되었다면 팝업 닫기
-                    if (memoryResponse.data.dailyQuestion?.id === result.id) {
-                        console.log('질문이 이미 작성되었습니다.');
-                        onClose();
-                    } else {
-                        console.log('질문이 작성되지 않았습니다.');
-                    }
                 }
             } catch (error) {
-                console.error('Error fetching question or memory:', error);
+                console.error('Error fetching question:', error);
             }
         };
 
         fetchQuestion();
+
+        // 이전에 체크박스가 선택되어 있으면 팝업이 뜨지 않게 설정
+        const lastPopupCheckedDate = localStorage.getItem('popupCheckedDate');
+        const today = new Date().toLocaleDateString('ko-KR');
+        
+        if (lastPopupCheckedDate === today) {
+            onClose();
+        } else {
+            const checkedStatus = localStorage.getItem('popupCheckboxStatus') === 'true';
+            setIsChecked(checkedStatus);
+        }
     }, [onClose]);
 
     const handleCheckboxChange = () => {
-        setIsChecked(!isChecked);
-        if (!isChecked) {
-            const today = new Date().toISOString().split('T')[0];
-            localStorage.setItem('popupCheckedDate', today); // 체크박스가 체크된 날짜 저장
+        const newCheckedStatus = !isChecked;
+        setIsChecked(newCheckedStatus);
+        
+        const today = new Date().toLocaleDateString('ko-KR'); // 한국 시간 기준 날짜 형식으로 저장
+        if (newCheckedStatus) {
+            localStorage.setItem('popupCheckedDate', today);
+            localStorage.setItem('popupCheckboxStatus', 'true');
+        } else {
+            localStorage.removeItem('popupCheckedDate'); // 체크 해제 시 날짜 제거
+            localStorage.setItem('popupCheckboxStatus', 'false');
         }
     };
 
@@ -228,7 +221,7 @@ const PopupPage = ({ isOpen, onClose }) => {
                     </CheckboxLabel>
                 </CheckboxWrapper>
                 <ButtonWrapper>
-                <PopupButton text="추억 기록하기" onClick={handleButtonClick} />
+                    <PopupButton text="추억 기록하기" onClick={handleButtonClick} />
                 </ButtonWrapper>
             </PopupContent>
         </PopupWrapper>
