@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState, useRef } from 'react';
 import { Stack, Typography } from '@mui/material';
 import RecordBoard from './components/RecordBoard';

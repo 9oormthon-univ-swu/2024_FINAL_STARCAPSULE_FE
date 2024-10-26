@@ -4,53 +4,41 @@ import dayjs from 'dayjs';
 import { dayStyle } from './Calendar.style';
 import Masonry from '@mui/lab/Masonry';
 import { Box, Grid2 } from '@mui/material';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 
-const data = {
-    serverTime: '2024-12-25',
-    hasWritten: [
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-    ],
+dayjs.extend(isSameOrAfter);
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
+export const isRecordable = (year, time) => {
+    const startOfPeriod = dayjs(`${year}-11-30`).startOf('day');
+    const endOfPeriod = startOfPeriod.add(31, 'day').startOf('day');
+    const today = dayjs(time).startOf('day');
+
+    if (
+        today.isBefore(endOfPeriod.add(1, 'day')) &&
+        today.isSameOrAfter(startOfPeriod)
+    )
+        return true;
+    return false;
 };
 
-const Calendar = () => {
-    const today = dayjs();
+const Calendar = ({ serverTime, hasWritten, year }) => {
+    const today = dayjs(serverTime);
+
+    const recordable = isRecordable(serverTime, year);
+
+    const lastDayWritten = hasWritten[31];
 
     return (
         <Box
-            Box
             sx={{
-                m: ['0', '0 2.5rem'],
+                pr: ['0', '2.5rem'],
+                pl: ['0.25rem', '2.5626rem'],
+                width: '100%',
+                boxSizing: 'border-box',
             }}
         >
             <Masonry
@@ -64,7 +52,7 @@ const Calendar = () => {
                     maxWidth: '30rem',
                 }}
             >
-                {data.hasWritten.map((written, index) => {
+                {hasWritten.map((written, index) => {
                     if (index >= 30) return null;
                     return (
                         <Day
@@ -73,6 +61,9 @@ const Calendar = () => {
                             hasWritten={written}
                             date={index}
                             styleConfig={dayStyle[index]}
+                            lastDayWritten={lastDayWritten}
+                            recordable={recordable}
+                            year={year}
                         />
                     );
                 })}
@@ -92,17 +83,23 @@ const Calendar = () => {
                 <Grid2 size={4}>
                     <Day
                         time={today.format('YYYY-MM-DD')}
-                        hasWritten={data.hasWritten[30]}
+                        hasWritten={hasWritten[30]}
                         date={30}
                         styleConfig={dayStyle[30]}
+                        lastDayWritten={lastDayWritten}
+                        recordable={recordable}
+                        year={year}
                     />
                 </Grid2>
                 <Grid2 size={6}>
                     <Day
                         time={today.format('YYYY-MM-DD')}
-                        hasWritten={data.hasWritten[31]}
+                        hasWritten={hasWritten[31]}
                         date={31}
                         styleConfig={dayStyle[31]}
+                        lastDayWritten={lastDayWritten}
+                        recordable={recordable}
+                        year={year}
                     />
                 </Grid2>
             </Grid2>

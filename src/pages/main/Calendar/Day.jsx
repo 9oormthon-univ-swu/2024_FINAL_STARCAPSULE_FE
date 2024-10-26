@@ -11,26 +11,32 @@ dayjs.extend(isSameOrAfter);
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-const isRecordable = (time) => {
-    const startOfPeriod = dayjs(`${dayjs(time).year()}-11-30`).startOf('day');
-    const endOfPeriod = startOfPeriod.add(31, 'day').startOf('day');
-    const today = dayjs(time).startOf('day');
-
-    if (
-        today.isBefore(endOfPeriod.add(1, 'day')) &&
-        today.isSameOrAfter(startOfPeriod)
-    )
-        return true;
-    return false;
-};
-
 // 스타일 및 날짜 관련 설정 추상화
-const Day = ({ time, hasWritten, date, styleConfig }) => {
+const Day = ({
+    time,
+    hasWritten,
+    date,
+    styleConfig,
+    lastDayWritten,
+    recordable,
+    year,
+}) => {
+    /*
+        20xx-11-30 ~ 20xx-12-31: 작성 가능
+        20xx-12-31             : 작성 완료 시 캘린더를 볼 수 있음 
+        20xx-01-01 ~ 20xx-11-29: 작성 불가능, 작년 기록으로 조회해야함
+        
+        작업자의 판단 : 구름톤 유니브 4기에서 작년도 기록을 확인 할 수 있도록 리펙토링 해야함.
+        따라서 Calendar 컴포넌트에서 Day 컴포넌트로 몇 년도 캘린더인지 알 수 있는 year를 제공하는 것으로 처리함.
+    */
     const theme = useTheme();
 
-    const startOfPeriod = dayjs(`${dayjs(time).year()}-11-30`).startOf('day');
-    const currentDay = startOfPeriod.add(date, 'day').startOf('day');
     const today = dayjs(time).startOf('day');
+    const startOfPeriod = dayjs(`${year}-11-30`).startOf('day');
+    const currentDay = startOfPeriod.add(date, 'day').startOf('day');
+
+    const dateInFormat = currentDay.format('YYYY-MM-DD');
+    console.log(dateInFormat); // 이 값을 가져다가 api 요청 시 사용하면 됩니다.
 
     // 기본 스타일
     let style = {
@@ -41,7 +47,7 @@ const Day = ({ time, hasWritten, date, styleConfig }) => {
     let imgDisplay = false;
 
     // 기록 작성 가능 기간: 11월 30일 ~ 12월 31일 (범위 내)
-    if (isRecordable(time)) {
+    if (recordable) {
         if (hasWritten) {
             // 작성 완료: 오늘과 지나간 날 동일 스타일
             style.backgroundColor = 'rgba(255, 252, 250, 0.40)';
@@ -62,7 +68,7 @@ const Day = ({ time, hasWritten, date, styleConfig }) => {
     }
 
     // 기록 공개 기간: 12월 31일 이후
-    if (isRecordable(time) === false) {
+    if (recordable === false || lastDayWritten) {
         imgDisplay = true;
         if (hasWritten) {
             // 작성 완료
@@ -116,7 +122,7 @@ const Day = ({ time, hasWritten, date, styleConfig }) => {
                           : 'start'
                 }
                 component={Button}
-                disabled={isRecordable(time)}
+                disabled={recordable || !lastDayWritten}
             >
                 <Typography
                     sx={{
