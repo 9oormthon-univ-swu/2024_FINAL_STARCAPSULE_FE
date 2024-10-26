@@ -36,11 +36,11 @@ function App() {
                     <Route path='/guest/:userId' element={<Guest />} />
                     <Route path='/record/:userId' element={<RecordForm />} />
                     <Route
-                        path='/recordafter/:userId'
+                        path='/recordafter/:userId/:memoryId'
                         element={<RecordFormAfter />}
                     />
                     <Route
-                        path='/guestafter/:userId'
+                        path='/guestafter/:userId/:memoryId' 
                         element={<GuestFormAfter />}
                     />
                     <Route
