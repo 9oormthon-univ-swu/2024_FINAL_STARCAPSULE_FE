@@ -159,6 +159,25 @@ const Main = () => {
         );
     };
 
+    
+    const onMemoryClick = (memoryId, objectName) => {
+        console.log("Clicked memory ID:", memoryId); // 콘솔 출력 추가
+        const userId = param.userId; // useParams로 가져온 userId 사용
+    
+        // object_name에 따라 페이지 이동을 다르게 설정
+        const recordObjects = ["christmas_tree", "gingerbread_house", "lamplight", "santa_sleigh"];
+        const guestObjects = ["moon", "santa", "snowflake", "snowman"];
+    
+        if (recordObjects.includes(objectName)) {
+            navigate(`/recordafter/${userId}/${memoryId}`);
+        } else if (guestObjects.includes(objectName)) {
+            navigate(`/guestafter/${userId}/${memoryId}`);
+        } else {
+            console.error("Unknown object_name:", objectName);
+        }
+    };
+    
+
     const onRecordClick = () => {
         navigate(`/record/${param.userId}`);
     };
@@ -217,23 +236,21 @@ const Main = () => {
                     )}
                 </Stack>
 
+                
                 <Snowball
                     isLoading={isLoading}
-                    memories={data?.memories}
+                    memories={data?.memories} // 기존대로 data.memories로 설정
                     current={page}
                     total={isLoading ? 0 : parseInt(data.total_page)}
                     received={data?.received}
                     self={data?.self}
                     onLeftClick={onLeftClick}
                     onRightClick={onRightClick}
+                    onMemoryClick={onMemoryClick} // 오브젝트 클릭 이벤트 추가
                 />
+
                 {daysLeft ? (
-                    <StyledButton
-                        variant={'contained'}
-                        sx={{
-                            flexGrow: 0,
-                        }}
-                    >
+                    <StyledButton variant={'contained'} sx={{ flexGrow: 0 }}>
                         <Typography variant='title2'>추억 전달하기</Typography>
                     </StyledButton>
                 ) : (
@@ -241,14 +258,9 @@ const Main = () => {
                         direction={'row'}
                         justifyContent={'space-between'}
                         spacing={'1rem'}
-                        sx={{
-                            flexGrow: 0,
-                        }}
+                        sx={{ flexGrow: 0 }}
                     >
-                        <StyledButton
-                            variant={'contained'}
-                            sx={{ flexGrow: 1, width: 'fit-content' }}
-                        >
+                        <StyledButton variant={'contained'} sx={{ flexGrow: 1, width: 'fit-content' }}>
                             <Typography variant='title2'>팀 소개</Typography>
                         </StyledButton>
                         <StyledButton
@@ -256,13 +268,12 @@ const Main = () => {
                             sx={{ flexGrow: 2, width: 'fit-content' }}
                             onClick={onRecordClick}
                         >
-                            <Typography variant='title2'>
-                                추억 보관하기
-                            </Typography>
+                            <Typography variant='title2'>추억 보관하기</Typography>
                         </StyledButton>
                     </Stack>
                 )}
             </MainContainer>
+
             <PopupPage isOpen={isPopupOpen} onClose={() => setPopupOpen(false)} />
             <SnackBar
                 {...snackbarProps}

@@ -1,10 +1,12 @@
-import React, { useRef, useState } from 'react';   
+import React, { useEffect, useRef, useState } from 'react';
 import { Stack } from '@mui/material';
 import RecordBoard from '../Record/components/RecordBoard';
 import ImageSaveButton from './ImageSaveButton'; 
 import html2canvas from 'html2canvas';
-import CloseIcon from '@/components/icons/closeicon';  // 엑스 아이콘 import
-import { CalendarIcon } from '@/components/icons';    // 달력 아이콘 import
+import CloseIcon from '@/components/icons/closeicon'; 
+import { ShareIcon } from '@/components/icons';
+import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const contentstyle = {
     display: 'flex',
@@ -22,15 +24,47 @@ const contentstyle = {
 
 const GuestFormAfter = () => {
     const captureRef = useRef(null); 
-    const [nickname, setNickname] = useState('내닉네임'); // 실제 닉네임 데이터로 변경 필요
-    const [writer, setWriter] = useState('작성자'); // 실제 작성자 데이터로 변경 필요
+    const { userId, memoryId } = useParams(); 
+    const navigate = useNavigate();
+    const axiosInstance = useAxiosWithAuth();
+    const [memoryData, setMemoryData] = useState(null);
+
+    const snowballAPI = `${import.meta.env.VITE_API_URL}/api/share_memory`; 
+    const token = localStorage.getItem('token'); 
+
+    useEffect(() => {
+        const fetchMemoryData = async () => {
+            try {
+                console.log('User ID:', userId);  // userId 출력
+                console.log('Memory ID:', memoryId);  // memoryId 출력
+        
+                if (!memoryId || !userId) {
+                    console.error('User ID or Memory ID is missing');
+                    return;
+                }
+        
+                const requestUrl = `${snowballAPI}/${userId}/${memoryId}`;
+                console.log(`Request URL: ${requestUrl}`);
+        
+                const response = await axiosInstance.get(requestUrl);
+        
+                console.log('Fetched Memory Data:', response.data);
+                setMemoryData(response.data);
+            } catch (error) {
+                console.error('Error fetching memory details:', error);
+            }
+        };
+        
+        
+    
+        fetchMemoryData();
+    }, [memoryId, userId, axiosInstance, token]);
 
     const handleSaveImage = (e) => {
         e.preventDefault();
-
         if (captureRef.current) {
             const element = captureRef.current;
-            const scale = 2;  
+            const scale = 2;
 
             html2canvas(element, {
                 scale: scale,
@@ -47,16 +81,34 @@ const GuestFormAfter = () => {
         }
     };
 
+    const handleClose = () => {
+        navigate(`/main/${userId}`);
+    };
+
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        
+        return (
+            <span style={{ fontSize: '1.4rem' }}>
+                <span style={{ color: '#DDB892' }}>{year}</span>년&nbsp;
+                <span style={{ color: '#DDB892' }}>{month}</span>월&nbsp;
+                <span style={{ color: '#DDB892' }}>{day}</span>일
+            </span>
+        );
+    };
+
     return (
         <Stack sx={contentstyle}>
-            {/* 상단에 아이콘과 날짜 추가 */}
             <Stack
                 direction="row"
                 alignItems="center"
                 justifyContent="space-between"
                 sx={{
                     position: 'absolute',
-                    top: 'calc(1rem + 30px)',  // 30px 아래로 조정
+                    top: 'calc(1rem + 30px)',
                     left: '1rem',
                     right: '1rem',
                     zIndex: 10,
@@ -64,13 +116,14 @@ const GuestFormAfter = () => {
                     fontFamily: 'Griun NltoTAENGGU, sans-serif',
                 }}
             >
-               <CloseIcon sx={{ cursor: 'pointer', position: 'relative', right: '-30px' }} />  {/* 오른쪽으로 30px 이동 */}
-               <span style={{ fontSize: '1.4rem' }}>
-                   <span style={{ color: '#DDB892' }}>2024</span>년&nbsp;
-                   <span style={{ color: '#DDB892' }}>11</span>월&nbsp;
-                   <span style={{ color: '#DDB892' }}>30</span>일
-               </span>
-               <CalendarIcon sx={{ cursor: 'pointer', position: 'relative', left: '-30px' }} />  {/* 왼쪽으로 30px 이동 */}
+                <CloseIcon 
+                    sx={{ cursor: 'pointer', position: 'relative', right: '-30px' }} 
+                    onClick={handleClose} 
+                />
+                <span style={{ fontSize: '1.4rem' }}>
+                    {memoryData ? formatDate(memoryData.result.createAt) : "로딩 중..."}
+                </span>
+                <ShareIcon sx={{ cursor: 'pointer', position: 'relative', left: '-30px' }} />
             </Stack>
 
             <Stack 
@@ -86,7 +139,6 @@ const GuestFormAfter = () => {
                     paddingTop: '12rem',
                 }}
             >
-                {/* 왼쪽 상단에 To. 닉네임 추가 */}
                 <span style={{
                     position: 'absolute',
                     top: 'calc(10px + 9rem)', 
@@ -95,32 +147,32 @@ const GuestFormAfter = () => {
                     fontSize: '1.3rem',
                     fontFamily: 'Griun NltoTAENGGU, sans-serif',
                 }}>
-                    To. <span style={{ color: '#DDB892' }}>{nickname}</span>
+                    To. <span style={{ color: '#DDB892' }}>{memoryData?.result?.nickname || '닉네임'}</span>
                 </span>
 
-                <RecordBoard showplaceholder='남기고 싶은 추억을 작성해주세요.' />
+                <RecordBoard
+                    content={memoryData?.result.answer || ""}
+                    imageUrl={memoryData?.result.imageUrl}
+                    isReadOnly={true}
+                />
 
-                {/* 오른쪽 하단에 From. 작성자 추가 */}
                 <span style={{
-                    position: 'absolute', // 위치를 fixed로 설정
-                    bottom: 'calc(10px + 16rem)', // 고정된 위치
-                    right: '9.5rem', // 고정된 위치
+                    position: 'absolute',
+                    bottom: 'calc(10px + 16rem)',
+                    right: '9.5rem', 
                     color: 'white',
                     fontSize: '1.3rem',
                     fontFamily: 'Griun NltoTAENGGU, sans-serif',
-                    transform: 'translateY(0)',
                 }}>
-                    From. <span style={{ color: '#DDB892' }}>{writer}</span>
+                    From. <span style={{ color: '#DDB892' }}>{memoryData?.result?.writer || '작성자'}</span>
                 </span>
             </Stack>
 
             <Stack 
                 component="form" 
                 sx={{
-                    position: 'absolute',
-                    bottom: '5rem', 
-                    left: '50%',
-                    transform: 'translateX(-50%)', 
+                    position: 'relative',
+                    marginTop: '-22rem',
                 }}
             >
                 <ImageSaveButton onClick={handleSaveImage} />
