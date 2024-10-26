@@ -15,7 +15,8 @@ import useSWR from 'swr';
 import { CalendarIcon } from '@/components/icons';
 import ShareButton from '@/components/ShareButton';
 import { getDaysBeforeOpen } from '@/utils/getDaysBeforeOpen';
-import PopupAfter from '../Onboarding/PopupAfter';
+import PopupPage from '../Onboarding/PopupPage';
+//import PopupAfter from '../Onboarding/PopupAfter';
 import { useParams } from 'react-router-dom';
 import { useUserStore } from 'stores/useUserStore';
 import { saveTokenFromURL } from '@/utils/saveTokenFromURL';
@@ -34,7 +35,7 @@ export const MainContainer = styled(Stack)(() => ({
     position: 'relative',
 }));
 
-const Overlay = styled('div')(() => ({
+/*const Overlay = styled('div')(() => ({
     position: 'fixed',
     top: 0,
     left: 0,
@@ -45,7 +46,7 @@ const Overlay = styled('div')(() => ({
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 1000,
-}));
+})); 
 
 const PopupContainer = styled('div')(() => ({
     position: 'absolute',
@@ -53,7 +54,7 @@ const PopupContainer = styled('div')(() => ({
     left: '50%',
     transform: 'translate(-50%, -50%)',
     textAlign: 'center',
-}));
+}));  */
 
 export const StyledButton = styled(Button)(({ theme }) => ({
     boxSizing: 'border-box',
@@ -75,7 +76,7 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
 const Main = () => {
     const [page, setPage] = useState(1);
     const [isPopupOpen, setPopupOpen] = useState(false);
-    const [showLottie, setShowLottie] = useState(true);
+    //const [showLottie, setShowLottie] = useState(true);
     const navigate = useNavigate();
     const [snackbarProps, setSnackbarProps] = useState({
         openSnackbar: false,
@@ -146,19 +147,41 @@ const Main = () => {
     };
 
     const onRightClick = () => {
-        setPage((prev) =>
-            prev === data?.total_page ? data?.total_page : prev + 1
+        setTimeout(
+            setPage((prev) =>
+                prev === data?.total_page ? data?.total_page : prev + 1
+            ),
+            500
         );
     };
+
+    
+    const onMemoryClick = (memoryId, objectName) => {
+        console.log("Clicked memory ID:", memoryId); // 콘솔 출력 추가
+        const userId = param.userId; // useParams로 가져온 userId 사용
+    
+        // object_name에 따라 페이지 이동을 다르게 설정
+        const recordObjects = ["christmas_tree", "gingerbread_house", "lamplight", "santa_sleigh"];
+        const guestObjects = ["moon", "santa", "snowflake", "snowman"];
+    
+        if (recordObjects.includes(objectName)) {
+            navigate(`/recordafter/${userId}/${memoryId}`);
+        } else if (guestObjects.includes(objectName)) {
+            navigate(`/guestafter/${userId}/${memoryId}`);
+        } else {
+            console.error("Unknown object_name:", objectName);
+        }
+    };
+    
 
     const onRecordClick = () => {
         navigate(`/record/${param.userId}`);
     };
 
-    const handleLottieClick = () => {
+    /*const handleLottieClick = () => {
         setShowLottie(false); //로티 클릭하면 팝업 나타남
         setPopupOpen(true);
-    };
+    }; */
 
     if (error) return <div>failed to load</div>;
 
@@ -209,23 +232,21 @@ const Main = () => {
                     )}
                 </Stack>
 
+                
                 <Snowball
                     isLoading={isLoading}
-                    memories={data?.memories}
+                    memories={data?.memories} // 기존대로 data.memories로 설정
                     current={page}
                     total={isLoading ? 0 : parseInt(data.total_page)}
                     received={data?.received}
                     self={data?.self}
                     onLeftClick={onLeftClick}
                     onRightClick={onRightClick}
+                    onMemoryClick={onMemoryClick} // 오브젝트 클릭 이벤트 추가
                 />
+
                 {daysLeft ? (
-                    <StyledButton
-                        variant={'contained'}
-                        sx={{
-                            flexGrow: 0,
-                        }}
-                    >
+                    <StyledButton variant={'contained'} sx={{ flexGrow: 0 }}>
                         <Typography variant='title2'>추억 전달하기</Typography>
                     </StyledButton>
                 ) : (
@@ -233,14 +254,9 @@ const Main = () => {
                         direction={'row'}
                         justifyContent={'space-between'}
                         spacing={'1rem'}
-                        sx={{
-                            flexGrow: 0,
-                        }}
+                        sx={{ flexGrow: 0 }}
                     >
-                        <StyledButton
-                            variant={'contained'}
-                            sx={{ flexGrow: 1, width: 'fit-content' }}
-                        >
+                        <StyledButton variant={'contained'} sx={{ flexGrow: 1, width: 'fit-content' }}>
                             <Typography variant='title2'>팀 소개</Typography>
                         </StyledButton>
                         <StyledButton
@@ -248,32 +264,13 @@ const Main = () => {
                             sx={{ flexGrow: 2, width: 'fit-content' }}
                             onClick={onRecordClick}
                         >
-                            <Typography variant='title2'>
-                                추억 보관하기
-                            </Typography>
+                            <Typography variant='title2'>추억 보관하기</Typography>
                         </StyledButton>
                     </Stack>
                 )}
             </MainContainer>
-            {!daysLeft && showLottie ? (
-                <Overlay onClick={handleLottieClick}>
-                    <PopupContainer>
-                        <dotlottie-player
-                            src='https://lottie.host/e35fc1c8-f985-4963-940e-0e4e0b630cd9/eNIuonSNHz.json'
-                            background='transparent'
-                            speed='1'
-                            style={{ width: '350px', height: '350px' }}
-                            loop
-                            autoplay
-                        ></dotlottie-player>
-                    </PopupContainer>
-                </Overlay>
-            ) : (
-                <PopupAfter
-                    isOpen={isPopupOpen}
-                    onClose={() => setPopupOpen(false)}
-                /> //이 부분
-            )}
+
+            <PopupPage isOpen={isPopupOpen} onClose={() => setPopupOpen(false)} />
             <SnackBar
                 {...snackbarProps}
                 handleCloseSnackbar={() =>

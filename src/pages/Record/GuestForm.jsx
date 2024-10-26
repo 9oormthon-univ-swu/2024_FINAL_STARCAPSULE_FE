@@ -82,6 +82,7 @@ const GuestForm = () => {
             })
             .then(() => {
                 navigate(`/complete/${params.userId}`);
+
             })
             .catch((error) => {
                 console.log(error);
@@ -196,7 +197,7 @@ const contentstyle = {
     height: '100%',
     width: '100%',
     maxWidth: '600px',
-    background: 'black',
+    background: '#4D4D4D',
     margin: '0 auto',
     padding: '1.5rem',
     boxSizing: 'border-box',
