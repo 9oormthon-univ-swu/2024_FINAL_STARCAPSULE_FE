@@ -15,7 +15,8 @@ import useSWR from 'swr';
 import { CalendarIcon } from '@/components/icons';
 import ShareButton from '@/components/ShareButton';
 import { getDaysBeforeOpen } from '@/utils/getDaysBeforeOpen';
-import PopupAfter from '../Onboarding/PopupAfter';
+import PopupPage from '../Onboarding/PopupPage';
+//import PopupAfter from '../Onboarding/PopupAfter';
 import { useParams } from 'react-router-dom';
 import { useUserStore } from 'stores/useUserStore';
 import { saveTokenFromURL } from '@/utils/saveTokenFromURL';
@@ -34,7 +35,7 @@ export const MainContainer = styled(Stack)(() => ({
     position: 'relative',
 }));
 
-const Overlay = styled('div')(() => ({
+/*const Overlay = styled('div')(() => ({
     position: 'fixed',
     top: 0,
     left: 0,
@@ -45,7 +46,7 @@ const Overlay = styled('div')(() => ({
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 1000,
-}));
+})); 
 
 const PopupContainer = styled('div')(() => ({
     position: 'absolute',
@@ -53,7 +54,7 @@ const PopupContainer = styled('div')(() => ({
     left: '50%',
     transform: 'translate(-50%, -50%)',
     textAlign: 'center',
-}));
+}));  */
 
 export const StyledButton = styled(Button)(({ theme }) => ({
     boxSizing: 'border-box',
@@ -75,7 +76,7 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
 const Main = () => {
     const [page, setPage] = useState(1);
     const [isPopupOpen, setPopupOpen] = useState(false);
-    const [showLottie, setShowLottie] = useState(true);
+    //const [showLottie, setShowLottie] = useState(true);
     const navigate = useNavigate();
     const [snackbarProps, setSnackbarProps] = useState({
         openSnackbar: false,
@@ -177,10 +178,10 @@ const Main = () => {
         navigate(`/record/${param.userId}`);
     };
 
-    const handleLottieClick = () => {
+    /*const handleLottieClick = () => {
         setShowLottie(false); //로티 클릭하면 팝업 나타남
         setPopupOpen(true);
-    };
+    }; */
 
     if (error) return <div>failed to load</div>;
 
