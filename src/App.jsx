@@ -33,7 +33,7 @@ function App() {
                     <Route path='/popupafter' element={<PopupAfter />} />
                     <Route path='/snowballmake' element={<SnowballMake />} />
                     <Route path='/main/:userId' element={<Main />} />
-                    <Route path='/guest/:userId' element={<Guest />} />
+                    <Route path='/guest/:userId' element={<GuestForm />} />
                     <Route path='/record/:userId' element={<RecordForm />} />
                     <Route
                         path='/recordafter/:userId/:memoryId'
