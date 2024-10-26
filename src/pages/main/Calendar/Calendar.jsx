@@ -31,6 +31,10 @@ const Calendar = ({ serverTime, hasWritten }) => {
     const recordable = isRecordable(serverTime);
 
     const lastDayWritten = hasWritten[31];
+
+    // 2025년도 서버 운영 시를 고려하여 year 값을 day 컴포넌트로 넘기도록 처리.
+    // 자세한 것은 day 컴포넌트를 확인해주세요
+    const year = 2024;
     return (
         <Box
             sx={{
@@ -62,6 +66,7 @@ const Calendar = ({ serverTime, hasWritten }) => {
                             styleConfig={dayStyle[index]}
                             lastDayWritten={lastDayWritten}
                             recordable={recordable}
+                            year={year}
                         />
                     );
                 })}
@@ -86,6 +91,7 @@ const Calendar = ({ serverTime, hasWritten }) => {
                         styleConfig={dayStyle[30]}
                         lastDayWritten={lastDayWritten}
                         recordable={recordable}
+                        year={year}
                     />
                 </Grid2>
                 <Grid2 size={6}>
@@ -96,6 +102,7 @@ const Calendar = ({ serverTime, hasWritten }) => {
                         styleConfig={dayStyle[31]}
                         lastDayWritten={lastDayWritten}
                         recordable={recordable}
+                        year={year}
                     />
                 </Grid2>
             </Grid2>

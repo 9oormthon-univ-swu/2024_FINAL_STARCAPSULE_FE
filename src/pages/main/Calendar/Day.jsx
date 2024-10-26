@@ -19,12 +19,24 @@ const Day = ({
     styleConfig,
     lastDayWritten,
     recordable,
+    year,
 }) => {
+    /*
+        20xx-11-30 ~ 20xx-12-31: 작성 가능
+        20xx-12-31             : 작성 완료 시 캘린더를 볼 수 있음 
+        20xx-01-01 ~ 20xx-11-29: 작성 불가능, 작년 기록으로 조회해야함
+        
+        작업자의 판단 : 구름톤 유니브 4기에서 작년도 기록을 확인 할 수 있도록 리펙토링 해야함.
+        따라서 Calendar 컴포넌트에서 Day 컴포넌트로 몇 년도 캘린더인지 알 수 있는 year를 제공하는 것으로 처리함.
+    */
     const theme = useTheme();
 
-    const startOfPeriod = dayjs(`${dayjs(time).year()}-11-30`).startOf('day');
-    const currentDay = startOfPeriod.add(date, 'day').startOf('day');
     const today = dayjs(time).startOf('day');
+    const startOfPeriod = dayjs(`${year}-11-30`).startOf('day');
+    const currentDay = startOfPeriod.add(date, 'day').startOf('day');
+
+    const dateInFormat = currentDay.format('YYYY-MM-DD');
+    console.log(dateInFormat); // 이 값을 가져다가 api 요청 시 사용하면 됩니다.
 
     // 기본 스타일
     let style = {
