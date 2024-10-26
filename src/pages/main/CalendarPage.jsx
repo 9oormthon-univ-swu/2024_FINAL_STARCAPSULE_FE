@@ -10,6 +10,10 @@ import { CloseIcon } from '@/components/icons';
 import { isRecordable } from './Calendar/Calendar';
 
 const CalendarPage = () => {
+    // 2025년도 서버 운영 시를 고려하여 year 값을 Calendar->  day 컴포넌트로 넘기도록 처리.
+    // 자세한 것은 day 컴포넌트를 확인해주세요
+    const year = 2024;
+
     const navigate = useNavigate();
 
     const axiosWithAuth = useAxiosWithAuth();
@@ -35,7 +39,7 @@ const CalendarPage = () => {
 
     const lastDayWritten = data.writtenArray[31];
 
-    console.log(!isRecordable(data.serverTime) || lastDayWritten);
+    console.log(!isRecordable(data.serverTime, year) || lastDayWritten);
     return (
         <Layout
             snow
@@ -92,6 +96,7 @@ const CalendarPage = () => {
                 <Calendar
                     serverTime={data.serverTime}
                     hasWritten={data.writtenArray}
+                    year={year}
                 />
                 {(!isRecordable(data.serverTime) || lastDayWritten) && (
                     <Button

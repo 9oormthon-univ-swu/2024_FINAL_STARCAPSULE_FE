@@ -12,8 +12,8 @@ dayjs.extend(isSameOrAfter);
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-export const isRecordable = (time) => {
-    const startOfPeriod = dayjs(`${dayjs(time).year()}-11-30`).startOf('day');
+export const isRecordable = (year, time) => {
+    const startOfPeriod = dayjs(`${year}-11-30`).startOf('day');
     const endOfPeriod = startOfPeriod.add(31, 'day').startOf('day');
     const today = dayjs(time).startOf('day');
 
@@ -25,16 +25,13 @@ export const isRecordable = (time) => {
     return false;
 };
 
-const Calendar = ({ serverTime, hasWritten }) => {
+const Calendar = ({ serverTime, hasWritten, year }) => {
     const today = dayjs(serverTime);
 
-    const recordable = isRecordable(serverTime);
+    const recordable = isRecordable(serverTime, year);
 
     const lastDayWritten = hasWritten[31];
 
-    // 2025년도 서버 운영 시를 고려하여 year 값을 day 컴포넌트로 넘기도록 처리.
-    // 자세한 것은 day 컴포넌트를 확인해주세요
-    const year = 2024;
     return (
         <Box
             sx={{
