@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Snowfall from 'react-snowfall';
 import ShareIcon from '../../components/icons/ShareIcon';
+import { Helmet } from 'react-helmet-async';
 
 const Container = styled.div`
     display: flex;
@@ -145,6 +146,19 @@ const LoginPage = () => {
 
     return (
         <Container>
+            <Helmet>
+                <title>스노로그 - 로그인 화면</title>
+                <meta
+                    name='description'
+                    content='스노로그를 카카오 계정으로 로그인하세요.'
+                />
+                <meta property='og:title' content='SnowLog 로그인 화면' />
+                <meta
+                    property='og:description'
+                    content='스노로그를 카카오 계정으로 로그인하세요.'
+                />
+                <meta property='og:type' content='website' />
+            </Helmet>
             <Snowfall
                 color='#ffffffaa'
                 snowflakeCount={70}

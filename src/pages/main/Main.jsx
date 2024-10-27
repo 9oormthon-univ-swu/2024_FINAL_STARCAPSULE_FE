@@ -27,6 +27,7 @@ import { defaultGetFetcher } from '@/utils/getFetcher';
 import '@dotlottie/player-component';
 // import ShareButton from '@/components/ShareButton';
 import ImgShareButton from '@/components/ImgShareButton';
+import { Helmet } from 'react-helmet-async';
 
 export const MainContainer = styled(Stack)(() => ({
     padding: '2rem 0 2.25rem 0',
@@ -166,6 +167,22 @@ const Main = () => {
 
     return (
         <Container id='capture-container'>
+            <Helmet>
+                <title>스노로그 - 2024의 추억이 쌓이는 곳</title>
+                <meta
+                    name='description'
+                    content='스노로그에서 남은 2024의 추억을 쌓아보세요.'
+                />
+                <meta
+                    property='og:title'
+                    content='스노로그 - 2024의 추억이 쌓이는 곳'
+                />
+                <meta
+                    property='og:description'
+                    content='스노로그에서 남은 2024의 추억을 쌓아보세요.'
+                />
+                <meta property='og:type' content='website' />
+            </Helmet>
             <Layout sx={{ overflow: 'hidden' }} snow snowflake>
                 <MainContainer
                     direction={'column'}

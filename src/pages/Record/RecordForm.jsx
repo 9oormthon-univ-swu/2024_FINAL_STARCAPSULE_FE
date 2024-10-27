@@ -11,6 +11,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import SelectSnowballObject from '@/components/SelectSnowballObject';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import Layout from '@/layouts/Layout';
+import { Helmet } from 'react-helmet-async';
 
 const RecordForm = () => {
     const navigate = useNavigate();
@@ -120,6 +121,19 @@ const RecordForm = () => {
                 py: 3,
             }}
         >
+            <Helmet>
+                <title>스노로그 - 추억 보관</title>
+                <meta
+                    name='description'
+                    content='스노우볼에 추억으로 보관해보세요.'
+                />
+                <meta property='og:title' content='스노로그 - 추억 보관' />
+                <meta
+                    property='og:description'
+                    content='스노우볼에 추억으로 보관해보세요.'
+                />
+                <meta property='og:type' content='website' />
+            </Helmet>
             <Stack sx={contentstyle}>
                 <Stack ref={selectObjectRef}>
                     <Stack>

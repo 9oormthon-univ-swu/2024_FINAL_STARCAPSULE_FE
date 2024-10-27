@@ -12,6 +12,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { getDaysBeforeOpen } from '@/utils/getDaysBeforeOpen';
 import axios from 'axios';
 import { useNicknameStore } from 'stores/useNicknameStore';
+import { Helmet } from 'react-helmet-async';
 
 // 1. data를 가져온다. < -
 // 2. data->snowball_name 전역 상태 변수로 저장
@@ -80,6 +81,22 @@ const Guest = () => {
 
     return (
         <Layout sx={{ overflow: 'hidden' }} snow snowflake>
+            <Helmet>
+                <title>스노로그 - 2024의 추억이 쌓이는 곳</title>
+                <meta
+                    name='description'
+                    content='스노로그에서 남은 2024의 추억을 쌓아보세요.'
+                />
+                <meta
+                    property='og:title'
+                    content='스노로그 - 2024의 추억이 쌓이는 곳'
+                />
+                <meta
+                    property='og:description'
+                    content='스노로그에서 남은 2024의 추억을 쌓아보세요.'
+                />
+                <meta property='og:type' content='website' />
+            </Helmet>
             <MainContainer
                 direction={'column'}
                 justifyContent={'space-between'}

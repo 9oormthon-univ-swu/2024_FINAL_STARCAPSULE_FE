@@ -11,6 +11,7 @@ import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useNicknameStore } from 'stores/useNicknameStore';
 import Layout from '@/layouts/Layout';
+import { Helmet } from 'react-helmet-async';
 
 const GuestForm = () => {
     // useState로 상태 관리
@@ -129,6 +130,13 @@ const GuestForm = () => {
                 py: 3,
             }}
         >
+            <Helmet>
+                <title>스노로그 - 추억 전달</title>
+                <meta name='description' content='추억을 공유해보세요.' />
+                <meta property='og:title' content='스노로그 - 추억 전달' />
+                <meta property='og:description' content='추억을 공유해보세요' />
+                <meta property='og:type' content='website' />
+            </Helmet>
             <Stack sx={contentstyle}>
                 <Stack>
                     <Stack ref={selectObjectRef}>
