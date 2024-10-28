@@ -59,7 +59,7 @@ const GuestForm = () => {
     const handleAcceptModal = async () => {
         // FormData 객체를 사용해 이미지 파일과 텍스트 데이터를 서버로 전송
         const formData = new FormData();
-        formData.append('image', uploadedImage);
+        if (uploadedImage) formData.append('image', uploadedImage);
 
         console.log('answer:', answer);
         console.log('image:', uploadedImage);

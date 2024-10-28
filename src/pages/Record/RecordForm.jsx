@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useState, useRef } from 'react';
 import { Stack, Typography } from '@mui/material';
 import RecordBoard from './components/RecordBoard';
@@ -15,7 +14,7 @@ import { Helmet } from 'react-helmet-async';
 
 const RecordForm = () => {
     const navigate = useNavigate();
-    const { userId } = useParams(); // useParams로 userId 가져오기
+    const { userId } = useParams();
 
     // useState로 상태 관리
     const [title, setTitle] = useState('');
@@ -56,12 +55,8 @@ const RecordForm = () => {
     //모달 확인 버튼 처리 함수 & 데이터 전달
     const axiosInstance = useAxiosWithAuth();
     const handleAcceptModal = async () => {
-        console.log(typeof image);
-
+        // FormData 객체를 사용해 이미지 파일과 텍스트 데이터를 서버로 전송
         const formData = new FormData();
-        formData.append('title', title);
-        formData.append('answer', answer);
-        formData.append('shapeName', object_name);
         if (image) formData.append('image', image);
 
         console.log('answer:', answer);
@@ -73,6 +68,11 @@ const RecordForm = () => {
             .post(`/api/my_memory/write`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
+                },
+                params: {
+                    title: title,
+                    answer: answer,
+                    object_name: object_name,
                 },
             })
             .then(() => {
