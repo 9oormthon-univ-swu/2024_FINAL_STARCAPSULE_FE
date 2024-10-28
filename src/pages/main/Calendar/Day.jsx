@@ -21,6 +21,13 @@ const Day = ({
     recordable,
     year,
 }) => {
+    console.log('time', time);
+    console.log('hasWritten', hasWritten);
+    console.log('date', date);
+    console.log('styleConfig', styleConfig);
+    console.log('lastDayWritten', lastDayWritten);
+    console.log('recordable', recordable);
+    console.log('year', year);
     /*
         20xx-11-30 ~ 20xx-12-31: 작성 가능
         20xx-12-31             : 작성 완료 시 캘린더를 볼 수 있음 

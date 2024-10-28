@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Calendar from './Calendar/Calendar';
 import Layout from '@/layouts/Layout';
@@ -21,11 +21,7 @@ const CalendarPage = () => {
     const fetcher = (url) =>
         axiosWithAuth.get(url).then((res) => res.data.result);
 
-    const { data, isLoading } = useSWR(`/calendar/data`, fetcher, {
-        onError: (error) => {
-            console.log(error);
-        },
-    });
+    const { data, isLoading } = useSWR(`/calendar/data`, fetcher);
 
     const handleClose = () => {
         navigate(-1);
@@ -44,7 +40,6 @@ const CalendarPage = () => {
 
     const lastDayWritten = data.writtenArray[31];
 
-    console.log(!isRecordable(data.serverTime, year) || lastDayWritten);
     return (
         <Layout
             snow
