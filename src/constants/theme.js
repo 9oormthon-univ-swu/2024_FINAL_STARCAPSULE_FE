@@ -62,6 +62,27 @@ if (theme.palette) {
         main: theme.palette.custom.main1,
         light: theme.palette.custom.main2,
     };
+    theme.palette.text = {
+        primary: theme.palette.custom.white,
+        secondary: theme.palette.custom.grey,
+    };
+}
+
+if (theme.components) {
+    theme.components.MuiTypography = {
+        styleOverrides: {
+            root: {
+                color: theme.palette.custom.white,
+            },
+        },
+    };
+    theme.components.MuiButton = {
+        styleOverrides: {
+            root: {
+                color: theme.palette.custom.white,
+            },
+        },
+    };
 }
 
 export default theme;
