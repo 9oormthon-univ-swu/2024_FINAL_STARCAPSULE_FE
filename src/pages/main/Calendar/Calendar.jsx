@@ -12,8 +12,8 @@ dayjs.extend(isSameOrAfter);
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-export const isRecordable = (time) => {
-    const startOfPeriod = dayjs(`${dayjs(time).year()}-11-30`).startOf('day');
+export const isRecordable = (year, time) => {
+    const startOfPeriod = dayjs(`${year}-11-30`).startOf('day');
     const endOfPeriod = startOfPeriod.add(31, 'day').startOf('day');
     const today = dayjs(time).startOf('day');
 
@@ -25,12 +25,13 @@ export const isRecordable = (time) => {
     return false;
 };
 
-const Calendar = ({ serverTime, hasWritten }) => {
+const Calendar = ({ serverTime, hasWritten, year }) => {
     const today = dayjs(serverTime);
 
-    const recordable = isRecordable(serverTime);
+    const recordable = isRecordable(serverTime, year);
 
     const lastDayWritten = hasWritten[31];
+
     return (
         <Box
             sx={{
@@ -62,6 +63,7 @@ const Calendar = ({ serverTime, hasWritten }) => {
                             styleConfig={dayStyle[index]}
                             lastDayWritten={lastDayWritten}
                             recordable={recordable}
+                            year={year}
                         />
                     );
                 })}
@@ -86,6 +88,7 @@ const Calendar = ({ serverTime, hasWritten }) => {
                         styleConfig={dayStyle[30]}
                         lastDayWritten={lastDayWritten}
                         recordable={recordable}
+                        year={year}
                     />
                 </Grid2>
                 <Grid2 size={6}>
@@ -96,6 +99,7 @@ const Calendar = ({ serverTime, hasWritten }) => {
                         styleConfig={dayStyle[31]}
                         lastDayWritten={lastDayWritten}
                         recordable={recordable}
+                        year={year}
                     />
                 </Grid2>
             </Grid2>

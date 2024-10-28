@@ -3,6 +3,8 @@ import { Stack } from '@mui/material';
 import ImgUploadButton from './ImgUploadButton';
 
 const RecordBoard = ({
+    content,
+    imageUrl,
     answer,
     inputCount,
     handleTextChange,
@@ -10,33 +12,52 @@ const RecordBoard = ({
     handleSetImage,
     selectedImage,
     fileInputRef,
+    isReadOnly = false, // 읽기 전용 모드 여부
 }) => {
     return (
         <div style={RecordBgstyle}>
             <Stack sx={imgcontainer}>
-                <ImgUploadButton
-                    id='image'
-                    selectedImage={selectedImage}
-                    setImage={handleSetImage}
-                    fileInputRef={fileInputRef}
-                ></ImgUploadButton>
+                {isReadOnly && imageUrl ? (
+                    <img
+                        src={imageUrl}
+                        alt='기억 이미지'
+                        style={{ maxWidth: '100%', borderRadius: '10px' }}
+                    />
+                ) : !isReadOnly ? (
+                    <ImgUploadButton
+                        id='image'
+                        selectedImage={selectedImage}
+                        setImage={handleSetImage}
+                        fileInputRef={fileInputRef}
+                    />
+                ) : null}
             </Stack>
 
             <Stack>
-                <textarea
-                    id='answer'
-                    value={answer}
-                    onChange={handleTextChange}
-                    placeholder={showplaceholder}
-                    style={Textfieldstyle}
-                />
+                {isReadOnly ? (
+                    <div style={{ ...Textfieldstyle, whiteSpace: 'pre-wrap' }}>
+                        {content || '추억이 없습니다.'}
+                    </div>
+                ) : (
+                    <textarea
+                        id='answer'
+                        value={answer}
+                        onChange={handleTextChange}
+                        placeholder={showplaceholder}
+                        style={Textfieldstyle}
+                        rows={Math.max(10, answer.split('\n').length)}
+                    />
+                )}
             </Stack>
-            <Stack>
-                <div style={{ textAlign: 'right' }}>
-                    <span>{inputCount}</span>
-                    <span>/200</span>
-                </div>
-            </Stack>
+
+            {!isReadOnly && (
+                <Stack>
+                    <div style={{ textAlign: 'right' }}>
+                        <span>{inputCount}</span>
+                        <span>/200</span>
+                    </div>
+                </Stack>
+            )}
         </div>
     );
 };
@@ -46,7 +67,7 @@ export default RecordBoard;
 //Design
 const Textfieldstyle = {
     width: '100%',
-    height: '16.5rem',
+    minheight: '16.5rem',
     background: '#fffcfa',
     color: '#282828',
     fontSize: '1.125rem',

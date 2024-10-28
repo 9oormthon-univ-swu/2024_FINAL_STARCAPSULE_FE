@@ -19,7 +19,7 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
-import { Helmet, HelmetProvider } from 'react-helmet-async';
+import { HelmetProvider } from 'react-helmet-async';
 
 function App() {
     dayjs.locale('ko');
@@ -44,11 +44,11 @@ function App() {
                             element={<RecordForm />}
                         />
                         <Route
-                            path='/recordafter/:userId'
+                            path='/recordafter/:userId/:memoryId'
                             element={<RecordFormAfter />}
                         />
                         <Route
-                            path='/guestafter/:userId'
+                            path='/guestafter/:userId/:memoryId'
                             element={<GuestFormAfter />}
                         />
                         <Route

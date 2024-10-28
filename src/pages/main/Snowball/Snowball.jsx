@@ -54,6 +54,7 @@ const Snowball = ({
     onLeftClick,
     onRightClick,
     isLoading,
+    onMemoryClick, // onMemoryClick prop 추가
 }) => {
     const memoryPosition = [
         { bottom: '25%', right: '20%' },
@@ -63,6 +64,7 @@ const Snowball = ({
         { top: '18%', left: '12%' },
         { top: '11%', right: '18%' },
     ];
+
     return (
         <SnowballContainer>
             <SnowballBackground>
@@ -93,13 +95,14 @@ const Snowball = ({
                                         position: 'absolute',
                                         ...memoryPosition[index],
                                     }}
+                                    onClick={() => onMemoryClick(memory.id, memory.object_name)} // memory.id와 memory.object_name을 함께 전달
                                 >
                                     <SnowballObject
                                         key={memory.id}
                                         id={memory.id}
                                         writer={memory.writer_name}
                                         variant={memory.object_name}
-                                        black={index == 0}
+                                        black={index === 0}
                                     />
                                 </motion.div>
                             ))}
