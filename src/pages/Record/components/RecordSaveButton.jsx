@@ -29,4 +29,5 @@ const formbtn = {
     marginTop: '2.25rem',
     marginBottom: '1.94rem',
     fontFamily: "Noto Sans", 
+    color: 'white',
 };
