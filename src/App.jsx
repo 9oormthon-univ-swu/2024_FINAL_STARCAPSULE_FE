@@ -41,7 +41,7 @@ function App() {
                         element={<RecordFormAfter />}
                     />
                     <Route
-                        path='/guestafter/:userId/:memoryId' 
+                        path='/guestafter/:userId/:memoryId'
                         element={<GuestFormAfter />}
                     />
                     <Route
