@@ -59,7 +59,11 @@ const RecordForm = () => {
         console.log(typeof image);
 
         const formData = new FormData();
-        formData.append('image', image);
+        formData.append('title', title);
+        formData.append('answer', answer);
+        formData.append('shapeName', object_name);
+        if (image) formData.append('image', image);
+
         console.log('answer:', answer);
         console.log('image:', image);
         console.log('title:', title);
@@ -67,11 +71,6 @@ const RecordForm = () => {
 
         await axiosInstance
             .post(`/api/my_memory/write`, formData, {
-                params: {
-                    title: title,
-                    answer: answer,
-                    shapeName: object_name,
-                },
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
