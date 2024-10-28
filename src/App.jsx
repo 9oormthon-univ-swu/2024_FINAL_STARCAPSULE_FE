@@ -33,14 +33,14 @@ function App() {
                     <Route path='/popupafter' element={<PopupAfter />} />
                     <Route path='/snowballmake' element={<SnowballMake />} />
                     <Route path='/main/:userId' element={<Main />} />
-                    <Route path='/guest/:userId' element={<GuestForm />} />
+                    <Route path='/guest/:userId' element={<Guest />} />
                     <Route path='/record/:userId' element={<RecordForm />} />
                     <Route
                         path='/recordafter/:userId/:memoryId'
                         element={<RecordFormAfter />}
                     />
                     <Route
-                        path='/guestafter/:userId/:memoryId' 
+                        path='/guestafter/:userId/:memoryId'
                         element={<GuestFormAfter />}
                     />
                     <Route
