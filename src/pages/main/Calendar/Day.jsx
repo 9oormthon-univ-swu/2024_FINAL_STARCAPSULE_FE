@@ -26,7 +26,7 @@ const containerStyle = {
 
 const dayButtonStyle = {
     width: '100%',
-    px: '6px',
+    p: 0,
     boxSizing: 'border-box',
 };
 
@@ -74,7 +74,7 @@ const Day = ({
     };
     let color = theme.palette.custom.white;
     let imgDisplay = false;
-    let triangleDisplay = 'none';
+    let triangleDisplay = false;
 
     // 기록 작성 가능 기간: 11월 30일 ~ 12월 31일 (범위 내)
     if (recordable) {
@@ -91,7 +91,7 @@ const Day = ({
         } else if (currentDay.isAfter(today)) {
             // 미래 날짜
             style.border = `1px solid ${theme.palette.custom.white}`;
-            if (date === 31) triangleDisplay = 'block';
+            if (date === 31) triangleDisplay = true;
         } else {
             // 지나간 날짜 작성 안함
             style.backgroundColor = 'rgba(255, 252, 250, 0.1)';
@@ -132,8 +132,7 @@ const Day = ({
                     ...dayButtonStyle,
                 }}
                 justifyContent={
-                    styleConfig.position === 'middle' &&
-                    triangleDisplay === 'none'
+                    styleConfig.position === 'middle' && !triangleDisplay
                         ? 'center'
                         : 'flex-start'
                 }
@@ -150,7 +149,9 @@ const Day = ({
                 <img
                     src={`/assets/calendar/triangle.svg`}
                     style={{
-                        display: triangleDisplay,
+                        display: triangleDisplay ? 'block' : 'none',
+                        width: '100%',
+                        transform: 'translateY(-1px)',
                         ...triangleStyle,
                     }}
                 />
@@ -158,9 +159,10 @@ const Day = ({
                     sx={{
                         color: color,
                         pointerEvents: 'none',
-                        marginTop: triangleDisplay === 'block' ? '3px' : 0,
+                        transform: triangleDisplay ? 'translateY(3px)' : 0,
+                        mx: '6px',
                     }}
-                    variant={styleConfig.variant}
+                    variant={triangleDisplay ? 'number2' : styleConfig.variant}
                 >
                     {date ? date : '11.30'}
                 </Typography>
