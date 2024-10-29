@@ -21,7 +21,11 @@ const CalendarPage = () => {
     const fetcher = (url) =>
         axiosWithAuth.get(url).then((res) => res.data.result);
 
-    const { data, isLoading } = useSWR(`/calendar/data`, fetcher);
+    const { data, isLoading } = useSWR(`/calendar/data`, fetcher, {
+        onError: (error) => {
+            console.error(error);
+        },
+    });
 
     const handleClose = () => {
         navigate(-1);
@@ -38,7 +42,7 @@ const CalendarPage = () => {
 
     if (isLoading) return <Loading />;
 
-    const lastDayWritten = data.writtenArray[31];
+    const lastDayWritten = data.written_array[31];
 
     return (
         <Layout
@@ -77,7 +81,7 @@ const CalendarPage = () => {
                     spacing={0.75}
                 >
                     <Typography variant='title3' sx={{ color: 'custom.grey' }}>
-                        {!isRecordable(data.serverTime) || lastDayWritten
+                        {!isRecordable(data.server_time) || lastDayWritten
                             ? '추억이 완성되었습니다!'
                             : '당신의 추억을 모아 퍼즐을 완성하세요!'}
                     </Typography>
@@ -91,16 +95,16 @@ const CalendarPage = () => {
                             component={'span'}
                             sx={{ color: 'custom.main1' }}
                         >
-                            {`${data.myMemoryCount}개`}
+                            {`${data.my_memory_count}개`}
                         </Typography>
                     </Typography>
                 </Stack>
                 <Calendar
-                    serverTime={data.serverTime}
-                    hasWritten={data.writtenArray}
+                    serverTime={data.server_time}
+                    hasWritten={data.written_array}
                     year={year}
                 />
-                {(!isRecordable(data.serverTime) || lastDayWritten) && (
+                {(!isRecordable(data.server_time) || lastDayWritten) && (
                     <Button
                         variant='contained'
                         sx={{
