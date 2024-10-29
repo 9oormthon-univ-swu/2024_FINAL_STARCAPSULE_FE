@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { Button, Box } from '@mui/material';
 import { PhotoIcon } from '../../../components/icons';
 
-const ImgUploadButton = ({ setImage, onChange, handleSetImage, id }) => {
+const ImgUploadButton = ({ setImage, handleSetImage, id }) => {
     const [selectedImage, setSelectedImage] = useState(null);
     const fileInputRef = useRef(null);
 
@@ -11,13 +11,10 @@ const ImgUploadButton = ({ setImage, onChange, handleSetImage, id }) => {
         const file = e.target.files[0] && e.target.files[0];
         if (file) {
             const reader = new FileReader();
-            if (setImage) {
-                setImage([file]);
-            }
+            setImage(file);
             reader.onload = (e) => {
                 setSelectedImage(e.target.result);
-                if (handleSetImage) handleSetImage([file]);
-                if (onChange) onChange();
+                if (handleSetImage) handleSetImage(file);
             };
             reader.readAsDataURL(file);
         }

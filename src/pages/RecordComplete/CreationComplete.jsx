@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 
 const Container = styled.div`
     display: flex;
@@ -55,6 +56,22 @@ const CreationComplete = () => {
 
     return (
         <Container onClick={handleClick}>
+            <Helmet>
+                <title>스노로그 - 2024의 추억이 쌓이는 중</title>
+                <meta
+                    name='description'
+                    content='스노로그에서 남은 2024의 추억을 쌓아보세요.'
+                />
+                <meta
+                    property='og:title'
+                    content='스노로그 - 2024의 추억이 쌓이는 중'
+                />
+                <meta
+                    property='og:description'
+                    content='스노로그에서 남은 2024의 추억을 쌓아보세요.'
+                />
+                <meta property='og:type' content='website' />
+            </Helmet>
             <SubTitle>
                 <SnowballName>{snowballName}</SnowballName>님과의
                 <br />
