@@ -28,7 +28,7 @@ export const isRecordable = (year, time) => {
 const Calendar = ({ serverTime, hasWritten, year }) => {
     const today = dayjs(serverTime);
 
-    const recordable = isRecordable(serverTime, year);
+    const recordable = isRecordable(year, serverTime);
 
     const lastDayWritten = hasWritten[31];
 
