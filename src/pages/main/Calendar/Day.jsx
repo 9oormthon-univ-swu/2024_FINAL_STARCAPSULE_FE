@@ -1,4 +1,4 @@
-import { Box, Stack, Typography, useTheme } from '@mui/material';
+import { Stack, Typography, useTheme } from '@mui/material';
 import { Button } from '@mui/base';
 import React from 'react';
 import dayjs from 'dayjs';
