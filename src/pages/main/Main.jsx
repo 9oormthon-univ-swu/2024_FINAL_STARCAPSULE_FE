@@ -158,7 +158,7 @@ const Main = () => {
     
     const onMemoryClick = (memoryId, objectName) => {
         const userId = param.userId;
-        const allowedDate = new Date('2024-12-31');
+        const allowedDate = new Date('2024-10-28');
         const currentDate = new Date();
 
         if (currentDate < allowedDate) {
