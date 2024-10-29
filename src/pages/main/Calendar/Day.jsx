@@ -11,6 +11,35 @@ dayjs.extend(isSameOrAfter);
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
+const containerStyle = {
+    boxSizing: 'border-box',
+    width: '100%',
+    height: 'auto',
+    minWidth: 0,
+    minHeight: 0,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundBlendMode: 'overlay',
+    overflow: 'hidden',
+    position: 'relative',
+};
+
+const dayButtonStyle = {
+    width: '100%',
+    px: '6px',
+    boxSizing: 'border-box',
+};
+
+const triangleStyle = {
+    width: '100%',
+    aspectRatio: '180.5/37',
+    position: 'absolute',
+    top: '0',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    pointerEvents: 'none',
+};
+
 // 스타일 및 날짜 관련 설정 추상화
 const Day = ({
     time,
@@ -85,34 +114,22 @@ const Day = ({
     return (
         <Stack
             sx={{
-                boxSizing: 'border-box',
-                width: '100%',
-                height: 'auto',
-                minWidth: 0,
-                minHeight: 0,
                 backgroundImage: imgDisplay
                     ? `url("/assets/calendar/puzzle_${date}.svg")`
                     : 'none',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
                 backgroundColor: style.backgroundColor,
-                backgroundBlendMode: 'overlay',
-                overflow: 'hidden',
+                ...containerStyle,
                 ...styleConfig.boxStyle,
-                position: 'relative',
             }}
             justifyContent={'center'}
             alignItems={'center'}
         >
-            <Stack
+            <Stack // 이 스택 컴포넌트가 실질적으로 버튼 역할을 합니다.
                 sx={{
-                    zIndex: 1,
-                    width: '100%',
-                    px: '6px',
-                    boxSizing: 'border-box',
                     border: style.border,
                     backgroundColor: `${style.backgroundColor} !important`,
                     ...styleConfig.boxStyle,
+                    ...dayButtonStyle,
                 }}
                 justifyContent={
                     styleConfig.position === 'middle' &&
@@ -127,21 +144,14 @@ const Day = ({
                           ? 'end'
                           : 'start'
                 }
-                component={Button}
+                component={Button} //
                 disabled={recordable || !lastDayWritten}
             >
-                <Box
-                    component={'img'}
+                <img
                     src={`/assets/calendar/triangle.svg`}
-                    sx={{
+                    style={{
                         display: triangleDisplay,
-                        width: '100%',
-                        aspectRatio: '180.5/37',
-                        position: 'absolute',
-                        top: '0',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        pointerEvents: 'none',
+                        ...triangleStyle,
                     }}
                 />
                 <Typography
