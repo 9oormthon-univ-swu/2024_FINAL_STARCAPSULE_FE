@@ -10,6 +10,8 @@ import SelectSnowballObject from '@/components/SelectSnowballObject';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useNicknameStore } from 'stores/useNicknameStore';
+import Layout from '@/layouts/Layout';
+import { Helmet } from 'react-helmet-async';
 
 const GuestForm = () => {
     // useState로 상태 관리
@@ -57,10 +59,7 @@ const GuestForm = () => {
     const handleAcceptModal = async () => {
         // FormData 객체를 사용해 이미지 파일과 텍스트 데이터를 서버로 전송
         const formData = new FormData();
-        // formData.append('answer', answer);
-        formData.append('image', uploadedImage);
-        // formData.append('writer', writer);
-        // formData.append('object_name', object_name);
+        if (uploadedImage) formData.append('image', uploadedImage);
 
         console.log('answer:', answer);
         console.log('image:', uploadedImage);
@@ -82,7 +81,6 @@ const GuestForm = () => {
             })
             .then(() => {
                 navigate(`/complete/${params.userId}`);
-
             })
             .catch((error) => {
                 console.log(error);
@@ -125,7 +123,20 @@ const GuestForm = () => {
     };
 
     return (
-        <>
+        <Layout
+            snow
+            overlay
+            sx={{
+                py: 3,
+            }}
+        >
+            <Helmet>
+                <title>스노로그 - 추억 전달</title>
+                <meta name='description' content='추억을 공유해보세요.' />
+                <meta property='og:title' content='스노로그 - 추억 전달' />
+                <meta property='og:description' content='추억을 공유해보세요' />
+                <meta property='og:type' content='website' />
+            </Helmet>
             <Stack sx={contentstyle}>
                 <Stack>
                     <Stack ref={selectObjectRef}>
@@ -150,7 +161,7 @@ const GuestForm = () => {
                                 answer={answer}
                                 inputCount={inputCount}
                                 handleTextChange={handleAnswerChange}
-                                showplaceholder='오늘의 질문 대신 다른 내용을 기록해도 좋아요! 자유롭게 남기고 싶은 추억을 작성해주세요:)'
+                                showplaceholder='남기고 싶은 추억을 작성해주세요.'
                             />
                         </Stack>
                         <Stack ref={writerRef}>
@@ -159,7 +170,7 @@ const GuestForm = () => {
                                 setfwriter={setWriter}
                             ></Writer>
                         </Stack>
-                        <RecordSaveButton></RecordSaveButton>
+                        <RecordSaveButton recordsavebtnText='추억 전달하기' />
                     </form>
                 </Stack>
             </Stack>
@@ -184,7 +195,7 @@ const GuestForm = () => {
                 snackbarText={snackbarText}
                 setSnackbarText={handleSnackTextChange}
             />
-        </>
+        </Layout>
     );
 };
 
@@ -197,7 +208,6 @@ const contentstyle = {
     height: '100%',
     width: '100%',
     maxWidth: '600px',
-    background: '#4D4D4D',
     margin: '0 auto',
     padding: '1.5rem',
     boxSizing: 'border-box',

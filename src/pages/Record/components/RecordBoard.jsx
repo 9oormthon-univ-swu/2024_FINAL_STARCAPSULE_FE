@@ -18,10 +18,14 @@ const RecordBoard = ({
         <div style={RecordBgstyle}>
             <Stack sx={imgcontainer}>
                 {isReadOnly && imageUrl ? (
-                    <img src={imageUrl} alt="기억 이미지" style={{ maxWidth: '100%', borderRadius: '10px' }} />
+                    <img
+                        src={imageUrl}
+                        alt='기억 이미지'
+                        style={{ maxWidth: '100%', borderRadius: '10px' }}
+                    />
                 ) : !isReadOnly ? (
                     <ImgUploadButton
-                        id="image"
+                        id='image'
                         selectedImage={selectedImage}
                         setImage={handleSetImage}
                         fileInputRef={fileInputRef}
@@ -36,7 +40,7 @@ const RecordBoard = ({
                     </div>
                 ) : (
                     <textarea
-                        id="answer"
+                        id='answer'
                         value={answer}
                         onChange={handleTextChange}
                         placeholder={showplaceholder}
