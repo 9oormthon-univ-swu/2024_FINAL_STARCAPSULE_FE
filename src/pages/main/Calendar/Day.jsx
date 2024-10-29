@@ -1,4 +1,4 @@
-import { Stack, Typography, useTheme } from '@mui/material';
+import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { Button } from '@mui/base';
 import React from 'react';
 import dayjs from 'dayjs';
@@ -21,13 +21,6 @@ const Day = ({
     recordable,
     year,
 }) => {
-    console.log('time', time);
-    console.log('hasWritten', hasWritten);
-    console.log('date', date);
-    console.log('styleConfig', styleConfig);
-    console.log('lastDayWritten', lastDayWritten);
-    console.log('recordable', recordable);
-    console.log('year', year);
     /*
         20xx-11-30 ~ 20xx-12-31: 작성 가능
         20xx-12-31             : 작성 완료 시 캘린더를 볼 수 있음 
@@ -52,6 +45,7 @@ const Day = ({
     };
     let color = theme.palette.custom.white;
     let imgDisplay = false;
+    let triangleDisplay = 'none';
 
     // 기록 작성 가능 기간: 11월 30일 ~ 12월 31일 (범위 내)
     if (recordable) {
@@ -68,6 +62,7 @@ const Day = ({
         } else if (currentDay.isAfter(today)) {
             // 미래 날짜
             style.border = `1px solid ${theme.palette.custom.white}`;
+            if (date === 31) triangleDisplay = 'block';
         } else {
             // 지나간 날짜 작성 안함
             style.backgroundColor = 'rgba(255, 252, 250, 0.1)';
@@ -104,6 +99,7 @@ const Day = ({
                 backgroundBlendMode: 'overlay',
                 overflow: 'hidden',
                 ...styleConfig.boxStyle,
+                position: 'relative',
             }}
             justifyContent={'center'}
             alignItems={'center'}
@@ -119,7 +115,10 @@ const Day = ({
                     ...styleConfig.boxStyle,
                 }}
                 justifyContent={
-                    styleConfig.position === 'middle' ? 'center' : 'flex-start'
+                    styleConfig.position === 'middle' &&
+                    triangleDisplay === 'none'
+                        ? 'center'
+                        : 'flex-start'
                 }
                 alignItems={
                     styleConfig.position === 'middle'
@@ -131,10 +130,25 @@ const Day = ({
                 component={Button}
                 disabled={recordable || !lastDayWritten}
             >
+                <Box
+                    component={'img'}
+                    src={`/assets/calendar/triangle.svg`}
+                    sx={{
+                        display: triangleDisplay,
+                        width: '100%',
+                        aspectRatio: '180.5/37',
+                        position: 'absolute',
+                        top: '0',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        pointerEvents: 'none',
+                    }}
+                />
                 <Typography
                     sx={{
                         color: color,
                         pointerEvents: 'none',
+                        marginTop: triangleDisplay === 'block' ? '3px' : 0,
                     }}
                     variant={styleConfig.variant}
                 >
