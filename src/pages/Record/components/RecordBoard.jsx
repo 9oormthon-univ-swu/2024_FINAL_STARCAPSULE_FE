@@ -18,10 +18,14 @@ const RecordBoard = ({
         <div style={RecordBgstyle}>
             <Stack sx={imgcontainer}>
                 {isReadOnly && imageUrl ? (
-                    <img src={imageUrl} alt="기억 이미지" style={{ maxWidth: '100%', borderRadius: '10px' }} />
+                    <img
+                        src={imageUrl}
+                        alt='기억 이미지'
+                        style={{ maxWidth: '100%', borderRadius: '10px' }}
+                    />
                 ) : !isReadOnly ? (
                     <ImgUploadButton
-                        id="image"
+                        id='image'
                         selectedImage={selectedImage}
                         setImage={handleSetImage}
                         fileInputRef={fileInputRef}
@@ -31,15 +35,17 @@ const RecordBoard = ({
 
             <Stack>
                 {isReadOnly ? (
-                    <div style={{ ...Textfieldstyle, whiteSpace: 'pre-wrap' }}>{content || "추억이 없습니다."}</div>
+                    <div style={{ ...Textfieldstyle, whiteSpace: 'pre-wrap' }}>
+                        {content || '추억이 없습니다.'}
+                    </div>
                 ) : (
                     <textarea
-                        id="answer"
+                        id='answer'
                         value={answer}
                         onChange={handleTextChange}
                         placeholder={showplaceholder}
                         style={Textfieldstyle}
-                        rows={Math.max(4, answer.split('\n').length)} // 내용에 따라 행이 늘어나도록 설정 하지만 수정 필요
+                        rows={Math.max(10, answer.split('\n').length)}
                     />
                 )}
             </Stack>

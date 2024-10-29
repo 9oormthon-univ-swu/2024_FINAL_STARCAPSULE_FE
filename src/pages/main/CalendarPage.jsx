@@ -8,6 +8,7 @@ import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import Loading from '@/components/Loading';
 import { CloseIcon } from '@/components/icons';
 import { isRecordable } from './Calendar/Calendar';
+import { Helmet } from 'react-helmet-async';
 
 const CalendarPage = () => {
     // 2025년도 서버 운영 시를 고려하여 year 값을 Calendar->  day 컴포넌트로 넘기도록 처리.
@@ -52,6 +53,22 @@ const CalendarPage = () => {
                 py: 3,
             }}
         >
+            <Helmet>
+                <title>스노로그 - 2024의 추억이 쌓이는 곳</title>
+                <meta
+                    name='description'
+                    content='스노로그에 기록된 추억을 캘린더를 통해 확인해보세요.'
+                />
+                <meta
+                    property='og:title'
+                    content='스노로그 - 2024의 추억이 쌓이는 곳'
+                />
+                <meta
+                    property='og:description'
+                    content='스노로그에 기록된 추억을 캘린더를 통해 확인해보세요.'
+                />
+                <meta property='og:type' content='website' />
+            </Helmet>
             <IconButton
                 sx={{
                     color: 'custom.grey',

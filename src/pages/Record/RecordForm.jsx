@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useState, useRef } from 'react';
 import { Stack, Typography } from '@mui/material';
 import RecordBoard from './components/RecordBoard';
@@ -10,11 +9,12 @@ import AlertModal from '@/components/AlertModal';
 import { useNavigate, useParams } from 'react-router-dom';
 import SelectSnowballObject from '@/components/SelectSnowballObject';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
+import Layout from '@/layouts/Layout';
+import { Helmet } from 'react-helmet-async';
 
 const RecordForm = () => {
     const navigate = useNavigate();
-    const { userId } = useParams(); // useParams로 userId 가져오기
-    console.log('userId:', userId);
+    const { userId } = useParams();
 
     // useState로 상태 관리
     const [title, setTitle] = useState('');
@@ -55,10 +55,10 @@ const RecordForm = () => {
     //모달 확인 버튼 처리 함수 & 데이터 전달
     const axiosInstance = useAxiosWithAuth();
     const handleAcceptModal = async () => {
-        console.log(typeof image);
-
+        // FormData 객체를 사용해 이미지 파일과 텍스트 데이터를 서버로 전송
         const formData = new FormData();
-        formData.append('image', image);
+        if (image) formData.append('image', image);
+
         console.log('answer:', answer);
         console.log('image:', image);
         console.log('title:', title);
@@ -66,13 +66,13 @@ const RecordForm = () => {
 
         await axiosInstance
             .post(`/api/my_memory/write`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
                 params: {
                     title: title,
                     answer: answer,
-                    shapeName: object_name,
-                },
-                headers: {
-                    'Content-Type': 'multipart/form-data',
+                    object_name: object_name,
                 },
             })
             .then(() => {
@@ -113,7 +113,26 @@ const RecordForm = () => {
     };
 
     return (
-        <>
+        <Layout
+            snow
+            overlay
+            sx={{
+                py: 3,
+            }}
+        >
+            <Helmet>
+                <title>스노로그 - 추억 보관</title>
+                <meta
+                    name='description'
+                    content='스노우볼에 추억으로 보관해보세요.'
+                />
+                <meta property='og:title' content='스노로그 - 추억 보관' />
+                <meta
+                    property='og:description'
+                    content='스노우볼에 추억으로 보관해보세요.'
+                />
+                <meta property='og:type' content='website' />
+            </Helmet>
             <Stack sx={contentstyle}>
                 <Stack ref={selectObjectRef}>
                     <Stack>
@@ -139,7 +158,7 @@ const RecordForm = () => {
                                 showplaceholder='남기고 싶은 추억을 작성해주세요.'
                             />
                         </Stack>
-                        <RecordSaveButton />
+                        <RecordSaveButton recordsavebtnText='추억 보관하기' />
                     </form>
                 </Stack>
             </Stack>
@@ -164,7 +183,7 @@ const RecordForm = () => {
                 snackbarText={snackbarText}
                 setSnackbarText={handleSnackTextChange}
             />
-        </>
+        </Layout>
     );
 };
 
@@ -177,7 +196,6 @@ const contentstyle = {
     height: '100%',
     width: '100%',
     maxWidth: '600px',
-    background: '#4D4D4D',
     margin: '0 auto',
     padding: '1.5rem',
     boxSizing: 'border-box',

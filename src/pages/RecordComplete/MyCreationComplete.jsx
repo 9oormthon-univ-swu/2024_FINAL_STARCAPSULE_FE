@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useParams, useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 
 const Container = styled.div`
     display: flex;
@@ -77,7 +78,7 @@ const SVGImage = styled.img`
 `;
 
 const MyCreationComplete = () => {
-    const { userId } = useParams();  // userId를 useParams로 가져오기
+    const { userId } = useParams(); // userId를 useParams로 가져오기
     const navigate = useNavigate();
 
     const [questionId, setQuestionId] = useState('');
@@ -96,11 +97,27 @@ const MyCreationComplete = () => {
     }, []);
 
     const handleClick = () => {
-        navigate(`/main/${userId}`);  // userId를 URL에 반영
+        navigate(`/main/${userId}`); // userId를 URL에 반영
     };
 
     return (
         <Container onClick={handleClick}>
+            <Helmet>
+                <title>스노로그 - 2024의 추억이 쌓이는 중</title>
+                <meta
+                    name='description'
+                    content='스노로그에서 남은 2024의 추억을 쌓아보세요.'
+                />
+                <meta
+                    property='og:title'
+                    content='스노로그 - 2024의 추억이 쌓이는 중'
+                />
+                <meta
+                    property='og:description'
+                    content='스노로그에서 남은 2024의 추억을 쌓아보세요.'
+                />
+                <meta property='og:type' content='website' />
+            </Helmet>
             <Title>self {questionId || '1'}</Title>
             <QuestionText>
                 {question || '가장 행복했던 일은 무엇인가요?'}
