@@ -50,6 +50,16 @@ const CalendarDetail = () => {
         navigate(`/main/${userId}`);
     };
 
+    const handlePrevious = () => {
+        console.log("Previous button clicked");
+     
+    };
+
+    const handleNext = () => {
+        console.log("Next button clicked");
+       
+    };
+
     return (
         <Stack sx={contentstyle}>
             <Stack
@@ -113,6 +123,36 @@ const CalendarDetail = () => {
             >
                 <ImageSaveButton onClick={handleSaveImage} />
             </Stack>
+
+           
+            <Stack
+    direction="row"
+    alignItems="center"
+    justifyContent="space-between"
+    sx={{
+        width: '568px', 
+        padding: '1rem',
+        backgroundColor: '#3a3a3a',
+        color: 'white',
+        position: 'fixed',
+        bottom: '5px', 
+        left: '50%',
+        transform: 'translateX(-50%)', 
+    }}
+>
+    <span 
+        style={{ cursor: 'pointer', fontFamily: 'Griun NltoTAENGGU, sans-serif' }}
+        onClick={handlePrevious}
+    >
+        이전
+    </span>
+    <span 
+        style={{ cursor: 'pointer', fontFamily: 'Griun NltoTAENGGU, sans-serif' }}
+        onClick={handleNext}
+    >
+        다음
+    </span>
+</Stack>
         </Stack>
     );
 };
