@@ -4,7 +4,7 @@ import ImgUploadButton from './ImgUploadButton';
 
 const RecordBoard = ({
     content,
-    imageUrl,
+    image_url,
     answer,
     inputCount,
     handleTextChange,
@@ -17,9 +17,9 @@ const RecordBoard = ({
     return (
         <div style={RecordBgstyle}>
             <Stack sx={imgcontainer}>
-                {isReadOnly && imageUrl ? (
+                {isReadOnly && image_url ? (
                     <img
-                        src={imageUrl}
+                        src={image_url}
                         alt='기억 이미지'
                         style={{ maxWidth: '100%', borderRadius: '10px' }}
                     />

@@ -119,7 +119,7 @@ const GuestFormAfter = () => {
                     onClick={handleClose} 
                 />
                 <span style={{ fontSize: '1.4rem' }}>
-                  {memoryData ? formatDate(memoryData.result.createdAt) : "로딩 중..."}
+                  {memoryData ? formatDate(memoryData.result.create_at) : "로딩 중..."}
                 </span>
                 <ShareIcon sx={{ cursor: 'pointer', position: 'relative', left: '-30px' }} />
             </Stack>
@@ -150,7 +150,7 @@ const GuestFormAfter = () => {
 
     <RecordBoard
         content={memoryData?.result.answer || ""}
-        imageUrl={memoryData?.result.imageUrl}
+        image_url={memoryData?.result.image_url}
         isReadOnly={true}
     />
 
