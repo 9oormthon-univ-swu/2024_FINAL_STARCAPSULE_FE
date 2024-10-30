@@ -51,7 +51,7 @@ function AnimationRoutes() {
                     element={<GuestFormAfter />}
                 />
                 <Route path='/guestrecord/:userId' element={<GuestForm />} />
-                <Route path='/calendar' element={<CalendarPage />} />
+                <Route path='/calendar/:userId' element={<CalendarPage />} />
                 <Route
                     path='/complete/:userId'
                     element={<CreationComplete />}
@@ -60,10 +60,10 @@ function AnimationRoutes() {
                     path='/mycomplete/:userId'
                     element={<MyCreationComplete />}
                 />
-                {/* <Route
+                <Route
                         path='/calendar-detail/:userId'
                         element={<CalendarDetail />}
-                    /> */}
+                    /> 
                 <Route path='*' element={<div>Not Found</div>} />
             </Routes>
         </AnimatePresence>
