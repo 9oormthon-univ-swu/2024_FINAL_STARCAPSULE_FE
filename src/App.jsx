@@ -3,6 +3,7 @@ import { ThemeProvider } from '@mui/material';
 import theme from './constants/theme';
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import LoginPage from './pages/Onboarding/LoginPage';
 import PopupAfter from './pages/Onboarding/PopupAfter';
 import SnowballMake from './pages/Onboarding/SnowballMake';
@@ -26,45 +27,48 @@ function App() {
     dayjs.extend(utc);
     dayjs.extend(timezone);
     dayjs.tz.setDefault('Asia/Seoul');
+    
     return (
-        <ThemeProvider theme={theme}>
-            <Router>
-                <Routes>
-                    <Route path='/' element={<LoginPage />} />
-                    <Route path='/popupafter' element={<PopupAfter />} />
-                    <Route path='/snowballmake' element={<SnowballMake />} />
-                    <Route path='/main/:userId' element={<Main />} />
-                    <Route path='/guest/:userId' element={<Guest />} />
-                    <Route path='/record/:userId' element={<RecordForm />} />
-                    <Route
-                        path='/recordafter/:userId/:memoryId'
-                        element={<RecordFormAfter />}
-                    />
-                    <Route
-                        path='/guestafter/:userId/:memoryId'
-                        element={<GuestFormAfter />}
-                    />
-                    <Route
-                        path='/guestrecord/:userId'
-                        element={<GuestForm />}
-                    />
-                    <Route path='/calendar' element={<CalendarPage />} />
-                    <Route
-                        path='/complete/:userId'
-                        element={<CreationComplete />}
-                    />
-                    <Route
-                        path='/mycomplete/:userId'
-                        element={<MyCreationComplete />}
-                    />
-                    {/* <Route
-                        path='/calendar-detail/:userId'
-                        element={<CalendarDetail />}
-                    /> */}
-                    <Route path='*' element={<div>Not Found</div>} />
-                </Routes>
-            </Router>
-        </ThemeProvider>
+        <HelmetProvider>
+            <ThemeProvider theme={theme}>
+                <Router>
+                    <Routes>
+                        <Route path='/' element={<LoginPage />} />
+                        <Route path='/popupafter' element={<PopupAfter />} />
+                        <Route path='/snowballmake' element={<SnowballMake />} />
+                        <Route path='/main/:userId' element={<Main />} />
+                        <Route path='/guest/:userId' element={<Guest />} />
+                        <Route path='/record/:userId' element={<RecordForm />} />
+                        <Route
+                            path='/recordafter/:userId/:memoryId'
+                            element={<RecordFormAfter />}
+                        />
+                        <Route
+                            path='/guestafter/:userId/:memoryId'
+                            element={<GuestFormAfter />}
+                        />
+                        <Route
+                            path='/guestrecord/:userId'
+                            element={<GuestForm />}
+                        />
+                        <Route path='/calendar' element={<CalendarPage />} />
+                        <Route
+                            path='/complete/:userId'
+                            element={<CreationComplete />}
+                        />
+                        <Route
+                            path='/mycomplete/:userId'
+                            element={<MyCreationComplete />}
+                        />
+                        {/* <Route
+                            path='/calendar-detail/:userId'
+                            element={<CalendarDetail />}
+                        /> */}
+                        <Route path='*' element={<div>Not Found</div>} />
+                    </Routes>
+                </Router>
+            </ThemeProvider>
+        </HelmetProvider>
     );
 }
 
