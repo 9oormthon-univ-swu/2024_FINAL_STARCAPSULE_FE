@@ -11,6 +11,35 @@ dayjs.extend(isSameOrAfter);
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
+const containerStyle = {
+    boxSizing: 'border-box',
+    width: '100%',
+    height: 'auto',
+    minWidth: 0,
+    minHeight: 0,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundBlendMode: 'overlay',
+    overflow: 'hidden',
+    position: 'relative',
+};
+
+const dayButtonStyle = {
+    width: '100%',
+    p: 0,
+    boxSizing: 'border-box',
+};
+
+const triangleStyle = {
+    width: '100%',
+    aspectRatio: '180.5/37',
+    position: 'absolute',
+    top: '0',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    pointerEvents: 'none',
+};
+
 // 스타일 및 날짜 관련 설정 추상화
 const Day = ({
     time,
@@ -45,6 +74,7 @@ const Day = ({
     };
     let color = theme.palette.custom.white;
     let imgDisplay = false;
+    let triangleDisplay = false;
 
     // 기록 작성 가능 기간: 11월 30일 ~ 12월 31일 (범위 내)
     if (recordable) {
@@ -61,6 +91,7 @@ const Day = ({
         } else if (currentDay.isAfter(today)) {
             // 미래 날짜
             style.border = `1px solid ${theme.palette.custom.white}`;
+            if (date === 31) triangleDisplay = true;
         } else {
             // 지나간 날짜 작성 안함
             style.backgroundColor = 'rgba(255, 252, 250, 0.1)';
@@ -83,36 +114,27 @@ const Day = ({
     return (
         <Stack
             sx={{
-                boxSizing: 'border-box',
-                width: '100%',
-                height: 'auto',
-                minWidth: 0,
-                minHeight: 0,
                 backgroundImage: imgDisplay
                     ? `url("/assets/calendar/puzzle_${date}.svg")`
                     : 'none',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
                 backgroundColor: style.backgroundColor,
-                backgroundBlendMode: 'overlay',
-                overflow: 'hidden',
+                ...containerStyle,
                 ...styleConfig.boxStyle,
             }}
             justifyContent={'center'}
             alignItems={'center'}
         >
-            <Stack
+            <Stack // 이 스택 컴포넌트가 실질적으로 버튼 역할을 합니다.
                 sx={{
-                    zIndex: 1,
-                    width: '100%',
-                    px: '6px',
-                    boxSizing: 'border-box',
                     border: style.border,
                     backgroundColor: `${style.backgroundColor} !important`,
                     ...styleConfig.boxStyle,
+                    ...dayButtonStyle,
                 }}
                 justifyContent={
-                    styleConfig.position === 'middle' ? 'center' : 'flex-start'
+                    styleConfig.position === 'middle' && !triangleDisplay
+                        ? 'center'
+                        : 'flex-start'
                 }
                 alignItems={
                     styleConfig.position === 'middle'
@@ -121,15 +143,26 @@ const Day = ({
                           ? 'end'
                           : 'start'
                 }
-                component={Button}
+                component={Button} //
                 disabled={recordable || !lastDayWritten}
             >
+                <img
+                    src={`/assets/calendar/triangle.svg`}
+                    style={{
+                        display: triangleDisplay ? 'block' : 'none',
+                        width: '100%',
+                        transform: 'translateY(-1px)',
+                        ...triangleStyle,
+                    }}
+                />
                 <Typography
                     sx={{
                         color: color,
                         pointerEvents: 'none',
+                        transform: triangleDisplay ? 'translateY(3px)' : 0,
+                        mx: '6px',
                     }}
-                    variant={styleConfig.variant}
+                    variant={triangleDisplay ? 'number2' : styleConfig.variant}
                 >
                     {date ? date : '11.30'}
                 </Typography>

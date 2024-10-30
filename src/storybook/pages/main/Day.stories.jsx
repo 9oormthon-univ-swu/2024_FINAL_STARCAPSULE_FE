@@ -1,5 +1,6 @@
 import Day from '@/pages/main/Calendar/Day';
 import dayjs from 'dayjs';
+import { LastDayWritten } from './Calendar.stories';
 
 const meta = {
     title: 'main/Day',
@@ -14,6 +15,22 @@ const meta = {
         date: {
             control: 'number',
             description: '오늘 날짜, 0일 경우 11월 30일로 처리',
+        },
+        styleConfig: {
+            control: 'object',
+            description: '스타일 설정',
+        },
+        lastDayWritten: {
+            control: 'boolean',
+            description: '마지막 날 작성 여부',
+        },
+        recordable: {
+            control: 'boolean',
+            description: '기록 가능 여부',
+        },
+        year: {
+            control: 'number',
+            description: '년도',
         },
     },
 };
@@ -32,11 +49,27 @@ const styleConfig = {
 };
 
 export const TodayNotWritten = () => (
-    <Day time={today} hasWritten={false} date={1} styleConfig={styleConfig} />
+    <Day
+        time={today}
+        hasWritten={false}
+        date={1}
+        styleConfig={styleConfig}
+        lastDayWritten={false}
+        recordable={true}
+        year={2024}
+    />
 );
 
 export const TodayWritten = () => (
-    <Day time={today} hasWritten={true} date={1} styleConfig={styleConfig} />
+    <Day
+        time={today}
+        hasWritten={true}
+        date={1}
+        styleConfig={styleConfig}
+        lastDayWritten={false}
+        recordable={true}
+        year={2024}
+    />
 );
 
 export const Future = () => (
@@ -45,6 +78,9 @@ export const Future = () => (
         hasWritten={false}
         date={1}
         styleConfig={styleConfig}
+        lastDayWritten={false}
+        recordable={true}
+        year={2024}
     />
 );
 
@@ -54,6 +90,9 @@ export const PastNotWritten = () => (
         hasWritten={false}
         date={1}
         styleConfig={styleConfig}
+        lastDayWritten={false}
+        recordable={true}
+        year={2024}
     />
 );
 
@@ -63,6 +102,9 @@ export const PastWritten = () => (
         hasWritten={true}
         date={1}
         styleConfig={styleConfig}
+        lastDayWritten={false}
+        recordable={true}
+        year={2024}
     />
 );
 
@@ -72,6 +114,9 @@ export const AfterEventNotWritten = () => (
         hasWritten={false}
         date={1}
         styleConfig={styleConfig}
+        lastDayWritten={false}
+        recordable={false}
+        year={2024}
     />
 );
 
@@ -81,6 +126,9 @@ export const AfterEventWritten = () => (
         hasWritten={true}
         date={1}
         styleConfig={styleConfig}
+        lastDayWritten={false}
+        recordable={false}
+        year={2024}
     />
 );
 
@@ -90,6 +138,9 @@ export const MiddleAligned = () => (
         hasWritten={false}
         date={1}
         styleConfig={{ ...styleConfig, position: 'middle' }}
+        lastDayWritten={false}
+        recordable={true}
+        year={2024}
     />
 );
 
@@ -99,6 +150,9 @@ export const RightAligned = () => (
         hasWritten={false}
         date={1}
         styleConfig={{ ...styleConfig, position: 'right', variant: 'number2' }}
+        lastDayWritten={false}
+        recordable={true}
+        year={2024}
     />
 );
 
