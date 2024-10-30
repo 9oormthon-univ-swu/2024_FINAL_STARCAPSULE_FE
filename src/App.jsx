@@ -20,7 +20,7 @@ import Guest from './pages/guest/Guest';
 import CalendarPage from './pages/main/CalendarPage';
 import RecordFormAfter from './pages/RecordComplete/RecordFormAfter';
 import GuestFormAfter from './pages/RecordComplete/GuestFormAfter';
-// import CalendarDetail from './pages/RecordComplete/CalendarDetail'; // 파일을 못찾는다는 에러가 떠서 임시 주석처리했습니다.
+import CalendarDetail from './pages/RecordComplete/CalendarDetail'; // 파일을 못찾는다는 에러가 떠서 임시 주석처리했습니다.
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import utc from 'dayjs/plugin/utc';
@@ -51,7 +51,7 @@ function AnimationRoutes() {
                     element={<GuestFormAfter />}
                 />
                 <Route path='/guestrecord/:userId' element={<GuestForm />} />
-                <Route path='/calendar' element={<CalendarPage />} />
+                <Route path='/calendar/:userId' element={<CalendarPage />} />
                 <Route
                     path='/complete/:userId'
                     element={<CreationComplete />}
@@ -60,10 +60,10 @@ function AnimationRoutes() {
                     path='/mycomplete/:userId'
                     element={<MyCreationComplete />}
                 />
-                {/* <Route
+                <Route
                         path='/calendar-detail/:userId'
                         element={<CalendarDetail />}
-                    /> */}
+                    /> 
                 <Route path='*' element={<div>Not Found</div>} />
             </Routes>
         </AnimatePresence>

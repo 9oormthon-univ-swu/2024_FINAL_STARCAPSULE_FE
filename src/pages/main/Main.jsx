@@ -16,6 +16,7 @@ import Layout from '@/layouts/Layout';
 import useSWR from 'swr';
 import { CalendarIcon } from '@/components/icons';
 import { getDaysBeforeOpen } from '@/utils/getDaysBeforeOpen';
+import PopupPage from '../Onboarding/PopupPage';
 import PopupAfter from '../Onboarding/PopupAfter';
 import { useParams } from 'react-router-dom';
 import { useUserStore } from 'stores/useUserStore';
@@ -77,8 +78,8 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
 
 const Main = () => {
     const [page, setPage] = useState(1);
-    const [isPopupOpen, setPopupOpen] = useState(false);
-    const [showLottie, setShowLottie] = useState(true);
+    const [isPopupOpen, setPopupOpen] = useState(false); // 팝업이 기본적으로 비활성화 상태로 시작
+    const [showLottie, setShowLottie] = useState(false);  // 로티 애니메이션도 비활성화 상태로 시작
     const navigate = useNavigate();
 
     const successMessage = '스노우볼 이름이 변경되었어요.';
@@ -96,6 +97,17 @@ const Main = () => {
     const param = useParams();
     const { setUserId } = useUserStore();
     const { login } = useAuthStore();
+
+    useEffect(() => {
+        const lastPopupCheckedDate = localStorage.getItem('popupCheckedDate');
+        const today = new Date().toLocaleDateString('ko-KR');
+    
+        if (lastPopupCheckedDate !== today) {
+            setShowLottie(true);  // 체크되지 않은 경우 로티와 팝업을 표시
+            setPopupOpen(true);
+        }
+    }, []);
+    
 
     useEffect(() => {
         setPopupOpen(true);
@@ -150,18 +162,22 @@ const Main = () => {
     };
 
     const onMemoryClick = (memoryId, objectName) => {
-        console.log('Clicked memory ID:', memoryId); // 콘솔 출력 추가
-        const userId = param.userId; // useParams로 가져온 userId 사용
+        const userId = param.userId;
+        const allowedDate = new Date('2024-10-28');
+        const currentDate = new Date();
 
-        // object_name에 따라 페이지 이동을 다르게 설정
-        const recordObjects = [
-            'christmas_tree',
-            'gingerbread_house',
-            'lamplight',
-            'santa_sleigh',
-        ];
-        const guestObjects = ['moon', 'santa', 'snowflake', 'snowman'];
+        if (currentDate < allowedDate) {
+            setSnackbarProps({
+                openSnackbar: true,
+                snackbarText: ' 이후 조회 가능합니다',
+                severity: 'info',
+            });
+            return;
+        }
 
+        const recordObjects = ["christmas_tree", "gingerbread_house", "lamplight", "santa_sleigh"];
+        const guestObjects = ["moon", "santa", "snowflake", "snowman"];
+    
         if (recordObjects.includes(objectName)) {
             navigate(`/recordafter/${userId}/${memoryId}`);
         } else if (guestObjects.includes(objectName)) {
@@ -219,10 +235,10 @@ const Main = () => {
                         >
                             <DDayTitle />
                             <Stack direction={'row'} spacing={2}>
-                                <StyledIconButton
-                                    onClick={() => navigate('/calendar')}
-                                >
-                                    <CalendarIcon />
+                                <StyledIconButton>
+                                    <CalendarIcon
+                                        onClick={() => navigate(`/calendar/${param.userId}`)}
+                                    />
                                 </StyledIconButton>
                                 <ImgShareButton
                                     title={
@@ -301,33 +317,38 @@ const Main = () => {
                         </Stack>
                     )}
                 </MainContainer>
-                {!daysLeft && showLottie ? (
-                    <Portal
-                        container={document.getElementById('capture-container')}
-                    >
-                        <Overlay onClick={handleLottieClick}>
-                            <PopupContainer>
-                                <dotlottie-player
-                                    src='https://lottie.host/e35fc1c8-f985-4963-940e-0e4e0b630cd9/eNIuonSNHz.json'
-                                    background='transparent'
-                                    speed='1'
-                                    style={{ width: '350px', height: '350px' }}
-                                    loop
-                                    autoplay
-                                ></dotlottie-player>
-                            </PopupContainer>
-                        </Overlay>
-                    </Portal>
-                ) : (
-                    <Portal
-                        container={document.getElementById('capture-container')}
-                    >
-                        <PopupAfter
-                            isOpen={isPopupOpen}
-                            onClose={() => setPopupOpen(false)}
-                        />
-                    </Portal>
-                )}
+                {daysLeft ? ( 
+    // daysLeft가 true인 경우 PopupPage를 보여줌
+    <PopupPage isOpen={isPopupOpen} onClose={() => setPopupOpen(false)} />
+) : (
+    // daysLeft가 false인 경우 Lottie 또는 PopupAfter를 보여줌
+    showLottie ? (
+        <Overlay onClick={handleLottieClick}>
+            <PopupContainer>
+                <dotlottie-player
+                    src="https://lottie.host/e35fc1c8-f985-4963-940e-0e4e0b630cd9/eNIuonSNHz.json"
+                    background="transparent"
+                    speed="1"
+                    style={{ width: '350px', height: '350px' }}
+                    loop
+                    autoplay
+                ></dotlottie-player>
+            </PopupContainer>
+        </Overlay>
+    ) : (
+        <PopupAfter isOpen={isPopupOpen} onClose={() => setPopupOpen(false)} />
+    )
+)}
+
+                <SnackBar
+                    {...snackbarProps}
+                    handleCloseSnackbar={() =>
+                        setSnackbarProps((prev) => ({
+                            ...prev,
+                            openSnackbar: false,
+                        }))
+                    }
+                />
             </Layout>
         </Container>
     );
