@@ -1,10 +1,13 @@
 import { Stack, Typography, useTheme } from '@mui/material';
 import { Button } from '@mui/base';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import { useParams } from 'react-router-dom';
 
 // 플러그인 활성화
 dayjs.extend(isSameOrAfter);
@@ -59,13 +62,38 @@ const Day = ({
         따라서 Calendar 컴포넌트에서 Day 컴포넌트로 몇 년도 캘린더인지 알 수 있는 year를 제공하는 것으로 처리함.
     */
     const theme = useTheme();
+    const navigate = useNavigate();
+    const { userId } = useParams();  // URL에서 userId 가져오기
 
     const today = dayjs(time).startOf('day');
     const startOfPeriod = dayjs(`${year}-11-30`).startOf('day');
     const currentDay = startOfPeriod.add(date, 'day').startOf('day');
 
     const dateInFormat = currentDay.format('YYYY-MM-DD');
-    console.log(dateInFormat); // 이 값을 가져다가 api 요청 시 사용하면 됩니다.
+
+    // 클릭 이벤트 핸들러 - API 요청 및 페이지 이동
+   // 클릭 이벤트 핸들러 - API 요청 및 페이지 이동
+const handleClick = async () => {
+    const token = localStorage.getItem('token'); // 로컬 스토리지에서 토큰 가져오기
+    const apiUrl = `${import.meta.env.VITE_API_URL}/calendar/memories/${dateInFormat}`;
+
+    try {
+        const response = await axios.get(apiUrl, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        console.log(`${dateInFormat} clicked`, response.data);
+
+        // 데이터가 성공적으로 로드되면 상세 페이지로 이동
+        navigate(`/calendar-detail/${userId}`, {
+            state: { data: response.data.result }, 
+        });
+    } catch (error) {
+        console.error("Error fetching memory data:", error);
+    }
+};
+
 
     // 기본 스타일
     let style = {
@@ -111,6 +139,7 @@ const Day = ({
             color = theme.palette.custom.font;
         }
     }
+
     return (
         <Stack
             sx={{
@@ -124,7 +153,7 @@ const Day = ({
             justifyContent={'center'}
             alignItems={'center'}
         >
-            <Stack // 이 스택 컴포넌트가 실질적으로 버튼 역할을 합니다.
+            <Stack
                 sx={{
                     border: style.border,
                     backgroundColor: `${style.backgroundColor} !important`,
@@ -140,11 +169,11 @@ const Day = ({
                     styleConfig.position === 'middle'
                         ? 'center'
                         : styleConfig.position === 'right'
-                          ? 'end'
-                          : 'start'
+                        ? 'end'
+                        : 'start'
                 }
-                component={Button} //
-                disabled={recordable || !lastDayWritten}
+                component={Button}
+                onClick={handleClick} // 클릭 이벤트 추가
             >
                 <img
                     src={`/assets/calendar/triangle.svg`}
