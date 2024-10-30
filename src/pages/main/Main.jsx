@@ -15,6 +15,7 @@ import Layout from '@/layouts/Layout';
 import useSWR from 'swr';
 import { CalendarIcon } from '@/components/icons';
 import { getDaysBeforeOpen } from '@/utils/getDaysBeforeOpen';
+import PopupPage from '../Onboarding/PopupPage';
 import PopupAfter from '../Onboarding/PopupAfter';
 import { useParams } from 'react-router-dom';
 import { useUserStore } from 'stores/useUserStore';
@@ -76,8 +77,8 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
 
 const Main = () => {
     const [page, setPage] = useState(1);
-    const [isPopupOpen, setPopupOpen] = useState(false);
-    const [showLottie, setShowLottie] = useState(true);
+    const [isPopupOpen, setPopupOpen] = useState(false); // 팝업이 기본적으로 비활성화 상태로 시작
+    const [showLottie, setShowLottie] = useState(false);  // 로티 애니메이션도 비활성화 상태로 시작
     const navigate = useNavigate();
     const [snackbarProps, setSnackbarProps] = useState({
         openSnackbar: false,
@@ -99,6 +100,17 @@ const Main = () => {
     const param = useParams();
     const { setUserId } = useUserStore();
     const { login } = useAuthStore();
+
+    useEffect(() => {
+        const lastPopupCheckedDate = localStorage.getItem('popupCheckedDate');
+        const today = new Date().toLocaleDateString('ko-KR');
+    
+        if (lastPopupCheckedDate !== today) {
+            setShowLottie(true);  // 체크되지 않은 경우 로티와 팝업을 표시
+            setPopupOpen(true);
+        }
+    }, []);
+    
 
     useEffect(() => {
         setPopupOpen(true);
@@ -232,7 +244,7 @@ const Main = () => {
                             <Stack direction={'row'} spacing={2}>
                                 <StyledIconButton>
                                     <CalendarIcon
-                                        onClick={() => navigate('/calendar')}
+                                        onClick={() => navigate(`/calendar/${param.userId}`)}
                                     />
                                 </StyledIconButton>
                                 <ImgShareButton
@@ -312,25 +324,29 @@ const Main = () => {
                         </Stack>
                     )}
                 </MainContainer>
-                {!daysLeft && showLottie ? (
-                    <Overlay onClick={handleLottieClick}>
-                        <PopupContainer>
-                            <dotlottie-player
-                                src='https://lottie.host/e35fc1c8-f985-4963-940e-0e4e0b630cd9/eNIuonSNHz.json'
-                                background='transparent'
-                                speed='1'
-                                style={{ width: '350px', height: '350px' }}
-                                loop
-                                autoplay
-                            ></dotlottie-player>
-                        </PopupContainer>
-                    </Overlay>
-                ) : (
-                    <PopupAfter
-                        isOpen={isPopupOpen}
-                        onClose={() => setPopupOpen(false)}
-                    /> //이 부분
-                )}
+                {daysLeft ? ( 
+    // daysLeft가 true인 경우 PopupPage를 보여줌
+    <PopupPage isOpen={isPopupOpen} onClose={() => setPopupOpen(false)} />
+) : (
+    // daysLeft가 false인 경우 Lottie 또는 PopupAfter를 보여줌
+    showLottie ? (
+        <Overlay onClick={handleLottieClick}>
+            <PopupContainer>
+                <dotlottie-player
+                    src="https://lottie.host/e35fc1c8-f985-4963-940e-0e4e0b630cd9/eNIuonSNHz.json"
+                    background="transparent"
+                    speed="1"
+                    style={{ width: '350px', height: '350px' }}
+                    loop
+                    autoplay
+                ></dotlottie-player>
+            </PopupContainer>
+        </Overlay>
+    ) : (
+        <PopupAfter isOpen={isPopupOpen} onClose={() => setPopupOpen(false)} />
+    )
+)}
+
                 <SnackBar
                     {...snackbarProps}
                     handleCloseSnackbar={() =>
