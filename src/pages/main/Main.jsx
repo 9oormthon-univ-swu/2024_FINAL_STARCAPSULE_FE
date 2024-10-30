@@ -6,6 +6,7 @@ import {
     styled,
     Typography,
     Container,
+    Portal,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import DDayTitle from './DDayTitle';
@@ -23,11 +24,11 @@ import { saveTokenFromURL } from '@/utils/saveTokenFromURL';
 import useAuthStore from 'stores/useAuthStore';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import { useNavigate } from 'react-router-dom';
-import SnackBar from '@/components/SnackBar';
 import { defaultGetFetcher } from '@/utils/getFetcher';
 import '@dotlottie/player-component';
 import ImgShareButton from '@/components/ImgShareButton';
 import { Helmet } from 'react-helmet-async';
+import { useSnackbarStore } from '@/stores/useSnackbarStore';
 
 export const MainContainer = styled(Stack)(() => ({
     padding: '2rem 0 2.25rem 0',
@@ -80,19 +81,15 @@ const Main = () => {
     const [isPopupOpen, setPopupOpen] = useState(false); // 팝업이 기본적으로 비활성화 상태로 시작
     const [showLottie, setShowLottie] = useState(false);  // 로티 애니메이션도 비활성화 상태로 시작
     const navigate = useNavigate();
-    const [snackbarProps, setSnackbarProps] = useState({
-        openSnackbar: false,
-        snackbarText: '',
-        severity: '',
-    });
 
     const successMessage = '스노우볼 이름이 변경되었어요.';
     const errorMessage = '스노우볼 이름 변경에 실패했어요. 다시 시도해주세요.';
 
+    const { setSnackbarOpen } = useSnackbarStore();
+
     const onError = () => {
-        setSnackbarProps({
-            openSnackbar: true,
-            snackbarText: errorMessage,
+        setSnackbarOpen({
+            text: errorMessage,
             severity: 'error',
         });
     };
@@ -144,9 +141,8 @@ const Main = () => {
                 },
             })
             .then(() => {
-                setSnackbarProps({
-                    openSnackbar: true,
-                    snackbarText: successMessage,
+                setSnackbarOpen({
+                    text: successMessage,
                     severity: 'success',
                 });
                 mutate();
@@ -160,11 +156,8 @@ const Main = () => {
     };
 
     const onRightClick = () => {
-        setTimeout(
-            setPage((prev) =>
-                prev === data?.total_page ? data?.total_page : prev + 1
-            ),
-            500
+        setPage((prev) =>
+            prev === data?.total_page ? data?.total_page : prev + 1
         );
     };
 

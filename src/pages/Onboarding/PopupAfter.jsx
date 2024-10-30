@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import PopupButton from './PopupButton';
 
 const PopupWrapper = styled.div`
-    display: ${(props) => (props.isOpen ? 'flex' : 'none')};
+    display: ${(props) => props.is_open};
     justify-content: center;
     align-items: center;
     position: fixed;
@@ -29,13 +29,13 @@ const SvgWrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%; 
-    height: auto; 
+    width: 100%;
+    height: auto;
 `;
 
 const StyledSvg = styled.img`
-    width: 280px; 
-    height: 320px; 
+    width: 280px;
+    height: 320px;
 `;
 
 const TextWrapper = styled.div`
@@ -84,7 +84,7 @@ const CheckboxLabel = styled.label`
 `;
 
 const ButtonWrapper = styled.div`
-    margin-top: -35px; 
+    margin-top: -35px;
     position: relative; //체크박스에 영향이 가지않게
 `;
 
@@ -118,13 +118,14 @@ const PopupAfter = ({ isOpen, onClose }) => {
     };
 
     return (
-        <PopupWrapper isOpen={isOpen}>
+        <PopupWrapper is_open={isOpen ? 'flex' : 'none'}>
             <PopupContent>
                 <SvgWrapper>
                     <StyledSvg src={'/assets/Popup.svg'} alt='popup' />
                     <TextWrapper>
                         <StyledBodyText>
-                            그동안의 추억이<br />
+                            그동안의 추억이
+                            <br />
                             공개되었어요!
                         </StyledBodyText>
                     </TextWrapper>
@@ -148,7 +149,7 @@ const PopupAfter = ({ isOpen, onClose }) => {
                 </CheckboxWrapper>
 
                 <ButtonWrapper>
-                    <PopupButton text="추억 모아보기" onClick={onClose} />
+                    <PopupButton text='추억 모아보기' onClick={onClose} />
                 </ButtonWrapper>
             </PopupContent>
         </PopupWrapper>
