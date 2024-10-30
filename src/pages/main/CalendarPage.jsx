@@ -28,12 +28,17 @@ const CalendarPage = () => {
         },
     });
 
-    useEffect(() => {
-        console.log(data);
-    }, [data]);
-
     const handleClose = () => {
         navigate(-1);
+    };
+
+    const handleSave = () => {
+        const imgUrl = `/assets/calendar/image.png`;
+
+        const a = document.createElement('a');
+        a.href = imgUrl;
+        a.download = '퍼즐-완성본.png';
+        a.click();
     };
 
     if (isLoading) return <Loading />;
@@ -93,8 +98,10 @@ const CalendarPage = () => {
                     }}
                     spacing={0.75}
                 >
-                    <Typography variant='title3' sx={{ color: 'custom.white' }}>
-                        {'추억이 공개되었어요'}
+                    <Typography variant='title3' sx={{ color: 'custom.grey' }}>
+                        {!isRecordable(data.serverTime) || lastDayWritten
+                            ? '추억이 완성되었습니다!'
+                            : '당신의 추억을 모아 퍼즐을 완성하세요!'}
                     </Typography>
                     <Typography
                         variant='Heading2'
@@ -102,9 +109,9 @@ const CalendarPage = () => {
                     >
                         {'보관된 추억 조각  '}
                         <Typography
-                            variant='Heading2'
-                            color='primary'
+                            variant={'Heading2'}
                             component={'span'}
+                            sx={{ color: 'custom.main1' }}
                         >
                             {`${data.myMemoryCount}개`}
                         </Typography>
@@ -124,9 +131,7 @@ const CalendarPage = () => {
                             height: '4rem',
                             borderRadius: '1.25rem',
                         }}
-                        onClick={() => {
-                            navigate('/main/calendar/save');
-                        }}
+                        onClick={handleSave}
                     >
                         <Typography
                             variant='title2'

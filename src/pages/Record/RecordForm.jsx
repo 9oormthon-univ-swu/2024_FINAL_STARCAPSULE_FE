@@ -21,7 +21,7 @@ const RecordForm = () => {
     const [answer, setAnswer] = useState('');
     const [inputCount, setInputCount] = useState(0);
     const [image, setImage] = useState(null);
-    const [object_name, setObjectName] = useState('');
+    const [shapeName, setObjectName] = useState('');
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snackbarText, setSnackbarText] = useState('');
     const [openModal, setopenModal] = useState(false);
@@ -59,10 +59,13 @@ const RecordForm = () => {
         const formData = new FormData();
         if (image) formData.append('image', image);
 
-        console.log('answer:', answer);
         console.log('image:', image);
-        console.log('title:', title);
-        console.log('object_name:', object_name);
+        // console.log('answer:', answer);
+        // console.log('title:', title);
+        // console.log('object_name:', object_name);
+        console.log('title:', title || 'Empty');
+        console.log('answer:', answer || 'Empty');
+        console.log('object_name:', shapeName || 'Empty');
 
         await axiosInstance
             .post(`/api/my_memory/write`, formData, {
@@ -72,7 +75,7 @@ const RecordForm = () => {
                 params: {
                     title: title,
                     answer: answer,
-                    object_name: object_name,
+                    shapeName: shapeName,
                 },
             })
             .then(() => {
@@ -83,6 +86,10 @@ const RecordForm = () => {
                 console.log('Error:', error);
                 setOpenSnackbar(true);
                 setSnackbarText('오류가 발생했습니다.');
+
+                if (error.response) {
+                    console.error('Response data:', error.response.data);
+                }
             });
     };
 
@@ -96,7 +103,7 @@ const RecordForm = () => {
         e.preventDefault();
 
         // 폼 데이터 확인
-        if (!object_name) {
+        if (!shapeName) {
             setOpenSnackbar(true); // 장식이 선택되지 않았을 경우
             setSnackbarText('장식이 선택되지 않았어요.');
             selectObjectRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -140,7 +147,7 @@ const RecordForm = () => {
                     </Stack>
                     <Stack>
                         <SelectSnowballObject
-                            snowballObject={object_name}
+                            snowballObject={shapeName}
                             setSnowballObject={setObjectName}
                             mine
                         />
