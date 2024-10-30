@@ -6,7 +6,6 @@ import {
     styled,
     Typography,
     Container,
-    Portal,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import DDayTitle from './DDayTitle';
@@ -15,8 +14,8 @@ import Snowball from './Snowball/Snowball';
 import Layout from '@/layouts/Layout';
 import useSWR from 'swr';
 import { CalendarIcon } from '@/components/icons';
-import { getDaysBeforeOpen } from '@/utils/getDaysBeforeOpen';
 import PopupPage from '../Onboarding/PopupPage';
+import { getDaysBeforeOpen } from '@/utils/getDaysBeforeOpen';
 import PopupAfter from '../Onboarding/PopupAfter';
 import { useParams } from 'react-router-dom';
 import { useUserStore } from 'stores/useUserStore';
@@ -101,13 +100,12 @@ const Main = () => {
     useEffect(() => {
         const lastPopupCheckedDate = localStorage.getItem('popupCheckedDate');
         const today = new Date().toLocaleDateString('ko-KR');
-    
+
         if (lastPopupCheckedDate !== today) {
             setShowLottie(true);  // 체크되지 않은 경우 로티와 팝업을 표시
             setPopupOpen(true);
         }
     }, []);
-    
 
     useEffect(() => {
         setPopupOpen(true);
@@ -162,22 +160,25 @@ const Main = () => {
     };
 
     const onMemoryClick = (memoryId, objectName) => {
+        console.log('Clicked memory ID:', memoryId); // 콘솔 출력 추가
         const userId = param.userId;
         const allowedDate = new Date('2024-10-28');
         const currentDate = new Date();
-
+    
         if (currentDate < allowedDate) {
-            setSnackbarProps({
-                openSnackbar: true,
-                snackbarText: ' 이후 조회 가능합니다',
-                severity: 'info',
-            });
+            alert('이후 조회 가능합니다');  // 경고창 표시
             return;
         }
 
-        const recordObjects = ["christmas_tree", "gingerbread_house", "lamplight", "santa_sleigh"];
-        const guestObjects = ["moon", "santa", "snowflake", "snowman"];
-    
+        // object_name에 따라 페이지 이동을 다르게 설정
+        const recordObjects = [
+            'christmas_tree',
+            'gingerbread_house',
+            'lamplight',
+            'santa_sleigh',
+        ];
+        const guestObjects = ['moon', 'santa', 'snowflake', 'snowman'];
+
         if (recordObjects.includes(objectName)) {
             navigate(`/recordafter/${userId}/${memoryId}`);
         } else if (guestObjects.includes(objectName)) {
@@ -235,10 +236,10 @@ const Main = () => {
                         >
                             <DDayTitle />
                             <Stack direction={'row'} spacing={2}>
-                                <StyledIconButton>
-                                    <CalendarIcon
-                                        onClick={() => navigate(`/calendar/${param.userId}`)}
-                                    />
+                                <StyledIconButton
+                                    onClick={() => navigate(`/calendar/${param.userId}`)}
+                                >
+                                    <CalendarIcon />
                                 </StyledIconButton>
                                 <ImgShareButton
                                     title={
@@ -339,16 +340,6 @@ const Main = () => {
         <PopupAfter isOpen={isPopupOpen} onClose={() => setPopupOpen(false)} />
     )
 )}
-
-                <SnackBar
-                    {...snackbarProps}
-                    handleCloseSnackbar={() =>
-                        setSnackbarProps((prev) => ({
-                            ...prev,
-                            openSnackbar: false,
-                        }))
-                    }
-                />
             </Layout>
         </Container>
     );
