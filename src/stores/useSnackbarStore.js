@@ -1,10 +1,9 @@
 import { create } from 'zustand';
 
-export const useToastStore = create((set) => ({
+export const useSnackbarStore = create((set) => ({
     open: false,
     text: '',
     severity: 'warning',
     setClose: () => set({ open: false, text: '', severity: 'warning' }),
-    setToastOpen: ({ text, severity }) =>
-        set({ text: text, severity: severity, open: true }),
+    setSnackbarOpen: (props) => set({ ...props, open: true }),
 }));

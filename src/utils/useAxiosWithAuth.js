@@ -1,4 +1,4 @@
-import { useToastStore } from '@/stores/useToastStore';
+import { useSnackbarStore } from '@/stores/useSnackbarStore';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import useAuthStore from 'stores/useAuthStore';
@@ -6,7 +6,7 @@ import useAuthStore from 'stores/useAuthStore';
 const useAxiosWithAuth = () => {
     const { token } = useAuthStore(); // Zustand에서 토큰 가져오기
     const navigate = useNavigate();
-    const { setToastOpen } = useToastStore();
+    const { setSnackbarOpen } = useSnackbarStore();
 
     const axiosInstance = axios.create({
         baseURL: import.meta.env.VITE_API_URL,
@@ -49,7 +49,7 @@ const useAxiosWithAuth = () => {
                     try {
                         // 만료된 토큰으로 인한 로그아웃 처리
                         useAuthStore.getState().logout();
-                        setToastOpen({
+                        setSnackbarOpen({
                             text: '로그인이 만료되었어요. 다시 로그인해주세요.',
                             severity: 'warning',
                         });

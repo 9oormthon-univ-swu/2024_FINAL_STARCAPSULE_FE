@@ -21,8 +21,8 @@ import 'dayjs/locale/ko';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import { HelmetProvider } from 'react-helmet-async';
-import SnackBar from './components/SnackBar';
-import { useToastStore } from './stores/useToastStore';
+import SnackBarNoti from './components/SnackbarNoti';
+import { useSnackbarStore } from './stores/useSnackbarStore';
 
 function App() {
     dayjs.locale('ko');
@@ -30,12 +30,12 @@ function App() {
     dayjs.extend(timezone);
     dayjs.tz.setDefault('Asia/Seoul');
 
-    const { open, text, severity, setClose } = useToastStore();
+    const { open, text, severity, setClose } = useSnackbarStore();
     return (
         <HelmetProvider>
             <ThemeProvider theme={theme}>
                 <Router>
-                    <SnackBar
+                    <SnackBarNoti
                         openSnackbar={open}
                         handleCloseSnackbar={setClose}
                         snackbarText={text}

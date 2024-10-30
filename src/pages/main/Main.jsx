@@ -22,11 +22,11 @@ import { saveTokenFromURL } from '@/utils/saveTokenFromURL';
 import useAuthStore from 'stores/useAuthStore';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import { useNavigate } from 'react-router-dom';
-import SnackBar from '@/components/SnackBar';
 import { defaultGetFetcher } from '@/utils/getFetcher';
 import '@dotlottie/player-component';
 import ImgShareButton from '@/components/ImgShareButton';
 import { Helmet } from 'react-helmet-async';
+import { useSnackbarStore } from '@/stores/useSnackbarStore';
 
 export const MainContainer = styled(Stack)(() => ({
     padding: '2rem 0 2.25rem 0',
@@ -79,19 +79,15 @@ const Main = () => {
     const [isPopupOpen, setPopupOpen] = useState(false);
     const [showLottie, setShowLottie] = useState(true);
     const navigate = useNavigate();
-    const [snackbarProps, setSnackbarProps] = useState({
-        openSnackbar: false,
-        snackbarText: '',
-        severity: '',
-    });
 
     const successMessage = '스노우볼 이름이 변경되었어요.';
     const errorMessage = '스노우볼 이름 변경에 실패했어요. 다시 시도해주세요.';
 
+    const { setSnackbarOpen } = useSnackbarStore();
+
     const onError = () => {
-        setSnackbarProps({
-            openSnackbar: true,
-            snackbarText: errorMessage,
+        setSnackbarOpen({
+            text: errorMessage,
             severity: 'error',
         });
     };
@@ -132,9 +128,8 @@ const Main = () => {
                 },
             })
             .then(() => {
-                setSnackbarProps({
-                    openSnackbar: true,
-                    snackbarText: successMessage,
+                setSnackbarOpen({
+                    text: successMessage,
                     severity: 'success',
                 });
                 mutate();
@@ -148,11 +143,8 @@ const Main = () => {
     };
 
     const onRightClick = () => {
-        setTimeout(
-            setPage((prev) =>
-                prev === data?.total_page ? data?.total_page : prev + 1
-            ),
-            500
+        setPage((prev) =>
+            prev === data?.total_page ? data?.total_page : prev + 1
         );
     };
 
@@ -327,15 +319,6 @@ const Main = () => {
                         onClose={() => setPopupOpen(false)}
                     /> //이 부분
                 )}
-                <SnackBar
-                    {...snackbarProps}
-                    handleCloseSnackbar={() =>
-                        setSnackbarProps((prev) => ({
-                            ...prev,
-                            openSnackbar: false,
-                        }))
-                    }
-                />
             </Layout>
         </Container>
     );

@@ -4,13 +4,14 @@ import RecordBoard from './components/RecordBoard';
 import RecordSaveButton from './components/RecordSaveButton';
 import RecordTitle from './components/RecordTitle';
 import RecordUpper from './components/RecordUpper';
-import SnackBar from '@/components/SnackBar';
+import SnackbarNoti from '@/components/SnackbarNoti';
 import AlertModal from '@/components/AlertModal';
 import { useNavigate, useParams } from 'react-router-dom';
 import SelectSnowballObject from '@/components/SelectSnowballObject';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import Layout from '@/layouts/Layout';
 import { Helmet } from 'react-helmet-async';
+import { useSnackbarStore } from '@/stores/useSnackbarStore';
 
 const RecordForm = () => {
     const navigate = useNavigate();
@@ -22,9 +23,9 @@ const RecordForm = () => {
     const [inputCount, setInputCount] = useState(0);
     const [image, setImage] = useState(null);
     const [object_name, setObjectName] = useState('');
-    const [openSnackbar, setOpenSnackbar] = useState(false);
-    const [snackbarText, setSnackbarText] = useState('');
-    const [openModal, setopenModal] = useState(false);
+    const [openModal, setOpenModal] = useState(false);
+
+    const { setSnackbarOpen } = useSnackbarStore();
 
     // RecordBoard 참조 (자동스크롤)
     const recordBoardRef = useRef(null); // RecordBoard 참조
@@ -40,16 +41,6 @@ const RecordForm = () => {
     const handleAnswerChange = (e) => {
         setAnswer(e.target.value.slice(0, 199));
         setInputCount(e.target.value.length);
-    };
-
-    // 스낵바 텍스트 변경
-    const handleSnackTextChange = (e) => {
-        setSnackbarText(e.target.value.slice(0, 199));
-    };
-
-    // 스낵바 닫기 처리 함수
-    const handleCloseSnackbar = () => {
-        setOpenSnackbar(false);
     };
 
     //모달 확인 버튼 처리 함수 & 데이터 전달
@@ -81,14 +72,16 @@ const RecordForm = () => {
             })
             .catch((error) => {
                 console.log('Error:', error);
-                setOpenSnackbar(true);
-                setSnackbarText('오류가 발생했습니다.');
+                setSnackbarOpen({
+                    text: '추억 기록에 실패했어요. 다시 시도해주세요.',
+                    severity: 'error',
+                });
             });
     };
 
     // 모달 닫기 처리 함수
     const handleCloseModal = () => {
-        setopenModal(false);
+        setOpenModal(false);
     };
 
     // 폼 제출 처리 함수
@@ -97,19 +90,23 @@ const RecordForm = () => {
 
         // 폼 데이터 확인
         if (!object_name) {
-            setOpenSnackbar(true); // 장식이 선택되지 않았을 경우
-            setSnackbarText('장식이 선택되지 않았어요.');
+            setSnackbarOpen({
+                text: '장식이 선택되지 않았어요.',
+                severity: 'warning',
+            });
             selectObjectRef.current.scrollIntoView({ behavior: 'smooth' });
             return;
         } else if (!answer) {
-            setOpenSnackbar(true); // 추억이 작성되지 않았을 경우
-            setSnackbarText('추억이 작성되지 않았어요.');
+            setSnackbarOpen({
+                text: '추억이 작성되지 않았어요.',
+                severity: 'warning',
+            });
             recordBoardRef.current.scrollIntoView({ behavior: 'smooth' });
             return;
         }
 
         // text가 있을 경우 모달 오픈
-        setopenModal(true);
+        setOpenModal(true);
     };
 
     return (
@@ -177,12 +174,6 @@ const RecordForm = () => {
                     </Typography>
                 </Stack>
             </AlertModal>
-            <SnackBar
-                openSnackbar={openSnackbar}
-                handleCloseSnackbar={handleCloseSnackbar}
-                snackbarText={snackbarText}
-                setSnackbarText={handleSnackTextChange}
-            />
         </Layout>
     );
 };
