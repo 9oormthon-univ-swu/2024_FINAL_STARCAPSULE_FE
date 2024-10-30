@@ -226,10 +226,10 @@ const Main = () => {
                         >
                             <DDayTitle />
                             <Stack direction={'row'} spacing={2}>
-                                <StyledIconButton>
-                                    <CalendarIcon
-                                        onClick={() => navigate('/calendar')}
-                                    />
+                                <StyledIconButton
+                                    onClick={() => navigate('/calendar')}
+                                >
+                                    <CalendarIcon />
                                 </StyledIconButton>
                                 <ImgShareButton
                                     title={
