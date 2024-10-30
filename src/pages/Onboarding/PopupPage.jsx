@@ -155,15 +155,14 @@ const PopupPage = ({ isOpen, onClose }) => {
 
         fetchQuestion();
 
-        // 이전에 체크박스가 선택되어 있으면 팝업이 뜨지 않게 설정
+        // 이전 체크박스가 선택되었는지 확인하여 팝업 표시 여부 설정
         const lastPopupCheckedDate = localStorage.getItem('popupCheckedDate');
         const today = new Date().toLocaleDateString('ko-KR');
-        
+
         if (lastPopupCheckedDate === today) {
             onClose();
         } else {
-            const checkedStatus = localStorage.getItem('popupCheckboxStatus') === 'true';
-            setIsChecked(checkedStatus);
+            setIsChecked(false); // 처음 뜰 때 체크박스는 항상 해제된 상태로 설정
         }
     }, [onClose]);
 
