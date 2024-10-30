@@ -6,6 +6,7 @@ import {
     styled,
     Typography,
     Container,
+    Portal,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import DDayTitle from './DDayTitle';
@@ -22,11 +23,11 @@ import { saveTokenFromURL } from '@/utils/saveTokenFromURL';
 import useAuthStore from 'stores/useAuthStore';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import { useNavigate } from 'react-router-dom';
-import SnackBar from '@/components/SnackBar';
 import { defaultGetFetcher } from '@/utils/getFetcher';
 import '@dotlottie/player-component';
 import ImgShareButton from '@/components/ImgShareButton';
 import { Helmet } from 'react-helmet-async';
+import { useSnackbarStore } from '@/stores/useSnackbarStore';
 
 export const MainContainer = styled(Stack)(() => ({
     padding: '2rem 0 2.25rem 0',
@@ -79,19 +80,15 @@ const Main = () => {
     const [isPopupOpen, setPopupOpen] = useState(false);
     const [showLottie, setShowLottie] = useState(true);
     const navigate = useNavigate();
-    const [snackbarProps, setSnackbarProps] = useState({
-        openSnackbar: false,
-        snackbarText: '',
-        severity: '',
-    });
 
     const successMessage = '스노우볼 이름이 변경되었어요.';
     const errorMessage = '스노우볼 이름 변경에 실패했어요. 다시 시도해주세요.';
 
+    const { setSnackbarOpen } = useSnackbarStore();
+
     const onError = () => {
-        setSnackbarProps({
-            openSnackbar: true,
-            snackbarText: errorMessage,
+        setSnackbarOpen({
+            text: errorMessage,
             severity: 'error',
         });
     };
@@ -132,9 +129,8 @@ const Main = () => {
                 },
             })
             .then(() => {
-                setSnackbarProps({
-                    openSnackbar: true,
-                    snackbarText: successMessage,
+                setSnackbarOpen({
+                    text: successMessage,
                     severity: 'success',
                 });
                 mutate();
@@ -148,11 +144,8 @@ const Main = () => {
     };
 
     const onRightClick = () => {
-        setTimeout(
-            setPage((prev) =>
-                prev === data?.total_page ? data?.total_page : prev + 1
-            ),
-            500
+        setPage((prev) =>
+            prev === data?.total_page ? data?.total_page : prev + 1
         );
     };
 
@@ -226,10 +219,10 @@ const Main = () => {
                         >
                             <DDayTitle />
                             <Stack direction={'row'} spacing={2}>
-                                <StyledIconButton>
-                                    <CalendarIcon
-                                        onClick={() => navigate('/calendar')}
-                                    />
+                                <StyledIconButton
+                                    onClick={() => navigate('/calendar')}
+                                >
+                                    <CalendarIcon />
                                 </StyledIconButton>
                                 <ImgShareButton
                                     title={
@@ -309,33 +302,32 @@ const Main = () => {
                     )}
                 </MainContainer>
                 {!daysLeft && showLottie ? (
-                    <Overlay onClick={handleLottieClick}>
-                        <PopupContainer>
-                            <dotlottie-player
-                                src='https://lottie.host/e35fc1c8-f985-4963-940e-0e4e0b630cd9/eNIuonSNHz.json'
-                                background='transparent'
-                                speed='1'
-                                style={{ width: '350px', height: '350px' }}
-                                loop
-                                autoplay
-                            ></dotlottie-player>
-                        </PopupContainer>
-                    </Overlay>
+                    <Portal
+                        container={document.getElementById('capture-container')}
+                    >
+                        <Overlay onClick={handleLottieClick}>
+                            <PopupContainer>
+                                <dotlottie-player
+                                    src='https://lottie.host/e35fc1c8-f985-4963-940e-0e4e0b630cd9/eNIuonSNHz.json'
+                                    background='transparent'
+                                    speed='1'
+                                    style={{ width: '350px', height: '350px' }}
+                                    loop
+                                    autoplay
+                                ></dotlottie-player>
+                            </PopupContainer>
+                        </Overlay>
+                    </Portal>
                 ) : (
-                    <PopupAfter
-                        isOpen={isPopupOpen}
-                        onClose={() => setPopupOpen(false)}
-                    /> //이 부분
+                    <Portal
+                        container={document.getElementById('capture-container')}
+                    >
+                        <PopupAfter
+                            isOpen={isPopupOpen}
+                            onClose={() => setPopupOpen(false)}
+                        />
+                    </Portal>
                 )}
-                <SnackBar
-                    {...snackbarProps}
-                    handleCloseSnackbar={() =>
-                        setSnackbarProps((prev) => ({
-                            ...prev,
-                            openSnackbar: false,
-                        }))
-                    }
-                />
             </Layout>
         </Container>
     );
