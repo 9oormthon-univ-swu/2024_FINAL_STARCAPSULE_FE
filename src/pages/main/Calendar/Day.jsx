@@ -63,7 +63,7 @@ const Day = ({
     */
     const theme = useTheme();
     const navigate = useNavigate();
-    const { userId } = useParams();  // URL에서 userId 가져오기
+    const { userId } = useParams();  
 
     const today = dayjs(time).startOf('day');
     const startOfPeriod = dayjs(`${year}-11-30`).startOf('day');
@@ -71,27 +71,39 @@ const Day = ({
 
     const dateInFormat = currentDay.format('YYYY-MM-DD');
 
-   
 const handleClick = async () => {
-    const token = localStorage.getItem('token'); // 로컬 스토리지에서 토큰 가져오기
+    const token = localStorage.getItem('token'); 
     const apiUrl = `${import.meta.env.VITE_API_URL}/calendar/memories/${dateInFormat}`;
 
+    console.log(`${dateInFormat} clicked`);
     try {
         const response = await axios.get(apiUrl, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
         });
-        console.log(`${dateInFormat} clicked`, response.data);
+        
 
-        // 데이터가 성공적으로 로드되면 상세 페이지로 이동
-        navigate(`/calendar-detail/${userId}`, {
-            state: { data: response.data.result }, 
-        });
+        // 데이터 확인 후 이동 또는 알림 처리
+        if (
+            (response.data.result && response.data.result.my_memory && response.data.result.my_memory.length > 0) ||
+            (response.data.result && response.data.result.memories && response.data.result.memories.length > 0)
+        ) {
+            // 데이터가 존재할 때 상세 페이지로 이동
+            navigate(`/calendar-detail/${userId}`, {
+                state: { data: response.data.result, selectedDate: dateInFormat },
+            });
+        } else {
+            // my_memory와 memories 둘 다 없을 때 알림 표시
+            alert("보관된 추억이 없습니다");
+        }
+        
     } catch (error) {
         console.error("Error fetching memory data:", error);
     }
 };
+
+
 
 
     // 기본 스타일
