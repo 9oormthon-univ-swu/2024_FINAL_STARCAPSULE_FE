@@ -87,7 +87,7 @@ const handleClick = async () => {
 
         // 데이터가 성공적으로 로드되면 상세 페이지로 이동
         navigate(`/calendar-detail/${userId}`, {
-            state: { data: response.data.result }, 
+            state: { data: response.data.result, selectedDate: dateInFormat },
         });
     } catch (error) {
         console.error("Error fetching memory data:", error);
