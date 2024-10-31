@@ -71,8 +71,7 @@ const Day = ({
 
     const dateInFormat = currentDay.format('YYYY-MM-DD');
 
-    // 클릭 이벤트 핸들러 - API 요청 및 페이지 이동
-   // 클릭 이벤트 핸들러 - API 요청 및 페이지 이동
+   
 const handleClick = async () => {
     const token = localStorage.getItem('token'); // 로컬 스토리지에서 토큰 가져오기
     const apiUrl = `${import.meta.env.VITE_API_URL}/calendar/memories/${dateInFormat}`;
