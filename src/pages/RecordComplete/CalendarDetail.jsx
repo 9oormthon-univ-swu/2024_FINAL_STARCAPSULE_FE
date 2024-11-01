@@ -182,33 +182,42 @@ const CalendarDetail = () => {
             </Stack>
 
             <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="space-between"
-                sx={{
-                    width: '568px',
-                    padding: '1rem',
-                    backgroundColor: '#3a3a3a',
-                    color: 'white',
-                    position: 'fixed',
-                    bottom: '5px', 
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                }}
-            >
-                <span 
-                    style={{ cursor: 'pointer', fontFamily: 'Griun NltoTAENGGU, sans-serif' }}
-                    onClick={handlePrevious}
-                >
-                    이전
-                </span>
-                <span 
-                    style={{ cursor: 'pointer', fontFamily: 'Griun NltoTAENGGU, sans-serif' }}
-                    onClick={handleNext}
-                >
-                    다음
-                </span>
-            </Stack>
+    direction="row"
+    alignItems="center"
+    justifyContent="space-between"
+    sx={{
+        width: '568px',
+        padding: '1rem',
+        backgroundColor: '#3a3a3a',
+        color: 'white',
+        position: 'fixed',
+        bottom: '5px', 
+        left: '50%',
+        transform: 'translateX(-50%)',
+    }}
+>
+    <span 
+        style={{ 
+            cursor: pageIndex === 0 ? 'not-allowed' : 'pointer', 
+            opacity: pageIndex === 0 ? 0.5 : 1,
+            fontFamily: 'Griun NltoTAENGGU, sans-serif' 
+        }}
+        onClick={handlePrevious}
+    >
+        이전
+    </span>
+    <span 
+        style={{ 
+            cursor: pageIndex === totalItems - 1 ? 'not-allowed' : 'pointer', 
+            opacity: pageIndex === totalItems - 1 ? 0.5 : 1,
+            fontFamily: 'Griun NltoTAENGGU, sans-serif' 
+        }}
+        onClick={handleNext}
+    >
+        다음
+    </span>
+</Stack>
+
         </Stack>
     );
 };
