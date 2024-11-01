@@ -84,7 +84,7 @@ const handleClick = async () => {
         });
         
 
-        // 데이터 확인 후 이동 또는 알림 처리
+        // 데이터 확인 후 이동 또는 알림 처리 my_memory, memorie가 둘다 없을 경우
         if (
             (response.data.result && response.data.result.my_memory && response.data.result.my_memory.length > 0) ||
             (response.data.result && response.data.result.memories && response.data.result.memories.length > 0)
@@ -94,7 +94,7 @@ const handleClick = async () => {
                 state: { data: response.data.result, selectedDate: dateInFormat },
             });
         } else {
-            // my_memory와 memories 둘 다 없을 때 알림 표시
+            
             alert("보관된 추억이 없습니다");
         }
         
