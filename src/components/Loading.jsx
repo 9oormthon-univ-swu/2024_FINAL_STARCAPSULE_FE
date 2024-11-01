@@ -3,10 +3,11 @@ import { Backdrop, CircularProgress } from '@mui/material';
 import React from 'react';
 
 // 단순하게 처리한 로딩 컴포넌트, api 호출 후 로딩 중일 때 사용
-const Loading = () => {
+const Loading = ({ snow, snowflake }) => {
     return (
         <Layout
-            snow
+            snow={snow}
+            snowflake={snowflake}
             sx={{
                 display: 'flex',
                 justifyContent: 'center',

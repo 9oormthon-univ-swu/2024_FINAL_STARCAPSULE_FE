@@ -29,6 +29,8 @@ import { HelmetProvider } from 'react-helmet-async';
 import SnackBarNoti from './components/SnackbarNoti';
 import { useSnackbarStore } from './stores/useSnackbarStore';
 import { AnimatePresence } from 'framer-motion';
+import Error404 from './pages/error/Error404';
+import Error500 from './pages/error/Error500';
 
 function AnimationRoutes() {
     const location = useLocation();
@@ -61,10 +63,11 @@ function AnimationRoutes() {
                     element={<MyCreationComplete />}
                 />
                 <Route
-                        path='/calendar-detail/:userId'
-                        element={<CalendarDetail />}
-                    /> 
-                <Route path='*' element={<div>Not Found</div>} />
+                    path='/calendar-detail/:userId'
+                    element={<CalendarDetail />}
+                />
+                <Route path='/error500' element={<Error500 />} />
+                <Route path='*' element={<Error404 />} />
             </Routes>
         </AnimatePresence>
     );

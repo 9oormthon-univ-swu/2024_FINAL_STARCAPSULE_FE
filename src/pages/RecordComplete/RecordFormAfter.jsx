@@ -1,25 +1,26 @@
-import React, { useEffect, useRef, useState } from 'react';  
+import React, { useEffect, useRef, useState } from 'react';
 import { Stack } from '@mui/material';
 import RecordBoard from '../Record/components/RecordBoard';
-import ImageSaveButton from './ImageSaveButton'; 
+import ImageSaveButton from './ImageSaveButton';
 import html2canvas from 'html2canvas';
 import CloseIcon from '@/components/icons/closeicon';
-import ShareIcon from '@/components/icons/ShareIcon'; 
+import ShareIcon from '@/components/icons/ShareIcon';
+import ImgShareButton from '@/components/ImgShareButton';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import { useParams, useNavigate } from 'react-router-dom';
 
 const contentstyle = {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center', 
-    minHeight: '100vh', 
+    justifyContent: 'center',
+    minHeight: '100vh',
     width: '100%',
     maxWidth: '600px',
     margin: '0 auto',
-    padding: '0', 
+    padding: '0',
     boxSizing: 'border-box',
     position: 'relative',
-    overflow: 'hidden', 
+    overflow: 'hidden',
 };
 
 const RecordFormAfter = () => {
@@ -30,7 +31,7 @@ const RecordFormAfter = () => {
     const [memoryData, setMemoryData] = useState(null);
 
     const snowballAPI = `${import.meta.env.VITE_API_URL}/api/my_memory`;
-    const token = localStorage.getItem('token'); 
+    const token = localStorage.getItem('token');
 
     useEffect(() => {
         const fetchMemoryData = async () => {
@@ -39,21 +40,24 @@ const RecordFormAfter = () => {
                     console.error('User ID or Memory ID is missing');
                     return;
                 }
-    
-                const response = await axiosInstance.get(`${snowballAPI}/${memoryId}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
+
+                const response = await axiosInstance.get(
+                    `${snowballAPI}/${memoryId}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
                 console.log('Fetched Memory Data:', response.data);
                 setMemoryData(response.data);
             } catch (error) {
                 console.error('Error fetching memory details:', error);
             }
         };
-    
+
         fetchMemoryData();
-    }, []); 
+    }, []);
 
     const handleSaveImage = (e) => {
         e.preventDefault();
@@ -64,14 +68,16 @@ const RecordFormAfter = () => {
                 scale: scale,
                 useCORS: true,
                 backgroundColor: null,
-            }).then((canvas) => {
-                const link = document.createElement('a');
-                link.href = canvas.toDataURL('image/png');
-                link.download = 'record.png';
-                link.click();
-            }).catch((error) => {
-                console.error('이미지 저장 중 오류 발생:', error);
-            });
+            })
+                .then((canvas) => {
+                    const link = document.createElement('a');
+                    link.href = canvas.toDataURL('image/png');
+                    link.download = 'record.png';
+                    link.click();
+                })
+                .catch((error) => {
+                    console.error('이미지 저장 중 오류 발생:', error);
+                });
         }
     };
 
@@ -84,7 +90,7 @@ const RecordFormAfter = () => {
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
-        
+
         return (
             <span style={{ fontSize: '1.4rem' }}>
                 <span style={{ color: '#DDB892' }}>{year}</span>년&nbsp;
@@ -97,9 +103,9 @@ const RecordFormAfter = () => {
     return (
         <Stack sx={contentstyle}>
             <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="space-between"
+                direction='row'
+                alignItems='center'
+                justifyContent='space-between'
                 sx={{
                     position: 'absolute',
                     top: 'calc(1rem + 30px)',
@@ -110,66 +116,86 @@ const RecordFormAfter = () => {
                     fontFamily: 'Griun NltoTAENGGU, sans-serif',
                 }}
             >
-                <CloseIcon 
-                    sx={{ cursor: 'pointer', position: 'relative', right: '-30px' }} 
-                    onClick={handleClose} 
+                <CloseIcon
+                    sx={{
+                        cursor: 'pointer',
+                        position: 'relative',
+                        right: '-30px',
+                    }}
+                    onClick={handleClose}
                 />
                 <span style={{ fontSize: '1.4rem' }}>
-                    {memoryData ? formatDate(memoryData.result.create_at) : "로딩 중..."}
+                    {memoryData
+                        ? formatDate(memoryData.result.create_at)
+                        : '로딩 중...'}
                 </span>
-                <ShareIcon sx={{ cursor: 'pointer', position: 'relative', left: '-30px' }} />
+                <ImgShareButton
+                    title={
+                        '스노우볼에 오늘의 추억이 보관되었어요!\nSNS에 링크를 공유해친구들에게 함께한 추억을 전달받아보세요☃️\n'
+                    }
+                    url={`${import.meta.env.BASE_URL}/guest/${userId}`}
+                    sx={{
+                        cursor: 'pointer',
+                        position: 'relative',
+                        left: '-30px',
+                    }}
+                />
             </Stack>
 
-            <Stack 
-                ref={captureRef} 
+            <Stack
+                id='capture-container'
+                ref={captureRef}
                 sx={{
                     width: '100%',
-                    height: '100vh', 
-                    padding: '1.5rem', 
-                    background: 'linear-gradient(180deg, #0b0a1b 0%, #27405e 100%)',
+                    height: '100vh',
+                    padding: '1.5rem',
+                    background:
+                        'linear-gradient(180deg, #0b0a1b 0%, #27405e 100%)',
                     paddingTop: '12rem',
                 }}
             >
                 {/* 이미지가 있을 때만 렌더링 */}
                 {memoryData?.result?.image_url && (
-                    <img 
-                        src={memoryData.result.image_url} 
-                        alt="Memory Image" 
+                    <img
+                        src={memoryData.result.image_url}
+                        alt='Memory Image'
                         style={{
                             width: '100%',
                             maxHeight: '300px',
                             objectFit: 'cover',
-                            marginBottom: '1rem'
+                            marginBottom: '1rem',
                         }}
                     />
                 )}
                 {memoryData ? (
-                    <span style={{ 
-                        position: 'absolute',
-                        top: 'calc(10px + 9rem)', 
-                        left: '9.5rem',  
-                        color: 'white',
-                        fontSize: '1.3rem',
-                        fontFamily: 'Griun NltoTAENGGU, sans-serif',
-                    }}>
-                        {memoryData.result.daily_question?.question ?? "질문을 불러올 수 없습니다."}
+                    <span
+                        style={{
+                            position: 'absolute',
+                            top: 'calc(10px + 9rem)',
+                            left: '9.5rem',
+                            color: 'white',
+                            fontSize: '1.3rem',
+                            fontFamily: 'Griun NltoTAENGGU, sans-serif',
+                        }}
+                    >
+                        {memoryData.result.daily_question?.question ??
+                            '질문을 불러올 수 없습니다.'}
                     </span>
                 ) : (
                     <span>로딩 중...</span>
                 )}
-                
 
                 <RecordBoard
-                    content={memoryData?.result.answer || ""}
+                    content={memoryData?.result.answer || ''}
                     isReadOnly={true} // 읽기 전용 모드로 설정
                 />
             </Stack>
 
-            <Stack 
-                component="form" 
+            <Stack
+                component='form'
                 sx={{
-                    position: 'relative',  
-                    marginTop: '-24rem',     
+                    position: 'relative',
+                    marginTop: '-24rem',
                 }}
             >
                 <ImageSaveButton onClick={handleSaveImage} />
