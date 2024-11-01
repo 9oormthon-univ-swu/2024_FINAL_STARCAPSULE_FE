@@ -1,10 +1,11 @@
-import React, { useRef } from 'react';
-import { Stack } from '@mui/material';
+import React, { useRef, useEffect, useState } from 'react';
+import { IconButton, Stack } from '@mui/material';
 import RecordBoard from '../Record/components/RecordBoard';
 import ImageSaveButton from './ImageSaveButton';
 import html2canvas from 'html2canvas';
-import { CloseIcon, ShareIcon } from '@/components/icons';
-import { useParams, useNavigate } from 'react-router-dom';
+import { CloseIcon, ShareIcon, CalendarIcon } from '@/components/icons';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import dayjs from 'dayjs';
 
 const contentstyle = {
     display: 'flex',
@@ -24,6 +25,23 @@ const CalendarDetail = () => {
     const captureRef = useRef(null);
     const { userId } = useParams();
     const navigate = useNavigate();
+    const location = useLocation();
+    const selectedDate = location.state?.selectedDate
+        ? dayjs(location.state.selectedDate).format('YYYY년 MM월 DD일')
+        : '날짜 정보 없음';
+
+    const [memoryData, setMemoryData] = useState(null);
+    const [pageIndex, setPageIndex] = useState(0);
+    const nickname = localStorage.getItem('snowballName') || '닉네임';
+
+    useEffect(() => {
+        if (location.state?.data) {
+            setMemoryData(location.state.data);
+            console.log('Fetched data in CalendarDetail:', location.state.data); // 데이터 확인용 잘뜨나....
+        } else {
+            console.log('No data found in location.state'); // 데이터가 없을 경우 메시지 출력
+        }
+    }, [location.state]);
 
     const handleSaveImage = (e) => {
         e.preventDefault();
@@ -47,17 +65,44 @@ const CalendarDetail = () => {
         }
     };
 
+    const formattedDate = selectedDate
+        .split(/(\d{4})(년)|(\d{2})(월)|(\d{2})(일)/)
+        .map((part, index) =>
+            part && /\d/.test(part) ? (
+                <span key={index} style={{ color: '#DDB892' }}>
+                    {part}
+                </span>
+            ) : (
+                part && (
+                    <span key={index} style={{ color: 'white' }}>
+                        {part}
+                    </span>
+                )
+            )
+        );
+
     const handleClose = () => {
         navigate(`/main/${userId}`);
     };
 
+    const handleCalendarClick = () => {
+        navigate(-1);
+    };
+
+    const memoriesArray = memoryData
+        ? [...(memoryData.my_memory || []), ...(memoryData.memories || [])]
+        : [];
+    const totalItems = memoriesArray.length;
+
     const handlePrevious = () => {
-        console.log('Previous button clicked');
+        setPageIndex((prev) => (prev > 0 ? prev - 1 : prev));
     };
 
     const handleNext = () => {
-        console.log('Next button clicked');
+        setPageIndex((prev) => (prev < totalItems - 1 ? prev + 1 : prev));
     };
+
+    const currentItem = memoriesArray[pageIndex];
 
     return (
         <Stack sx={contentstyle}>
@@ -91,37 +136,71 @@ const CalendarDetail = () => {
                         left: '-30px',
                     }}
                 />
+                <span style={{ fontSize: '1.4rem' }}>{formattedDate}</span>
+                <IconButton
+                    onClick={handleCalendarClick}
+                    sx={{ position: 'relative', left: '-30px' }}
+                >
+                    <CalendarIcon />
+                </IconButton>
             </Stack>
 
             <Stack
                 ref={captureRef}
                 sx={{
                     width: '100%',
-                    height: '100vh',
+                    minHeight: '100vh',
                     padding: '1.5rem',
                     background:
                         'linear-gradient(180deg, #0b0a1b 0%, #27405e 100%)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
                     paddingTop: '12rem',
                 }}
             >
-                <span
-                    style={{
-                        position: 'absolute',
-                        top: 'calc(10px + 9rem)',
-                        left: '9.5rem',
-                        color: 'white',
-                        fontSize: '1.3rem',
-                        fontFamily: 'Griun NltoTAENGGU, sans-serif',
-                    }}
-                >
-                    {'질문을 불러올 수 없습니다.'}
-                </span>
+                {currentItem ? (
+                    <>
+                        <span
+                            style={{
+                                position: 'absolute',
+                                top: 'calc(10px + 9rem)',
+                                left: '9.5rem',
+                                color: 'white',
+                                fontSize: '1.3rem',
+                                fontFamily: 'Griun NltoTAENGGU, sans-serif',
+                            }}
+                        >
+                            {currentItem.daily_question?.question
+                                ? currentItem.daily_question.question
+                                : `To. ${nickname}`}
+                        </span>
 
-                <RecordBoard
-                    content={'추억을 여기에 입력하세요.'}
-                    imageUrl={null}
-                    isReadOnly={true} // 읽기 전용 모드로 설정
-                />
+                        <RecordBoard
+                            content={currentItem.answer}
+                            image_url={currentItem.image_url}
+                            isReadOnly={true}
+                        />
+
+                        <span
+                            style={{
+                                color: 'white',
+                                fontSize: '1.3rem',
+                                fontFamily: 'Griun NltoTAENGGU, sans-serif',
+                                textAlign: 'center',
+                                marginLeft: '200px',
+                            }}
+                        >
+                            {currentItem.writer
+                                ? `From. ${currentItem.writer}`
+                                : ''}
+                        </span>
+                    </>
+                ) : (
+                    <span style={{ color: 'white' }}>
+                        보관된 추억이 없습니다.
+                    </span>
+                )}
             </Stack>
 
             <Stack
