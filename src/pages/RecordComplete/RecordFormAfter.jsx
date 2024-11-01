@@ -115,7 +115,7 @@ const RecordFormAfter = () => {
                     onClick={handleClose} 
                 />
                 <span style={{ fontSize: '1.4rem' }}>
-                    {memoryData ? formatDate(memoryData.result.createAt) : "로딩 중..."}
+                    {memoryData ? formatDate(memoryData.result.create_at) : "로딩 중..."}
                 </span>
                 <ShareIcon sx={{ cursor: 'pointer', position: 'relative', left: '-30px' }} />
             </Stack>
@@ -130,6 +130,19 @@ const RecordFormAfter = () => {
                     paddingTop: '12rem',
                 }}
             >
+                {/* 이미지가 있을 때만 렌더링 */}
+                {memoryData?.result?.image_url && (
+                    <img 
+                        src={memoryData.result.image_url} 
+                        alt="Memory Image" 
+                        style={{
+                            width: '100%',
+                            maxHeight: '300px',
+                            objectFit: 'cover',
+                            marginBottom: '1rem'
+                        }}
+                    />
+                )}
                 {memoryData ? (
                     <span style={{ 
                         position: 'absolute',
@@ -139,27 +152,26 @@ const RecordFormAfter = () => {
                         fontSize: '1.3rem',
                         fontFamily: 'Griun NltoTAENGGU, sans-serif',
                     }}>
-                        {memoryData.result.dailyQuestion?.question ?? "질문을 불러올 수 없습니다."}
+                        {memoryData.result.daily_question?.question ?? "질문을 불러올 수 없습니다."}
                     </span>
                 ) : (
                     <span>로딩 중...</span>
                 )}
+                
 
                 <RecordBoard
                     content={memoryData?.result.answer || ""}
-                    imageUrl={memoryData?.result.imageUrl}
                     isReadOnly={true} // 읽기 전용 모드로 설정
                 />
             </Stack>
 
             <Stack 
-    component="form" 
-    sx={{
-        position: 'relative',  
-        marginTop: ' -22rem',     
-       
-    }}
->
+                component="form" 
+                sx={{
+                    position: 'relative',  
+                    marginTop: '-24rem',     
+                }}
+            >
                 <ImageSaveButton onClick={handleSaveImage} />
             </Stack>
         </Stack>

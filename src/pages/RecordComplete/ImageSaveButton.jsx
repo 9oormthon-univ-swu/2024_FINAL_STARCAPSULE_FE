@@ -24,6 +24,7 @@ const formbtn = {
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: '1.25rem',
+    color: 'white',
     background: '#7F5539', 
     boxShadow: '0px 0px 4px 0px rgba(40, 40, 40, 0.20)',
     marginTop: '2.25rem',

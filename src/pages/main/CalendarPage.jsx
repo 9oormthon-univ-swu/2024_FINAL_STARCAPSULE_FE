@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Calendar from './Calendar/Calendar';
 import Layout from '@/layouts/Layout';
@@ -24,7 +24,7 @@ const CalendarPage = () => {
 
     const { data, isLoading } = useSWR(`/calendar/data`, fetcher, {
         onError: (error) => {
-            console.log(error);
+            console.error(error);
         },
     });
 
@@ -43,9 +43,8 @@ const CalendarPage = () => {
 
     if (isLoading) return <Loading />;
 
-    const lastDayWritten = data.writtenArray[31];
+    const lastDayWritten = data.written_array[31];
 
-    console.log(!isRecordable(data.serverTime, year) || lastDayWritten);
     return (
         <Layout
             snow
@@ -99,7 +98,7 @@ const CalendarPage = () => {
                     spacing={0.75}
                 >
                     <Typography variant='title3' sx={{ color: 'custom.grey' }}>
-                        {!isRecordable(data.serverTime) || lastDayWritten
+                        {!isRecordable(data.server_time) || lastDayWritten
                             ? '추억이 완성되었습니다!'
                             : '당신의 추억을 모아 퍼즐을 완성하세요!'}
                     </Typography>
@@ -113,16 +112,16 @@ const CalendarPage = () => {
                             component={'span'}
                             sx={{ color: 'custom.main1' }}
                         >
-                            {`${data.myMemoryCount}개`}
+                            {`${data.my_memory_count}개`}
                         </Typography>
                     </Typography>
                 </Stack>
                 <Calendar
-                    serverTime={data.serverTime}
-                    hasWritten={data.writtenArray}
+                    serverTime={data.server_time}
+                    hasWritten={data.written_array}
                     year={year}
                 />
-                {(!isRecordable(data.serverTime) || lastDayWritten) && (
+                {(!isRecordable(data.server_time) || lastDayWritten) && (
                     <Button
                         variant='contained'
                         sx={{

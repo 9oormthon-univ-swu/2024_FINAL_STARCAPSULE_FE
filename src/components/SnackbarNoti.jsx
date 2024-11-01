@@ -26,7 +26,7 @@ const SnackbarContent = styled(Alert)(({ theme }) => ({
     },
 }));
 
-const SnackBar = ({
+const SnackbarNoti = ({
     openSnackbar,
     handleCloseSnackbar,
     snackbarText,
@@ -34,6 +34,7 @@ const SnackBar = ({
 }) => {
     return (
         <SnackbarContainer
+            key={snackbarText}
             open={openSnackbar}
             autoHideDuration={5000}
             onClose={handleCloseSnackbar}
@@ -58,4 +59,4 @@ const SnackBar = ({
     );
 };
 
-export default SnackBar;
+export default SnackbarNoti;

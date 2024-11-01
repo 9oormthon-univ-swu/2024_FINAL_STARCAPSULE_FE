@@ -14,6 +14,7 @@ import Snowball from './Snowball/Snowball';
 import Layout from '@/layouts/Layout';
 import useSWR from 'swr';
 import { CalendarIcon } from '@/components/icons';
+import PopupPage from '../Onboarding/PopupPage';
 import { getDaysBeforeOpen } from '@/utils/getDaysBeforeOpen';
 import PopupAfter from '../Onboarding/PopupAfter';
 import { useParams } from 'react-router-dom';
@@ -22,11 +23,11 @@ import { saveTokenFromURL } from '@/utils/saveTokenFromURL';
 import useAuthStore from 'stores/useAuthStore';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import { useNavigate } from 'react-router-dom';
-import SnackBar from '@/components/SnackBar';
 import { defaultGetFetcher } from '@/utils/getFetcher';
 import '@dotlottie/player-component';
 import ImgShareButton from '@/components/ImgShareButton';
 import { Helmet } from 'react-helmet-async';
+import { useSnackbarStore } from '@/stores/useSnackbarStore';
 
 export const MainContainer = styled(Stack)(() => ({
     padding: '2rem 0 2.25rem 0',
@@ -76,22 +77,18 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
 
 const Main = () => {
     const [page, setPage] = useState(1);
-    const [isPopupOpen, setPopupOpen] = useState(false);
-    const [showLottie, setShowLottie] = useState(true);
+    const [isPopupOpen, setPopupOpen] = useState(false); // 팝업이 기본적으로 비활성화 상태로 시작
+    const [showLottie, setShowLottie] = useState(false);  // 로티 애니메이션도 비활성화 상태로 시작
     const navigate = useNavigate();
-    const [snackbarProps, setSnackbarProps] = useState({
-        openSnackbar: false,
-        snackbarText: '',
-        severity: '',
-    });
 
     const successMessage = '스노우볼 이름이 변경되었어요.';
     const errorMessage = '스노우볼 이름 변경에 실패했어요. 다시 시도해주세요.';
 
+    const { setSnackbarOpen } = useSnackbarStore();
+
     const onError = () => {
-        setSnackbarProps({
-            openSnackbar: true,
-            snackbarText: errorMessage,
+        setSnackbarOpen({
+            text: errorMessage,
             severity: 'error',
         });
     };
@@ -99,6 +96,16 @@ const Main = () => {
     const param = useParams();
     const { setUserId } = useUserStore();
     const { login } = useAuthStore();
+
+    useEffect(() => {
+        const lastPopupCheckedDate = localStorage.getItem('popupCheckedDate');
+        const today = new Date().toLocaleDateString('ko-KR');
+
+        if (lastPopupCheckedDate !== today) {
+            setShowLottie(true);  // 체크되지 않은 경우 로티와 팝업을 표시
+            setPopupOpen(true);
+        }
+    }, []);
 
     useEffect(() => {
         setPopupOpen(true);
@@ -132,9 +139,8 @@ const Main = () => {
                 },
             })
             .then(() => {
-                setSnackbarProps({
-                    openSnackbar: true,
-                    snackbarText: successMessage,
+                setSnackbarOpen({
+                    text: successMessage,
                     severity: 'success',
                 });
                 mutate();
@@ -148,17 +154,21 @@ const Main = () => {
     };
 
     const onRightClick = () => {
-        setTimeout(
-            setPage((prev) =>
-                prev === data?.total_page ? data?.total_page : prev + 1
-            ),
-            500
+        setPage((prev) =>
+            prev === data?.total_page ? data?.total_page : prev + 1
         );
     };
 
     const onMemoryClick = (memoryId, objectName) => {
         console.log('Clicked memory ID:', memoryId); // 콘솔 출력 추가
-        const userId = param.userId; // useParams로 가져온 userId 사용
+        const userId = param.userId;
+        const allowedDate = new Date('2024-10-28');
+        const currentDate = new Date();
+    
+        if (currentDate < allowedDate) {
+            alert('이후 조회 가능합니다');  // 경고창 표시
+            return;
+        }
 
         // object_name에 따라 페이지 이동을 다르게 설정
         const recordObjects = [
@@ -226,10 +236,10 @@ const Main = () => {
                         >
                             <DDayTitle />
                             <Stack direction={'row'} spacing={2}>
-                                <StyledIconButton>
-                                    <CalendarIcon
-                                        onClick={() => navigate('/calendar')}
-                                    />
+                                <StyledIconButton
+                                    onClick={() => navigate(`/calendar/${param.userId}`)}
+                                >
+                                    <CalendarIcon />
                                 </StyledIconButton>
                                 <ImgShareButton
                                     title={
@@ -308,34 +318,28 @@ const Main = () => {
                         </Stack>
                     )}
                 </MainContainer>
-                {!daysLeft && showLottie ? (
-                    <Overlay onClick={handleLottieClick}>
-                        <PopupContainer>
-                            <dotlottie-player
-                                src='https://lottie.host/e35fc1c8-f985-4963-940e-0e4e0b630cd9/eNIuonSNHz.json'
-                                background='transparent'
-                                speed='1'
-                                style={{ width: '350px', height: '350px' }}
-                                loop
-                                autoplay
-                            ></dotlottie-player>
-                        </PopupContainer>
-                    </Overlay>
-                ) : (
-                    <PopupAfter
-                        isOpen={isPopupOpen}
-                        onClose={() => setPopupOpen(false)}
-                    /> //이 부분
-                )}
-                <SnackBar
-                    {...snackbarProps}
-                    handleCloseSnackbar={() =>
-                        setSnackbarProps((prev) => ({
-                            ...prev,
-                            openSnackbar: false,
-                        }))
-                    }
-                />
+                {daysLeft ? ( 
+    // daysLeft가 true인 경우 PopupPage를 보여줌
+    <PopupPage isOpen={isPopupOpen} onClose={() => setPopupOpen(false)} />
+) : (
+    // daysLeft가 false인 경우 Lottie 또는 PopupAfter를 보여줌
+    showLottie ? (
+        <Overlay onClick={handleLottieClick}>
+            <PopupContainer>
+                <dotlottie-player
+                    src="https://lottie.host/e35fc1c8-f985-4963-940e-0e4e0b630cd9/eNIuonSNHz.json"
+                    background="transparent"
+                    speed="1"
+                    style={{ width: '350px', height: '350px' }}
+                    loop
+                    autoplay
+                ></dotlottie-player>
+            </PopupContainer>
+        </Overlay>
+    ) : (
+        <PopupAfter isOpen={isPopupOpen} onClose={() => setPopupOpen(false)} />
+    )
+)}
             </Layout>
         </Container>
     );

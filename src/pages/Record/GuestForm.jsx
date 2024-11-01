@@ -4,7 +4,6 @@ import RecordBoard from './components/RecordBoard';
 import RecordSaveButton from './components/RecordSaveButton';
 import Writer from './components/Writer';
 import RecordUpper from './components/RecordUpper';
-import SnackBar from '@/components/SnackBar';
 import AlertModal from '@/components/AlertModal';
 import SelectSnowballObject from '@/components/SelectSnowballObject';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
@@ -12,6 +11,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useNicknameStore } from 'stores/useNicknameStore';
 import Layout from '@/layouts/Layout';
 import { Helmet } from 'react-helmet-async';
+import { useSnackbarStore } from '@/stores/useSnackbarStore';
 
 const GuestForm = () => {
     // useState로 상태 관리
@@ -20,13 +20,13 @@ const GuestForm = () => {
     const [writer, setWriter] = useState('');
     const [uploadedImage, setUploadedImage] = useState(null);
     const [object_name, setObjectName] = useState('');
-    const [openSnackbar, setOpenSnackbar] = useState(false);
-    const [snackbarText, setSnackbarText] = useState('');
-    const [openModal, setopenModal] = useState(false);
+    const [openModal, setOpenModal] = useState(false);
     // RecordBoard 참조 (자동스크롤)
     const recordBoardRef = useRef(null); // RecordBoard 참조
     const writerRef = useRef(null); //Writer 참조
     const selectObjectRef = useRef(null);
+
+    const { setSnackbarOpen } = useSnackbarStore();
 
     const params = useParams();
     const navigate = useNavigate();
@@ -42,16 +42,6 @@ const GuestForm = () => {
     const handleAnswerChange = (e) => {
         setAnswer(e.target.value.slice(0, 199));
         setInputCount(e.target.value.length);
-    };
-
-    // 스낵바 텍스트 변경
-    const handleSnackTextChange = (e) => {
-        setSnackbarText(e.target.value.slice(0, 199));
-    };
-
-    // 스낵바 닫기 처리 함수
-    const handleCloseSnackbar = () => {
-        setOpenSnackbar(false);
     };
 
     //모달 확인 버튼 처리 함수&데이터전달
@@ -84,14 +74,16 @@ const GuestForm = () => {
             })
             .catch((error) => {
                 console.log(error);
-                setOpenSnackbar(true);
-                setSnackbarText('오류가 발생했습니다.');
+                setSnackbarOpen({
+                    severity: 'error',
+                    text: '추억 전달에 실패했어요. 다시 시도해주세요.',
+                });
             });
     };
 
     // 모달 닫기 처리 함수
     const handleCloseModal = () => {
-        setopenModal(false);
+        setOpenModal(false);
     };
 
     // 폼 제출 처리 함수
@@ -100,26 +92,32 @@ const GuestForm = () => {
 
         // 폼 데이터 확인
         if (!object_name) {
-            setOpenSnackbar(true); //장식이 없을 경우 스낵바 True
-            setSnackbarText('장식이 선택되지 않았어요.');
+            setSnackbarOpen({
+                severity: 'warning',
+                text: '장식이 선택되지 않았어요.',
+            });
             selectObjectRef.current.scrollIntoView({ behavior: 'smooth' });
             return;
         } else if (!answer) {
-            setOpenSnackbar(true); //기록한 내용이 없을 경우 스낵바 True
-            setSnackbarText('추억이 작성되지 않았어요.');
+            setSnackbarOpen({
+                severity: 'warning',
+                text: '추억이 작성되지 않았어요.',
+            });
             recordBoardRef.current.scrollIntoView({ behavior: 'smooth' });
             return;
         }
         //장식이 없을 경우
         else if (!writer) {
-            setOpenSnackbar(true); //작성자가 없을 경우 스낵바 True
-            setSnackbarText('이름을 작성해주세요.');
+            setSnackbarOpen({
+                severity: 'warning',
+                text: '이름을 작성해주세요.',
+            });
             writerRef.current.scrollIntoView({ behavior: 'smooth' });
             return;
         }
 
         //answer 있을 경우 모달 오픈
-        setopenModal(true);
+        setOpenModal(true);
     };
 
     return (
@@ -189,12 +187,6 @@ const GuestForm = () => {
                     </Typography>
                 </Stack>
             </AlertModal>
-            <SnackBar
-                openSnackbar={openSnackbar}
-                handleCloseSnackbar={handleCloseSnackbar}
-                snackbarText={snackbarText}
-                setSnackbarText={handleSnackTextChange}
-            />
         </Layout>
     );
 };

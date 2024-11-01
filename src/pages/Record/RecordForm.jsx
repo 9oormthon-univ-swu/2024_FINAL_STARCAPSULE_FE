@@ -4,13 +4,13 @@ import RecordBoard from './components/RecordBoard';
 import RecordSaveButton from './components/RecordSaveButton';
 import RecordTitle from './components/RecordTitle';
 import RecordUpper from './components/RecordUpper';
-import SnackBar from '@/components/SnackBar';
 import AlertModal from '@/components/AlertModal';
 import { useNavigate, useParams } from 'react-router-dom';
 import SelectSnowballObject from '@/components/SelectSnowballObject';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import Layout from '@/layouts/Layout';
 import { Helmet } from 'react-helmet-async';
+import { useSnackbarStore } from '@/stores/useSnackbarStore';
 
 const RecordForm = () => {
     const navigate = useNavigate();
@@ -22,9 +22,8 @@ const RecordForm = () => {
     const [inputCount, setInputCount] = useState(0);
     const [image, setImage] = useState(null);
     const [shapeName, setObjectName] = useState('');
-    const [openSnackbar, setOpenSnackbar] = useState(false);
-    const [snackbarText, setSnackbarText] = useState('');
-    const [openModal, setopenModal] = useState(false);
+    const { setSnackbarOpen } = useSnackbarStore();
+    const [openModal, setOpenModal] = useState(false);
 
     // RecordBoard 참조 (자동스크롤)
     const recordBoardRef = useRef(null); // RecordBoard 참조
@@ -42,16 +41,6 @@ const RecordForm = () => {
         setInputCount(e.target.value.length);
     };
 
-    // 스낵바 텍스트 변경
-    const handleSnackTextChange = (e) => {
-        setSnackbarText(e.target.value.slice(0, 199));
-    };
-
-    // 스낵바 닫기 처리 함수
-    const handleCloseSnackbar = () => {
-        setOpenSnackbar(false);
-    };
-
     //모달 확인 버튼 처리 함수 & 데이터 전달
     const axiosInstance = useAxiosWithAuth();
     const handleAcceptModal = async () => {
@@ -60,9 +49,6 @@ const RecordForm = () => {
         if (image) formData.append('image', image);
 
         console.log('image:', image);
-        // console.log('answer:', answer);
-        // console.log('title:', title);
-        // console.log('object_name:', object_name);
         console.log('title:', title || 'Empty');
         console.log('answer:', answer || 'Empty');
         console.log('object_name:', shapeName || 'Empty');
@@ -84,18 +70,12 @@ const RecordForm = () => {
             })
             .catch((error) => {
                 console.log('Error:', error);
-                setOpenSnackbar(true);
-                setSnackbarText('오류가 발생했습니다.');
-
-                if (error.response) {
-                    console.error('Response data:', error.response.data);
-                }
             });
     };
 
     // 모달 닫기 처리 함수
     const handleCloseModal = () => {
-        setopenModal(false);
+        setOpenModal(false);
     };
 
     // 폼 제출 처리 함수
@@ -104,19 +84,23 @@ const RecordForm = () => {
 
         // 폼 데이터 확인
         if (!shapeName) {
-            setOpenSnackbar(true); // 장식이 선택되지 않았을 경우
-            setSnackbarText('장식이 선택되지 않았어요.');
+            setSnackbarOpen({
+                text: '장식이 선택되지 않았어요.',
+                severity: 'warning',
+            });
             selectObjectRef.current.scrollIntoView({ behavior: 'smooth' });
             return;
         } else if (!answer) {
-            setOpenSnackbar(true); // 추억이 작성되지 않았을 경우
-            setSnackbarText('추억이 작성되지 않았어요.');
+            setSnackbarOpen({
+                text: '추억이 작성되지 않았어요.',
+                severity: 'warning',
+            });
             recordBoardRef.current.scrollIntoView({ behavior: 'smooth' });
             return;
         }
 
         // text가 있을 경우 모달 오픈
-        setopenModal(true);
+        setOpenModal(true);
     };
 
     return (
@@ -184,12 +168,6 @@ const RecordForm = () => {
                     </Typography>
                 </Stack>
             </AlertModal>
-            <SnackBar
-                openSnackbar={openSnackbar}
-                handleCloseSnackbar={handleCloseSnackbar}
-                snackbarText={snackbarText}
-                setSnackbarText={handleSnackTextChange}
-            />
         </Layout>
     );
 };
@@ -206,6 +184,7 @@ const contentstyle = {
     margin: '0 auto',
     padding: '1.5rem',
     boxSizing: 'border-box',
+    minHeight: '100vh',
 };
 
 const modaltextstyle1 = {
