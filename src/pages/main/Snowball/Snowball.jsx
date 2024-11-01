@@ -7,7 +7,6 @@ import NavigationButton from './NavigationButton';
 import { motion, AnimatePresence } from 'framer-motion';
 import useSWR from 'swr';
 import { useParams } from 'react-router-dom';
-import Loading from '@/components/Loading';
 import { useEffect, useState } from 'react';
 
 const SnowballContainer = styled('div')(() => ({
