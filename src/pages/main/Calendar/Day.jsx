@@ -1,15 +1,47 @@
 import { Stack, Typography, useTheme } from '@mui/material';
 import { Button } from '@mui/base';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import { useParams } from 'react-router-dom';
 
 // 플러그인 활성화
 dayjs.extend(isSameOrAfter);
 dayjs.extend(utc);
 dayjs.extend(timezone);
+
+const containerStyle = {
+    boxSizing: 'border-box',
+    width: '100%',
+    height: 'auto',
+    minWidth: 0,
+    minHeight: 0,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundBlendMode: 'overlay',
+    overflow: 'hidden',
+    position: 'relative',
+};
+
+const dayButtonStyle = {
+    width: '100%',
+    p: 0,
+    boxSizing: 'border-box',
+};
+
+const triangleStyle = {
+    width: '100%',
+    aspectRatio: '180.5/37',
+    position: 'absolute',
+    top: '0',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    pointerEvents: 'none',
+};
 
 // 스타일 및 날짜 관련 설정 추상화
 const Day = ({
@@ -30,13 +62,38 @@ const Day = ({
         따라서 Calendar 컴포넌트에서 Day 컴포넌트로 몇 년도 캘린더인지 알 수 있는 year를 제공하는 것으로 처리함.
     */
     const theme = useTheme();
+    const navigate = useNavigate();
+    const { userId } = useParams();  // URL에서 userId 가져오기
 
     const today = dayjs(time).startOf('day');
     const startOfPeriod = dayjs(`${year}-11-30`).startOf('day');
     const currentDay = startOfPeriod.add(date, 'day').startOf('day');
 
     const dateInFormat = currentDay.format('YYYY-MM-DD');
-    console.log(dateInFormat); // 이 값을 가져다가 api 요청 시 사용하면 됩니다.
+
+    // 클릭 이벤트 핸들러 - API 요청 및 페이지 이동
+   // 클릭 이벤트 핸들러 - API 요청 및 페이지 이동
+const handleClick = async () => {
+    const token = localStorage.getItem('token'); // 로컬 스토리지에서 토큰 가져오기
+    const apiUrl = `${import.meta.env.VITE_API_URL}/calendar/memories/${dateInFormat}`;
+
+    try {
+        const response = await axios.get(apiUrl, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        console.log(`${dateInFormat} clicked`, response.data);
+
+        // 데이터가 성공적으로 로드되면 상세 페이지로 이동
+        navigate(`/calendar-detail/${userId}`, {
+            state: { data: response.data.result }, 
+        });
+    } catch (error) {
+        console.error("Error fetching memory data:", error);
+    }
+};
+
 
     // 기본 스타일
     let style = {
@@ -45,6 +102,7 @@ const Day = ({
     };
     let color = theme.palette.custom.white;
     let imgDisplay = false;
+    let triangleDisplay = false;
 
     // 기록 작성 가능 기간: 11월 30일 ~ 12월 31일 (범위 내)
     if (recordable) {
@@ -61,6 +119,7 @@ const Day = ({
         } else if (currentDay.isAfter(today)) {
             // 미래 날짜
             style.border = `1px solid ${theme.palette.custom.white}`;
+            if (date === 31) triangleDisplay = true;
         } else {
             // 지나간 날짜 작성 안함
             style.backgroundColor = 'rgba(255, 252, 250, 0.1)';
@@ -80,22 +139,15 @@ const Day = ({
             color = theme.palette.custom.font;
         }
     }
+
     return (
         <Stack
             sx={{
-                boxSizing: 'border-box',
-                width: '100%',
-                height: 'auto',
-                minWidth: 0,
-                minHeight: 0,
                 backgroundImage: imgDisplay
                     ? `url("/assets/calendar/puzzle_${date}.svg")`
                     : 'none',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
                 backgroundColor: style.backgroundColor,
-                backgroundBlendMode: 'overlay',
-                overflow: 'hidden',
+                ...containerStyle,
                 ...styleConfig.boxStyle,
             }}
             justifyContent={'center'}
@@ -103,33 +155,43 @@ const Day = ({
         >
             <Stack
                 sx={{
-                    zIndex: 1,
-                    width: '100%',
-                    px: '6px',
-                    boxSizing: 'border-box',
                     border: style.border,
                     backgroundColor: `${style.backgroundColor} !important`,
                     ...styleConfig.boxStyle,
+                    ...dayButtonStyle,
                 }}
                 justifyContent={
-                    styleConfig.position === 'middle' ? 'center' : 'flex-start'
+                    styleConfig.position === 'middle' && !triangleDisplay
+                        ? 'center'
+                        : 'flex-start'
                 }
                 alignItems={
                     styleConfig.position === 'middle'
                         ? 'center'
                         : styleConfig.position === 'right'
-                          ? 'end'
-                          : 'start'
+                        ? 'end'
+                        : 'start'
                 }
                 component={Button}
-                disabled={recordable || !lastDayWritten}
+                onClick={handleClick} // 클릭 이벤트 추가
             >
+                <img
+                    src={`/assets/calendar/triangle.svg`}
+                    style={{
+                        display: triangleDisplay ? 'block' : 'none',
+                        width: '100%',
+                        transform: 'translateY(-1px)',
+                        ...triangleStyle,
+                    }}
+                />
                 <Typography
                     sx={{
                         color: color,
                         pointerEvents: 'none',
+                        transform: triangleDisplay ? 'translateY(3px)' : 0,
+                        mx: '6px',
                     }}
-                    variant={styleConfig.variant}
+                    variant={triangleDisplay ? 'number2' : styleConfig.variant}
                 >
                     {date ? date : '11.30'}
                 </Typography>

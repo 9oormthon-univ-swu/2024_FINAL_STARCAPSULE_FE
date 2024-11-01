@@ -4,7 +4,7 @@ import ImgUploadButton from './ImgUploadButton';
 
 const RecordBoard = ({
     content,
-    imageUrl,
+    image_url,
     answer,
     inputCount,
     handleTextChange,
@@ -17,9 +17,9 @@ const RecordBoard = ({
     return (
         <div style={RecordBgstyle}>
             <Stack sx={imgcontainer}>
-                {isReadOnly && imageUrl ? (
+                {isReadOnly && image_url ? (
                     <img
-                        src={imageUrl}
+                        src={image_url}
                         alt='기억 이미지'
                         style={{ maxWidth: '100%', borderRadius: '10px' }}
                     />
@@ -35,8 +35,8 @@ const RecordBoard = ({
 
             <Stack>
                 {isReadOnly ? (
-                    <div style={{ ...Textfieldstyle, whiteSpace: 'pre-wrap' }}>
-                        {content || '추억이 없습니다.'}
+                    <div style={{ ...Textfieldstyle, ...readOnlyTextStyle }}>
+                        {content || "추억이 없습니다."}
                     </div>
                 ) : (
                     <textarea
@@ -45,7 +45,7 @@ const RecordBoard = ({
                         onChange={handleTextChange}
                         placeholder={showplaceholder}
                         style={Textfieldstyle}
-                        rows={Math.max(10, answer.split('\n').length)}
+                        rows={Math.max(4, answer.split('\n').length)} // 내용에 따라 행이 늘어나도록 설정
                     />
                 )}
             </Stack>
@@ -67,7 +67,7 @@ export default RecordBoard;
 //Design
 const Textfieldstyle = {
     width: '100%',
-    minheight: '16.5rem',
+    minHeight: '16.5rem',
     background: '#fffcfa',
     color: '#282828',
     fontSize: '1.125rem',
@@ -78,8 +78,13 @@ const Textfieldstyle = {
     outline: 'none',
 };
 
+const readOnlyTextStyle = {
+    whiteSpace: 'pre-wrap',   // 줄바꿈을 허용
+    wordWrap: 'break-word',   // 단어가 길 경우 줄바꿈
+};
+
 const imgcontainer = {
-    maxWidth: ' 100%',
+    maxWidth: '100%',
     textAlign: 'center',
     marginBottom: '1rem',
 };
@@ -95,4 +100,4 @@ const RecordBgstyle = {
     maxWidth: '312px',
     margin: '0 auto',
     boxSizing: 'border-box',
-};
+}; 

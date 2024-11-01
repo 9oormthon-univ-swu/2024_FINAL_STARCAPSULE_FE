@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import PopupButton from './PopupButton';
 
 const PopupWrapper = styled.div`
-    display: ${(props) => (props.isOpen ? 'flex' : 'none')};
+    display: ${(props) => props.is_open};
     justify-content: center;
     align-items: center;
     position: fixed;
@@ -29,13 +29,13 @@ const SvgWrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%; 
-    height: auto; 
+    width: 100%;
+    height: auto;
 `;
 
 const StyledSvg = styled.img`
-    width: 280px; 
-    height: 320px; 
+    width: 280px;
+    height: 320px;
 `;
 
 const TextWrapper = styled.div`
@@ -84,51 +84,72 @@ const CheckboxLabel = styled.label`
 `;
 
 const ButtonWrapper = styled.div`
-    margin-top: -35px; 
+    margin-top: -35px;
     position: relative; //체크박스에 영향이 가지않게
 `;
 
 const PopupAfter = ({ isOpen, onClose }) => {
     const [isChecked, setIsChecked] = useState(false);
 
+    useEffect(() => {
+        
+        const lastPopupCheckedDate = localStorage.getItem('popupCheckedDate');
+        const today = new Date().toLocaleDateString('ko-KR');
+
+        if (lastPopupCheckedDate === today) {
+            onClose(); // 오늘 날짜에 체크되었으면 팝업을 닫음
+        } else {
+            setIsChecked(false); // 처음 뜰 때 체크박스는 항상 해제된 상태로 설정
+        }
+    }, [onClose]);
+
     const handleCheckboxChange = () => {
-        setIsChecked(!isChecked);
+        const newCheckedStatus = !isChecked;
+        setIsChecked(newCheckedStatus);
+
+        const today = new Date().toLocaleDateString('ko-KR');
+        if (newCheckedStatus) {
+            localStorage.setItem('popupCheckedDate', today);
+            localStorage.setItem('popupCheckboxStatus', 'true');
+        } else {
+            localStorage.removeItem('popupCheckedDate'); // 체크 해제 시 날짜 제거
+            localStorage.setItem('popupCheckboxStatus', 'false');
+        }
     };
 
     return (
-        <PopupWrapper isOpen={isOpen}>
+        <PopupWrapper is_open={isOpen ? 'flex' : 'none'}>
             <PopupContent>
                 <SvgWrapper>
                     <StyledSvg src={'/assets/Popup.svg'} alt='popup' />
                     <TextWrapper>
                         <StyledBodyText>
-                            그동안의 추억이<br />
+                            그동안의 추억이
+                            <br />
                             공개되었어요!
                         </StyledBodyText>
                     </TextWrapper>
                 </SvgWrapper>
-
-                {/* 체크박스 섹션 */}
+                
                 <CheckboxWrapper onClick={handleCheckboxChange}>
                     <StyledCheckbox>
                         {isChecked ? (
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
                                 <rect width="20" height="20" rx="4" fill="#7F5539"/>
-                                <path d="M5 9L9 14L15.5 6" stroke="#FFFCFA" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M5 9L9 14L15.5 6" stroke="#FFFCFA" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
                             </svg>
                         ) : (
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
                                 <rect width="20" height="20" rx="4" fill="#FFFCFA"/>
-                                <path d="M5 9L9 14L15.5 6" stroke="#D5D1CD" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M5 9L9 14L15.5 6" stroke="#D5D1CD" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
                             </svg>
                         )}
                     </StyledCheckbox>
                     <CheckboxLabel>오늘 하루 질문 보지 않기</CheckboxLabel>
                 </CheckboxWrapper>
 
-                {/* 버튼 섹션 */}
                 <ButtonWrapper>
-                    <PopupButton text="추억 모아보기" onClick={onClose} />
+                    <PopupButton text='추억 모아보기' onClick={onClose} />
                 </ButtonWrapper>
             </PopupContent>
         </PopupWrapper>
