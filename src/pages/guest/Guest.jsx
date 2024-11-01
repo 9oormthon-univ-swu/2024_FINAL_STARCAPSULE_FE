@@ -14,39 +14,26 @@ import axios from 'axios';
 import { useNicknameStore } from 'stores/useNicknameStore';
 import { Helmet } from 'react-helmet-async';
 
-// 1. data를 가져온다. < -
-// 2. data->snowball_name 전역 상태 변수로 저장
-// 3. gest-form에서 쓴다.
-
-// TODO : 전역 상태 변수를 만든다.
-// TODO : get fetcher를 새로 만들어서 끝에 set
-// TODO : guest-form에서 쓴다.
-
 const Guest = () => {
-    const [page, setPage] = useState(1);
-    const params = useParams();
+    const [serverTime, setServerTime] = useState('');
     const navigate = useNavigate();
     const param = useParams();
 
     //스노우볼 주인의 닉네임 설정
     const { setNickname } = useNicknameStore();
-    const nicknameGetFetcher = async (url) => {
-        const data = await axios
-            .get(url)
-            .then((res) => {
-                console.log(res);
-                setNickname(res.data.result.snowball_name);
-                return res.data.result;
-            })
-            .catch((error) => {
-                console(error);
-            });
-        return data;
-    };
+
+    const snowballFetcher = (url) =>
+        axios.get(url).then((res) => res.data.result.paginationData);
+
+    const infoFetcher = (url) =>
+        axios.get(url).then((res) => {
+            setNickname(res.data.result.snowballName);
+            return res.data.result;
+        });
 
     const { data, isLoading, error } = useSWR(
-        `${import.meta.env.VITE_API_URL}/api/capsule/${params.userId}?page=${page}`,
-        nicknameGetFetcher, // (url) => fetch(url).then((res) => res.json()),
+        `${import.meta.env.VITE_API_URL}/api/capsule/${param.userId}/info`,
+        infoFetcher,
         {
             onError: (error) => {
                 console.error(error);
@@ -54,30 +41,14 @@ const Guest = () => {
         }
     );
 
-    const onLeftClick = () => {
-        setTimeout(
-            setPage((prev) => (prev === 1 ? 1 : prev - 1)),
-            500
-        );
-    };
-
-    const onRightClick = () => {
-        setTimeout(
-            setPage((prev) =>
-                prev === data?.total_page ? data?.total_page : prev + 1
-            ),
-            500
-        );
-    };
-
     const onRecordClick = () => {
         navigate(`/guestrecord/${param.userId}`);
     };
 
-    if (isLoading) return <Loading />;
+    if (isLoading) return <Loading snow snowflake />;
     if (error) return <div>failed to load</div>;
 
-    const daysLeft = getDaysBeforeOpen(data?.server_time, true);
+    const daysLeft = getDaysBeforeOpen(serverTime);
 
     return (
         <Layout sx={{ overflow: 'hidden' }} snow snowflake>
@@ -111,18 +82,15 @@ const Guest = () => {
                     >
                         <DDayTitle />
                     </Stack>
-                    <Title nickname={data?.snowball_name ?? ''} />
+                    <Title nickname={data?.snowballName ?? ''} />
                 </Stack>
 
                 <Snowball
                     isLoading={isLoading}
-                    memories={data?.memories}
-                    current={data?.page}
-                    total={data?.total_page}
-                    received={data?.received}
-                    self={data?.self}
-                    onLeftClick={onLeftClick}
-                    onRightClick={onRightClick}
+                    received={data?.receivedCount}
+                    self={data?.selfCount}
+                    fetcher={snowballFetcher}
+                    setServerTime={setServerTime}
                 />
                 {daysLeft ? (
                     <StyledButton

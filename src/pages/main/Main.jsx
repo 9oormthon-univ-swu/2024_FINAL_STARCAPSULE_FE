@@ -5,7 +5,7 @@ import {
     Stack,
     styled,
     Typography,
-    Container,
+    Portal,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import DDayTitle from './DDayTitle';
@@ -76,9 +76,9 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
 }));
 
 const Main = () => {
-    const [page, setPage] = useState(1);
     const [isPopupOpen, setPopupOpen] = useState(false); // 팝업이 기본적으로 비활성화 상태로 시작
-    const [showLottie, setShowLottie] = useState(false);  // 로티 애니메이션도 비활성화 상태로 시작
+    const [showLottie, setShowLottie] = useState(false); // 로티 애니메이션도 비활성화 상태로 시작
+    const [serverTime, setServerTime] = useState('');
     const navigate = useNavigate();
 
     const successMessage = '스노우볼 이름이 변경되었어요.';
@@ -102,7 +102,7 @@ const Main = () => {
         const today = new Date().toLocaleDateString('ko-KR');
 
         if (lastPopupCheckedDate !== today) {
-            setShowLottie(true);  // 체크되지 않은 경우 로티와 팝업을 표시
+            setShowLottie(true); // 체크되지 않은 경우 로티와 팝업을 표시
             setPopupOpen(true);
         }
     }, []);
@@ -113,9 +113,17 @@ const Main = () => {
         saveTokenFromURL(login);
     }, [login, param.userId, setUserId]);
 
+    const axiosInstance = useAxiosWithAuth();
+
+    const snowballFetcher = (url) =>
+        axiosInstance.get(url).then((res) => res.data.result.paginationData);
+
+    const infoFetcher = (url) =>
+        axiosInstance.get(url).then((res) => res.data.result);
+
     const { data, isLoading, error, mutate } = useSWR(
-        `${import.meta.env.VITE_API_URL}/api/capsule/${param.userId}?page=${page}`,
-        defaultGetFetcher,
+        `${import.meta.env.VITE_API_URL}/api/capsule/${param.userId}/info`,
+        infoFetcher,
         {
             onError: (error) => {
                 console.error(error);
@@ -125,12 +133,11 @@ const Main = () => {
 
     // 닉네임을 로컬 스토리지에 저장하는 useEffect
     useEffect(() => {
-        if (data && data.snowball_name) {
-            localStorage.setItem('snowballName', data.snowball_name);
+        if (data && data.snowballName) {
+            localStorage.setItem('snowballName', data.snowballName);
         }
     }, [data]);
 
-    const axiosInstance = useAxiosWithAuth();
     const setSnowballName = async (newName) => {
         await axiosInstance
             .post(`/api/capsule/changeSnowballName`, null, {
@@ -147,26 +154,16 @@ const Main = () => {
             });
     };
 
-    const daysLeft = getDaysBeforeOpen(data?.server_time);
-
-    const onLeftClick = () => {
-        setPage((prev) => (prev === 1 ? 1 : prev - 1));
-    };
-
-    const onRightClick = () => {
-        setPage((prev) =>
-            prev === data?.total_page ? data?.total_page : prev + 1
-        );
-    };
+    const daysLeft = getDaysBeforeOpen(serverTime);
 
     const onMemoryClick = (memoryId, objectName) => {
         console.log('Clicked memory ID:', memoryId); // 콘솔 출력 추가
         const userId = param.userId;
         const allowedDate = new Date('2024-10-28');
         const currentDate = new Date();
-    
+
         if (currentDate < allowedDate) {
-            alert('이후 조회 가능합니다');  // 경고창 표시
+            alert('이후 조회 가능합니다'); // 경고창 표시
             return;
         }
 
@@ -200,7 +197,7 @@ const Main = () => {
     if (error) return <div>failed to load</div>;
 
     return (
-        <Container id='capture-container'>
+        <div id='capture-container'>
             <Helmet>
                 <title>스노로그 - 2024의 추억이 쌓이는 곳</title>
                 <meta
@@ -237,7 +234,9 @@ const Main = () => {
                             <DDayTitle />
                             <Stack direction={'row'} spacing={2}>
                                 <StyledIconButton
-                                    onClick={() => navigate(`/calendar/${param.userId}`)}
+                                    onClick={() =>
+                                        navigate(`/calendar/${param.userId}`)
+                                    }
                                 >
                                     <CalendarIcon />
                                 </StyledIconButton>
@@ -250,33 +249,20 @@ const Main = () => {
                             </Stack>
                         </Stack>
 
-                        {isLoading ? (
-                            <Skeleton variant='text'>
-                                <MainTitle
-                                    snowball={data?.snowball_name ?? ''}
-                                    setSnowballName={setSnowballName}
-                                    onError={onError}
-                                />
-                            </Skeleton>
-                        ) : (
-                            <MainTitle
-                                snowball={data?.snowball_name ?? ''}
-                                setSnowballName={setSnowballName}
-                                onError={onError}
-                            />
-                        )}
+                        <MainTitle
+                            snowball={data?.snowballName || ''}
+                            setSnowballName={setSnowballName}
+                            onError={onError}
+                        />
                     </Stack>
 
                     <Snowball
                         isLoading={isLoading}
-                        memories={data?.memories}
-                        current={page}
-                        total={isLoading ? 0 : parseInt(data.total_page)}
-                        received={data?.received}
-                        self={data?.self}
-                        onLeftClick={onLeftClick}
-                        onRightClick={onRightClick}
+                        received={data?.receivedCount}
+                        self={data?.selfCount}
                         onMemoryClick={onMemoryClick}
+                        fetcher={snowballFetcher}
+                        setServerTime={setServerTime}
                     />
                     {daysLeft ? (
                         <StyledButton
@@ -318,30 +304,42 @@ const Main = () => {
                         </Stack>
                     )}
                 </MainContainer>
-                {daysLeft ? ( 
-    // daysLeft가 true인 경우 PopupPage를 보여줌
-    <PopupPage isOpen={isPopupOpen} onClose={() => setPopupOpen(false)} />
-) : (
-    // daysLeft가 false인 경우 Lottie 또는 PopupAfter를 보여줌
-    showLottie ? (
-        <Overlay onClick={handleLottieClick}>
-            <PopupContainer>
-                <dotlottie-player
-                    src="https://lottie.host/e35fc1c8-f985-4963-940e-0e4e0b630cd9/eNIuonSNHz.json"
-                    background="transparent"
-                    speed="1"
-                    style={{ width: '350px', height: '350px' }}
-                    loop
-                    autoplay
-                ></dotlottie-player>
-            </PopupContainer>
-        </Overlay>
-    ) : (
-        <PopupAfter isOpen={isPopupOpen} onClose={() => setPopupOpen(false)} />
-    )
-)}
+                {daysLeft ? (
+                    // daysLeft가 true인 경우 PopupPage를 보여줌
+                    <PopupPage
+                        isOpen={isPopupOpen}
+                        onClose={() => setPopupOpen(false)}
+                    />
+                ) : // daysLeft가 false인 경우 Lottie 또는 PopupAfter를 보여줌
+                showLottie ? (
+                    <Portal
+                        container={document.getElementById('capture-container')}
+                    >
+                        <Overlay onClick={handleLottieClick}>
+                            <PopupContainer>
+                                <dotlottie-player
+                                    src='https://lottie.host/e35fc1c8-f985-4963-940e-0e4e0b630cd9/eNIuonSNHz.json'
+                                    background='transparent'
+                                    speed='1'
+                                    style={{ width: '350px', height: '350px' }}
+                                    loop
+                                    autoplay
+                                ></dotlottie-player>
+                            </PopupContainer>
+                        </Overlay>
+                    </Portal>
+                ) : (
+                    <Portal
+                        container={document.getElementById('capture-container')}
+                    >
+                        <PopupAfter
+                            isOpen={isPopupOpen}
+                            onClose={() => setPopupOpen(false)}
+                        />
+                    </Portal>
+                )}
             </Layout>
-        </Container>
+        </div>
     );
 };
 
