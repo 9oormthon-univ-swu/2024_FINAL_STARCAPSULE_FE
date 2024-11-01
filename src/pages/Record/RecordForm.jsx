@@ -4,7 +4,6 @@ import RecordBoard from './components/RecordBoard';
 import RecordSaveButton from './components/RecordSaveButton';
 import RecordTitle from './components/RecordTitle';
 import RecordUpper from './components/RecordUpper';
-import SnackbarNoti from '@/components/SnackbarNoti';
 import AlertModal from '@/components/AlertModal';
 import { useNavigate, useParams } from 'react-router-dom';
 import SelectSnowballObject from '@/components/SelectSnowballObject';
@@ -22,10 +21,9 @@ const RecordForm = () => {
     const [answer, setAnswer] = useState('');
     const [inputCount, setInputCount] = useState(0);
     const [image, setImage] = useState(null);
-    const [object_name, setObjectName] = useState('');
-    const [openModal, setOpenModal] = useState(false);
-
+    const [shapeName, setObjectName] = useState('');
     const { setSnackbarOpen } = useSnackbarStore();
+    const [openModal, setOpenModal] = useState(false);
 
     // RecordBoard 참조 (자동스크롤)
     const recordBoardRef = useRef(null); // RecordBoard 참조
@@ -50,10 +48,10 @@ const RecordForm = () => {
         const formData = new FormData();
         if (image) formData.append('image', image);
 
-        console.log('answer:', answer);
         console.log('image:', image);
-        console.log('title:', title);
-        console.log('object_name:', object_name);
+        console.log('title:', title || 'Empty');
+        console.log('answer:', answer || 'Empty');
+        console.log('object_name:', shapeName || 'Empty');
 
         await axiosInstance
             .post(`/api/my_memory/write`, formData, {
@@ -63,7 +61,7 @@ const RecordForm = () => {
                 params: {
                     title: title,
                     answer: answer,
-                    object_name: object_name,
+                    shapeName: shapeName,
                 },
             })
             .then(() => {
@@ -72,10 +70,6 @@ const RecordForm = () => {
             })
             .catch((error) => {
                 console.log('Error:', error);
-                setSnackbarOpen({
-                    text: '추억 기록에 실패했어요. 다시 시도해주세요.',
-                    severity: 'error',
-                });
             });
     };
 
@@ -89,7 +83,7 @@ const RecordForm = () => {
         e.preventDefault();
 
         // 폼 데이터 확인
-        if (!object_name) {
+        if (!shapeName) {
             setSnackbarOpen({
                 text: '장식이 선택되지 않았어요.',
                 severity: 'warning',
@@ -137,7 +131,7 @@ const RecordForm = () => {
                     </Stack>
                     <Stack>
                         <SelectSnowballObject
-                            snowballObject={object_name}
+                            snowballObject={shapeName}
                             setSnowballObject={setObjectName}
                             mine
                         />

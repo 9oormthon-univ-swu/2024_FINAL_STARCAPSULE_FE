@@ -1,25 +1,24 @@
-import React, { useRef, useEffect, useState } from 'react';   
-import { Stack } from '@mui/material';
+import React, { useRef, useEffect, useState } from 'react';
+import { IconButton, Stack } from '@mui/material';
 import RecordBoard from '../Record/components/RecordBoard';
-import ImageSaveButton from './ImageSaveButton'; 
+import ImageSaveButton from './ImageSaveButton';
 import html2canvas from 'html2canvas';
-import CloseIcon from '@/components/icons/closeicon';
-import CalendarIcon from '@/components/icons/CalendarIcon'; 
+import { CloseIcon, ShareIcon, CalendarIcon } from '@/components/icons';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
 
 const contentstyle = {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center', 
-    minHeight: '100vh', 
+    justifyContent: 'center',
+    minHeight: '100vh',
     width: '100%',
     maxWidth: '600px',
     margin: '0 auto',
-    padding: '0', 
+    padding: '0',
     boxSizing: 'border-box',
     position: 'relative',
-    overflow: 'hidden', 
+    overflow: 'hidden',
 };
 
 const CalendarDetail = () => {
@@ -28,19 +27,19 @@ const CalendarDetail = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const selectedDate = location.state?.selectedDate
-        ? dayjs(location.state.selectedDate).format("YYYY년 MM월 DD일")
-        : "날짜 정보 없음";
+        ? dayjs(location.state.selectedDate).format('YYYY년 MM월 DD일')
+        : '날짜 정보 없음';
 
     const [memoryData, setMemoryData] = useState(null);
     const [pageIndex, setPageIndex] = useState(0);
-    const nickname = localStorage.getItem('snowballName') || '닉네임'; 
+    const nickname = localStorage.getItem('snowballName') || '닉네임';
 
     useEffect(() => {
         if (location.state?.data) {
             setMemoryData(location.state.data);
-            console.log("Fetched data in CalendarDetail:", location.state.data); // 데이터 확인용 잘뜨나....
+            console.log('Fetched data in CalendarDetail:', location.state.data); // 데이터 확인용 잘뜨나....
         } else {
-            console.log("No data found in location.state"); // 데이터가 없을 경우 메시지 출력
+            console.log('No data found in location.state'); // 데이터가 없을 경우 메시지 출력
         }
     }, [location.state]);
 
@@ -53,24 +52,34 @@ const CalendarDetail = () => {
                 scale: scale,
                 useCORS: true,
                 backgroundColor: null,
-            }).then((canvas) => {
-                const link = document.createElement('a');
-                link.href = canvas.toDataURL('image/png');
-                link.download = 'calendar_detail.png';
-                link.click();
-            }).catch((error) => {
-                console.error('이미지 저장 중 오류 발생:', error);
-            });
+            })
+                .then((canvas) => {
+                    const link = document.createElement('a');
+                    link.href = canvas.toDataURL('image/png');
+                    link.download = 'calendar_detail.png';
+                    link.click();
+                })
+                .catch((error) => {
+                    console.error('이미지 저장 중 오류 발생:', error);
+                });
         }
     };
 
-    const formattedDate = selectedDate.split(/(\d{4})(년)|(\d{2})(월)|(\d{2})(일)/).map((part, index) =>
-        part && /\d/.test(part) ? (
-            <span key={index} style={{ color: '#DDB892' }}>{part}</span>
-        ) : (
-            part && <span key={index} style={{ color: 'white' }}>{part}</span>
-        )
-    );
+    const formattedDate = selectedDate
+        .split(/(\d{4})(년)|(\d{2})(월)|(\d{2})(일)/)
+        .map((part, index) =>
+            part && /\d/.test(part) ? (
+                <span key={index} style={{ color: '#DDB892' }}>
+                    {part}
+                </span>
+            ) : (
+                part && (
+                    <span key={index} style={{ color: 'white' }}>
+                        {part}
+                    </span>
+                )
+            )
+        );
 
     const handleClose = () => {
         navigate(`/main/${userId}`);
@@ -80,7 +89,9 @@ const CalendarDetail = () => {
         navigate(-1);
     };
 
-    const memoriesArray = memoryData ? [...(memoryData.my_memory || []), ...(memoryData.memories || [])] : [];
+    const memoriesArray = memoryData
+        ? [...(memoryData.my_memory || []), ...(memoryData.memories || [])]
+        : [];
     const totalItems = memoriesArray.length;
 
     const handlePrevious = () => {
@@ -96,9 +107,9 @@ const CalendarDetail = () => {
     return (
         <Stack sx={contentstyle}>
             <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="space-between"
+                direction='row'
+                alignItems='center'
+                justifyContent='space-between'
                 sx={{
                     position: 'absolute',
                     top: 'calc(1rem + 30px)',
@@ -109,26 +120,39 @@ const CalendarDetail = () => {
                     fontFamily: 'Griun NltoTAENGGU, sans-serif',
                 }}
             >
-                <CloseIcon 
-                    sx={{ cursor: 'pointer', position: 'relative', right: '-30px' }} 
-                    onClick={handleClose} 
+                <CloseIcon
+                    sx={{
+                        cursor: 'pointer',
+                        position: 'relative',
+                        right: '-30px',
+                    }}
+                    onClick={handleClose}
                 />
-                <span style={{ fontSize: '1.4rem' }}>
-                    {formattedDate}
-                </span>
-                <CalendarIcon 
-                    sx={{ cursor: 'pointer', position: 'relative', left: '-30px' }} 
-                    onClick={handleCalendarClick} 
+                <span style={{ fontSize: '1.4rem' }}>{'2024년 10월 26일'}</span>
+                <ShareIcon
+                    sx={{
+                        cursor: 'pointer',
+                        position: 'relative',
+                        left: '-30px',
+                    }}
                 />
+                <span style={{ fontSize: '1.4rem' }}>{formattedDate}</span>
+                <IconButton
+                    onClick={handleCalendarClick}
+                    sx={{ position: 'relative', left: '-30px' }}
+                >
+                    <CalendarIcon />
+                </IconButton>
             </Stack>
 
-            <Stack 
-                ref={captureRef} 
+            <Stack
+                ref={captureRef}
                 sx={{
                     width: '100%',
                     minHeight: '100vh',
                     padding: '1.5rem',
-                    background: 'linear-gradient(180deg, #0b0a1b 0%, #27405e 100%)',
+                    background:
+                        'linear-gradient(180deg, #0b0a1b 0%, #27405e 100%)',
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
@@ -137,16 +161,18 @@ const CalendarDetail = () => {
             >
                 {currentItem ? (
                     <>
-                        <span style={{ 
-                            position: 'absolute',
-                            top: 'calc(10px + 9rem)', 
-                            left: '9.5rem',  
-                            color: 'white',
-                            fontSize: '1.3rem',
-                            fontFamily: 'Griun NltoTAENGGU, sans-serif',
-                        }}>
-                           {currentItem.daily_question?.question 
-                                ? currentItem.daily_question.question 
+                        <span
+                            style={{
+                                position: 'absolute',
+                                top: 'calc(10px + 9rem)',
+                                left: '9.5rem',
+                                color: 'white',
+                                fontSize: '1.3rem',
+                                fontFamily: 'Griun NltoTAENGGU, sans-serif',
+                            }}
+                        >
+                            {currentItem.daily_question?.question
+                                ? currentItem.daily_question.question
                                 : `To. ${nickname}`}
                         </span>
 
@@ -156,26 +182,32 @@ const CalendarDetail = () => {
                             isReadOnly={true}
                         />
 
-                        <span style={{
-                            color: 'white',
-                            fontSize: '1.3rem',
-                            fontFamily: 'Griun NltoTAENGGU, sans-serif',
-                            textAlign: 'center',
-                            marginLeft: '200px',
-                        }}>
-                            {currentItem.writer ? `From. ${currentItem.writer}` : ''}
+                        <span
+                            style={{
+                                color: 'white',
+                                fontSize: '1.3rem',
+                                fontFamily: 'Griun NltoTAENGGU, sans-serif',
+                                textAlign: 'center',
+                                marginLeft: '200px',
+                            }}
+                        >
+                            {currentItem.writer
+                                ? `From. ${currentItem.writer}`
+                                : ''}
                         </span>
                     </>
                 ) : (
-                    <span style={{ color: 'white' }}>보관된 추억이 없습니다.</span>
+                    <span style={{ color: 'white' }}>
+                        보관된 추억이 없습니다.
+                    </span>
                 )}
             </Stack>
 
-            <Stack 
-                component="form" 
+            <Stack
+                component='form'
                 sx={{
-                    position: 'relative',  
-                    marginTop: '-22rem',     
+                    position: 'relative',
+                    marginTop: '-22rem',
                 }}
             >
                 <ImageSaveButton onClick={handleSaveImage} />

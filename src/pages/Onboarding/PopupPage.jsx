@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import PopupButton from './PopupButton';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
+import { Portal } from '@mui/material';
 
 const PopupWrapper = styled.div`
     display: ${(props) => (props.isOpen ? 'flex' : 'none')};
@@ -85,7 +86,7 @@ const StyledBodyText = styled.div`
 const CheckboxWrapper = styled.div`
     display: flex;
     align-items: center;
-    margin-top: 10px; 
+    margin-top: 10px;
 `;
 
 const StyledCheckbox = styled.div`
@@ -100,14 +101,14 @@ const StyledCheckbox = styled.div`
 
 const CheckboxLabel = styled.label`
     font-size: 16px;
-    color: white; 
+    color: white;
     margin-left: 8px;
     cursor: pointer;
 `;
 
 const ButtonWrapper = styled.div`
-    margin-top: -45px; 
-    position: relative; 
+    margin-top: -45px;
+    position: relative;
 `;
 
 const PopupPage = ({ isOpen, onClose }) => {
@@ -169,7 +170,7 @@ const PopupPage = ({ isOpen, onClose }) => {
     const handleCheckboxChange = () => {
         const newCheckedStatus = !isChecked;
         setIsChecked(newCheckedStatus);
-        
+
         const today = new Date().toLocaleDateString('ko-KR'); // 한국 시간 기준 날짜 형식으로 저장
         if (newCheckedStatus) {
             localStorage.setItem('popupCheckedDate', today);
@@ -186,44 +187,87 @@ const PopupPage = ({ isOpen, onClose }) => {
     };
 
     return (
-        <PopupWrapper isOpen={isOpen}>
-            <PopupContent>
-                <SvgWrapper>
-                    <img src='/assets/Popup.svg' alt='popup' />
-                    <CloseButton onClick={onClose}>✕</CloseButton>
-                    <TextWrapper>
-                        <StyledTitle>{question || '질문을 불러오는 중입니다...'}</StyledTitle>
-                        <StyledBodyText>
-                            <span>{date.split('월')[0] || '01'}</span>월{' '}
-                            <span>{date.split('월 ')[1]?.split('일')[0] || '01'}</span>일 질문에 대한
-                            <br />
-                            추억을 기록하러 가볼까요?
-                        </StyledBodyText>
-                    </TextWrapper>
-                </SvgWrapper>
-                <CheckboxWrapper onClick={handleCheckboxChange}>
-                    <StyledCheckbox>
-                        {isChecked ? (
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <rect width="20" height="20" rx="4" fill="#7F5539"/>
-                                <path d="M5 9L9 14L15.5 6" stroke="#FFFCFA" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-                            </svg>
-                        ) : (
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <rect width="20" height="20" rx="4" fill="#FFFCFA"/>
-                                <path d="M5 9L9 14L15.5 6" stroke="#D5D1CD" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-                            </svg>
-                        )}
-                    </StyledCheckbox>
-                    <CheckboxLabel>
-                        오늘 하루 질문 보지 않기
-                    </CheckboxLabel>
-                </CheckboxWrapper>
-                <ButtonWrapper>
-                    <PopupButton text="추억 기록하기" onClick={handleButtonClick} />
-                </ButtonWrapper>
-            </PopupContent>
-        </PopupWrapper>
+        <Portal container={document.getElementById('capture-container')}>
+            <PopupWrapper isOpen={isOpen}>
+                <PopupContent>
+                    <SvgWrapper>
+                        <img src='/assets/Popup.svg' alt='popup' />
+                        <CloseButton onClick={onClose}>✕</CloseButton>
+                        <TextWrapper>
+                            <StyledTitle>
+                                {question || '질문을 불러오는 중입니다...'}
+                            </StyledTitle>
+                            <StyledBodyText>
+                                <span>{date.split('월')[0] || '01'}</span>월{' '}
+                                <span>
+                                    {date.split('월 ')[1]?.split('일')[0] ||
+                                        '01'}
+                                </span>
+                                일 질문에 대한
+                                <br />
+                                추억을 기록하러 가볼까요?
+                            </StyledBodyText>
+                        </TextWrapper>
+                    </SvgWrapper>
+                    <CheckboxWrapper onClick={handleCheckboxChange}>
+                        <StyledCheckbox>
+                            {isChecked ? (
+                                <svg
+                                    xmlns='http://www.w3.org/2000/svg'
+                                    width='20'
+                                    height='20'
+                                    viewBox='0 0 20 20'
+                                    fill='none'
+                                >
+                                    <rect
+                                        width='20'
+                                        height='20'
+                                        rx='4'
+                                        fill='#7F5539'
+                                    />
+                                    <path
+                                        d='M5 9L9 14L15.5 6'
+                                        stroke='#FFFCFA'
+                                        strokeWidth='3'
+                                        strokeLinecap='round'
+                                        strokeLinejoin='round'
+                                    />
+                                </svg>
+                            ) : (
+                                <svg
+                                    xmlns='http://www.w3.org/2000/svg'
+                                    width='20'
+                                    height='20'
+                                    viewBox='0 0 20 20'
+                                    fill='none'
+                                >
+                                    <rect
+                                        width='20'
+                                        height='20'
+                                        rx='4'
+                                        fill='#FFFCFA'
+                                    />
+                                    <path
+                                        d='M5 9L9 14L15.5 6'
+                                        stroke='#D5D1CD'
+                                        strokeWidth='3'
+                                        strokeLinecap='round'
+                                        strokeLinejoin='round'
+                                    />
+                                </svg>
+                            )}
+                        </StyledCheckbox>
+                        <CheckboxLabel>오늘 하루 질문 보지 않기</CheckboxLabel>
+                    </CheckboxWrapper>
+                    <ButtonWrapper>
+                        <PopupButton
+                            text='추억 기록하기'
+                            onClick={handleButtonClick}
+                        />
+                    </ButtonWrapper>
+                </PopupContent>
+            </PopupWrapper>
+        </Portal>
     );
 };
 
