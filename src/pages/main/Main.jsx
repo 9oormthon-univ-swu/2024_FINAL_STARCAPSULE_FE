@@ -1,7 +1,6 @@
 import {
     Button,
     IconButton,
-    Skeleton,
     Stack,
     styled,
     Typography,
@@ -23,7 +22,6 @@ import { saveTokenFromURL } from '@/utils/saveTokenFromURL';
 import useAuthStore from 'stores/useAuthStore';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import { useNavigate } from 'react-router-dom';
-import { defaultGetFetcher } from '@/utils/getFetcher';
 import '@dotlottie/player-component';
 import ImgShareButton from '@/components/ImgShareButton';
 import { Helmet } from 'react-helmet-async';

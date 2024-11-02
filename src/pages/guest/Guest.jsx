@@ -1,5 +1,5 @@
 import { Stack, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DDayTitle from '@/pages/main/DDayTitle';
 import Snowball from '@/pages/main/Snowball/Snowball';
 import Layout from '@/layouts/Layout';
@@ -8,11 +8,11 @@ import Loading from '@/components/Loading';
 import { StyledButton, MainContainer } from '@/pages/main/Main';
 import Title from './Title';
 import { useParams, useNavigate } from 'react-router-dom';
-// import { defaultGetFetcher } from '@/utils/getFetcher';
 import { getDaysBeforeOpen } from '@/utils/getDaysBeforeOpen';
 import axios from 'axios';
 import { useNicknameStore } from 'stores/useNicknameStore';
 import { Helmet } from 'react-helmet-async';
+import { useUserStore } from '@/stores/useUserStore';
 
 const Guest = () => {
     const [serverTime, setServerTime] = useState('');
@@ -21,6 +21,7 @@ const Guest = () => {
 
     //스노우볼 주인의 닉네임 설정
     const { setNickname } = useNicknameStore();
+    const { userId } = useUserStore();
 
     const snowballFetcher = (url) =>
         axios.get(url).then((res) => res.data.result.paginationData);
@@ -44,6 +45,12 @@ const Guest = () => {
     const onRecordClick = () => {
         navigate(`/guestrecord/${param.userId}`);
     };
+
+    useEffect(() => {
+        if (param.userId === userId) {
+            navigate(`/main/${userId}`);
+        }
+    }, []);
 
     if (isLoading) return <Loading snow snowflake />;
     if (error) return <div>failed to load</div>;

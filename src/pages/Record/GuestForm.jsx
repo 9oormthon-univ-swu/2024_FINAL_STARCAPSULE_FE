@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Stack, Typography } from '@mui/material';
 import RecordBoard from './components/RecordBoard';
 import RecordSaveButton from './components/RecordSaveButton';
@@ -12,6 +12,7 @@ import { useNicknameStore } from 'stores/useNicknameStore';
 import Layout from '@/layouts/Layout';
 import { Helmet } from 'react-helmet-async';
 import { useSnackbarStore } from '@/stores/useSnackbarStore';
+import { useUserStore } from '@/stores/useUserStore';
 
 const GuestForm = () => {
     // useState로 상태 관리
@@ -32,6 +33,13 @@ const GuestForm = () => {
     const navigate = useNavigate();
 
     const { nickname } = useNicknameStore(); // {nickname, setNickname}
+    const { userId } = useUserStore();
+
+    useEffect(() => {
+        if (params.userId === userId) {
+            navigate(`/record/${userId}`);
+        }
+    }, []);
 
     // 업로드 파일 관리
     const handleSetImage = (uploadedImage) => {
