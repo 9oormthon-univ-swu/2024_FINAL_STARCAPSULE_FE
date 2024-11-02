@@ -121,49 +121,33 @@ const RecordFormAfter = () => {
             </Stack>
 
             <Stack 
-                ref={captureRef} 
-                sx={{
-                    width: '100%',
-                    height: '100vh', 
-                    padding: '1.5rem', 
-                    background: 'linear-gradient(180deg, #0b0a1b 0%, #27405e 100%)',
-                    paddingTop: '12rem',
-                }}
-            >
-                {/* 이미지가 있을 때만 렌더링 */}
-                {memoryData?.result?.image_url && (
-                    <img 
-                        src={memoryData.result.image_url} 
-                        alt="Memory Image" 
-                        style={{
-                            width: '100%',
-                            maxHeight: '300px',
-                            objectFit: 'cover',
-                            marginBottom: '1rem'
-                        }}
-                    />
-                )}
-                {memoryData ? (
-                    <span style={{ 
-                        position: 'absolute',
-                        top: 'calc(10px + 9rem)', 
-                        left: '9.5rem',  
-                        color: 'white',
-                        fontSize: '1.3rem',
-                        fontFamily: 'Griun NltoTAENGGU, sans-serif',
-                    }}>
-                        {memoryData.result.daily_question?.question ?? "질문을 불러올 수 없습니다."}
-                    </span>
-                ) : (
-                    <span>로딩 중...</span>
-                )}
-                
+    ref={captureRef} 
+    sx={{
+        width: '100%',
+        height: '100vh', 
+        padding: '1.5rem', 
+        background: 'linear-gradient(180deg, #0b0a1b 0%, #27405e 100%)',
+        paddingTop: '12rem',
+    }}
+>
+    <span style={{ 
+        position: 'absolute',
+        top: 'calc(10px + 9rem)', 
+        left: '9.5rem',  
+        color: 'white',
+        fontSize: '1.3rem',
+        fontFamily: 'Griun NltoTAENGGU, sans-serif',
+    }}>
+        {memoryData ? memoryData.result.daily_question?.question ?? "질문을 불러올 수 없습니다." : "로딩 중..."}
+    </span>
 
-                <RecordBoard
-                    content={memoryData?.result.answer || ""}
-                    isReadOnly={true} // 읽기 전용 모드로 설정
-                />
-            </Stack>
+    <RecordBoard
+        content={memoryData?.result.answer || ""}
+        image_url={memoryData?.result.image_url}
+        isReadOnly={true} // 읽기 전용 모드로 설정
+    />
+</Stack>
+
 
             <Stack 
                 component="form" 
