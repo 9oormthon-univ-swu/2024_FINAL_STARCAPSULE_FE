@@ -27,6 +27,7 @@ import ImgShareButton from '@/components/ImgShareButton';
 import { Helmet } from 'react-helmet-async';
 import { useSnackbarStore } from '@/stores/useSnackbarStore';
 import { isRecordable } from '@/utils/isRecordable';
+import dayjs from 'dayjs';
 
 export const MainContainer = styled(Stack)(() => ({
     padding: '2rem 0 2.25rem 0',
@@ -84,6 +85,7 @@ const Main = () => {
     const errorMessage = '스노우볼 이름 변경에 실패했어요. 다시 시도해주세요.';
 
     const { setSnackbarOpen } = useSnackbarStore();
+    const { setHasWritten } = useUserStore();
 
     const onError = () => {
         setSnackbarOpen({
@@ -119,6 +121,31 @@ const Main = () => {
 
     const infoFetcher = (url) =>
         axiosInstance.get(url).then((res) => res.data.result);
+
+    const questionFetcher = (url) =>
+        axiosInstance
+            .get(url)
+            .then((res) => res.data.result)
+            .then((data) => {
+                const dateObj = dayjs(data.date);
+                const formattedDate = dateObj.format(`MM월 DD일`);
+
+                localStorage.setItem('dailyQuestion', data.question);
+                localStorage.setItem('dailyDate', formattedDate);
+                localStorage.setItem('dailyQuestionId', data.id);
+
+                return data;
+            });
+
+    const { data: questionData, isLoading: isQuestionLoading } = useSWR(
+        '/api/question',
+        questionFetcher,
+        {
+            onError: (error) => {
+                if (error.status === 400) setHasWritten(true);
+            },
+        }
+    );
 
     const { data, isLoading, error, mutate } = useSWR(
         `${import.meta.env.VITE_API_URL}/api/capsule/${param.userId}/info`,
@@ -271,6 +298,7 @@ const Main = () => {
                             sx={{
                                 flexGrow: 0,
                             }}
+                            disabled={hasWritten}
                         >
                             <Typography variant='title2'>
                                 추억 전달하기
@@ -297,6 +325,7 @@ const Main = () => {
                                 variant={'contained'}
                                 sx={{ flexGrow: 2, width: 'fit-content' }}
                                 onClick={onRecordClick}
+                                disabled={hasWritten}
                             >
                                 <Typography variant='title2'>
                                     추억 보관하기
@@ -305,11 +334,13 @@ const Main = () => {
                         </Stack>
                     )}
                 </MainContainer>
-                {recordable && !hasWritten && (
+                {recordable && !isQuestionLoading && (
                     // 기록이 가능한 경우 팝업 페이지를 보여줌(12월 31일 포함)
                     <PopupPage
-                        isOpen={isPopupOpen}
+                        isOpen={isPopupOpen && !hasWritten}
                         onClose={() => setPopupOpen(false)}
+                        question={questionData.question}
+                        date={questionData.date}
                     />
                 )}
                 {(!recordable || !daysLeft) &&

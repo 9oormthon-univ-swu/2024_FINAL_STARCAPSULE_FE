@@ -112,45 +112,12 @@ const ButtonWrapper = styled.div`
     position: relative;
 `;
 
-const PopupPage = ({ isOpen, onClose }) => {
-    const [question, setQuestion] = useState('');
-    const [date, setDate] = useState('');
+const PopupPage = ({ isOpen, onClose, question, date }) => {
     const [isChecked, setIsChecked] = useState(false);
     const { userId } = useParams();
     const navigate = useNavigate();
 
-    const { setHasWritten } = useUserStore();
-    const axiosInstance = useAxiosWithAuth();
     useEffect(() => {
-        const fetchQuestion = async () => {
-            try {
-                const response = await axiosInstance.get(
-                    `${import.meta.env.VITE_API_URL}/api/question`
-                );
-
-                const result = response.data.result;
-                setQuestion(result.question || '');
-
-                const apiDate = result.date;
-                if (apiDate) {
-                    const dateObj = new Date(apiDate);
-                    const formattedDate = `${dateObj.getMonth() + 1}월 ${dateObj.getDate()}일`;
-                    setDate(formattedDate);
-
-                    localStorage.setItem('dailyQuestion', result.question);
-                    localStorage.setItem('dailyDate', formattedDate);
-                    localStorage.setItem('dailyQuestionId', result.id);
-                }
-            } catch (error) {
-                if (error.status.code === 400) {
-                    setHasWritten(true);
-                }
-            }
-        };
-
-        fetchQuestion();
-
-        // 이전 체크박스가 선택되었는지 확인하여 팝업 표시 여부 설정
         const lastPopupCheckedDate = localStorage.getItem('popupCheckedDate');
         const today = new Date().toLocaleDateString('ko-KR');
 
@@ -159,7 +126,7 @@ const PopupPage = ({ isOpen, onClose }) => {
         } else {
             setIsChecked(false); // 처음 뜰 때 체크박스는 항상 해제된 상태로 설정
         }
-    }, [onClose]);
+    }, []);
 
     const handleCheckboxChange = () => {
         const newCheckedStatus = !isChecked;

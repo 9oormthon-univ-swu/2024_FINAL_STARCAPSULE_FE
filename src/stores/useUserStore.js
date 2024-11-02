@@ -8,18 +8,21 @@ export const useUserStore = create((set) => {
     };
     const setSnowball = (snowball) => set((prev) => ({ ...prev, snowball }));
 
-    const setHasWritten = (written) =>
+    const setHasWritten = (written) => {
+        localStorage.setItem('hasWritten', written);
+
         set((prev) => ({
             ...prev,
             hasWritten: written,
         }));
+    };
 
     return {
         userId: localStorage.getItem('userId'),
         setUserId,
         snowball: '',
         setSnowball,
-        hasWritten: false,
+        hasWritten: localStorage.getItem('hasWritten'),
         setHasWritten,
     };
 });
