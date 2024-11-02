@@ -26,6 +26,7 @@ import '@dotlottie/player-component';
 import ImgShareButton from '@/components/ImgShareButton';
 import { Helmet } from 'react-helmet-async';
 import { useSnackbarStore } from '@/stores/useSnackbarStore';
+import { isRecordable } from '@/utils/isRecordable';
 
 export const MainContainer = styled(Stack)(() => ({
     padding: '2rem 0 2.25rem 0',
@@ -92,7 +93,7 @@ const Main = () => {
     };
 
     const param = useParams();
-    const { setUserId } = useUserStore();
+    const { setUserId, hasWritten } = useUserStore();
     const { login } = useAuthStore();
 
     useEffect(() => {
@@ -191,6 +192,8 @@ const Main = () => {
         setShowLottie(false); //로티 클릭하면 팝업 나타남
         setPopupOpen(true);
     };
+
+    const recordable = isRecordable(2024, serverTime);
 
     if (error) return <div>failed to load</div>;
 
@@ -302,40 +305,49 @@ const Main = () => {
                         </Stack>
                     )}
                 </MainContainer>
-                {daysLeft ? (
-                    // daysLeft가 true인 경우 PopupPage를 보여줌
+                {recordable && !hasWritten && (
+                    // 기록이 가능한 경우 팝업 페이지를 보여줌(12월 31일 포함)
                     <PopupPage
                         isOpen={isPopupOpen}
                         onClose={() => setPopupOpen(false)}
                     />
-                ) : // daysLeft가 false인 경우 Lottie 또는 PopupAfter를 보여줌
-                showLottie ? (
-                    <Portal
-                        container={document.getElementById('capture-container')}
-                    >
-                        <Overlay onClick={handleLottieClick}>
-                            <PopupContainer>
-                                <dotlottie-player
-                                    src='https://lottie.host/e35fc1c8-f985-4963-940e-0e4e0b630cd9/eNIuonSNHz.json'
-                                    background='transparent'
-                                    speed='1'
-                                    style={{ width: '350px', height: '350px' }}
-                                    loop
-                                    autoplay
-                                ></dotlottie-player>
-                            </PopupContainer>
-                        </Overlay>
-                    </Portal>
-                ) : (
-                    <Portal
-                        container={document.getElementById('capture-container')}
-                    >
-                        <PopupAfter
-                            isOpen={isPopupOpen}
-                            onClose={() => setPopupOpen(false)}
-                        />
-                    </Portal>
                 )}
+                {(!recordable || !daysLeft) &&
+                    (showLottie ? (
+                        // 기록이 불가능한 경우 또는 31일 당일에 Lottie 또는 PopupAfter를 보여줌
+                        <Portal
+                            container={document.getElementById(
+                                'capture-container'
+                            )}
+                        >
+                            <Overlay onClick={handleLottieClick}>
+                                <PopupContainer>
+                                    <dotlottie-player
+                                        src='https://lottie.host/e35fc1c8-f985-4963-940e-0e4e0b630cd9/eNIuonSNHz.json'
+                                        background='transparent'
+                                        speed='1'
+                                        style={{
+                                            width: '350px',
+                                            height: '350px',
+                                        }}
+                                        loop
+                                        autoplay
+                                    ></dotlottie-player>
+                                </PopupContainer>
+                            </Overlay>
+                        </Portal>
+                    ) : (
+                        <Portal
+                            container={document.getElementById(
+                                'capture-container'
+                            )}
+                        >
+                            <PopupAfter
+                                isOpen={isPopupOpen}
+                                onClose={() => setPopupOpen(false)}
+                            />
+                        </Portal>
+                    ))}
             </Layout>
         </div>
     );

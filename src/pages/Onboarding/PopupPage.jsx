@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import PopupButton from './PopupButton';
-import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Portal } from '@mui/material';
+import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
+import { useUserStore } from '@/stores/useUserStore';
 
 const PopupWrapper = styled.div`
     display: ${(props) => (props.isOpen ? 'flex' : 'none')};
@@ -118,22 +119,13 @@ const PopupPage = ({ isOpen, onClose }) => {
     const { userId } = useParams();
     const navigate = useNavigate();
 
+    const { setHasWritten } = useUserStore();
+    const axiosInstance = useAxiosWithAuth();
     useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            console.log('로그인 하세요.');
-            return;
-        }
-
         const fetchQuestion = async () => {
             try {
-                const response = await axios.get(
-                    `${import.meta.env.VITE_API_URL}/api/question`,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    }
+                const response = await axiosInstance.get(
+                    `${import.meta.env.VITE_API_URL}/api/question`
                 );
 
                 const result = response.data.result;
@@ -150,7 +142,9 @@ const PopupPage = ({ isOpen, onClose }) => {
                     localStorage.setItem('dailyQuestionId', result.id);
                 }
             } catch (error) {
-                console.error('Error fetching question:', error);
+                if (error.status.code === 400) {
+                    setHasWritten(true);
+                }
             }
         };
 

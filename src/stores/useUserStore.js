@@ -4,14 +4,22 @@ import { create } from 'zustand';
 export const useUserStore = create((set) => {
     const setUserId = (userId) => {
         localStorage.setItem('userId', userId);
-        set({ userId });
+        set((prev) => ({ ...prev, userId }));
     };
-    const setSnowball = (snowball) => set({ snowball });
+    const setSnowball = (snowball) => set((prev) => ({ ...prev, snowball }));
+
+    const setHasWritten = (written) =>
+        set((prev) => ({
+            ...prev,
+            hasWritten: written,
+        }));
 
     return {
         userId: localStorage.getItem('userId'),
         setUserId,
         snowball: '',
         setSnowball,
+        hasWritten: false,
+        setHasWritten,
     };
 });
