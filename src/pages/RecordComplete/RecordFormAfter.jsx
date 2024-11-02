@@ -8,6 +8,7 @@ import ShareIcon from '@/components/icons/ShareIcon';
 import ImgShareButton from '@/components/ImgShareButton';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import { useParams, useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 
 const contentstyle = {
     display: 'flex',
@@ -101,106 +102,124 @@ const RecordFormAfter = () => {
     };
 
     return (
-        <Stack sx={contentstyle}>
-            <Stack
-                direction='row'
-                alignItems='center'
-                justifyContent='space-between'
-                sx={{
-                    position: 'absolute',
-                    top: 'calc(1rem + 30px)',
-                    left: '1rem',
-                    right: '1rem',
-                    zIndex: 10,
-                    color: 'white',
-                    fontFamily: 'Griun NltoTAENGGU, sans-serif',
-                }}
-            >
-                <CloseIcon
-                    sx={{
-                        cursor: 'pointer',
-                        position: 'relative',
-                        right: '-30px',
-                    }}
-                    onClick={handleClose}
+        <div>
+            <Helmet>
+                <title>스노로그 - 2024의 추억이 쌓이는 곳</title>
+                <meta
+                    name='description'
+                    content='스노로그에서 쌓았던 2024의 추억을 확인해보세요.'
                 />
-                <span style={{ fontSize: '1.4rem' }}>
-                    {memoryData
-                        ? formatDate(memoryData.result.create_at)
-                        : '로딩 중...'}
-                </span>
-                <ImgShareButton
-                    title={
-                        '스노우볼에 오늘의 추억이 보관되었어요!\nSNS에 링크를 공유해친구들에게 함께한 추억을 전달받아보세요☃️\n'
-                    }
-                    url={`${import.meta.env.BASE_URL}/guest/${userId}`}
-                    sx={{
-                        cursor: 'pointer',
-                        position: 'relative',
-                        left: '-30px',
-                    }}
+                <meta
+                    property='og:title'
+                    content='스노로그 - 2024의 추억이 쌓이는 곳'
                 />
-            </Stack>
-
-            <Stack
-                id='capture-container'
-                ref={captureRef}
-                sx={{
-                    width: '100%',
-                    height: '100vh',
-                    padding: '1.5rem',
-                    background:
-                        'linear-gradient(180deg, #0b0a1b 0%, #27405e 100%)',
-                    paddingTop: '12rem',
-                }}
-            >
-                {/* 이미지가 있을 때만 렌더링 */}
-                {memoryData?.result?.image_url && (
-                    <img
-                        src={memoryData.result.image_url}
-                        alt='Memory Image'
-                        style={{
-                            width: '100%',
-                            maxHeight: '300px',
-                            objectFit: 'cover',
-                            marginBottom: '1rem',
+                <meta
+                    property='og:description'
+                    content='스노로그에서 쌓았던 2024의 추억을 확인해보세요.'
+                />
+                <meta property='og:type' content='website' />
+            </Helmet>
+            <Stack sx={contentstyle}>
+                <Stack
+                    direction='row'
+                    alignItems='center'
+                    justifyContent='space-between'
+                    sx={{
+                        position: 'absolute',
+                        top: 'calc(1rem + 30px)',
+                        left: '1rem',
+                        right: '1rem',
+                        zIndex: 10,
+                        color: 'white',
+                        fontFamily: 'Griun NltoTAENGGU, sans-serif',
+                    }}
+                >
+                    <CloseIcon
+                        sx={{
+                            cursor: 'pointer',
+                            position: 'relative',
+                            right: '-30px',
+                        }}
+                        onClick={handleClose}
+                    />
+                    <span style={{ fontSize: '1.4rem' }}>
+                        {memoryData
+                            ? formatDate(memoryData.result.create_at)
+                            : '로딩 중...'}
+                    </span>
+                    <ImgShareButton
+                        title={
+                            '스노우볼에 오늘의 추억이 보관되었어요!\nSNS에 링크를 공유해친구들에게 함께한 추억을 전달받아보세요☃️\n'
+                        }
+                        url={`${import.meta.env.BASE_URL}/guest/${userId}`}
+                        sx={{
+                            cursor: 'pointer',
+                            position: 'relative',
+                            left: '-30px',
                         }}
                     />
-                )}
-                {memoryData ? (
-                    <span
-                        style={{
-                            position: 'absolute',
-                            top: 'calc(10px + 9rem)',
-                            left: '9.5rem',
-                            color: 'white',
-                            fontSize: '1.3rem',
-                            fontFamily: 'Griun NltoTAENGGU, sans-serif',
-                        }}
-                    >
-                        {memoryData.result.daily_question?.question ??
-                            '질문을 불러올 수 없습니다.'}
-                    </span>
-                ) : (
-                    <span>로딩 중...</span>
-                )}
+                </Stack>
 
-                <RecordBoard
-                    content={memoryData?.result.answer || ''}
-                    isReadOnly={true} // 읽기 전용 모드로 설정
-                />
-            </Stack>
+                <Stack
+                    id='capture-container'
+                    ref={captureRef}
+                    sx={{
+                        width: '100%',
+                        height: '100vh',
+                        padding: '1.5rem',
+                        background:
+                            'linear-gradient(180deg, #0b0a1b 0%, #27405e 100%)',
+                        paddingTop: '12rem',
+                    }}
+                >
+                    {/* 이미지가 있을 때만 렌더링 */}
+                    {memoryData?.result?.image_url && (
+                        <img
+                            src={memoryData.result.image_url}
+                            alt='Memory Image'
+                            style={{
+                                width: '100%',
+                                maxHeight: '300px',
+                                objectFit: 'cover',
+                                marginBottom: '1rem',
+                            }}
+                        />
+                    )}
+                    {memoryData ? (
+                        <span
+                            style={{
+                                position: 'absolute',
+                                top: 'calc(10px + 9rem)',
+                                left: '9.5rem',
+                                color: 'white',
+                                fontSize: '1.3rem',
+                                fontFamily: 'Griun NltoTAENGGU, sans-serif',
+                            }}
+                        >
+                            {memoryData.result.daily_question?.question ??
+                                '질문을 불러올 수 없습니다.'}
+                        </span>
+                    ) : (
+                        <span>로딩 중...</span>
+                    )}
 
-            <Stack
-                component='form'
-                sx={{
-                    position: 'relative',
-                    marginTop: '-24rem',
-                }}
-            >
-                <ImageSaveButton onClick={handleSaveImage} />
+                    <RecordBoard
+                        content={memoryData?.result.answer || ''}
+                        isReadOnly={true} // 읽기 전용 모드로 설정
+                    />
+                </Stack>
+
+                <Stack
+                    component='form'
+                    sx={{
+                        position: 'relative',
+                        marginTop: '-24rem',
+                    }}
+                >
+                    <ImageSaveButton onClick={handleSaveImage} />
+                </Stack>
             </Stack>
-        </Stack>
+        </div>
     );
 };
 
