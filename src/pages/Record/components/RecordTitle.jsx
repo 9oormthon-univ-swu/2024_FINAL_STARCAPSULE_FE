@@ -3,7 +3,7 @@ import { Input, Typography, IconButton, Box } from '@mui/material';
 import { EditIcon, CheckIcon } from '@/components/icons';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 
-const RecordTitle = ({ title, setTitle }) => {
+const RecordTitle = ({ title, setTitle, goToMain }) => {
     // 제목(질문), 수정상태 관리
     const [isTitleEdit, setIsTitleEdit] = useState(false);
 
@@ -36,9 +36,16 @@ const RecordTitle = ({ title, setTitle }) => {
     const axiosInstance = useAxiosWithAuth();
     useEffect(() => {
         const getQuestion = async () => {
-            await axiosInstance.get('/api/question').then((res) => {
-                setTitle(res.data.result.question);
-            });
+            await axiosInstance
+                .get('/api/question')
+                .then((res) => {
+                    setTitle(res.data.result.question);
+                })
+                .catch((error) => {
+                    if (error.status === 400) {
+                        goToMain();
+                    }
+                });
         };
 
         getQuestion();
