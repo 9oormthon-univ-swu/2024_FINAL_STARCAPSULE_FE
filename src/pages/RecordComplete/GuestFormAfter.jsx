@@ -104,7 +104,7 @@ const GuestFormAfter = () => {
                 justifyContent='space-between'
                 sx={{
                     position: 'absolute',
-                    top: 'calc(1rem + 30px)',
+                    top: 'calc(1rem + 29px)',
                     left: '1rem',
                     right: '1rem',
                     zIndex: 10,
@@ -145,13 +145,13 @@ const GuestFormAfter = () => {
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    paddingTop: '12rem',
+                    paddingTop: '11rem',
                     overflow: 'hidden',  
                 }}
             >
                 <span style={{
                     position: 'absolute',
-                    top: 'calc(10px + 9rem)', 
+                    top: 'calc(10px + 8rem)', 
                     left: '9.5rem',
                     color: 'white',
                     fontSize: '1.3rem',
