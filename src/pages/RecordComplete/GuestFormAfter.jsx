@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Stack } from '@mui/material';
 import RecordBoard from '../Record/components/RecordBoard';
 import ImageSaveButton from './ImageSaveButton';
-import ImageSaveButton from './ImageSaveButton';
 import html2canvas from 'html2canvas';
 import CloseIcon from '@/components/icons/closeicon';
 import ShareIcon from '@/components/icons/ShareIcon';
@@ -30,15 +29,13 @@ const contentstyle = {
 const GuestFormAfter = () => {
     const captureRef = useRef(null);
     const { userId, memoryId } = useParams();
-    const captureRef = useRef(null);
-    const { userId, memoryId } = useParams();
     const navigate = useNavigate();
     const axiosInstance = useAxiosWithAuth();
     const [memoryData, setMemoryData] = useState(null);
     const nickname = localStorage.getItem('snowballName') || '닉네임';
 
     const snowballAPI = `${import.meta.env.VITE_API_URL}/api/share_memory`;
-    const snowballAPI = `${import.meta.env.VITE_API_URL}/api/share_memory`;
+   
 
     useEffect(() => {
         const fetchMemoryData = async () => {
