@@ -1,7 +1,6 @@
 import {
     Button,
     IconButton,
-    Skeleton,
     Stack,
     styled,
     Typography,
@@ -23,11 +22,12 @@ import { saveTokenFromURL } from '@/utils/saveTokenFromURL';
 import useAuthStore from 'stores/useAuthStore';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import { useNavigate } from 'react-router-dom';
-import { defaultGetFetcher } from '@/utils/getFetcher';
 import '@dotlottie/player-component';
 import ImgShareButton from '@/components/ImgShareButton';
 import { Helmet } from 'react-helmet-async';
 import { useSnackbarStore } from '@/stores/useSnackbarStore';
+import { isRecordable } from '@/utils/isRecordable';
+import dayjs from 'dayjs';
 
 export const MainContainer = styled(Stack)(() => ({
     padding: '2rem 0 2.25rem 0',
@@ -85,6 +85,7 @@ const Main = () => {
     const errorMessage = '스노우볼 이름 변경에 실패했어요. 다시 시도해주세요.';
 
     const { setSnackbarOpen } = useSnackbarStore();
+    const { setHasWritten } = useUserStore();
 
     const onError = () => {
         setSnackbarOpen({
@@ -94,7 +95,7 @@ const Main = () => {
     };
 
     const param = useParams();
-    const { setUserId } = useUserStore();
+    const { setUserId, hasWritten } = useUserStore();
     const { login } = useAuthStore();
 
     useEffect(() => {
@@ -120,6 +121,32 @@ const Main = () => {
 
     const infoFetcher = (url) =>
         axiosInstance.get(url).then((res) => res.data.result);
+
+    const questionFetcher = (url) =>
+        axiosInstance
+            .get(url)
+            .then((res) => res.data.result)
+            .then((data) => {
+                const dateObj = dayjs(data.date);
+                const formattedDate = dateObj.format(`MM월 DD일`);
+
+                localStorage.setItem('dailyQuestion', data.question);
+                localStorage.setItem('dailyDate', formattedDate);
+                localStorage.setItem('dailyQuestionId', data.id);
+
+                return data;
+            });
+
+    const { data: questionData, isLoading: isQuestionLoading } = useSWR(
+        '/api/question',
+        questionFetcher,
+        {
+            onError: (error) => {
+                if (error.status === 400) setHasWritten(true); // 이후에 다른 이름으로 다시 수정...
+            },
+            onErrorRetry: false,
+        }
+    );
 
     const { data, isLoading, error, mutate } = useSWR(
         `${import.meta.env.VITE_API_URL}/api/capsule/${param.userId}/info`,
@@ -193,6 +220,8 @@ const Main = () => {
         setShowLottie(false); //로티 클릭하면 팝업 나타남
         setPopupOpen(true);
     };
+
+    const recordable = isRecordable(2024, serverTime);
 
     if (error) return <div>failed to load</div>;
 
@@ -270,6 +299,7 @@ const Main = () => {
                             sx={{
                                 flexGrow: 0,
                             }}
+                            disabled={hasWritten}
                         >
                             <Typography variant='title2'>
                                 추억 전달하기
@@ -296,6 +326,7 @@ const Main = () => {
                                 variant={'contained'}
                                 sx={{ flexGrow: 2, width: 'fit-content' }}
                                 onClick={onRecordClick}
+                                disabled={hasWritten}
                             >
                                 <Typography variant='title2'>
                                     추억 보관하기
@@ -304,40 +335,51 @@ const Main = () => {
                         </Stack>
                     )}
                 </MainContainer>
-                {daysLeft ? (
-                    // daysLeft가 true인 경우 PopupPage를 보여줌
+                {recordable && !isQuestionLoading && (
+                    // 기록이 가능한 경우 팝업 페이지를 보여줌(12월 31일 포함)
                     <PopupPage
-                        isOpen={isPopupOpen}
+                        isOpen={isPopupOpen && !hasWritten}
                         onClose={() => setPopupOpen(false)}
+                        question={questionData.question}
+                        date={questionData.date}
                     />
-                ) : // daysLeft가 false인 경우 Lottie 또는 PopupAfter를 보여줌
-                showLottie ? (
-                    <Portal
-                        container={document.getElementById('capture-container')}
-                    >
-                        <Overlay onClick={handleLottieClick}>
-                            <PopupContainer>
-                                <dotlottie-player
-                                    src='https://lottie.host/e35fc1c8-f985-4963-940e-0e4e0b630cd9/eNIuonSNHz.json'
-                                    background='transparent'
-                                    speed='1'
-                                    style={{ width: '350px', height: '350px' }}
-                                    loop
-                                    autoplay
-                                ></dotlottie-player>
-                            </PopupContainer>
-                        </Overlay>
-                    </Portal>
-                ) : (
-                    <Portal
-                        container={document.getElementById('capture-container')}
-                    >
-                        <PopupAfter
-                            isOpen={isPopupOpen}
-                            onClose={() => setPopupOpen(false)}
-                        />
-                    </Portal>
                 )}
+                {(!recordable || !daysLeft) &&
+                    (showLottie ? (
+                        // 기록이 불가능한 경우 또는 31일 당일에 Lottie 또는 PopupAfter를 보여줌
+                        <Portal
+                            container={document.getElementById(
+                                'capture-container'
+                            )}
+                        >
+                            <Overlay onClick={handleLottieClick}>
+                                <PopupContainer>
+                                    <dotlottie-player
+                                        src='https://lottie.host/e35fc1c8-f985-4963-940e-0e4e0b630cd9/eNIuonSNHz.json'
+                                        background='transparent'
+                                        speed='1'
+                                        style={{
+                                            width: '350px',
+                                            height: '350px',
+                                        }}
+                                        loop
+                                        autoplay
+                                    ></dotlottie-player>
+                                </PopupContainer>
+                            </Overlay>
+                        </Portal>
+                    ) : (
+                        <Portal
+                            container={document.getElementById(
+                                'capture-container'
+                            )}
+                        >
+                            <PopupAfter
+                                isOpen={isPopupOpen}
+                                onClose={() => setPopupOpen(false)}
+                            />
+                        </Portal>
+                    ))}
             </Layout>
         </div>
     );
