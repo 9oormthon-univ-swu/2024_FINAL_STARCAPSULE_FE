@@ -7,7 +7,7 @@ import useSWR from 'swr';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import Loading from '@/components/Loading';
 import { CloseIcon } from '@/components/icons';
-import { isRecordable } from './Calendar/Calendar';
+import { isRecordable } from '@/utils/isRecordable';
 import { Helmet } from 'react-helmet-async';
 
 const CalendarPage = () => {

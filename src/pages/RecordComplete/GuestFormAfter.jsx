@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Stack } from '@mui/material';
 import RecordBoard from '../Record/components/RecordBoard';
 import ImageSaveButton from './ImageSaveButton';
+import ImageSaveButton from './ImageSaveButton';
 import html2canvas from 'html2canvas';
 import CloseIcon from '@/components/icons/closeicon';
 import ShareIcon from '@/components/icons/ShareIcon';
@@ -13,9 +14,12 @@ const contentstyle = {
     alignItems: 'center',
     justifyContent: 'center',
     minHeight: '100vh',
+    justifyContent: 'center',
+    minHeight: '100vh',
     width: '100%',
     maxWidth: '600px',
     margin: '0 auto',
+    padding: '0',
     padding: '0',
     boxSizing: 'border-box',
     position: 'relative',
@@ -26,11 +30,14 @@ const contentstyle = {
 const GuestFormAfter = () => {
     const captureRef = useRef(null);
     const { userId, memoryId } = useParams();
+    const captureRef = useRef(null);
+    const { userId, memoryId } = useParams();
     const navigate = useNavigate();
     const axiosInstance = useAxiosWithAuth();
     const [memoryData, setMemoryData] = useState(null);
     const nickname = localStorage.getItem('snowballName') || '닉네임';
 
+    const snowballAPI = `${import.meta.env.VITE_API_URL}/api/share_memory`;
     const snowballAPI = `${import.meta.env.VITE_API_URL}/api/share_memory`;
 
     useEffect(() => {
@@ -48,7 +55,7 @@ const GuestFormAfter = () => {
                 console.error('Error fetching memory details:', error);
             }
         };
-    
+
         fetchMemoryData();
     }, [memoryId, userId]);
 
@@ -74,7 +81,7 @@ const GuestFormAfter = () => {
     };
 
     const handleClose = () => {
-        navigate(`/main/${userId}`);
+        navigate(`/guest/${userId}`);
     };
 
     const formatDate = (dateString) => {
@@ -82,7 +89,7 @@ const GuestFormAfter = () => {
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
-        
+
         return (
             <span style={{ fontSize: '1.4rem' }}>
                 <span style={{ color: '#DDB892' }}>{year}</span>년&nbsp;
@@ -95,9 +102,9 @@ const GuestFormAfter = () => {
     return (
         <Stack sx={contentstyle}>
             <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="space-between"
+                direction='row'
+                alignItems='center'
+                justifyContent='space-between'
                 sx={{
                     position: 'absolute',
                     top: 'calc(1rem + 30px)',
@@ -108,14 +115,26 @@ const GuestFormAfter = () => {
                     fontFamily: 'Griun NltoTAENGGU, sans-serif',
                 }}
             >
-                <CloseIcon 
-                    sx={{ cursor: 'pointer', position: 'relative', right: '-30px' }} 
-                    onClick={handleClose} 
+                <CloseIcon
+                    sx={{
+                        cursor: 'pointer',
+                        position: 'relative',
+                        right: '-30px',
+                    }}
+                    onClick={handleClose}
                 />
                 <span style={{ fontSize: '1.4rem' }}>
-                  {memoryData ? formatDate(memoryData.result.create_at) : "로딩 중..."}
+                    {memoryData
+                        ? formatDate(memoryData.result.create_at)
+                        : '로딩 중...'}
                 </span>
-                <ShareIcon sx={{ cursor: 'pointer', position: 'relative', left: '-30px' }} />
+                <ShareIcon
+                    sx={{
+                        cursor: 'pointer',
+                        position: 'relative',
+                        left: '-30px',
+                    }}
+                />
             </Stack>
 
             <Stack 

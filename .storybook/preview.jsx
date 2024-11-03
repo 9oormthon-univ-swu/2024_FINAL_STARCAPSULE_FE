@@ -7,6 +7,7 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc'; // utc 플러그인
 import timezone from 'dayjs/plugin/timezone';
 import 'dayjs/locale/ko';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 const addResetCSS = () => {
     const link = document.createElement('link');
@@ -38,7 +39,9 @@ export const decorators = [
 
         return (
             <ThemeProvider theme={theme}>
-                <Story />
+                <Router>
+                    <Story />
+                </Router>
             </ThemeProvider>
         );
     },
