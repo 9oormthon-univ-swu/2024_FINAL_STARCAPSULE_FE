@@ -4,7 +4,7 @@ import RecordBoard from '../Record/components/RecordBoard';
 import ImageSaveButton from './ImageSaveButton';
 import html2canvas from 'html2canvas';
 import CloseIcon from '@/components/icons/closeicon';
-import { ShareIcon } from '@/components/icons';
+import ShareIcon from '@/components/icons/ShareIcon';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import { useParams, useNavigate } from 'react-router-dom';
 
@@ -13,13 +13,17 @@ const contentstyle = {
     alignItems: 'center',
     justifyContent: 'center',
     minHeight: '100vh',
+    justifyContent: 'center',
+    minHeight: '100vh',
     width: '100%',
     maxWidth: '600px',
     margin: '0 auto',
     padding: '0',
+    padding: '0',
     boxSizing: 'border-box',
     position: 'relative',
-    overflow: 'hidden',
+    overflowY: 'auto',   
+    overflowX: 'hidden',
 };
 
 const GuestFormAfter = () => {
@@ -31,24 +35,18 @@ const GuestFormAfter = () => {
     const nickname = localStorage.getItem('snowballName') || '닉네임';
 
     const snowballAPI = `${import.meta.env.VITE_API_URL}/api/share_memory`;
+   
 
     useEffect(() => {
         const fetchMemoryData = async () => {
             try {
-                console.log('User ID:', userId);
-                console.log('Memory ID:', memoryId);
-
                 if (!memoryId || !userId) {
                     console.error('User ID or Memory ID is missing');
                     return;
                 }
 
                 const requestUrl = `${snowballAPI}/${userId}/${memoryId}`;
-                console.log(`Request URL: ${requestUrl}`);
-
                 const response = await axiosInstance.get(requestUrl);
-
-                console.log('Fetched Memory Data:', response.data);
                 setMemoryData(response.data);
             } catch (error) {
                 console.error('Error fetching memory details:', error);
@@ -62,22 +60,20 @@ const GuestFormAfter = () => {
         e.preventDefault();
         if (captureRef.current) {
             const element = captureRef.current;
-            const scale = 2;
-
             html2canvas(element, {
-                scale: scale,
+                scale: 2,
                 useCORS: true,
                 backgroundColor: null,
-            })
-                .then((canvas) => {
-                    const link = document.createElement('a');
-                    link.href = canvas.toDataURL('image/png');
-                    link.download = 'record.png';
-                    link.click();
-                })
-                .catch((error) => {
-                    console.error('이미지 저장 중 오류 발생:', error);
-                });
+                height: element.scrollHeight,
+                windowHeight: element.scrollHeight,
+            }).then((canvas) => {
+                const link = document.createElement('a');
+                link.href = canvas.toDataURL('image/png');
+                link.download = 'record.png';
+                link.click();
+            }).catch((error) => {
+                console.error('이미지 저장 중 오류 발생:', error);
+            });
         }
     };
 
@@ -108,7 +104,7 @@ const GuestFormAfter = () => {
                 justifyContent='space-between'
                 sx={{
                     position: 'absolute',
-                    top: 'calc(1rem + 30px)',
+                    top: 'calc(1rem + 29px)',
                     left: '1rem',
                     right: '1rem',
                     zIndex: 10,
@@ -138,62 +134,57 @@ const GuestFormAfter = () => {
                 />
             </Stack>
 
-            <Stack
-                ref={captureRef}
+            <Stack 
+                ref={captureRef} 
                 sx={{
                     width: '100%',
-                    minHeight: '100vh', // 배경이 화면에 꽉 차도록 설정
+                    minHeight: '700px',  // 참고 코드와 동일한 높이 설정
+                    maxHeight: '82vh',   // 긴 답변 시에도 스크롤 허용
                     padding: '1.5rem',
-                    background:
-                        'linear-gradient(180deg, #0b0a1b 0%, #27405e 100%)',
+                    background: 'linear-gradient(180deg, #0b0a1b 0%, #27405e 100%)',
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    paddingTop: '12rem',
+                    paddingTop: '11rem',
+                    overflow: 'hidden',  
                 }}
             >
-                <span
-                    style={{
-                        position: 'absolute',
-                        top: 'calc(10px + 9rem)',
-                        left: '9.5rem',
-                        color: 'white',
-                        fontSize: '1.3rem',
-                        fontFamily: 'Griun NltoTAENGGU, sans-serif',
-                    }}
-                >
+                <span style={{
+                    position: 'absolute',
+                    top: 'calc(10px + 8rem)', 
+                    left: '9.5rem',
+                    color: 'white',
+                    fontSize: '1.3rem',
+                    fontFamily: 'Griun NltoTAENGGU, sans-serif',
+                }}>
                     To. <span style={{ color: '#DDB892' }}>{nickname}</span>
                 </span>
 
                 <RecordBoard
-                    content={memoryData?.result.answer || ''}
+                    content={memoryData?.result.answer || ""}
                     image_url={memoryData?.result.image_url}
                     isReadOnly={true}
                 />
 
-                {/* `RecordBoard` 바로 아래에 `from` 텍스트와 버튼 위치 */}
-                <span
-                    style={{
-                        marginTop: '15px', // `RecordBoard` 바로 아래 여백 조정
-                        color: 'white',
-                        fontSize: '1.3rem',
-                        fontFamily: 'Griun NltoTAENGGU, sans-serif',
-                        textAlign: 'center',
-                        marginLeft: '200px',
-                    }}
-                >
-                    From.{' '}
-                    <span style={{ color: '#DDB892' }}>
-                        {memoryData?.result?.writer || '작성자'}
-                    </span>
+                <span style={{
+                    marginTop: '15px',
+                    color: 'white',
+                    fontSize: '1.3rem',
+                    fontFamily: 'Griun NltoTAENGGU, sans-serif',
+                    textAlign: 'center',
+                    marginLeft: '200px', 
+                }}>
+                    From. <span style={{ color: '#DDB892' }}>{memoryData?.result?.writer || '작성자'}</span>
                 </span>
 
-                <Stack
-                    component='form'
+                <Stack 
+                    component="form" 
                     sx={{
-                        marginTop: '20px', // `from` 텍스트 바로 아래 여백 조정
+                        marginTop: '15px', 
                         alignItems: 'center',
+                        width: 'fit-content'
                     }}
+                    data-html2canvas-ignore="true" // 캡처 시 무시
                 >
                     <ImageSaveButton onClick={handleSaveImage} />
                 </Stack>

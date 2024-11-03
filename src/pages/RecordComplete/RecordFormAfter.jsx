@@ -1,25 +1,26 @@
-import React, { useEffect, useRef, useState } from 'react';  
+import React, { useEffect, useRef, useState } from 'react';
 import { Stack } from '@mui/material';
 import RecordBoard from '../Record/components/RecordBoard';
-import ImageSaveButton from './ImageSaveButton'; 
+import ImageSaveButton from './ImageSaveButton';
 import html2canvas from 'html2canvas';
 import CloseIcon from '@/components/icons/closeicon';
-import ShareIcon from '@/components/icons/ShareIcon'; 
+import ShareIcon from '@/components/icons/ShareIcon';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import { useParams, useNavigate } from 'react-router-dom';
 
 const contentstyle = {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center', 
-    minHeight: '100vh', 
+    justifyContent: 'center',
+    minHeight: '100vh',
     width: '100%',
     maxWidth: '600px',
     margin: '0 auto',
-    padding: '0', 
+    padding: '0',
     boxSizing: 'border-box',
     position: 'relative',
-    overflow: 'hidden', 
+    overflowY: 'auto',  
+    overflowX: 'hidden',
 };
 
 const RecordFormAfter = () => {
@@ -30,7 +31,7 @@ const RecordFormAfter = () => {
     const [memoryData, setMemoryData] = useState(null);
 
     const snowballAPI = `${import.meta.env.VITE_API_URL}/api/my_memory`;
-    const token = localStorage.getItem('token'); 
+    const token = localStorage.getItem('token');
 
     useEffect(() => {
         const fetchMemoryData = async () => {
@@ -39,7 +40,7 @@ const RecordFormAfter = () => {
                     console.error('User ID or Memory ID is missing');
                     return;
                 }
-    
+
                 const response = await axiosInstance.get(`${snowballAPI}/${memoryId}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -51,25 +52,29 @@ const RecordFormAfter = () => {
                 console.error('Error fetching memory details:', error);
             }
         };
-    
+
         fetchMemoryData();
-    }, []); 
+    }, []);
 
     const handleSaveImage = (e) => {
         e.preventDefault();
         if (captureRef.current) {
             const element = captureRef.current;
-            const scale = 2;
+
             html2canvas(element, {
-                scale: scale,
+                scale: 2,
                 useCORS: true,
                 backgroundColor: null,
-            }).then((canvas) => {
+                height: element.scrollHeight, // 캡처된 이미지의 높이만 조정
+                windowHeight: element.scrollHeight, // 캡처할 내용의 높이만 조정
+            })
+            .then((canvas) => {
                 const link = document.createElement('a');
                 link.href = canvas.toDataURL('image/png');
                 link.download = 'record.png';
                 link.click();
-            }).catch((error) => {
+            })
+            .catch((error) => {
                 console.error('이미지 저장 중 오류 발생:', error);
             });
         }
@@ -102,7 +107,7 @@ const RecordFormAfter = () => {
                 justifyContent="space-between"
                 sx={{
                     position: 'absolute',
-                    top: 'calc(1rem + 30px)',
+                    top: 'calc(1rem + 29px)',
                     left: '1rem',
                     right: '1rem',
                     zIndex: 10,
@@ -124,55 +129,46 @@ const RecordFormAfter = () => {
                 ref={captureRef} 
                 sx={{
                     width: '100%',
-                    height: '100vh', 
-                    padding: '1.5rem', 
+                    minHeight: '700px',  // 일반적인 화면 길이에 맞춘 고정 높이 설정
+                    maxHeight: '83vh',   // 최대 높이를 설정해 긴 답변 시에도 스크롤 허용
+                    padding: '1.5rem',
                     background: 'linear-gradient(180deg, #0b0a1b 0%, #27405e 100%)',
-                    paddingTop: '12rem',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    paddingTop: '11rem',
+                    overflow: 'hidden',
                 }}
             >
-                {/* 이미지가 있을 때만 렌더링 */}
-                {memoryData?.result?.image_url && (
-                    <img 
-                        src={memoryData.result.image_url} 
-                        alt="Memory Image" 
-                        style={{
-                            width: '100%',
-                            maxHeight: '300px',
-                            objectFit: 'cover',
-                            marginBottom: '1rem'
-                        }}
-                    />
-                )}
-                {memoryData ? (
-                    <span style={{ 
-                        position: 'absolute',
-                        top: 'calc(10px + 9rem)', 
-                        left: '9.5rem',  
-                        color: 'white',
-                        fontSize: '1.3rem',
-                        fontFamily: 'Griun NltoTAENGGU, sans-serif',
-                    }}>
-                        {memoryData.result.daily_question?.question ?? "질문을 불러올 수 없습니다."}
-                    </span>
-                ) : (
-                    <span>로딩 중...</span>
-                )}
-                
+                <span style={{ 
+                    position: 'absolute',
+                    top: 'calc(10px + 8rem)', 
+                    left: '9.5rem',  
+                    color: 'white',
+                    fontSize: '1.3rem',
+                    fontFamily: 'Griun NltoTAENGGU, sans-serif',
+                }}>
+                    {memoryData ? memoryData.result.daily_question?.question ?? "질문을 불러올 수 없습니다." : "로딩 중..."}
+                </span>
 
                 <RecordBoard
                     content={memoryData?.result.answer || ""}
-                    isReadOnly={true} // 읽기 전용 모드로 설정
+                    image_url={memoryData?.result.image_url}
+                    isReadOnly={true}
                 />
-            </Stack>
 
-            <Stack 
-                component="form" 
-                sx={{
-                    position: 'relative',  
-                    marginTop: '-24rem',     
-                }}
-            >
-                <ImageSaveButton onClick={handleSaveImage} />
+                
+                <Stack 
+                    component="form" 
+                    sx={{
+                        marginTop: '15px',
+                        alignItems: 'center',
+                        width: 'fit-content'
+                    }}
+                    data-html2canvas-ignore="true"
+                >
+                    <ImageSaveButton onClick={handleSaveImage} />
+                </Stack>
             </Stack>
         </Stack>
     );
