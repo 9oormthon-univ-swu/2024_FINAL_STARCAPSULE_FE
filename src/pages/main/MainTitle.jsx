@@ -55,7 +55,6 @@ const MainTitle = ({ snowball, setSnowballName, onError }) => {
     };
 
     const handleBlur = (event) => {
-        event.preventDefault();
         if (isSaving) return;
         openModal();
     };
@@ -82,7 +81,7 @@ const MainTitle = ({ snowball, setSnowballName, onError }) => {
     }, [currSnowball, isEditing]);
 
     const onConfirmClick = (event) => {
-        event.preventDefault();
+        event?.preventDefault();
         setIsSaving(true);
         if (!currSnowball.length) return;
         setSnowballName(currSnowball)
@@ -95,10 +94,9 @@ const MainTitle = ({ snowball, setSnowballName, onError }) => {
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
-            event.preventDefault();
+            console.log('enter');
             onConfirmClick();
         } else if (event.key === 'Escape') {
-            event.preventDefault();
             openModal();
         }
     };
@@ -167,6 +165,7 @@ const MainTitle = ({ snowball, setSnowballName, onError }) => {
                 >
                     <Typography
                         variant='subtitle1'
+                        align='center'
                         sx={{
                             color: 'custom.font',
                         }}
