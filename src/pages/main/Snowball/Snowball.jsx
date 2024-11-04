@@ -56,13 +56,11 @@ const memoryPosition = [
     { top: '11%', right: '18%' },
 ];
 
-// memories: [{ id, writer_name, object_name }]
 const Snowball = ({
     received,
     self,
     onMemoryClick, // onMemoryClick prop 추가
     fetcher,
-    setServerTime,
 }) => {
     const params = useParams();
     const [page, setPage] = useState(1);
@@ -76,7 +74,6 @@ const Snowball = ({
     useEffect(() => {
         if (data) {
             setTotalPage(data.total_page);
-            setServerTime(data.server_time);
         }
     }, [data]);
 
