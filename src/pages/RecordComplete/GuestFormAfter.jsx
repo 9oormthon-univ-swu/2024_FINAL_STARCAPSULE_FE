@@ -83,7 +83,7 @@ const GuestFormAfter = () => {
     };
 
     const handleClose = () => {
-        navigate(`/main/${userId}`);
+        navigate(`/guest/${userId}`);
     };
 
     const formatDate = (dateString) => {

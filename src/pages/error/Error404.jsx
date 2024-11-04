@@ -1,12 +1,18 @@
 import { Button, Stack, Typography } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import Layout from '@/layouts/Layout';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useUserStore } from '@/stores/useUserStore';
 
 const Error404 = () => {
     const navigate = useNavigate();
-    const { userId } = useParams();
+    const params = useParams();
+    const { userId } = useUserStore();
+
+    useEffect(() => {
+        if (params.userId != null) navigate(`/main/${userId}`);
+    });
 
     //메인으로 돌아가는 버튼
     const handleGoMain = () => {
