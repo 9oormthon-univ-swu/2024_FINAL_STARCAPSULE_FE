@@ -56,12 +56,7 @@ const memoryPosition = [
     { top: '11%', right: '18%' },
 ];
 
-const Snowball = ({
-    received,
-    self,
-    onMemoryClick, // onMemoryClick prop 추가
-    fetcher,
-}) => {
+const Snowball = ({ received, self, onMemoryClick, fetcher }) => {
     const params = useParams();
     const [searchParams] = useSearchParams();
     const page = searchParams.get('page') || 1;
