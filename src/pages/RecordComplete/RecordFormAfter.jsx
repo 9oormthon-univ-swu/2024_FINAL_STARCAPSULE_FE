@@ -48,11 +48,14 @@ const RecordFormAfter = () => {
                     return;
                 }
 
-                const response = await axiosInstance.get(`${snowballAPI}/${memoryId}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
+                const response = await axiosInstance.get(
+                    `${snowballAPI}/${memoryId}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
                 console.log('Fetched Memory Data:', response.data);
                 setMemoryData(response.data);
             } catch (error) {
@@ -76,20 +79,20 @@ const RecordFormAfter = () => {
                 height: elementHeight,
                 windowHeight: elementHeight, 
             })
-            .then((canvas) => {
-                const link = document.createElement('a');
-                link.href = canvas.toDataURL('image/png');
-                link.download = 'record.png';
-                link.click();
-            })
-            .catch((error) => {
-                console.error('이미지 저장 중 오류 발생:', error);
-            });
+                .then((canvas) => {
+                    const link = document.createElement('a');
+                    link.href = canvas.toDataURL('image/png');
+                    link.download = 'record.png';
+                    link.click();
+                })
+                .catch((error) => {
+                    console.error('이미지 저장 중 오류 발생:', error);
+                });
         }
     };
 
     const handleClose = () => {
-        navigate(`/main/${userId}`);
+        navigate(-1);
     };
 
     const formatDate = (dateString) => {
@@ -97,6 +100,7 @@ const RecordFormAfter = () => {
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
+
 
         return (
             <span style={{ fontSize: '1.4rem' }}>
@@ -110,9 +114,9 @@ const RecordFormAfter = () => {
     return (
         <Stack sx={contentstyle}>
             <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="space-between"
+                direction='row'
+                alignItems='center'
+                justifyContent='space-between'
                 sx={{
                     position: 'absolute',
                     top: 'calc(1rem + 29px)',
@@ -128,9 +132,17 @@ const RecordFormAfter = () => {
                     onClick={handleClose}
                 />
                 <span style={{ fontSize: '1.4rem' }}>
-                    {memoryData ? formatDate(memoryData.result.create_at) : "로딩 중..."}
+                    {memoryData
+                        ? formatDate(memoryData.result.create_at)
+                        : '로딩 중...'}
                 </span>
-                <ShareIcon sx={{ cursor: 'pointer', position: 'relative', left: '-30px' }} />
+                <ShareIcon
+                    sx={{
+                        cursor: 'pointer',
+                        position: 'relative',
+                        left: '-30px',
+                    }}
+                />
             </Stack>
 
             {/* 캡처할 영역 */}

@@ -8,6 +8,14 @@ const theme = createTheme({
         action: {
             disabled: '#FFFCFAA0',
         },
+        primary: {
+            main: palette.main1,
+            light: palette.main2,
+        },
+        text: {
+            primary: palette.white,
+            secondary: palette.grey,
+        },
     },
     typography: {
         fontFamily: [
@@ -53,36 +61,20 @@ const theme = createTheme({
                     number9: 'p',
                 },
             },
+            styleOverrides: {
+                root: {
+                    color: palette.white,
+                },
+            },
+        },
+        MuiButton: {
+            styleOverrides: {
+                root: {
+                    color: palette.white,
+                },
+            },
         },
     },
 });
-
-if (theme.palette) {
-    theme.palette.primary = {
-        main: theme.palette.custom.main1,
-        light: theme.palette.custom.main2,
-    };
-    theme.palette.text = {
-        primary: theme.palette.custom.white,
-        secondary: theme.palette.custom.grey,
-    };
-}
-
-if (theme.components) {
-    theme.components.MuiTypography = {
-        styleOverrides: {
-            root: {
-                color: theme.palette.custom.white,
-            },
-        },
-    };
-    theme.components.MuiButton = {
-        styleOverrides: {
-            root: {
-                color: theme.palette.custom.white,
-            },
-        },
-    };
-}
 
 export default theme;

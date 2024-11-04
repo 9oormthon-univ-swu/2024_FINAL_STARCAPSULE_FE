@@ -73,7 +73,7 @@ const CalendarDetail = () => {
     );
 
     const handleClose = () => {
-        navigate(`/main/${userId}`);
+        navigate(`/main/${userId}?page=1`);
     };
 
     const handleCalendarClick = () => {

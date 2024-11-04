@@ -78,7 +78,7 @@ const GuestFormAfter = () => {
     };
 
     const handleClose = () => {
-        navigate(`/guest/${userId}`);
+        navigate(-1);
     };
 
     const formatDate = (dateString) => {

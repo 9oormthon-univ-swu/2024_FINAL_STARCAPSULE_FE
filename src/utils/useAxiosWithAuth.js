@@ -42,7 +42,7 @@ const useAxiosWithAuth = () => {
             if (error.response?.status === 401) {
                 if (!token || isRefreshing) {
                     // 이미 리프레시 중이거나 토큰이 없으면 로그아웃 후 리디렉션
-                    useAuthStore.getState().logout(isRefreshing);
+                    useAuthStore.getState().logout();
                     navigate('/');
                 } else {
                     isRefreshing = true; // 무한 호출 방지 플래그
