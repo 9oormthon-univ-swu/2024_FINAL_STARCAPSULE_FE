@@ -59,7 +59,7 @@ const memoryPosition = [
 const Snowball = ({ received, self, onMemoryClick, fetcher }) => {
     const params = useParams();
     const [searchParams] = useSearchParams();
-    const page = searchParams.get('page') || 1;
+    const page = parseInt(searchParams.get('page') || 1);
     const [totalPage, setTotalPage] = useState(page);
 
     const navigate = useNavigate();
@@ -76,13 +76,13 @@ const Snowball = ({ received, self, onMemoryClick, fetcher }) => {
     }, [data]);
 
     const onLeftClick = () => {
-        if (parseInt(page) === 1) return;
-        navigate(`/main/${params.userId}?page=${parseInt(page) - 1}`);
+        if (page === 1) return;
+        navigate(`/main/${params.userId}?page=${page - 1}`);
     };
 
     const onRightClick = () => {
-        if (parseInt(page) === totalPage) return;
-        navigate(`/main/${params.userId}?page=${parseInt(page) + 1}`);
+        if (page === totalPage) return;
+        navigate(`/main/${params.userId}?page=${page + 1}`);
     };
 
     return (
