@@ -15,7 +15,7 @@ const RecordBoard = ({
     isReadOnly = false, // 읽기 전용 모드 여부
 }) => {
     return (
-        <div style={RecordBgstyle}>
+        <div style={RecordBgstyle} className="record-board"> {/* 클래스 추가 */}
             <Stack sx={imgcontainer}>
                 {isReadOnly && image_url ? (
                     <img
@@ -64,7 +64,7 @@ const RecordBoard = ({
 
 export default RecordBoard;
 
-//Design
+// Design
 const Textfieldstyle = {
     width: '100%',
     minHeight: '16.5rem',
@@ -100,4 +100,4 @@ const RecordBgstyle = {
     maxWidth: '312px',
     margin: '0 auto',
     boxSizing: 'border-box',
-}; 
+};

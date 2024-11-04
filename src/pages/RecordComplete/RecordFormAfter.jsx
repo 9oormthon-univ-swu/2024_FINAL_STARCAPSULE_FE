@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { IconButton, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import RecordBoard from '../Record/components/RecordBoard';
 import ImageSaveButton from './ImageSaveButton';
 import html2canvas from 'html2canvas';
@@ -62,9 +62,9 @@ const RecordFormAfter = () => {
         e.preventDefault();
         if (captureRef.current) {
             const element = captureRef.current;
-            const scale = 2;
+
             html2canvas(element, {
-                scale: scale,
+                scale: 2,
                 useCORS: true,
                 backgroundColor: null,
             })
@@ -107,7 +107,7 @@ const RecordFormAfter = () => {
                 justifyContent='space-between'
                 sx={{
                     position: 'absolute',
-                    top: 'calc(1rem + 30px)',
+                    top: 'calc(1rem + 29px)',
                     left: '1rem',
                     right: '1rem',
                     zIndex: 10,
