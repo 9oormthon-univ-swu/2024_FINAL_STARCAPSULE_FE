@@ -6,7 +6,7 @@ import MemoryCount from './MemoryCount';
 import NavigationButton from './NavigationButton';
 import { motion, AnimatePresence } from 'framer-motion';
 import useSWR from 'swr';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 const SnowballContainer = styled('div')(() => ({
@@ -63,8 +63,11 @@ const Snowball = ({
     fetcher,
 }) => {
     const params = useParams();
-    const [page, setPage] = useState(1);
-    const [totalPage, setTotalPage] = useState(1);
+    const [searchParams] = useSearchParams();
+    const page = searchParams.get('page') || 1;
+    const [totalPage, setTotalPage] = useState(page);
+
+    const navigate = useNavigate();
 
     const { data, isLoading } = useSWR(
         `${import.meta.env.VITE_API_URL}/api/capsule/${params.userId}/pagination?page=${page}`,
@@ -78,13 +81,13 @@ const Snowball = ({
     }, [data]);
 
     const onLeftClick = () => {
-        setPage((prev) => (prev === 1 ? 1 : prev - 1));
+        if (parseInt(page) === 1) return;
+        navigate(`/main/${params.userId}?page=${parseInt(page) - 1}`);
     };
 
     const onRightClick = () => {
-        setPage((prev) =>
-            prev === data?.total_page ? data?.total_page : prev + 1
-        );
+        if (parseInt(page) === totalPage) return;
+        navigate(`/main/${params.userId}?page=${parseInt(page) + 1}`);
     };
 
     return (
