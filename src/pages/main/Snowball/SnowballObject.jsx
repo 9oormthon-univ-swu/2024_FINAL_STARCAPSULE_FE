@@ -4,7 +4,10 @@ import { SnowballObjects } from '@/constants/SnowballObjects';
 
 const WriterText = styled(Typography)(({ theme }) => ({
     ...theme.typography.body3,
-    fontSize: 'clamp(1.125rem, 5vw, 1.68rem)',
+    fontSize: 'clamp(1.125rem, 5vw, 1.25rem)',
+    minHeight: '1.125rem',
+    height: '5vw',
+    maxHeight: '1.68rem',
     textAlign: 'center',
     overflow: 'hidden',
     whiteSpace: 'nowrap',
@@ -13,7 +16,6 @@ const WriterText = styled(Typography)(({ theme }) => ({
 }));
 
 const SnowballObjectContainer = styled(Stack)(() => ({
-    // position: 'absolute',
     flexDirection: 'column',
     alignItems: 'center',
     minWidth: '5rem',
@@ -37,6 +39,7 @@ const SnowballObject = ({ id, writer, variant, sx, black }) => {
         <SnowballObjectContainer key={id} spacing={0.5} sx={sx}>
             <WriterText
                 variant={'body3'}
+                component={'p'}
                 sx={{
                     color: black ? 'custom.font' : 'custom.white',
                 }}
