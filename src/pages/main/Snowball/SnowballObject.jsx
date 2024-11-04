@@ -13,6 +13,7 @@ const WriterText = styled(Typography)(({ theme }) => ({
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
     width: '100%',
+    pointerEvents: 'none',
 }));
 
 const SnowballObjectContainer = styled(Stack)(() => ({
@@ -31,6 +32,7 @@ const ImageBox = styled(Box)(() => ({
     '& img': {
         width: '100%',
         height: '100%',
+        pointerEvents: 'none',
     },
 }));
 
