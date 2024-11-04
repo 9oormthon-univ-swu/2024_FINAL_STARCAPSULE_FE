@@ -109,10 +109,9 @@ const Main = () => {
     }, []);
 
     useEffect(() => {
-        setPopupOpen(true);
-        setUserId(param.userId);
         saveTokenFromURL(login);
-    }, [login, param.userId, setUserId]);
+        setUserId(param.userId);
+    }, []);
 
     const axiosInstance = useAxiosWithAuth();
 
@@ -129,7 +128,7 @@ const Main = () => {
             .then((data) => {
                 const dateObj = dayjs(data.date);
                 const formattedDate = dateObj.format(`MM월 DD일`);
-
+                setServerTime(data.date);
                 localStorage.setItem('dailyQuestion', data.question);
                 localStorage.setItem('dailyDate', formattedDate);
                 localStorage.setItem('dailyQuestionId', data.id);
@@ -291,7 +290,6 @@ const Main = () => {
                         self={data?.selfCount}
                         onMemoryClick={onMemoryClick}
                         fetcher={snowballFetcher}
-                        setServerTime={setServerTime}
                     />
                     {daysLeft ? (
                         <StyledButton

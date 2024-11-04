@@ -97,7 +97,7 @@ const MyCreationComplete = () => {
     }, []);
 
     const handleClick = () => {
-        navigate(`/main/${userId}`); // userId를 URL에 반영
+        navigate(`/main/${userId}?page=1`); // userId를 URL에 반영
     };
 
     return (

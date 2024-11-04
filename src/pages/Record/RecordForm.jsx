@@ -29,7 +29,7 @@ const RecordForm = () => {
     const recordBoardRef = useRef(null); // RecordBoard 참조
     const selectObjectRef = useRef(null); // SelectSnowballObject 참조
 
-    const goToMain = () => navigate(`/main/${userId}`);
+    const goToMain = () => navigate(`/main/${userId}?page=1`);
 
     // 업로드 파일 관리
     const handleSetImage = (image) => {
