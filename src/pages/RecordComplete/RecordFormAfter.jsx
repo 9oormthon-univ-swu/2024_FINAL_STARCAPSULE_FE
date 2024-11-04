@@ -145,7 +145,7 @@ const RecordFormAfter = () => {
                 />
             </Stack>
 
-            {/* 캡처할 영역 */}
+            
             <Stack
                 ref={captureRef}
                 sx={{
