@@ -117,7 +117,7 @@ const CalendarDetail = () => {
                     right: '1rem',
                     zIndex: 10,
                     color: 'white',
-                    fontFamily: 'Griun NltoTAENGGU, sans-serif',
+                    fontFamily: 'Griun NltoTAENGGU, sans-serif'
                 }}
             >
                 <CloseIcon
@@ -132,58 +132,56 @@ const CalendarDetail = () => {
                     onClick={handleCalendarClick}
                 />
             </Stack>
-
             <Stack 
-    ref={captureRef} 
-    sx={{
-        width: '100%',
-        maxWidth: '300px',
-        padding: '1.5rem',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        overflow: 'visible', 
-        marginTop: '9rem',
-    }}
->
-    {currentItem && (
-        <>
-            <span style={{ 
-                position: 'absolute',
-                top: 'calc(10px + 7rem)', 
-                left: '9.5rem',
-                color: 'white',
-                fontSize: '1.3rem',
-                fontFamily: 'Griun NltoTAENGGU, sans-serif',
-            }}>
-                {currentItem.daily_question?.question 
-                    ? currentItem.daily_question.question 
-                    : `To. ${nickname}`}
-            </span>
+                ref={captureRef} 
+                sx={{
+                    width: '100%',
+                    maxWidth: '300px',
+                    padding: '1.5rem',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    overflow: 'visible',
+                    marginTop: '6.5rem'
+                }}
+            >
+                {currentItem && (
+                    <>
+                        <span style={{
+                            position: 'relative', // absolute에서 relative로 변경
+                            color: 'white',
+                            fontSize: '1.3rem',
+                            fontFamily: 'Griun NltoTAENGGU, sans-serif',
+                            marginBottom: '1rem' // 아래쪽 여백 추가
+                        }}>
+                            {currentItem.daily_question?.question 
+                                ? currentItem.daily_question.question 
+                                : `To. ${nickname}`}
+                        </span>
 
-            <RecordBoard
-                content={currentItem.answer}
-                image_url={currentItem.image_url}
-                isReadOnly={true}
-            />
+                        <RecordBoard
+                            content={currentItem.answer}
+                            image_url={currentItem.image_url}
+                            isReadOnly={true}
+                        />
 
-            <span style={{
-                color: 'white',
-                fontSize: '1.3rem',
-                fontFamily: 'Griun NltoTAENGGU, sans-serif',
-                marginLeft: '200px',
-                marginTop: '16px',
-            }}>
-                {currentItem.writer ? `From. ${currentItem.writer}` : ''}
-            </span>
-        </>
-    )}
-</Stack>
+                        <span style={{
+                            color: 'white',
+                            fontSize: '1.3rem',
+                            fontFamily: 'Griun NltoTAENGGU, sans-serif',
+                            marginTop: '16px'
+                        }}>
+                            {currentItem.writer ? `From. ${currentItem.writer}` : ''}
+                        </span>
+                    </>
+                )}
+            </Stack>
+
 
 
                         <Stack 
                             sx={{ 
-                                marginTop: '-1rem',
+                                marginTop: '-2.5rem',
                                 alignItems: 'center'
                             }}
                             data-html2canvas-ignore="true"
@@ -204,7 +202,7 @@ const CalendarDetail = () => {
                                 backgroundColor: '#3a3a3a',
                                 color: 'white',
                                 position: currentItem && currentItem.answer.length < 100 ? 'absolute' : 'sticky',
-                                bottom: -2,
+                                bottom: -10,
                                 zIndex: 10,
                                 marginTop: '1rem'
                             }}
