@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Button, Box } from '@mui/material';
-import { PhotoIcon } from '../../../components/icons';
+import { PhotoIcon } from '@/components/icons';
 
 const ImgUploadButton = ({ setImage, handleSetImage, id }) => {
     const [selectedImage, setSelectedImage] = useState(null);

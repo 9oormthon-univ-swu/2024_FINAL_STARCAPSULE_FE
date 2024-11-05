@@ -3,7 +3,7 @@ import { Stack } from '@mui/material';
 import RecordBoard from '../Record/components/RecordBoard';
 import ImageSaveButton from './ImageSaveButton';
 import html2canvas from 'html2canvas';
-import CloseIcon from '@/components/icons/closeicon';
+import { CloseIcon } from '@/components/icons';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import { useParams, useNavigate } from 'react-router-dom';
 import ImgShareButton from '@/components/ImgShareButton';
@@ -13,8 +13,8 @@ const contentstyle = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    minHeight: '100vh',
-    maxHeight: '100vh',
+    minHeight: '100dvh',
+    maxHeight: '100dvh',
     width: '100%',
     maxWidth: '600px',
     margin: '0 auto',
