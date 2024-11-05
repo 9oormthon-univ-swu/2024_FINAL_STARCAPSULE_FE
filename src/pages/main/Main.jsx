@@ -225,10 +225,6 @@ const Main = () => {
         }
     };
 
-    const onRecordClick = () => {
-        navigate(`/record/${param.userId}`);
-    };
-
     const handleLottieClick = () => {
         setShowLottie(false); //로티 클릭하면 팝업 나타남
         setPopupOpen(true);
