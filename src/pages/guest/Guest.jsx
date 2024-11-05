@@ -109,30 +109,9 @@ const Guest = () => {
                         <Typography variant='title2'>추억 전달하기</Typography>
                     </StyledButton>
                 ) : (
-                    <Stack
-                        direction={'row'}
-                        justifyContent={'space-between'}
-                        spacing={'1rem'}
-                        sx={{
-                            flexGrow: 0,
-                        }}
-                    >
-                        <StyledButton
-                            variant={'contained'}
-                            sx={{ flexGrow: 1, width: 'fit-content' }}
-                        >
-                            <Typography variant='title2'>팀 소개</Typography>
-                        </StyledButton>
-                        <StyledButton
-                            onClick={onRecordClick}
-                            variant={'contained'}
-                            sx={{ flexGrow: 2, width: 'fit-content' }}
-                        >
-                            <Typography variant='title2'>
-                                추억 보관하기
-                            </Typography>
-                        </StyledButton>
-                    </Stack>
+                    <StyledButton variant={'contained'} sx={{ flexGrow: 0 }}>
+                        <Typography variant='title2'>팀 소개</Typography>
+                    </StyledButton>
                 )}
             </MainContainer>
         </Layout>

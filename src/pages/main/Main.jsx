@@ -60,7 +60,7 @@ const PopupContainer = styled('div')(() => ({
 
 export const StyledButton = styled(Button)(({ theme }) => ({
     boxSizing: 'border-box',
-    width: '100%',
+    width: '100% !important',
     height: '3.875rem',
     backgroundColor: theme.palette.custom.button1,
     color: theme.palette.custom.white,
@@ -307,33 +307,12 @@ const Main = () => {
                             </Typography>
                         </StyledButton>
                     ) : (
-                        <Stack
-                            direction={'row'}
-                            justifyContent={'space-between'}
-                            spacing={'1rem'}
-                            sx={{
-                                flexGrow: 0,
-                            }}
+                        <StyledButton
+                            variant={'contained'}
+                            sx={{ flexGrow: 0, width: 'fit-content' }}
                         >
-                            <StyledButton
-                                variant={'contained'}
-                                sx={{ flexGrow: 1, width: 'fit-content' }}
-                            >
-                                <Typography variant='title2'>
-                                    팀 소개
-                                </Typography>
-                            </StyledButton>
-                            <StyledButton
-                                variant={'contained'}
-                                sx={{ flexGrow: 2, width: 'fit-content' }}
-                                onClick={onRecordClick}
-                                disabled={hasWritten}
-                            >
-                                <Typography variant='title2'>
-                                    추억 보관하기
-                                </Typography>
-                            </StyledButton>
-                        </Stack>
+                            <Typography variant='title2'>팀 소개</Typography>
+                        </StyledButton>
                     )}
                 </MainContainer>
                 {recordable && !isQuestionLoading && (
@@ -345,9 +324,9 @@ const Main = () => {
                         date={questionData.date}
                     />
                 )}
-                {(!recordable || !daysLeft) &&
+                {!recordable &&
                     (showLottie ? (
-                        // 기록이 불가능한 경우 또는 31일 당일에 Lottie 또는 PopupAfter를 보여줌
+                        // 기록이 불가능한 경우 로티 애니메이션을 보여줌
                         <Portal
                             container={document.getElementById(
                                 'capture-container'
