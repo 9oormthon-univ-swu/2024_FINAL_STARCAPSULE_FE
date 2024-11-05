@@ -185,7 +185,7 @@ const Main = () => {
     const onMemoryClick = (memoryId, objectName) => {
         console.log('Clicked memory ID:', memoryId); // 콘솔 출력 추가
         const userId = param.userId;
-        const allowedDate = new Date('2024-12-31');
+        const allowedDate = new Date('2024-10-31');
         const currentDate = new Date();
 
         if (currentDate < allowedDate) {

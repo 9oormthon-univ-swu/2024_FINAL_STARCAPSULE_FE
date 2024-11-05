@@ -3,7 +3,7 @@ import { Stack } from '@mui/material';
 import RecordBoard from '../Record/components/RecordBoard';
 import ImageSaveButton from './ImageSaveButton';
 import html2canvas from 'html2canvas';
-import CloseIcon from '@/components/icons/closeicon';
+import { CloseIcon } from '@/components/icons';
 import CalendarIcon from '@/components/icons/CalendarIcon';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
