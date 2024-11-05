@@ -3,9 +3,10 @@ import { motion } from 'framer-motion';
 import React from 'react';
 import Snowfall from 'react-snowfall';
 
-const Layout = ({ sx, snow, snowflake, overlay, children }) => {
+const Layout = ({ sx, snow, snowflake, overlay, children, id }) => {
     return (
         <Container
+            id={id}
             maxWidth={'sm'}
             sx={{
                 minHeight: '100dvh',
