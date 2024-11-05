@@ -29,43 +29,55 @@ import { HelmetProvider } from 'react-helmet-async';
 import SnackBarNoti from './components/SnackbarNoti';
 import { useSnackbarStore } from './stores/useSnackbarStore';
 import { AnimatePresence } from 'framer-motion';
+import Error404 from './pages/error/Error404';
+import Error500 from './pages/error/Error500';
+import ErrorBoundary from './pages/error/ErrorBoundary';
 
 function AnimationRoutes() {
     const location = useLocation();
 
     return (
         <AnimatePresence>
-            <Routes location={location} key={location.pathname}>
-                <Route path='/' element={<LoginPage />} />
-                <Route path='/popupafter' element={<PopupAfter />} />
-                <Route path='/snowballmake' element={<SnowballMake />} />
-                <Route path='/main/:userId' element={<Main />} />
-                <Route path='/guest/:userId' element={<Guest />} />
-                <Route path='/record/:userId' element={<RecordForm />} />
-                <Route
-                    path='/recordafter/:userId/:memoryId'
-                    element={<RecordFormAfter />}
-                />
-                <Route
-                    path='/guestafter/:userId/:memoryId'
-                    element={<GuestFormAfter />}
-                />
-                <Route path='/guestrecord/:userId' element={<GuestForm />} />
-                <Route path='/calendar/:userId' element={<CalendarPage />} />
-                <Route
-                    path='/complete/:userId'
-                    element={<CreationComplete />}
-                />
-                <Route
-                    path='/mycomplete/:userId'
-                    element={<MyCreationComplete />}
-                />
-                <Route
+            <ErrorBoundary>
+                <Routes location={location} key={location.pathname}>
+                    <Route path='/' element={<LoginPage />} />
+                    <Route path='/popupafter' element={<PopupAfter />} />
+                    <Route path='/snowballmake' element={<SnowballMake />} />
+                    <Route path='/main/:userId' element={<Main />} />
+                    <Route path='/guest/:userId' element={<Guest />} />
+                    <Route path='/record/:userId' element={<RecordForm />} />
+                    <Route
+                        path='/recordafter/:userId/:memoryId'
+                        element={<RecordFormAfter />}
+                    />
+                    <Route
+                        path='/guestafter/:userId/:memoryId'
+                        element={<GuestFormAfter />}
+                    />
+                    <Route
+                        path='/guestrecord/:userId'
+                        element={<GuestForm />}
+                    />
+                    <Route
+                        path='/calendar/:userId'
+                        element={<CalendarPage />}
+                    />
+                    <Route
+                        path='/complete/:userId'
+                        element={<CreationComplete />}
+                    />
+                    <Route
+                        path='/mycomplete/:userId'
+                        element={<MyCreationComplete />}
+                    />
+                    <Route
                         path='/calendar-detail/:userId'
                         element={<CalendarDetail />}
-                    /> 
-                <Route path='*' element={<div>Not Found</div>} />
-            </Routes>
+                    />
+                    <Route path='/500' element={<Error500 />} />
+                    <Route path='*' element={<Error404 />} />
+                </Routes>
+            </ErrorBoundary>
         </AnimatePresence>
     );
 }

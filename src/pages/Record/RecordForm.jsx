@@ -72,6 +72,10 @@ const RecordForm = () => {
             })
             .catch((error) => {
                 console.log('Error:', error);
+                setSnackbarOpen({
+                    text: '추억 기록에 실패했어요. 다시 시도해주세요.',
+                    severity: 'error',
+                });
             });
     };
 

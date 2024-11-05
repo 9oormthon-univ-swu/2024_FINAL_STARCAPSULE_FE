@@ -64,7 +64,7 @@ const Day = ({
     */
     const theme = useTheme();
     const navigate = useNavigate();
-    const { userId } = useParams();  
+    const { userId } = useParams();
     const { setSnackbarOpen } = useSnackbarStore();
 
     const today = dayjs(time).startOf('day');
@@ -73,43 +73,44 @@ const Day = ({
 
     const dateInFormat = currentDay.format('YYYY-MM-DD');
 
-const handleClick = async () => {
-    const token = localStorage.getItem('token'); 
-    const apiUrl = `${import.meta.env.VITE_API_URL}/calendar/memories/${dateInFormat}`;
+    const handleClick = async () => {
+        const token = localStorage.getItem('token');
+        const apiUrl = `${import.meta.env.VITE_API_URL}/calendar/memories/${dateInFormat}`;
 
-    console.log(`${dateInFormat} clicked`);
-    try {
-        const response = await axios.get(apiUrl, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        
+        console.log(`${dateInFormat} clicked`);
+        try {
+            const response = await axios.get(apiUrl, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
 
-        // 데이터 확인 후 이동 또는 알림 처리 my_memory, memorie가 둘다 없을 경우
-        if (
-            (response.data.result && response.data.result.my_memory && response.data.result.my_memory.length > 0) ||
-            (response.data.result && response.data.result.memories && response.data.result.memories.length > 0)
-        ) {
-            // 데이터가 존재할 때 상세 페이지로 이동
-            navigate(`/calendar-detail/${userId}`, {
-                state: { data: response.data.result, selectedDate: dateInFormat },
-            });
-        } else {
-            
-            setSnackbarOpen({
-                text: '보관된 추억이 없습니다.',
-                severity: 'warning',
-            });
+            // 데이터 확인 후 이동 또는 알림 처리 my_memory, memorie가 둘다 없을 경우
+            if (
+                (response.data.result &&
+                    response.data.result.my_memory &&
+                    response.data.result.my_memory.length > 0) ||
+                (response.data.result &&
+                    response.data.result.memories &&
+                    response.data.result.memories.length > 0)
+            ) {
+                // 데이터가 존재할 때 상세 페이지로 이동
+                navigate(`/calendar-detail/${userId}`, {
+                    state: {
+                        data: response.data.result,
+                        selectedDate: dateInFormat,
+                    },
+                });
+            } else {
+                setSnackbarOpen({
+                    text: '보관된 추억이 없습니다.',
+                    severity: 'warning',
+                });
+            }
+        } catch (error) {
+            console.error('Error fetching memory data:', error);
         }
-        
-    } catch (error) {
-        console.error("Error fetching memory data:", error);
-    }
-};
-
-
-
+    };
 
     // 기본 스타일
     let style = {
@@ -185,8 +186,8 @@ const handleClick = async () => {
                     styleConfig.position === 'middle'
                         ? 'center'
                         : styleConfig.position === 'right'
-                        ? 'end'
-                        : 'start'
+                          ? 'end'
+                          : 'start'
                 }
                 component={Button}
                 onClick={handleClick} // 클릭 이벤트 추가
