@@ -3,8 +3,7 @@ import { Stack } from '@mui/material';
 import RecordBoard from '../Record/components/RecordBoard';
 import ImageSaveButton from './ImageSaveButton';
 import html2canvas from 'html2canvas';
-import CloseIcon from '@/components/icons/closeicon';
-import ShareIcon from '@/components/icons/ShareIcon';
+import { CloseIcon, ShareIcon } from '@/components/icons';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import { useParams, useNavigate } from 'react-router-dom';
 
@@ -13,21 +12,21 @@ const contentstyle = {
     alignItems: 'center',
     justifyContent: 'flex-start',
     minHeight: '100vh',
-    maxHeight: '100vh', 
+    maxHeight: '100vh',
     width: '100%',
     maxWidth: '600px',
     margin: '0 auto',
     padding: '0',
     boxSizing: 'border-box',
     position: 'relative',
-    overflowY: 'auto', 
+    overflowY: 'auto',
     overflowX: 'hidden',
     background: 'linear-gradient(180deg, #0b0a1b 0%, #27405e 100%)',
-    "&::-webkit-scrollbar": { 
-        display: "none"
+    '&::-webkit-scrollbar': {
+        display: 'none',
     },
-    "-ms-overflow-style": "none",  
-    "scrollbar-width": "none"  
+    '-ms-overflow-style': 'none',
+    'scrollbar-width': 'none',
 };
 
 const RecordFormAfter = () => {
@@ -70,14 +69,14 @@ const RecordFormAfter = () => {
         e.preventDefault();
         if (captureRef.current) {
             const element = captureRef.current;
-            const elementHeight = element.scrollHeight; 
+            const elementHeight = element.scrollHeight;
 
             html2canvas(element, {
                 scale: 2,
                 useCORS: true,
                 backgroundColor: '#132034',
                 height: elementHeight,
-                windowHeight: elementHeight, 
+                windowHeight: elementHeight,
             })
                 .then((canvas) => {
                     const link = document.createElement('a');
@@ -100,7 +99,6 @@ const RecordFormAfter = () => {
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
-
 
         return (
             <span style={{ fontSize: '1.4rem' }}>
@@ -128,7 +126,11 @@ const RecordFormAfter = () => {
                 }}
             >
                 <CloseIcon
-                    sx={{ cursor: 'pointer', position: 'relative', right: '-30px' }}
+                    sx={{
+                        cursor: 'pointer',
+                        position: 'relative',
+                        right: '-30px',
+                    }}
                     onClick={handleClose}
                 />
                 <span style={{ fontSize: '1.4rem' }}>
@@ -145,7 +147,6 @@ const RecordFormAfter = () => {
                 />
             </Stack>
 
-            
             <Stack
                 ref={captureRef}
                 sx={{
@@ -155,22 +156,25 @@ const RecordFormAfter = () => {
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    overflow: 'visible', 
+                    overflow: 'visible',
                     marginTop: '7rem',
                 }}
             >
-                
-                <span style={{
-                    color: 'white',
-                    fontSize: '1.4rem',
-                    fontFamily: 'Griun NltoTAENGGU, sans-serif',
-                    marginBottom: '1rem', 
-                    marginLeft: '-30px', 
-                }}>
-                    {memoryData ? memoryData.result.daily_question?.question ?? "질문을 불러올 수 없습니다." : "로딩 중..."}
+                <span
+                    style={{
+                        color: 'white',
+                        fontSize: '1.4rem',
+                        fontFamily: 'Griun NltoTAENGGU, sans-serif',
+                        marginBottom: '1rem',
+                        marginLeft: '-30px',
+                    }}
+                >
+                    {memoryData
+                        ? (memoryData.result.daily_question?.question ??
+                          '질문을 불러올 수 없습니다.')
+                        : '로딩 중...'}
                 </span>
 
-                
                 <Stack
                     sx={{
                         width: '100%',
@@ -180,22 +184,21 @@ const RecordFormAfter = () => {
                     }}
                 >
                     <RecordBoard
-                        content={memoryData?.result.answer || ""}
+                        content={memoryData?.result.answer || ''}
                         image_url={memoryData?.result.image_url}
                         isReadOnly={true}
                     />
                 </Stack>
             </Stack>
 
-            
             <Stack
-                component="form"
+                component='form'
                 sx={{
                     alignItems: 'center',
                     width: 'fit-content',
                     marginTop: '-35px',
                 }}
-                data-html2canvas-ignore="true"
+                data-html2canvas-ignore='true'
             >
                 <ImageSaveButton onClick={handleSaveImage} />
             </Stack>

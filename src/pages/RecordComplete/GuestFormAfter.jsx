@@ -3,8 +3,7 @@ import { Stack } from '@mui/material';
 import RecordBoard from '../Record/components/RecordBoard';
 import ImageSaveButton from './ImageSaveButton';
 import html2canvas from 'html2canvas';
-import CloseIcon from '@/components/icons/closeicon';
-import ShareIcon from '@/components/icons/ShareIcon';
+import { CloseIcon, ShareIcon } from '@/components/icons';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import { useParams, useNavigate } from 'react-router-dom';
 
@@ -13,7 +12,7 @@ const contentstyle = {
     alignItems: 'center',
     justifyContent: 'flex-start',
     minHeight: '100vh',
-    maxHeight: '100vh', 
+    maxHeight: '100vh',
     width: '100%',
     maxWidth: '600px',
     margin: '0 auto',
@@ -23,11 +22,11 @@ const contentstyle = {
     overflowY: 'auto', // 화면 전체 스크롤 가능하게 설정
     overflowX: 'hidden',
     background: 'linear-gradient(180deg, #0b0a1b 0%, #27405e 100%)',
-    "&::-webkit-scrollbar": { 
-        display: "none"
+    '&::-webkit-scrollbar': {
+        display: 'none',
     },
-    "-ms-overflow-style": "none",  
-    "scrollbar-width": "none"  
+    '-ms-overflow-style': 'none',
+    'scrollbar-width': 'none',
 };
 
 const GuestFormAfter = () => {
@@ -63,17 +62,17 @@ const GuestFormAfter = () => {
                 useCORS: true,
                 backgroundColor: '#132034',
                 scrollX: 0, // 스크롤 위치 무시하고 캡처
-                scrollY: 0, 
+                scrollY: 0,
             })
-            .then((canvas) => {
-                const link = document.createElement('a');
-                link.href = canvas.toDataURL('image/png');
-                link.download = 'record.png';
-                link.click();
-            })
-            .catch((error) => {
-                console.error('이미지 저장 중 오류 발생:', error);
-            });
+                .then((canvas) => {
+                    const link = document.createElement('a');
+                    link.href = canvas.toDataURL('image/png');
+                    link.download = 'record.png';
+                    link.click();
+                })
+                .catch((error) => {
+                    console.error('이미지 저장 중 오류 발생:', error);
+                });
         }
     };
 
@@ -85,9 +84,16 @@ const GuestFormAfter = () => {
         const date = new Date(dateString);
         return (
             <span style={{ fontSize: '1.4rem' }}>
-                <span style={{ color: '#DDB892' }}>{date.getFullYear()}</span>년&nbsp;
-                <span style={{ color: '#DDB892' }}>{String(date.getMonth() + 1).padStart(2, '0')}</span>월&nbsp;
-                <span style={{ color: '#DDB892' }}>{String(date.getDate()).padStart(2, '0')}</span>일
+                <span style={{ color: '#DDB892' }}>{date.getFullYear()}</span>
+                년&nbsp;
+                <span style={{ color: '#DDB892' }}>
+                    {String(date.getMonth() + 1).padStart(2, '0')}
+                </span>
+                월&nbsp;
+                <span style={{ color: '#DDB892' }}>
+                    {String(date.getDate()).padStart(2, '0')}
+                </span>
+                일
             </span>
         );
     };
@@ -95,9 +101,9 @@ const GuestFormAfter = () => {
     return (
         <Stack sx={contentstyle}>
             <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="space-between"
+                direction='row'
+                alignItems='center'
+                justifyContent='space-between'
                 sx={{
                     position: 'absolute',
                     top: 'calc(1rem + 29px)',
@@ -108,15 +114,30 @@ const GuestFormAfter = () => {
                     fontFamily: 'Griun NltoTAENGGU, sans-serif',
                 }}
             >
-                <CloseIcon sx={{ cursor: 'pointer', position: 'relative', right: '-30px' }} onClick={handleClose} />
+                <CloseIcon
+                    sx={{
+                        cursor: 'pointer',
+                        position: 'relative',
+                        right: '-30px',
+                    }}
+                    onClick={handleClose}
+                />
                 <span style={{ fontSize: '1.4rem' }}>
-                    {memoryData ? formatDate(memoryData.result.create_at) : '로딩 중...'}
+                    {memoryData
+                        ? formatDate(memoryData.result.create_at)
+                        : '로딩 중...'}
                 </span>
-                <ShareIcon sx={{ cursor: 'pointer', position: 'relative', left: '-30px' }} />
+                <ShareIcon
+                    sx={{
+                        cursor: 'pointer',
+                        position: 'relative',
+                        left: '-30px',
+                    }}
+                />
             </Stack>
 
-            <Stack 
-                ref={captureRef} 
+            <Stack
+                ref={captureRef}
                 sx={{
                     width: '100%',
                     maxWidth: '300px',
@@ -126,54 +147,63 @@ const GuestFormAfter = () => {
                     alignItems: 'center',
                     overflow: 'visible',
                     marginTop: '8rem',
-                    paddingBottom: '0.1rem'
+                    paddingBottom: '0.1rem',
                 }}
             >
-                <span style={{
-                    position: 'absolute',
-                    top: 'calc(1rem + 8rem)',
-                    left: '9.5rem',
-                    color: 'white',
-                    fontSize: '1.3rem',
-                    fontFamily: 'Griun NltoTAENGGU, sans-serif',
-                }}>
+                <span
+                    style={{
+                        position: 'absolute',
+                        top: 'calc(1rem + 8rem)',
+                        left: '9.5rem',
+                        color: 'white',
+                        fontSize: '1.3rem',
+                        fontFamily: 'Griun NltoTAENGGU, sans-serif',
+                    }}
+                >
                     To. <span style={{ color: '#DDB892' }}>{nickname}</span>
                 </span>
 
-                <Stack sx={{
-                    width: '100%',
-                    marginTop: '2rem',
-                    maxHeight: 'calc(100vh - 300px)', 
-                    overflowY: 'auto', 
-                    paddingBottom: '2rem', 
-                }}>
+                <Stack
+                    sx={{
+                        width: '100%',
+                        marginTop: '2rem',
+                        maxHeight: 'calc(100vh - 300px)',
+                        overflowY: 'auto',
+                        paddingBottom: '2rem',
+                    }}
+                >
                     <RecordBoard
-                        content={memoryData?.result.answer || ""}
+                        content={memoryData?.result.answer || ''}
                         image_url={memoryData?.result.image_url}
                         isReadOnly={true}
                     />
                 </Stack>
 
-                <span style={{
-                    color: 'white',
-                    fontSize: '1.3rem',
-                    fontFamily: 'Griun NltoTAENGGU, sans-serif',
-                    textAlign: 'center',
-                    position: 'relative',
-                    top: '-12px', 
-                    marginLeft: '200px',
-                }}>
-                    From. <span style={{ color: '#DDB892' }}>{memoryData?.result?.writer || '작성자'}</span>
+                <span
+                    style={{
+                        color: 'white',
+                        fontSize: '1.3rem',
+                        fontFamily: 'Griun NltoTAENGGU, sans-serif',
+                        textAlign: 'center',
+                        position: 'relative',
+                        top: '-12px',
+                        marginLeft: '200px',
+                    }}
+                >
+                    From.{' '}
+                    <span style={{ color: '#DDB892' }}>
+                        {memoryData?.result?.writer || '작성자'}
+                    </span>
                 </span>
 
-                <Stack 
-                    component="form" 
+                <Stack
+                    component='form'
                     sx={{
-                        marginTop: '15px', 
+                        marginTop: '15px',
                         alignItems: 'center',
-                        width: 'fit-content'
+                        width: 'fit-content',
                     }}
-                    data-html2canvas-ignore="true"
+                    data-html2canvas-ignore='true'
                 >
                     <ImageSaveButton onClick={handleSaveImage} />
                 </Stack>
