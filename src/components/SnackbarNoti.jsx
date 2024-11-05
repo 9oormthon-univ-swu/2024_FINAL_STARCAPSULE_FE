@@ -46,6 +46,7 @@ const SnackbarNoti = ({
                     success: <span>✅</span>,
                     error: <span>❌</span>,
                     warning: <span>❗</span>,
+                    present: <span>🎁</span>
                 }}
             >
                 <Typography

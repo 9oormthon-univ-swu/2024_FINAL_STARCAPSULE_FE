@@ -185,11 +185,14 @@ const Main = () => {
     const onMemoryClick = (memoryId, objectName) => {
         console.log('Clicked memory ID:', memoryId); // 콘솔 출력 추가
         const userId = param.userId;
-        const allowedDate = new Date('2024-10-28');
+        const allowedDate = new Date('2024-12-31');
         const currentDate = new Date();
 
         if (currentDate < allowedDate) {
-            alert('이후 조회 가능합니다'); // 경고창 표시
+            setSnackbarOpen({
+                text: '모든 추억은 12월 31일에 공개됩니다!',
+                severity: 'present',
+            });
             return;
         }
 
