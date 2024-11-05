@@ -182,7 +182,8 @@ const CalendarDetail = () => {
                         <Stack 
                             sx={{ 
                                 marginTop: '-2.5rem',
-                                alignItems: 'center'
+                                alignItems: 'center',
+                                marginBottom: '3.5rem'
                             }}
                             data-html2canvas-ignore="true"
                         >
@@ -202,7 +203,7 @@ const CalendarDetail = () => {
                                 backgroundColor: '#3a3a3a',
                                 color: 'white',
                                 position: currentItem && currentItem.answer.length < 100 ? 'absolute' : 'sticky',
-                                bottom: -10,
+                                bottom: -40,
                                 zIndex: 10,
                                 marginTop: '1rem'
                             }}
