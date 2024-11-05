@@ -48,12 +48,12 @@ const useAxiosWithAuth = () => {
                     isRefreshing = true; // 무한 호출 방지 플래그
                     try {
                         // 만료된 토큰으로 인한 로그아웃 처리
-                       // useAuthStore.getState().logout();
+                        useAuthStore.getState().logout();
                         setSnackbarOpen({
                             text: '로그인이 만료되었어요. 다시 로그인해주세요.',
                             severity: 'warning',
                         });
-                        //navigate('/'); // 로그인 페이지로 리디렉션
+                        navigate('/'); // 로그인 페이지로 리디렉션
                     } catch (logoutError) {
                         console.error(
                             '로그아웃 처리 중 오류 발생:',

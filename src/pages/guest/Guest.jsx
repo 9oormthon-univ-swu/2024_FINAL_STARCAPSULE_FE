@@ -42,10 +42,6 @@ const Guest = () => {
         }
     );
 
-    const onRecordClick = () => {
-        navigate(`/guestrecord/${param.userId}`);
-    };
-
     useEffect(() => {
         if (param.userId === userId) {
             navigate(`/main/${userId}?page=1`);
@@ -98,6 +94,7 @@ const Guest = () => {
                     self={data?.selfCount}
                     fetcher={snowballFetcher}
                     setServerTime={setServerTime}
+                    owner={'guest'}
                 />
                 {daysLeft ? (
                     <StyledButton

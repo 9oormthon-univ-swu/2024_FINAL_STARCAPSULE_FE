@@ -11,12 +11,12 @@ import DDayTitle from './DDayTitle';
 import MainTitle from './MainTitle';
 import Snowball from './Snowball/Snowball';
 import Layout from '@/layouts/Layout';
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 import { CalendarIcon } from '@/components/icons';
 import PopupPage from '../Onboarding/PopupPage';
 import { getDaysBeforeOpen } from '@/utils/getDaysBeforeOpen';
 import PopupAfter from '../Onboarding/PopupAfter';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { useUserStore } from 'stores/useUserStore';
 import { saveTokenFromURL } from '@/utils/saveTokenFromURL';
 import useAuthStore from 'stores/useAuthStore';
@@ -79,6 +79,9 @@ const Main = () => {
     const [isPopupOpen, setPopupOpen] = useState(false); // 팝업이 기본적으로 비활성화 상태로 시작
     const [showLottie, setShowLottie] = useState(false); // 로티 애니메이션도 비활성화 상태로 시작
     const [serverTime, setServerTime] = useState('');
+    const [searchParams] = useSearchParams();
+    const page = parseInt(searchParams.get('page') || 1);
+
     const navigate = useNavigate();
 
     const successMessage = '스노우볼 이름이 변경되었어요.';
@@ -119,7 +122,10 @@ const Main = () => {
         axiosInstance.get(url).then((res) => res.data.result.paginationData);
 
     const infoFetcher = (url) =>
-        axiosInstance.get(url).then((res) => res.data.result);
+        axiosInstance.get(url).then((res) => {
+            localStorage.setItem('snowballName', res.data.result.snowballName);
+            return res.data.result;
+        });
 
     const questionFetcher = (url) =>
         axiosInstance
@@ -147,7 +153,7 @@ const Main = () => {
         }
     );
 
-    const { data, isLoading, error, mutate } = useSWR(
+    const { data, isLoading, error } = useSWR(
         `${import.meta.env.VITE_API_URL}/api/capsule/${param.userId}/info`,
         infoFetcher,
         {
@@ -160,10 +166,10 @@ const Main = () => {
     // 닉네임을 로컬 스토리지에 저장하는 useEffect
     useEffect(() => {
         if (data && data.snowballName) {
-            localStorage.setItem('snowballName', data.snowballName);
         }
     }, [data]);
 
+    // 닉네임 수정
     const setSnowballName = async (newName) => {
         await axiosInstance
             .post(`/api/capsule/changeSnowballName`, null, {
@@ -176,7 +182,12 @@ const Main = () => {
                     text: successMessage,
                     severity: 'success',
                 });
-                mutate();
+                mutate(
+                    `${import.meta.env.VITE_API_URL}/api/capsule/${param.userId}/pagination?page=${page}`
+                );
+                mutate(
+                    `${import.meta.env.VITE_API_URL}/api/capsule/${param.userId}/info`
+                );
             });
     };
 
@@ -293,6 +304,7 @@ const Main = () => {
                         self={data?.selfCount}
                         onMemoryClick={onMemoryClick}
                         fetcher={snowballFetcher}
+                        owner={'main'}
                     />
                     {daysLeft ? (
                         <StyledButton
