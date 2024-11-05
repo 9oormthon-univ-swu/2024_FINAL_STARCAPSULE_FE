@@ -228,7 +228,7 @@ const Main = () => {
     if (error) return <div>failed to load</div>;
 
     return (
-        <div id='capture-container'>
+        <div>
             <Helmet>
                 <title>스노로그 - 2024의 추억이 쌓이는 곳</title>
                 <meta
@@ -245,7 +245,12 @@ const Main = () => {
                 />
                 <meta property='og:type' content='website' />
             </Helmet>
-            <Layout sx={{ overflow: 'hidden' }} snow snowflake>
+            <Layout
+                id='capture-container'
+                sx={{ overflow: 'hidden' }}
+                snow
+                snowflake
+            >
                 <MainContainer
                     direction={'column'}
                     justifyContent={'space-between'}
