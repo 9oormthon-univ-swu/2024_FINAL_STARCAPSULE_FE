@@ -4,7 +4,7 @@ import RecordBoard from '../Record/components/RecordBoard';
 import ImageSaveButton from './ImageSaveButton';
 import html2canvas from 'html2canvas';
 import { CloseIcon } from '@/components/icons';
-import CalendarIcon from '@/components/icons/CalendarIcon';
+import { CalendarIcon } from '@/components/icons';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
 
@@ -12,8 +12,8 @@ const contentstyle = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    minHeight: '100vh',
-    maxHeight: '100vh',
+    minHeight: '100dvh',
+    maxHeight: '100dvh',
     width: '100%',
     maxWidth: '600px',
     margin: '0 auto',
