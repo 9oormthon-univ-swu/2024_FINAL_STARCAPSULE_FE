@@ -8,6 +8,7 @@ import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import { useParams } from 'react-router-dom';
+import { useSnackbarStore } from '@/stores/useSnackbarStore';
 
 // 플러그인 활성화
 dayjs.extend(isSameOrAfter);
@@ -64,6 +65,7 @@ const Day = ({
     const theme = useTheme();
     const navigate = useNavigate();
     const { userId } = useParams();  
+    const { setSnackbarOpen } = useSnackbarStore();
 
     const today = dayjs(time).startOf('day');
     const startOfPeriod = dayjs(`${year}-11-30`).startOf('day');
@@ -95,7 +97,10 @@ const handleClick = async () => {
             });
         } else {
             
-            alert("보관된 추억이 없습니다");
+            setSnackbarOpen({
+                text: '보관된 추억이 없습니다.',
+                severity: 'warning',
+            });
         }
         
     } catch (error) {
