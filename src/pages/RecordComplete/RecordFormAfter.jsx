@@ -4,24 +4,31 @@ import RecordBoard from '../Record/components/RecordBoard';
 import ImageSaveButton from './ImageSaveButton';
 import html2canvas from 'html2canvas';
 import CloseIcon from '@/components/icons/closeicon';
-import ShareIcon from '@/components/icons/ShareIcon';
-import ImgShareButton from '@/components/ImgShareButton';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import { useParams, useNavigate } from 'react-router-dom';
+import ImgShareButton from '@/components/ImgShareButton';
 import { Helmet } from 'react-helmet-async';
 
 const contentstyle = {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     minHeight: '100vh',
+    maxHeight: '100vh',
     width: '100%',
     maxWidth: '600px',
     margin: '0 auto',
     padding: '0',
     boxSizing: 'border-box',
     position: 'relative',
-    overflow: 'hidden',
+    overflowY: 'auto',
+    overflowX: 'hidden',
+    background: 'linear-gradient(180deg, #0b0a1b 0%, #27405e 100%)',
+    '&::-webkit-scrollbar': {
+        display: 'none',
+    },
+    '-ms-overflow-style': 'none',
+    'scrollbar-width': 'none',
 };
 
 const RecordFormAfter = () => {
@@ -64,11 +71,14 @@ const RecordFormAfter = () => {
         e.preventDefault();
         if (captureRef.current) {
             const element = captureRef.current;
-            const scale = 2;
+            const elementHeight = element.scrollHeight;
+
             html2canvas(element, {
-                scale: scale,
+                scale: 2,
                 useCORS: true,
-                backgroundColor: null,
+                backgroundColor: '#132034',
+                height: elementHeight,
+                windowHeight: elementHeight,
             })
                 .then((canvas) => {
                     const link = document.createElement('a');
@@ -83,7 +93,7 @@ const RecordFormAfter = () => {
     };
 
     const handleClose = () => {
-        navigate(`/main/${userId}`);
+        navigate(-1);
     };
 
     const formatDate = (dateString) => {
@@ -126,7 +136,7 @@ const RecordFormAfter = () => {
                     justifyContent='space-between'
                     sx={{
                         position: 'absolute',
-                        top: 'calc(1rem + 30px)',
+                        top: 'calc(1rem + 29px)',
                         left: '1rem',
                         right: '1rem',
                         zIndex: 10,
@@ -165,56 +175,54 @@ const RecordFormAfter = () => {
                     ref={captureRef}
                     sx={{
                         width: '100%',
-                        height: '100vh',
+                        maxWidth: '300px',
                         padding: '1.5rem',
-                        background:
-                            'linear-gradient(180deg, #0b0a1b 0%, #27405e 100%)',
-                        paddingTop: '12rem',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        overflow: 'visible',
+                        marginTop: '7rem',
                     }}
                 >
-                    {/* 이미지가 있을 때만 렌더링 */}
-                    {memoryData?.result?.image_url && (
-                        <img
-                            src={memoryData.result.image_url}
-                            alt='Memory Image'
-                            style={{
-                                width: '100%',
-                                maxHeight: '300px',
-                                objectFit: 'cover',
-                                marginBottom: '1rem',
-                            }}
-                        />
-                    )}
-                    {memoryData ? (
-                        <span
-                            style={{
-                                position: 'absolute',
-                                top: 'calc(10px + 9rem)',
-                                left: '9.5rem',
-                                color: 'white',
-                                fontSize: '1.3rem',
-                                fontFamily: 'Griun NltoTAENGGU, sans-serif',
-                            }}
-                        >
-                            {memoryData.result.daily_question?.question ??
-                                '질문을 불러올 수 없습니다.'}
-                        </span>
-                    ) : (
-                        <span>로딩 중...</span>
-                    )}
+                    <span
+                        style={{
+                            color: 'white',
+                            fontSize: '1.4rem',
+                            fontFamily: 'Griun NltoTAENGGU, sans-serif',
+                            marginBottom: '1rem',
+                            marginLeft: '-30px',
+                        }}
+                    >
+                        {memoryData
+                            ? (memoryData.result.daily_question?.question ??
+                              '질문을 불러올 수 없습니다.')
+                            : '로딩 중...'}
+                    </span>
 
-                    <RecordBoard
-                        content={memoryData?.result.answer || ''}
-                        isReadOnly={true} // 읽기 전용 모드로 설정
-                    />
+                    <Stack
+                        sx={{
+                            width: '100%',
+                            alignItems: 'center',
+                            marginBottom: '1rem',
+                            flexDirection: 'column',
+                        }}
+                    >
+                        <RecordBoard
+                            content={memoryData?.result.answer || ''}
+                            image_url={memoryData?.result.image_url}
+                            isReadOnly={true}
+                        />
+                    </Stack>
                 </Stack>
 
                 <Stack
                     component='form'
                     sx={{
-                        position: 'relative',
-                        marginTop: '-24rem',
+                        alignItems: 'center',
+                        width: 'fit-content',
+                        marginTop: '-35px',
                     }}
+                    data-html2canvas-ignore='true'
                 >
                     <ImageSaveButton onClick={handleSaveImage} />
                 </Stack>

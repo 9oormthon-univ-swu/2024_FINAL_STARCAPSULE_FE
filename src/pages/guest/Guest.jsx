@@ -48,7 +48,7 @@ const Guest = () => {
 
     useEffect(() => {
         if (param.userId === userId) {
-            navigate(`/main/${userId}`);
+            navigate(`/main/${userId}?page=1`);
         }
     }, []);
 

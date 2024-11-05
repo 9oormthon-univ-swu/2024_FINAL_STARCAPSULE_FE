@@ -2,8 +2,11 @@ import React from 'react';
 import html2canvas from 'html2canvas';
 import { IconButton } from '@mui/material';
 import ShareIcon from '@mui/icons-material/Share';
+import { useSnackbarStore } from '@/stores/useSnackbarStore';
 
 const ImgShareButton = ({ title, url }) => {
+    const { setSnackbarOpen } = useSnackbarStore();
+
     const handleImageShare = async () => {
         try {
             const captureImg = document.getElementById('capture-container');
@@ -23,7 +26,10 @@ const ImgShareButton = ({ title, url }) => {
                     files: [file],
                     url: url,
                 });
-                alert('공유가 완료되었습니다!'); // 성공 알림
+                setSnackbarOpen({
+                    text: '공유가 완료되었습니다.',
+                    severity: 'success',
+                });
             } else {
                 const link = document.createElement('a');
                 link.href = dataUrl;
@@ -31,11 +37,17 @@ const ImgShareButton = ({ title, url }) => {
                 link.click();
 
                 await navigator.clipboard.writeText(url);
-                alert('링크가 클립보드에 복사되었습니다: ' + url);
+                setSnackbarOpen({
+                    text: '링크가 클립보드에 복사되었습니다: ' + url,
+                    severity: 'success',
+                });
             }
         } catch (error) {
             console.error('공유 실패:', error);
-            alert('공유에 실패했습니다. 다시 시도해 주세요.'); // 오류 알림
+            setSnackbarOpen({
+                text: '공유에 실패했습니다. 다시 시도해 주세요.',
+                severity: 'error',
+            });
         }
     };
 

@@ -5,7 +5,6 @@ import {
     styled,
     Typography,
     Portal,
-    Container,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import DDayTitle from './DDayTitle';
@@ -80,7 +79,6 @@ const Main = () => {
     const [isPopupOpen, setPopupOpen] = useState(false); // 팝업이 기본적으로 비활성화 상태로 시작
     const [showLottie, setShowLottie] = useState(false); // 로티 애니메이션도 비활성화 상태로 시작
     const [serverTime, setServerTime] = useState('');
-
     const navigate = useNavigate();
 
     const successMessage = '스노우볼 이름이 변경되었어요.';
@@ -111,10 +109,9 @@ const Main = () => {
     }, []);
 
     useEffect(() => {
-        setPopupOpen(true);
-        setUserId(param.userId);
         saveTokenFromURL(login);
-    }, [login, param.userId, setUserId]);
+        setUserId(param.userId);
+    }, []);
 
     const axiosInstance = useAxiosWithAuth();
 
@@ -131,7 +128,7 @@ const Main = () => {
             .then((data) => {
                 const dateObj = dayjs(data.date);
                 const formattedDate = dateObj.format(`MM월 DD일`);
-
+                setServerTime(data.date);
                 localStorage.setItem('dailyQuestion', data.question);
                 localStorage.setItem('dailyDate', formattedDate);
                 localStorage.setItem('dailyQuestionId', data.id);
@@ -182,16 +179,20 @@ const Main = () => {
                 mutate();
             });
     };
+
     const daysLeft = getDaysBeforeOpen(serverTime);
 
     const onMemoryClick = (memoryId, objectName) => {
         console.log('Clicked memory ID:', memoryId); // 콘솔 출력 추가
         const userId = param.userId;
-        const allowedDate = new Date('2024-10-28');
+        const allowedDate = new Date('2024-12-31');
         const currentDate = new Date();
 
         if (currentDate < allowedDate) {
-            alert('이후 조회 가능합니다'); // 경고창 표시
+            setSnackbarOpen({
+                text: '모든 추억은 12월 31일에 공개됩니다!',
+                severity: 'present',
+            });
             return;
         }
 
@@ -227,7 +228,7 @@ const Main = () => {
     if (error) return <div>failed to load</div>;
 
     return (
-        <div>
+        <div id='capture-container'>
             <Helmet>
                 <title>스노로그 - 2024의 추억이 쌓이는 곳</title>
                 <meta
@@ -244,148 +245,143 @@ const Main = () => {
                 />
                 <meta property='og:type' content='website' />
             </Helmet>
-            <Container id='capture-container'>
-                <Layout sx={{ overflow: 'hidden' }} snow snowflake>
-                    <MainContainer
+            <Layout sx={{ overflow: 'hidden' }} snow snowflake>
+                <MainContainer
+                    direction={'column'}
+                    justifyContent={'space-between'}
+                    alignContent={'center'}
+                    spacing={1}
+                >
+                    <Stack
                         direction={'column'}
-                        justifyContent={'space-between'}
-                        alignContent={'center'}
                         spacing={1}
+                        sx={{ flexGrow: 2 }}
                     >
                         <Stack
-                            direction={'column'}
-                            spacing={1}
-                            sx={{ flexGrow: 2 }}
+                            direction={'row'}
+                            justifyContent={'space-between'}
+                            alignItems={'center'}
                         >
-                            <Stack
-                                direction={'row'}
-                                justifyContent={'space-between'}
-                                alignItems={'center'}
-                            >
-                                <DDayTitle />
-                                <Stack direction={'row'} spacing={2}>
-                                    <StyledIconButton
-                                        onClick={() =>
-                                            navigate(
-                                                `/calendar/${param.userId}`
-                                            )
-                                        }
-                                    >
-                                        <CalendarIcon />
-                                    </StyledIconButton>
-                                    <ImgShareButton
-                                        title={
-                                            '스노우볼에 오늘의 추억이 보관되었어요!\nSNS에 링크를 공유해친구들에게 함께한 추억을 전달받아보세요☃️\n'
-                                        }
-                                        url={`${import.meta.env.BASE_URL}/guest/${param.userId}`}
-                                    />
-                                </Stack>
+                            <DDayTitle />
+                            <Stack direction={'row'} spacing={2}>
+                                <StyledIconButton
+                                    onClick={() =>
+                                        navigate(`/calendar/${param.userId}`)
+                                    }
+                                >
+                                    <CalendarIcon />
+                                </StyledIconButton>
+                                <ImgShareButton
+                                    title={
+                                        '스노우볼에 오늘의 추억이 보관되었어요!\nSNS에 링크를 공유해친구들에게 함께한 추억을 전달받아보세요☃️\n'
+                                    }
+                                    url={`${import.meta.env.BASE_URL}/guest/${param.userId}`}
+                                />
                             </Stack>
-
-                            <MainTitle
-                                snowball={data?.snowballName || ''}
-                                setSnowballName={setSnowballName}
-                                onError={onError}
-                            />
                         </Stack>
 
-                        <Snowball
-                            isLoading={isLoading}
-                            received={data?.receivedCount}
-                            self={data?.selfCount}
-                            onMemoryClick={onMemoryClick}
-                            fetcher={snowballFetcher}
-                            setServerTime={setServerTime}
+                        <MainTitle
+                            snowball={data?.snowballName || ''}
+                            setSnowballName={setSnowballName}
+                            onError={onError}
                         />
-                        {daysLeft ? (
+                    </Stack>
+
+                    <Snowball
+                        isLoading={isLoading}
+                        received={data?.receivedCount}
+                        self={data?.selfCount}
+                        onMemoryClick={onMemoryClick}
+                        fetcher={snowballFetcher}
+                    />
+                    {daysLeft ? (
+                        <StyledButton
+                            variant={'contained'}
+                            sx={{
+                                flexGrow: 0,
+                            }}
+                            disabled={hasWritten}
+                        >
+                            <Typography variant='title2'>
+                                추억 전달하기
+                            </Typography>
+                        </StyledButton>
+                    ) : (
+                        <Stack
+                            direction={'row'}
+                            justifyContent={'space-between'}
+                            spacing={'1rem'}
+                            sx={{
+                                flexGrow: 0,
+                            }}
+                        >
                             <StyledButton
                                 variant={'contained'}
-                                sx={{
-                                    flexGrow: 0,
-                                }}
+                                sx={{ flexGrow: 1, width: 'fit-content' }}
+                            >
+                                <Typography variant='title2'>
+                                    팀 소개
+                                </Typography>
+                            </StyledButton>
+                            <StyledButton
+                                variant={'contained'}
+                                sx={{ flexGrow: 2, width: 'fit-content' }}
+                                onClick={onRecordClick}
                                 disabled={hasWritten}
                             >
                                 <Typography variant='title2'>
-                                    추억 전달하기
+                                    추억 보관하기
                                 </Typography>
                             </StyledButton>
-                        ) : (
-                            <Stack
-                                direction={'row'}
-                                justifyContent={'space-between'}
-                                spacing={'1rem'}
-                                sx={{
-                                    flexGrow: 0,
-                                }}
-                            >
-                                <StyledButton
-                                    variant={'contained'}
-                                    sx={{ flexGrow: 1, width: 'fit-content' }}
-                                >
-                                    <Typography variant='title2'>
-                                        팀 소개
-                                    </Typography>
-                                </StyledButton>
-                                <StyledButton
-                                    variant={'contained'}
-                                    sx={{ flexGrow: 2, width: 'fit-content' }}
-                                    onClick={onRecordClick}
-                                    disabled={hasWritten}
-                                >
-                                    <Typography variant='title2'>
-                                        추억 보관하기
-                                    </Typography>
-                                </StyledButton>
-                            </Stack>
-                        )}
-                    </MainContainer>
-                    {recordable && !isQuestionLoading && (
-                        // 기록이 가능한 경우 팝업 페이지를 보여줌(12월 31일 포함)
-                        <PopupPage
-                            isOpen={isPopupOpen && !hasWritten}
-                            onClose={() => setPopupOpen(false)}
-                            question={questionData.question}
-                            date={questionData.date}
-                        />
+                        </Stack>
                     )}
-                    {(!recordable || !daysLeft) &&
-                        (showLottie ? (
-                            // 기록이 불가능한 경우 또는 31일 당일에 Lottie 또는 PopupAfter를 보여줌
-                            <Portal
-                                container={document.getElementById(
-                                    'capture-container'
-                                )}
-                            >
-                                <Overlay onClick={handleLottieClick}>
-                                    <PopupContainer>
-                                        <dotlottie-player
-                                            src='https://lottie.host/e35fc1c8-f985-4963-940e-0e4e0b630cd9/eNIuonSNHz.json'
-                                            background='transparent'
-                                            speed='1'
-                                            style={{
-                                                width: '350px',
-                                                height: '350px',
-                                            }}
-                                            loop
-                                            autoplay
-                                        ></dotlottie-player>
-                                    </PopupContainer>
-                                </Overlay>
-                            </Portal>
-                        ) : (
-                            <Portal
-                                container={document.getElementById(
-                                    'capture-container'
-                                )}
-                            >
-                                <PopupAfter
-                                    isOpen={isPopupOpen}
-                                    onClose={() => setPopupOpen(false)}
-                                />
-                            </Portal>
-                        ))}
-                </Layout>
-            </Container>
+                </MainContainer>
+                {recordable && !isQuestionLoading && (
+                    // 기록이 가능한 경우 팝업 페이지를 보여줌(12월 31일 포함)
+                    <PopupPage
+                        isOpen={isPopupOpen && !hasWritten}
+                        onClose={() => setPopupOpen(false)}
+                        question={questionData.question}
+                        date={questionData.date}
+                    />
+                )}
+                {(!recordable || !daysLeft) &&
+                    (showLottie ? (
+                        // 기록이 불가능한 경우 또는 31일 당일에 Lottie 또는 PopupAfter를 보여줌
+                        <Portal
+                            container={document.getElementById(
+                                'capture-container'
+                            )}
+                        >
+                            <Overlay onClick={handleLottieClick}>
+                                <PopupContainer>
+                                    <dotlottie-player
+                                        src='https://lottie.host/e35fc1c8-f985-4963-940e-0e4e0b630cd9/eNIuonSNHz.json'
+                                        background='transparent'
+                                        speed='1'
+                                        style={{
+                                            width: '350px',
+                                            height: '350px',
+                                        }}
+                                        loop
+                                        autoplay
+                                    ></dotlottie-player>
+                                </PopupContainer>
+                            </Overlay>
+                        </Portal>
+                    ) : (
+                        <Portal
+                            container={document.getElementById(
+                                'capture-container'
+                            )}
+                        >
+                            <PopupAfter
+                                isOpen={isPopupOpen}
+                                onClose={() => setPopupOpen(false)}
+                            />
+                        </Portal>
+                    ))}
+            </Layout>
         </div>
     );
 };

@@ -128,7 +128,7 @@ const SnowballPage = () => {
                     }
 
                     // 메인 페이지로 이동
-                    navigate(`/main/${snowballData.id}`);
+                    navigate(`/main/${snowballData.id}?page=1`);
                 })
                 .catch((error) => {
                     console.error('스노우볼 생성 실패:', error);

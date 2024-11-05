@@ -8,6 +8,7 @@ import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import { useParams } from 'react-router-dom';
+import { useSnackbarStore } from '@/stores/useSnackbarStore';
 
 // 플러그인 활성화
 dayjs.extend(isSameOrAfter);
@@ -63,8 +64,8 @@ const Day = ({
     */
     const theme = useTheme();
     const navigate = useNavigate();
-
-    const { userId } = useParams(); // URL에서 userId 가져오기
+    const { userId } = useParams();
+    const { setSnackbarOpen } = useSnackbarStore();
 
     const today = dayjs(time).startOf('day');
     const startOfPeriod = dayjs(`${year}-11-30`).startOf('day');
@@ -77,7 +78,6 @@ const Day = ({
         const apiUrl = `${import.meta.env.VITE_API_URL}/calendar/memories/${dateInFormat}`;
 
         console.log(`${dateInFormat} clicked`);
-
         try {
             const response = await axios.get(apiUrl, {
                 headers: {
@@ -85,7 +85,7 @@ const Day = ({
                 },
             });
 
-            // 데이터 확인 후 이동 또는 알림 처리
+            // 데이터 확인 후 이동 또는 알림 처리 my_memory, memorie가 둘다 없을 경우
             if (
                 (response.data.result &&
                     response.data.result.my_memory &&
@@ -102,8 +102,10 @@ const Day = ({
                     },
                 });
             } else {
-                // my_memory와 memories 둘 다 없을 때 알림 표시
-                alert('보관된 추억이 없습니다');
+                setSnackbarOpen({
+                    text: '보관된 추억이 없습니다.',
+                    severity: 'warning',
+                });
             }
         } catch (error) {
             console.error('Error fetching memory data:', error);

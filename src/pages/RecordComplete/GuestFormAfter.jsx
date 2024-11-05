@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Container, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import RecordBoard from '../Record/components/RecordBoard';
 import ImageSaveButton from './ImageSaveButton';
 import html2canvas from 'html2canvas';
@@ -12,15 +12,23 @@ import { Helmet } from 'react-helmet-async';
 const contentstyle = {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     minHeight: '100vh',
+    maxHeight: '100vh',
     width: '100%',
     maxWidth: '600px',
     margin: '0 auto',
     padding: '0',
     boxSizing: 'border-box',
     position: 'relative',
-    overflow: 'hidden',
+    overflowY: 'auto', // 화면 전체 스크롤 가능하게 설정
+    overflowX: 'hidden',
+    background: 'linear-gradient(180deg, #0b0a1b 0%, #27405e 100%)',
+    '&::-webkit-scrollbar': {
+        display: 'none',
+    },
+    '-ms-overflow-style': 'none',
+    'scrollbar-width': 'none',
 };
 
 const GuestFormAfter = () => {
@@ -30,32 +38,19 @@ const GuestFormAfter = () => {
     const axiosInstance = useAxiosWithAuth();
     const [memoryData, setMemoryData] = useState(null);
     const nickname = localStorage.getItem('snowballName') || '닉네임';
-
     const snowballAPI = `${import.meta.env.VITE_API_URL}/api/share_memory`;
 
     useEffect(() => {
         const fetchMemoryData = async () => {
             try {
-                console.log('User ID:', userId);
-                console.log('Memory ID:', memoryId);
-
-                if (!memoryId || !userId) {
-                    console.error('User ID or Memory ID is missing');
-                    return;
-                }
-
+                if (!memoryId || !userId) return;
                 const requestUrl = `${snowballAPI}/${userId}/${memoryId}`;
-                console.log(`Request URL: ${requestUrl}`);
-
                 const response = await axiosInstance.get(requestUrl);
-
-                console.log('Fetched Memory Data:', response.data);
                 setMemoryData(response.data);
             } catch (error) {
                 console.error('Error fetching memory details:', error);
             }
         };
-
         fetchMemoryData();
     }, [memoryId, userId]);
 
@@ -63,12 +58,13 @@ const GuestFormAfter = () => {
         e.preventDefault();
         if (captureRef.current) {
             const element = captureRef.current;
-            const scale = 2;
 
             html2canvas(element, {
-                scale: scale,
+                scale: 2,
                 useCORS: true,
-                backgroundColor: null,
+                backgroundColor: '#132034',
+                scrollX: 0, // 스크롤 위치 무시하고 캡처
+                scrollY: 0,
             })
                 .then((canvas) => {
                     const link = document.createElement('a');
@@ -83,20 +79,23 @@ const GuestFormAfter = () => {
     };
 
     const handleClose = () => {
-        navigate(`/guest/${userId}`);
+        navigate(-1);
     };
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-
         return (
             <span style={{ fontSize: '1.4rem' }}>
-                <span style={{ color: '#DDB892' }}>{year}</span>년&nbsp;
-                <span style={{ color: '#DDB892' }}>{month}</span>월&nbsp;
-                <span style={{ color: '#DDB892' }}>{day}</span>일
+                <span style={{ color: '#DDB892' }}>{date.getFullYear()}</span>
+                년&nbsp;
+                <span style={{ color: '#DDB892' }}>
+                    {String(date.getMonth() + 1).padStart(2, '0')}
+                </span>
+                월&nbsp;
+                <span style={{ color: '#DDB892' }}>
+                    {String(date.getDate()).padStart(2, '0')}
+                </span>
+                일
             </span>
         );
     };
@@ -126,7 +125,7 @@ const GuestFormAfter = () => {
                     justifyContent='space-between'
                     sx={{
                         position: 'absolute',
-                        top: 'calc(1rem + 30px)',
+                        top: 'calc(1rem + 29px)',
                         left: '1rem',
                         right: '1rem',
                         zIndex: 10,
@@ -165,20 +164,20 @@ const GuestFormAfter = () => {
                     ref={captureRef}
                     sx={{
                         width: '100%',
-                        minHeight: '100vh', // 배경이 화면에 꽉 차도록 설정
-                        padding: '1.5rem',
-                        background:
-                            'linear-gradient(180deg, #0b0a1b 0%, #27405e 100%)',
+                        maxWidth: '300px',
+                        padding: '1.6rem',
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
-                        paddingTop: '12rem',
+                        overflow: 'visible',
+                        marginTop: '8rem',
+                        paddingBottom: '0.1rem',
                     }}
                 >
                     <span
                         style={{
                             position: 'absolute',
-                            top: 'calc(10px + 9rem)',
+                            top: 'calc(1rem + 8rem)',
                             left: '9.5rem',
                             color: 'white',
                             fontSize: '1.3rem',
@@ -188,20 +187,30 @@ const GuestFormAfter = () => {
                         To. <span style={{ color: '#DDB892' }}>{nickname}</span>
                     </span>
 
-                    <RecordBoard
-                        content={memoryData?.result.answer || ''}
-                        image_url={memoryData?.result.image_url}
-                        isReadOnly={true}
-                    />
+                    <Stack
+                        sx={{
+                            width: '100%',
+                            marginTop: '2rem',
+                            maxHeight: 'calc(100vh - 300px)',
+                            overflowY: 'auto',
+                            paddingBottom: '2rem',
+                        }}
+                    >
+                        <RecordBoard
+                            content={memoryData?.result.answer || ''}
+                            image_url={memoryData?.result.image_url}
+                            isReadOnly={true}
+                        />
+                    </Stack>
 
-                    {/* `RecordBoard` 바로 아래에 `from` 텍스트와 버튼 위치 */}
                     <span
                         style={{
-                            marginTop: '15px', // `RecordBoard` 바로 아래 여백 조정
                             color: 'white',
                             fontSize: '1.3rem',
                             fontFamily: 'Griun NltoTAENGGU, sans-serif',
                             textAlign: 'center',
+                            position: 'relative',
+                            top: '-12px',
                             marginLeft: '200px',
                         }}
                     >
@@ -214,9 +223,11 @@ const GuestFormAfter = () => {
                     <Stack
                         component='form'
                         sx={{
-                            marginTop: '20px', // `from` 텍스트 바로 아래 여백 조정
+                            marginTop: '15px',
                             alignItems: 'center',
+                            width: 'fit-content',
                         }}
+                        data-html2canvas-ignore='true'
                     >
                         <ImageSaveButton onClick={handleSaveImage} />
                     </Stack>
