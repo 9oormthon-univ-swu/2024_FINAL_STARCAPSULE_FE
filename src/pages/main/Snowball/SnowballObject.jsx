@@ -19,9 +19,7 @@ const WriterText = styled(Typography)(({ theme }) => ({
 const SnowballObjectContainer = styled(Stack)(() => ({
     flexDirection: 'column',
     alignItems: 'center',
-    minWidth: '5rem',
-    width: '27%',
-    maxWidth: '10rem',
+    justifyContent: 'center',
 }));
 
 const ImageBox = styled(Box)(() => ({
@@ -38,7 +36,12 @@ const ImageBox = styled(Box)(() => ({
 
 const SnowballObject = ({ id, writer, variant, sx, black }) => {
     return (
-        <SnowballObjectContainer key={id} spacing={0.5} sx={sx}>
+        <SnowballObjectContainer
+            key={id}
+            spacing={0.5}
+            sx={sx}
+            id={`hello-${id}`}
+        >
             <WriterText
                 variant={'body3'}
                 component={'p'}

@@ -48,15 +48,15 @@ const snowballObjectVariants = {
 };
 
 const memoryPosition = [
-    { bottom: '25%', right: '20%' },
-    { top: '42%', left: '9%' },
-    { top: '35.3%', right: '2.5%' },
-    { top: '32.5%', left: '38%' },
-    { top: '18%', left: '12%' },
-    { top: '11%', right: '18%' },
+    { bottom: '25%', right: '20%', zIndex: 56 },
+    { top: '42%', left: '9%', zIndex: 55 },
+    { top: '35.3%', right: '2.5%', zIndex: 54 },
+    { top: '32.5%', left: '38%', zIndex: 53 },
+    { top: '18%', left: '12%', zIndex: 52 },
+    { top: '11%', right: '18%', zIndex: 51 },
 ];
 
-const Snowball = ({ received, self, onMemoryClick, fetcher }) => {
+const Snowball = ({ received, self, onMemoryClick, fetcher, owner }) => {
     const params = useParams();
     const [searchParams] = useSearchParams();
     const page = parseInt(searchParams.get('page') || 1);
@@ -77,12 +77,12 @@ const Snowball = ({ received, self, onMemoryClick, fetcher }) => {
 
     const onLeftClick = () => {
         if (page === 1) return;
-        navigate(`/main/${params.userId}?page=${page - 1}`);
+        navigate(`/${owner}/${params.userId}?page=${page - 1}`);
     };
 
     const onRightClick = () => {
         if (page === totalPage) return;
-        navigate(`/main/${params.userId}?page=${page + 1}`);
+        navigate(`/${owner}/${params.userId}?page=${page + 1}`);
     };
 
     return (
@@ -106,6 +106,9 @@ const Snowball = ({ received, self, onMemoryClick, fetcher }) => {
                                         style={{
                                             position: 'absolute',
                                             ...memoryPosition[index],
+                                            minWidth: '5rem',
+                                            width: '27%',
+                                            maxWidth: '10rem',
                                         }}
                                         onClick={() =>
                                             onMemoryClick(

@@ -17,7 +17,7 @@ import MyCreationComplete from './pages/RecordComplete/MyCreationComplete';
 import Main from './pages/main/Main';
 import GuestForm from './pages/Record/GuestForm';
 import Guest from './pages/guest/Guest';
-import CalendarPage from './pages/main/CalendarPage';
+import CalendarPage from './pages/calendar/CalendarPage';
 import RecordFormAfter from './pages/RecordComplete/RecordFormAfter';
 import GuestFormAfter from './pages/RecordComplete/GuestFormAfter';
 import CalendarDetail from './pages/RecordComplete/CalendarDetail'; // 파일을 못찾는다는 에러가 떠서 임시 주석처리했습니다.
