@@ -131,25 +131,23 @@ const CalendarDetail = () => {
                     fontFamily: 'Griun NltoTAENGGU, sans-serif',
                 }}
             >
-                <IconButton>
+                <IconButton onClick={handleClose}>
                     <CloseIcon
                         sx={{
                             cursor: 'pointer',
                             position: 'relative',
                             right: '-30px',
                         }}
-                        onClick={handleClose}
                     />
                 </IconButton>
                 <span style={{ fontSize: '1.4rem' }}>{formattedDate}</span>
-                <IconButton>
+                <IconButton onClick={handleCalendarClick}>
                     <CalendarIcon
                         sx={{
                             cursor: 'pointer',
                             position: 'relative',
                             left: '-30px',
                         }}
-                        onClick={handleCalendarClick}
                     />
                 </IconButton>
             </Stack>

@@ -133,14 +133,13 @@ const GuestFormAfter = () => {
                         fontFamily: 'Griun NltoTAENGGU, sans-serif',
                     }}
                 >
-                    <IconButton>
+                    <IconButton onClick={handleClose}>
                         <CloseIcon
                             sx={{
                                 cursor: 'pointer',
                                 position: 'relative',
                                 right: '-30px',
                             }}
-                            onClick={handleClose}
                         />
                     </IconButton>
                     <span style={{ fontSize: '1.4rem' }}>
