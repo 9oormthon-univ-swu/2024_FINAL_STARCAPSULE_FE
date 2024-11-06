@@ -51,39 +51,6 @@ const Guest = () => {
         }
     }, []);
 
-    const onMemoryClick = (memoryId, objectName) => {
-        console.log('Clicked memory ID:', memoryId); // 콘솔 출력 추가
-        const userId = param.userId;
-        const allowedDate = new Date('2024-12-31');
-        const currentDate = new Date();
-
-        if (currentDate < allowedDate) {
-            setSnackbarOpen({
-                text: '모든 추억은 12월 31일에 공개됩니다!',
-                severity: 'present',
-            });
-            return;
-        }
-
-        // object_name에 따라 페이지 이동을 다르게 설정
-        // const recordObjects = [
-        //     'christmas_tree',
-        //     'gingerbread_house',
-        //     'lamplight',
-        //     'santa_sleigh',
-        // ];
-        const guestObjects = ['moon', 'santa', 'snowflake', 'snowman'];
-
-        // if (recordObjects.includes(objectName)) {
-        //     navigate(`/recordafter/${userId}/${memoryId}`);
-        // } else
-        if (guestObjects.includes(objectName)) {
-            navigate(`/guestafter/${userId}/${memoryId}`);
-        } else {
-            console.error('Unknown object_name:', objectName);
-        }
-    };
-
     if (isLoading) return <Loading snow snowflake />;
     if (error) return <div>failed to load</div>;
 
@@ -131,7 +98,6 @@ const Guest = () => {
                     fetcher={snowballFetcher}
                     setServerTime={setServerTime}
                     owner={'guest'}
-                    onMemoryClick={onMemoryClick}
                 />
                 {daysLeft ? (
                     <StyledButton
