@@ -13,15 +13,15 @@ const contentstyle = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    minHeight: '100vh',
-    maxHeight: '100vh',
+    minHeight: '100dvh',
+    maxHeight: '100dvh',
     width: '100%',
     maxWidth: '600px',
     margin: '0 auto',
     padding: '0',
     boxSizing: 'border-box',
     position: 'relative',
-    overflowY: 'auto', // 화면 전체 스크롤 가능하게 설정
+    overflowY: 'auto',
     overflowX: 'hidden',
     background: 'linear-gradient(180deg, #0b0a1b 0%, #27405e 100%)',
     '&::-webkit-scrollbar': {
