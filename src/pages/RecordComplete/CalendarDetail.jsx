@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { Stack } from '@mui/material';
+import { IconButton, Stack } from '@mui/material';
 import RecordBoard from '../Record/components/RecordBoard';
 import ImageSaveButton from './ImageSaveButton';
 import html2canvas from 'html2canvas';
@@ -132,23 +132,27 @@ const CalendarDetail = () => {
                     fontFamily: 'Griun NltoTAENGGU, sans-serif',
                 }}
             >
-                <CloseIcon
-                    sx={{
-                        cursor: 'pointer',
-                        position: 'relative',
-                        right: '-30px',
-                    }}
-                    onClick={handleClose}
-                />
+                <IconButton>
+                    <CloseIcon
+                        sx={{
+                            cursor: 'pointer',
+                            position: 'relative',
+                            right: '-30px',
+                        }}
+                        onClick={handleClose}
+                    />
+                </IconButton>
                 <span style={{ fontSize: '1.4rem' }}>{formattedDate}</span>
-                <CalendarIcon
-                    sx={{
-                        cursor: 'pointer',
-                        position: 'relative',
-                        left: '-30px',
-                    }}
-                    onClick={handleCalendarClick}
-                />
+                <IconButton>
+                    <CalendarIcon
+                        sx={{
+                            cursor: 'pointer',
+                            position: 'relative',
+                            left: '-30px',
+                        }}
+                        onClick={handleCalendarClick}
+                    />
+                </IconButton>
             </Stack>
             <Stack
                 ref={captureRef}
