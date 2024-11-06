@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Stack } from '@mui/material';
+import { IconButton, Stack } from '@mui/material';
 import RecordBoard from '../Record/components/RecordBoard';
 import ImageSaveButton from './ImageSaveButton';
 import html2canvas from 'html2canvas';
@@ -144,14 +144,15 @@ const RecordFormAfter = () => {
                         fontFamily: 'Griun NltoTAENGGU, sans-serif',
                     }}
                 >
-                    <CloseIcon
-                        sx={{
-                            cursor: 'pointer',
-                            position: 'relative',
-                            right: '-30px',
-                        }}
-                        onClick={handleClose}
-                    />
+                    <IconButton onClick={handleClose}>
+                        <CloseIcon
+                            sx={{
+                                cursor: 'pointer',
+                                position: 'relative',
+                                right: '-30px',
+                            }}
+                        />
+                    </IconButton>
                     <span style={{ fontSize: '1.4rem' }}>
                         {memoryData
                             ? formatDate(memoryData.result.create_at)
@@ -161,7 +162,6 @@ const RecordFormAfter = () => {
                         title={
                             '스노우볼에 오늘의 추억이 보관되었어요!\nSNS에 링크를 공유해친구들에게 함께한 추억을 전달받아보세요☃️\n'
                         }
-                        url={`${import.meta.env.BASE_URL}/guest/${userId}`}
                         sx={{
                             cursor: 'pointer',
                             position: 'relative',

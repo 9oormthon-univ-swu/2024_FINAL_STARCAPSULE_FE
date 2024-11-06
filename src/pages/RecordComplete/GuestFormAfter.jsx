@@ -13,15 +13,15 @@ const contentstyle = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    minHeight: '100vh',
-    maxHeight: '100vh',
+    minHeight: '100dvh',
+    maxHeight: '100dvh',
     width: '100%',
     maxWidth: '600px',
     margin: '0 auto',
     padding: '0',
     boxSizing: 'border-box',
     position: 'relative',
-    overflowY: 'auto', // 화면 전체 스크롤 가능하게 설정
+    overflowY: 'auto',
     overflowX: 'hidden',
     background: 'linear-gradient(180deg, #0b0a1b 0%, #27405e 100%)',
     '&::-webkit-scrollbar': {
@@ -133,14 +133,13 @@ const GuestFormAfter = () => {
                         fontFamily: 'Griun NltoTAENGGU, sans-serif',
                     }}
                 >
-                    <IconButton>
+                    <IconButton onClick={handleClose}>
                         <CloseIcon
                             sx={{
                                 cursor: 'pointer',
                                 position: 'relative',
                                 right: '-30px',
                             }}
-                            onClick={handleClose}
                         />
                     </IconButton>
                     <span style={{ fontSize: '1.4rem' }}>
@@ -152,7 +151,6 @@ const GuestFormAfter = () => {
                         title={
                             '스노우볼에 오늘의 추억이 보관되었어요!\nSNS에 링크를 공유해친구들에게 함께한 추억을 전달받아보세요☃️\n'
                         }
-                        url={`${import.meta.env.BASE_URL}/guest/${userId}`}
                         sx={{
                             cursor: 'pointer',
                             position: 'relative',
