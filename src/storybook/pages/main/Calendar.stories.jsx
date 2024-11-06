@@ -59,8 +59,4 @@ const SomeWritten = {
     args: someWritten,
 };
 
-const LastDayWritten = {
-    args: lastDayWritten,
-};
-
-export { FirstDay, AllWritten, NoWritten, SomeWritten, LastDayWritten };
+export { FirstDay, AllWritten, NoWritten, SomeWritten };

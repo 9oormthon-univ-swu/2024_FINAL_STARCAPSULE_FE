@@ -18,8 +18,6 @@ const Calendar = ({ serverTime, hasWritten, year }) => {
 
     const recordable = isRecordable(year, serverTime);
 
-    const lastDayWritten = hasWritten[31];
-
     return (
         <Box
             sx={{
@@ -49,7 +47,6 @@ const Calendar = ({ serverTime, hasWritten, year }) => {
                             hasWritten={written}
                             date={index}
                             styleConfig={dayStyle[index]}
-                            lastDayWritten={lastDayWritten}
                             recordable={recordable}
                             year={year}
                         />
@@ -74,7 +71,6 @@ const Calendar = ({ serverTime, hasWritten, year }) => {
                         hasWritten={hasWritten[30]}
                         date={30}
                         styleConfig={dayStyle[30]}
-                        lastDayWritten={lastDayWritten}
                         recordable={recordable}
                         year={year}
                     />
@@ -82,10 +78,9 @@ const Calendar = ({ serverTime, hasWritten, year }) => {
                 <Grid2 size={6}>
                     <Day
                         time={today.format('YYYY-MM-DD')}
-                        hasWritten={hasWritten[31]}
+                        hasWritten={!recordable}
                         date={31}
                         styleConfig={dayStyle[31]}
-                        lastDayWritten={lastDayWritten}
                         recordable={recordable}
                         year={year}
                     />
