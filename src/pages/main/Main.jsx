@@ -149,7 +149,7 @@ const Main = () => {
             onError: (error) => {
                 if (error.status === 400) setHasWritten(true); // 이후에 다른 이름으로 다시 수정...
             },
-            onErrorRetry: false,
+            revalidateOnMount: true,
         }
     );
 

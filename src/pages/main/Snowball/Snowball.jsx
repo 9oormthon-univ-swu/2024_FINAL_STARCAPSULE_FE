@@ -48,12 +48,12 @@ const snowballObjectVariants = {
 };
 
 const memoryPosition = [
-    { bottom: '25%', right: '20%' },
-    { top: '42%', left: '9%' },
-    { top: '35.3%', right: '2.5%' },
-    { top: '32.5%', left: '38%' },
-    { top: '18%', left: '12%' },
-    { top: '11%', right: '18%' },
+    { bottom: '25%', right: '20%', zIndex: 56 },
+    { top: '42%', left: '9%', zIndex: 55 },
+    { top: '35.3%', right: '2.5%', zIndex: 54 },
+    { top: '32.5%', left: '38%', zIndex: 53 },
+    { top: '18%', left: '12%', zIndex: 52 },
+    { top: '11%', right: '18%', zIndex: 51 },
 ];
 
 const Snowball = ({ received, self, onMemoryClick, fetcher, owner }) => {
@@ -106,6 +106,9 @@ const Snowball = ({ received, self, onMemoryClick, fetcher, owner }) => {
                                         style={{
                                             position: 'absolute',
                                             ...memoryPosition[index],
+                                            minWidth: '5rem',
+                                            width: '27%',
+                                            maxWidth: '10rem',
                                         }}
                                         onClick={() =>
                                             onMemoryClick(
