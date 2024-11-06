@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import useAuthStore from 'stores/useAuthStore';
 
 const useAxiosWithAuth = () => {
-    const { token } = useAuthStore(); // Zustand에서 토큰 가져오기
+    // const { token } = useAuthStore(); // Zustand에서 토큰 가져오기
+    const token = localStorage.getItem('token') || null;
     const navigate = useNavigate();
     const { setSnackbarOpen } = useSnackbarStore();
 
