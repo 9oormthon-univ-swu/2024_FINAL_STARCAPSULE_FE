@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Stack } from '@mui/material';
+import { IconButton, Stack } from '@mui/material';
 import RecordBoard from '../Record/components/RecordBoard';
 import ImageSaveButton from './ImageSaveButton';
 import html2canvas from 'html2canvas';
-import { CloseIcon, ShareIcon } from '@/components/icons';
+import { CloseIcon } from '@/components/icons';
+import ImgShareButton from '@/components/ImgShareButton';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
@@ -132,14 +133,16 @@ const GuestFormAfter = () => {
                         fontFamily: 'Griun NltoTAENGGU, sans-serif',
                     }}
                 >
-                    <CloseIcon
-                        sx={{
-                            cursor: 'pointer',
-                            position: 'relative',
-                            right: '-30px',
-                        }}
-                        onClick={handleClose}
-                    />
+                    <IconButton>
+                        <CloseIcon
+                            sx={{
+                                cursor: 'pointer',
+                                position: 'relative',
+                                right: '-30px',
+                            }}
+                            onClick={handleClose}
+                        />
+                    </IconButton>
                     <span style={{ fontSize: '1.4rem' }}>
                         {memoryData
                             ? formatDate(memoryData.result.create_at)
