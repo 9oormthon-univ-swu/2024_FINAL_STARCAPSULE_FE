@@ -45,19 +45,10 @@ const triangleStyle = {
 };
 
 // 스타일 및 날짜 관련 설정 추상화
-const Day = ({
-    time,
-    hasWritten,
-    date,
-    styleConfig,
-    lastDayWritten,
-    recordable,
-    year,
-}) => {
+const Day = ({ time, hasWritten, date, styleConfig, recordable, year }) => {
     /*
         20xx-11-30 ~ 20xx-12-31: 작성 가능
-        20xx-12-31             : 작성 완료 시 캘린더를 볼 수 있음 
-        20xx-01-01 ~ 20xx-11-29: 작성 불가능, 작년 기록으로 조회해야함
+        20xx-12-31 ~ 20xx-11-29: 작성 불가능, 작년 기록으로 조회해야함
         
         작업자의 판단 : 구름톤 유니브 4기에서 작년도 기록을 확인 할 수 있도록 리펙토링 해야함.
         따라서 Calendar 컴포넌트에서 Day 컴포넌트로 몇 년도 캘린더인지 알 수 있는 year를 제공하는 것으로 처리함.
@@ -121,7 +112,7 @@ const Day = ({
     let imgDisplay = false;
     let triangleDisplay = false;
 
-    // 기록 작성 가능 기간: 11월 30일 ~ 12월 31일 (범위 내)
+    // 기록 작성 가능 기간: 11월 30일 ~ 12월 30일 (범위 내)
     if (recordable) {
         if (hasWritten) {
             // 작성 완료: 오늘과 지나간 날 동일 스타일
@@ -130,6 +121,7 @@ const Day = ({
             imgDisplay = true;
         } else if (currentDay.isSame(today, 'day')) {
             // 오늘 작성 안함
+            console.log('today:', date);
             style.border = `1px solid ${theme.palette.custom.white}`;
             style.backgroundColor = theme.palette.custom.white;
             color = theme.palette.custom.font;
@@ -144,7 +136,7 @@ const Day = ({
     }
 
     // 기록 공개 기간: 12월 31일 이후
-    if (recordable === false || lastDayWritten) {
+    if (recordable === false) {
         imgDisplay = true;
         if (hasWritten) {
             // 작성 완료

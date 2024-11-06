@@ -12,10 +12,7 @@ export const isRecordable = (year, time) => {
     const endOfPeriod = startOfPeriod.add(31, 'day').startOf('day');
     const today = dayjs(time).startOf('day');
 
-    if (
-        today.isBefore(endOfPeriod.add(1, 'day')) &&
-        today.isSameOrAfter(startOfPeriod)
-    )
+    if (today.isBefore(endOfPeriod) && today.isSameOrAfter(startOfPeriod))
         return true;
     return false;
 };

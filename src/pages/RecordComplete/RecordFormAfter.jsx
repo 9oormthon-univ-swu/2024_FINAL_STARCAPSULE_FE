@@ -3,7 +3,7 @@ import { Stack } from '@mui/material';
 import RecordBoard from '../Record/components/RecordBoard';
 import ImageSaveButton from './ImageSaveButton';
 import html2canvas from 'html2canvas';
-import { CloseIcon } from '@/components/icons';
+import { CloseIcon, ShareIcon } from '@/components/icons';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import { useParams, useNavigate } from 'react-router-dom';
 import ImgShareButton from '@/components/ImgShareButton';
