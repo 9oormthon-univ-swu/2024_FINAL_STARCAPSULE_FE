@@ -13,6 +13,7 @@ import axios from 'axios';
 import { useNicknameStore } from 'stores/useNicknameStore';
 import { Helmet } from 'react-helmet-async';
 import { useUserStore } from '@/stores/useUserStore';
+import { useSnackbarStore } from '@/stores/useSnackbarStore';
 
 const Guest = () => {
     const [serverTime, setServerTime] = useState('');
@@ -22,6 +23,8 @@ const Guest = () => {
     //스노우볼 주인의 닉네임 설정
     const { setNickname } = useNicknameStore();
     const { userId } = useUserStore();
+
+    const { setSnackbarOpen } = useSnackbarStore();
 
     const snowballFetcher = (url) =>
         axios.get(url).then((res) => res.data.result.paginationData);
@@ -41,10 +44,6 @@ const Guest = () => {
             },
         }
     );
-
-    const onRecordClick = () => {
-        navigate(`/guestrecord/${param.userId}`);
-    };
 
     useEffect(() => {
         if (param.userId === userId) {
@@ -98,6 +97,7 @@ const Guest = () => {
                     self={data?.selfCount}
                     fetcher={snowballFetcher}
                     setServerTime={setServerTime}
+                    owner={'guest'}
                 />
                 {daysLeft ? (
                     <StyledButton
@@ -109,30 +109,9 @@ const Guest = () => {
                         <Typography variant='title2'>추억 전달하기</Typography>
                     </StyledButton>
                 ) : (
-                    <Stack
-                        direction={'row'}
-                        justifyContent={'space-between'}
-                        spacing={'1rem'}
-                        sx={{
-                            flexGrow: 0,
-                        }}
-                    >
-                        <StyledButton
-                            variant={'contained'}
-                            sx={{ flexGrow: 1, width: 'fit-content' }}
-                        >
-                            <Typography variant='title2'>팀 소개</Typography>
-                        </StyledButton>
-                        <StyledButton
-                            onClick={onRecordClick}
-                            variant={'contained'}
-                            sx={{ flexGrow: 2, width: 'fit-content' }}
-                        >
-                            <Typography variant='title2'>
-                                추억 보관하기
-                            </Typography>
-                        </StyledButton>
-                    </Stack>
+                    <StyledButton variant={'contained'} sx={{ flexGrow: 0 }}>
+                        <Typography variant='title2'>팀 소개</Typography>
+                    </StyledButton>
                 )}
             </MainContainer>
         </Layout>
