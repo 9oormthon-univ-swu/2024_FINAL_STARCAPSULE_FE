@@ -1,4 +1,4 @@
-import Day from '@/pages/main/Calendar/Day';
+import Day from '@/pages/calendar/Day';
 import dayjs from 'dayjs';
 
 const meta = {

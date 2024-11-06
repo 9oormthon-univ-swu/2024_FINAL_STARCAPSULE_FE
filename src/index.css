@@ -10,6 +10,11 @@
     src: url('./assets/fonts/Griun_NoltoTAENGGU-Rg.ttf');
 }
 
+@font-face {
+    font-family: 'Rage';
+    src: url('./assets/fonts/RAGE_1.TTF') format('truetype');
+}
+
 body {
     background: linear-gradient(0deg, #0b0a1b 0%, #27405e 100%);
     min-height: 100dvh;

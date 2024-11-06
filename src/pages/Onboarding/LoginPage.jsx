@@ -22,7 +22,6 @@ const Container = styled.div`
 
 const Title = styled.h1`
     font-family: 'Rage';
-    src: url('/assets/fonts/RAGE_1.TTF') format('truetype');
     font-size: 76px;
     color: #fff;
     position: absolute;
@@ -34,7 +33,7 @@ const Title = styled.h1`
 
 const SubTitle = styled.p`
     font-size: 22px;
-    color: #fff;
+    color: #d5d1cd;
     position: absolute;
     top: 270px;
     transform: translateX(-50%);
@@ -145,20 +144,42 @@ const LoginPage = () => {
     };
 
     return (
-        <Container>
-            <Helmet>
-                <title>스노로그 - 로그인 화면</title>
-                <meta
-                    name='description'
-                    content='스노로그를 카카오 계정으로 로그인하세요.'
+        <>
+            <Container>
+                <Helmet>
+                    <title>스노로그 - 로그인 화면</title>
+                    <meta
+                        name='description'
+                        content='스노로그를 카카오 계정으로 로그인하세요.'
+                    />
+                    <meta property='og:title' content='SnowLog 로그인 화면' />
+                    <meta
+                        property='og:description'
+                        content='스노로그를 카카오 계정으로 로그인하세요.'
+                    />
+                    <meta property='og:type' content='website' />
+                </Helmet>
+
+                <Title>Snow Log</Title>
+                <SubTitle>
+                    추억을 보관하고 공유받아
+                    <br />
+                    나만의 스노우볼을 완성해요
+                </SubTitle>
+                <ShareButton onClick={handleShare}>
+                    <ShareIcon style={{ width: '33px', height: '33px' }} />
+                </ShareButton>
+                <KakaoButton onClick={handleButtonClick}>
+                    <KakaoIcon>
+                        <KakaoSVG />
+                    </KakaoIcon>
+                    카카오 로그인
+                </KakaoButton>
+                <BottomImage
+                    src={'/assets/background_bottom.svg'}
+                    alt='Snow background'
                 />
-                <meta property='og:title' content='SnowLog 로그인 화면' />
-                <meta
-                    property='og:description'
-                    content='스노로그를 카카오 계정으로 로그인하세요.'
-                />
-                <meta property='og:type' content='website' />
-            </Helmet>
+            </Container>
             <Snowfall
                 color='#ffffffaa'
                 snowflakeCount={70}
@@ -166,26 +187,7 @@ const LoginPage = () => {
                 wind={[0, 0.5]}
                 radius={[0.5, 3]}
             />
-            <Title>Snow Log</Title>
-            <SubTitle>
-                추억을 보관하고 공유받아
-                <br />
-                나만의 스노우볼을 완성해요
-            </SubTitle>
-            <ShareButton onClick={handleShare}>
-                <ShareIcon style={{ width: '33px', height: '33px' }} />
-            </ShareButton>
-            <KakaoButton onClick={handleButtonClick}>
-                <KakaoIcon>
-                    <KakaoSVG />
-                </KakaoIcon>
-                카카오 로그인
-            </KakaoButton>
-            <BottomImage
-                src={'/assets/background_bottom.svg'}
-                alt='Snow background'
-            />
-        </Container>
+        </>
     );
 };
 

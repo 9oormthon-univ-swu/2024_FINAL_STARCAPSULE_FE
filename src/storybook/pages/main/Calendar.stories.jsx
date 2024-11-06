@@ -1,4 +1,4 @@
-import Calendar from '@/pages/main/Calendar/Calendar';
+import Calendar from '@/pages/calendar/Calendar';
 
 const meta = {
     title: 'main/Calendar',
