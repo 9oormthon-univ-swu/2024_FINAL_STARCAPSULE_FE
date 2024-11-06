@@ -152,7 +152,6 @@ const GuestFormAfter = () => {
                         title={
                             '스노우볼에 오늘의 추억이 보관되었어요!\nSNS에 링크를 공유해친구들에게 함께한 추억을 전달받아보세요☃️\n'
                         }
-                        url={`${import.meta.env.BASE_URL}/guest/${userId}`}
                         sx={{
                             cursor: 'pointer',
                             position: 'relative',
