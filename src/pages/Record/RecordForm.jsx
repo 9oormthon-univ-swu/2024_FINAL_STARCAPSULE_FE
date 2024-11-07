@@ -194,7 +194,7 @@ const contentstyle = {
     margin: '0 auto',
     padding: '1.5rem',
     boxSizing: 'border-box',
-    minHeight: '100vh',
+    minHeight: '100dvh',
 };
 
 const modaltextstyle1 = {

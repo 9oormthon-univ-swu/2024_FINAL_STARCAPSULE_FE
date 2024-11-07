@@ -1,4 +1,4 @@
-import { Button, Stack, Typography } from '@mui/material';
+import { Button, Stack, Typography, Container } from '@mui/material';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import Layout from '@/layouts/Layout';
@@ -23,31 +23,50 @@ const Error404 = () => {
     return (
         <Layout sx={{ overflow: 'hidden' }} snow>
             <ErrorContainer>
-                <Stack>
-                    <Typography variant='Heading1'>PAGE NOT FOUND</Typography>
+                <Stack sx={errorContent}>
+                    <Stack>
+                        <Typography variant='Heading1'>
+                            PAGE NOT FOUND
+                        </Typography>
+                    </Stack>
+                    <ErrorFavicon src={'/FaviconError.svg'}></ErrorFavicon>
+                    <Stack>
+                        <Typography
+                            variant='subtitle1'
+                            sx={{
+                                textAlign: 'center',
+                                color: 'custom.grey',
+                                lineHeight: '2rem',
+                                wordWrap: 'break-word',
+                                alignSelf: 'stretch',
+                            }}
+                        >
+                            <p>존재하지 않는 주소를 입력하셨거나</p>
+                            <p>요청하신 페이지의 주소가 변경, 삭제되어</p>
+                            <p>찾을 수 없어요.</p>
+                        </Typography>
+                    </Stack>
                 </Stack>
-                <ErrorFavicon src={'/FaviconError.svg'}></ErrorFavicon>
-                <Stack>
-                    <Typography
-                        variant='subtitle1'
-                        sx={{
-                            color: 'custom.grey',
-                            lineHeight: '2rem',
-                        }}
+                <Stack
+                    sx={{
+                        width: '100%',
+                        height: '100%',
+                    }}
+                >
+                    <Button
+                        variant='contained'
+                        sx={formbtn}
+                        onClick={handleGoMain}
                     >
-                        존재하지 않는 주소를 입력하셨거나
-                        <br />
-                        요청하신 페이지의 주소가 변경, 삭제되어
-                        <br />
-                        찾을 수 없어요.
-                    </Typography>
+                        <Typography
+                            variant='title2'
+                            sx={{ color: 'custom.white' }}
+                        >
+                            스노우볼로 가기
+                        </Typography>
+                    </Button>
                 </Stack>
             </ErrorContainer>
-            <Button variant='contained' sx={formbtn} onClick={handleGoMain}>
-                <Typography variant='title2' sx={{ color: 'custom.white' }}>
-                    스노우볼로 가기
-                </Typography>
-            </Button>
         </Layout>
     );
 };
@@ -55,33 +74,38 @@ export default Error404;
 
 const ErrorContainer = styled.div`
     display: flex;
-    width: 80%;
-    maxwidth: 400px;
-    min-height: 90vh;
+    height: 100%;
+    min-height: 100dvh;
+    padding: 0rem 2.25rem;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    text-align: center;
-    margin: 0 auto;
-    overflow: hidden;
+    gap: 1rem;
 `;
 
 const ErrorFavicon = styled.img`
     width: 5.4rem;
     height: 6.25rem;
-    padding: 1rem;
 `;
 
-const formbtn = {
-    width: '100%',
-    height: '3.875rem',
-    padding: '1.25rem 6.8125rem',
+const errorContent = {
+    height: '75dvh',
+    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    gap: '1rem',
+    padding: '0rem 2.25rem',
+};
+
+const formbtn = {
+    display: 'flex',
+    height: '3.875rem',
+    width: '100%',
     borderRadius: '1.25rem',
     color: 'custom.white',
     background: '#7F5539',
     boxShadow: '0px 0px 4px 0px rgba(40, 40, 40, 0.20)',
-    fontFamily: 'Noto Sans',
-    whiteSpace: 'nowrap',
+    padding: '1.25rem 6.8125rem',
+    alignItems: 'center',
+    gap: '0.625rem',
+    flexShrink: '0',
 };
