@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 const Error500 = () => {
     const navigate = useNavigate();
 
-    //뒤로 돌아가는 버튼
     const handleGoBack = () => {
         navigate(-1);
     };
