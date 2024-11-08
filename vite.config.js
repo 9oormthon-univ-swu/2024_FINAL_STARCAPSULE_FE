@@ -4,10 +4,41 @@ import jsconfigPaths from 'vite-jsconfig-paths';
 import path from 'path';
 import svgr from 'vite-plugin-svgr';
 import eslintPlugin from 'vite-plugin-eslint';
+import { VitePWA } from 'vite-plugin-pwa';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-    plugins: [react(), jsconfigPaths(), svgr(), eslintPlugin()],
+    plugins: [
+        react(),
+        jsconfigPaths(),
+        svgr(),
+        eslintPlugin(),
+        VitePWA({
+            registerType: 'autoUpdate',
+            includeAssets: ['favicon.ico', 'robots.txt'],
+            manifest: {
+                name: '스노로그',
+                short_name: 'SNOWLOG',
+                description: '오늘의 질문에 답변해보세요!',
+                theme_color: '#132034',
+                icons: [
+                    {
+                        src: 'ios/192.png',
+                        sizes: '192x192',
+                        type: 'image/png',
+                    },
+                    {
+                        src: 'ios/512.png',
+                        sizes: '512x512',
+                        type: 'image/png',
+                    },
+                ],
+            },
+            devOptions: {
+                enabled: true,
+            },
+        }),
+    ],
     server: {
         port: 3000,
         open: true,

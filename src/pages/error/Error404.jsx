@@ -14,7 +14,6 @@ const Error404 = () => {
         if (params.userId != null) navigate(`/main/${userId}`);
     });
 
-    //메인으로 돌아가는 버튼
     const handleGoMain = () => {
         navigate(`/main/${userId}`);
         console.log(userId);

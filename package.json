@@ -33,6 +33,7 @@
         "swr": "^2.2.5",
         "vite": "^5.4.9",
         "vite-jsconfig-paths": "^2.0.1",
+        "vite-plugin-pwa": "^0.20.5",
         "vite-plugin-svgr": "^4.2.0",
         "vitest": "^2.1.2",
         "zustand": "^5.0.0-rc.2"
