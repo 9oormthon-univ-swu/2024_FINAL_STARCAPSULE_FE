@@ -99,7 +99,7 @@ const Main = () => {
 
     const param = useParams();
     const { setUserId, hasWritten } = useUserStore();
-    const { login } = useAuthStore();
+    const { login, isLoggedIn } = useAuthStore();
 
     useEffect(() => {
         const lastPopupCheckedDate = localStorage.getItem('popupCheckedDate');
@@ -143,13 +143,18 @@ const Main = () => {
             });
 
     const { data: questionData, isLoading: isQuestionLoading } = useSWR(
-        '/api/question',
+        isLoggedIn ? '/api/question' : null,
         questionFetcher,
         {
             onError: (error) => {
-                if (error.status === 400) setHasWritten(true); // 이후에 다른 이름으로 다시 수정...
+                if (error.status === 400) setHasWritten(true);
             },
             revalidateOnMount: true,
+            revalidateOnFocus: false,
+            revalidateOnReconnect: false,
+            onErrorRetry: (error) => {
+                if (error.status === 404 || error.status === 400) return;
+            },
         }
     );
 
@@ -162,12 +167,6 @@ const Main = () => {
             },
         }
     );
-
-    // 닉네임을 로컬 스토리지에 저장하는 useEffect
-    useEffect(() => {
-        if (data && data.snowballName) {
-        }
-    }, [data]);
 
     // 닉네임 수정
     const setSnowballName = async (newName) => {
