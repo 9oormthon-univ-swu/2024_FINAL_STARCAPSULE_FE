@@ -118,7 +118,7 @@ const GuestFormAfter = () => {
                 />
                 <meta property='og:type' content='website' />
             </Helmet>
-            <Stack sx={contentstyle}>
+            <Stack id='capture-container' sx={contentstyle}>
                 <Stack
                     direction='row'
                     alignItems='center'
@@ -160,7 +160,6 @@ const GuestFormAfter = () => {
                 </Stack>
 
                 <Stack
-                    id='capture-container'
                     ref={captureRef}
                     sx={{
                         width: '100%',
