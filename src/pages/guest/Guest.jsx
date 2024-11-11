@@ -40,7 +40,7 @@ const Guest = () => {
         infoFetcher,
         {
             onError: (error) => {
-                console.error(error);
+               // console.error(error);
             },
         }
     );

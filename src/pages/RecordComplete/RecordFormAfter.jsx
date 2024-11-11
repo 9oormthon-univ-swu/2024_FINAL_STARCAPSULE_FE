@@ -45,7 +45,7 @@ const RecordFormAfter = () => {
         const fetchMemoryData = async () => {
             try {
                 if (!memoryId || !userId) {
-                    console.error('User ID or Memory ID is missing');
+                    //console.error('User ID or Memory ID is missing');
                     return;
                 }
 
@@ -57,10 +57,10 @@ const RecordFormAfter = () => {
                         },
                     }
                 );
-                console.log('Fetched Memory Data:', response.data);
+                //console.log('Fetched Memory Data:', response.data);
                 setMemoryData(response.data);
             } catch (error) {
-                console.error('Error fetching memory details:', error);
+                //console.error('Error fetching memory details:', error);
             }
         };
 
@@ -87,7 +87,7 @@ const RecordFormAfter = () => {
                     link.click();
                 })
                 .catch((error) => {
-                    console.error('이미지 저장 중 오류 발생:', error);
+                    //console.error('이미지 저장 중 오류 발생:', error);
                 });
         }
     };

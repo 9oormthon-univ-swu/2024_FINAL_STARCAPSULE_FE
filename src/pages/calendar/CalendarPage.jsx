@@ -24,7 +24,7 @@ const CalendarPage = () => {
 
     const { data, isLoading } = useSWR(`/calendar/data`, fetcher, {
         onError: (error) => {
-            console.error(error);
+            //console.error(error);
         },
     });
 
