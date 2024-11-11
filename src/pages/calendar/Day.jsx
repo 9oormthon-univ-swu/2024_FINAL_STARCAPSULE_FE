@@ -121,7 +121,7 @@ const Day = ({ time, hasWritten, date, styleConfig, recordable, year }) => {
             imgDisplay = true;
         } else if (currentDay.isSame(today, 'day')) {
             // 오늘 작성 안함
-            console.log('today:', date);
+            //console.log('today:', date);
             style.border = `1px solid ${theme.palette.custom.white}`;
             style.backgroundColor = theme.palette.custom.white;
             color = theme.palette.custom.font;
