@@ -11,12 +11,12 @@ import DDayTitle from './DDayTitle';
 import MainTitle from './MainTitle';
 import Snowball from './Snowball/Snowball';
 import Layout from '@/layouts/Layout';
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 import { CalendarIcon } from '@/components/icons';
 import PopupPage from '../Onboarding/PopupPage';
 import { getDaysBeforeOpen } from '@/utils/getDaysBeforeOpen';
 import PopupAfter from '../Onboarding/PopupAfter';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { useUserStore } from 'stores/useUserStore';
 import { saveTokenFromURL } from '@/utils/saveTokenFromURL';
 import useAuthStore from 'stores/useAuthStore';
@@ -60,7 +60,7 @@ const PopupContainer = styled('div')(() => ({
 
 export const StyledButton = styled(Button)(({ theme }) => ({
     boxSizing: 'border-box',
-    width: '100%',
+    width: '100% !important',
     height: '3.875rem',
     backgroundColor: theme.palette.custom.button1,
     color: theme.palette.custom.white,
@@ -79,6 +79,9 @@ const Main = () => {
     const [isPopupOpen, setPopupOpen] = useState(false); // 팝업이 기본적으로 비활성화 상태로 시작
     const [showLottie, setShowLottie] = useState(false); // 로티 애니메이션도 비활성화 상태로 시작
     const [serverTime, setServerTime] = useState('');
+    const [searchParams] = useSearchParams();
+    const page = parseInt(searchParams.get('page') || 1);
+
     const navigate = useNavigate();
 
     const successMessage = '스노우볼 이름이 변경되었어요.';
@@ -96,7 +99,7 @@ const Main = () => {
 
     const param = useParams();
     const { setUserId, hasWritten } = useUserStore();
-    const { login } = useAuthStore();
+    const { login, isLoggedIn } = useAuthStore();
 
     useEffect(() => {
         const lastPopupCheckedDate = localStorage.getItem('popupCheckedDate');
@@ -119,7 +122,10 @@ const Main = () => {
         axiosInstance.get(url).then((res) => res.data.result.paginationData);
 
     const infoFetcher = (url) =>
-        axiosInstance.get(url).then((res) => res.data.result);
+        axiosInstance.get(url).then((res) => {
+            localStorage.setItem('snowballName', res.data.result.snowballName);
+            return res.data.result;
+        });
 
     const questionFetcher = (url) =>
         axiosInstance
@@ -137,33 +143,32 @@ const Main = () => {
             });
 
     const { data: questionData, isLoading: isQuestionLoading } = useSWR(
-        '/api/question',
+        isLoggedIn ? '/api/question' : null,
         questionFetcher,
         {
             onError: (error) => {
-                if (error.status === 400) setHasWritten(true); // 이후에 다른 이름으로 다시 수정...
+                if (error.status === 400) setHasWritten(true);
             },
-            onErrorRetry: false,
+            revalidateOnMount: true,
+            revalidateOnFocus: false,
+            revalidateOnReconnect: false,
+            onErrorRetry: (error) => {
+                if (error.status === 404 || error.status === 400) return;
+            },
         }
     );
 
-    const { data, isLoading, error, mutate } = useSWR(
+    const { data, isLoading, error } = useSWR(
         `${import.meta.env.VITE_API_URL}/api/capsule/${param.userId}/info`,
         infoFetcher,
         {
             onError: (error) => {
-                console.error(error);
+                //console.error(error);
             },
         }
     );
 
-    // 닉네임을 로컬 스토리지에 저장하는 useEffect
-    useEffect(() => {
-        if (data && data.snowballName) {
-            localStorage.setItem('snowballName', data.snowballName);
-        }
-    }, [data]);
-
+    // 닉네임 수정
     const setSnowballName = async (newName) => {
         await axiosInstance
             .post(`/api/capsule/changeSnowballName`, null, {
@@ -176,16 +181,21 @@ const Main = () => {
                     text: successMessage,
                     severity: 'success',
                 });
-                mutate();
+                mutate(
+                    `${import.meta.env.VITE_API_URL}/api/capsule/${param.userId}/pagination?page=${page}`
+                );
+                mutate(
+                    `${import.meta.env.VITE_API_URL}/api/capsule/${param.userId}/info`
+                );
             });
     };
 
     const daysLeft = getDaysBeforeOpen(serverTime);
 
     const onMemoryClick = (memoryId, objectName) => {
-        console.log('Clicked memory ID:', memoryId); // 콘솔 출력 추가
+        //console.log('Clicked memory ID:', memoryId); // 콘솔 출력 추가
         const userId = param.userId;
-        const allowedDate = new Date('2024-12-31');
+        const allowedDate = new Date('2024-10-31');
         const currentDate = new Date();
 
         if (currentDate < allowedDate) {
@@ -210,12 +220,8 @@ const Main = () => {
         } else if (guestObjects.includes(objectName)) {
             navigate(`/guestafter/${userId}/${memoryId}`);
         } else {
-            console.error('Unknown object_name:', objectName);
+            //console.error('Unknown object_name:', objectName);
         }
-    };
-
-    const onRecordClick = () => {
-        navigate(`/record/${param.userId}`);
     };
 
     const handleLottieClick = () => {
@@ -298,6 +304,7 @@ const Main = () => {
                         self={data?.selfCount}
                         onMemoryClick={onMemoryClick}
                         fetcher={snowballFetcher}
+                        owner={'main'}
                     />
                     {daysLeft ? (
                         <StyledButton
@@ -312,33 +319,12 @@ const Main = () => {
                             </Typography>
                         </StyledButton>
                     ) : (
-                        <Stack
-                            direction={'row'}
-                            justifyContent={'space-between'}
-                            spacing={'1rem'}
-                            sx={{
-                                flexGrow: 0,
-                            }}
+                        <StyledButton
+                            variant={'contained'}
+                            sx={{ flexGrow: 0, width: 'fit-content' }}
                         >
-                            <StyledButton
-                                variant={'contained'}
-                                sx={{ flexGrow: 1, width: 'fit-content' }}
-                            >
-                                <Typography variant='title2'>
-                                    팀 소개
-                                </Typography>
-                            </StyledButton>
-                            <StyledButton
-                                variant={'contained'}
-                                sx={{ flexGrow: 2, width: 'fit-content' }}
-                                onClick={onRecordClick}
-                                disabled={hasWritten}
-                            >
-                                <Typography variant='title2'>
-                                    추억 보관하기
-                                </Typography>
-                            </StyledButton>
-                        </Stack>
+                            <Typography variant='title2'>팀 소개</Typography>
+                        </StyledButton>
                     )}
                 </MainContainer>
                 {recordable && !isQuestionLoading && (
@@ -350,9 +336,9 @@ const Main = () => {
                         date={questionData.date}
                     />
                 )}
-                {(!recordable || !daysLeft) &&
+                {!recordable &&
                     (showLottie ? (
-                        // 기록이 불가능한 경우 또는 31일 당일에 Lottie 또는 PopupAfter를 보여줌
+                        // 기록이 불가능한 경우 로티 애니메이션을 보여줌
                         <Portal
                             container={document.getElementById(
                                 'capture-container'

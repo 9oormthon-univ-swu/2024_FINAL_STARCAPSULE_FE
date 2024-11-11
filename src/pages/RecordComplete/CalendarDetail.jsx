@@ -1,10 +1,9 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { Stack } from '@mui/material';
+import { IconButton, Stack } from '@mui/material';
 import RecordBoard from '../Record/components/RecordBoard';
 import ImageSaveButton from './ImageSaveButton';
 import html2canvas from 'html2canvas';
-import { CloseIcon } from '@/components/icons';
-import { CalendarIcon } from '@/components/icons';
+import { CloseIcon, CalendarIcon } from '@/components/icons';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
 
@@ -46,9 +45,9 @@ const CalendarDetail = () => {
     useEffect(() => {
         if (location.state?.data) {
             setMemoryData(location.state.data);
-            console.log('Fetched data in CalendarDetail:', location.state.data);
+            //console.log('Fetched data in CalendarDetail:', location.state.data);
         } else {
-            console.log('No data found in location.state');
+            //console.log('No data found in location.state');
         }
     }, [location.state]);
 
@@ -72,7 +71,7 @@ const CalendarDetail = () => {
                     link.click();
                 })
                 .catch((error) => {
-                    console.error('이미지 저장 중 오류 발생:', error);
+                    //console.error('이미지 저장 중 오류 발생:', error);
                 });
         }
     };
@@ -132,23 +131,25 @@ const CalendarDetail = () => {
                     fontFamily: 'Griun NltoTAENGGU, sans-serif',
                 }}
             >
-                <CloseIcon
-                    sx={{
-                        cursor: 'pointer',
-                        position: 'relative',
-                        right: '-30px',
-                    }}
-                    onClick={handleClose}
-                />
+                <IconButton onClick={handleClose}>
+                    <CloseIcon
+                        sx={{
+                            cursor: 'pointer',
+                            position: 'relative',
+                            right: '-30px',
+                        }}
+                    />
+                </IconButton>
                 <span style={{ fontSize: '1.4rem' }}>{formattedDate}</span>
-                <CalendarIcon
-                    sx={{
-                        cursor: 'pointer',
-                        position: 'relative',
-                        left: '-30px',
-                    }}
-                    onClick={handleCalendarClick}
-                />
+                <IconButton onClick={handleCalendarClick}>
+                    <CalendarIcon
+                        sx={{
+                            cursor: 'pointer',
+                            position: 'relative',
+                            left: '-30px',
+                        }}
+                    />
+                </IconButton>
             </Stack>
             <Stack
                 ref={captureRef}

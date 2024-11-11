@@ -1,4 +1,4 @@
-import Calendar from '@/pages/main/Calendar/Calendar';
+import Calendar from '@/pages/calendar/Calendar';
 
 const meta = {
     title: 'main/Calendar',
@@ -59,8 +59,4 @@ const SomeWritten = {
     args: someWritten,
 };
 
-const LastDayWritten = {
-    args: lastDayWritten,
-};
-
-export { FirstDay, AllWritten, NoWritten, SomeWritten, LastDayWritten };
+export { FirstDay, AllWritten, NoWritten, SomeWritten };

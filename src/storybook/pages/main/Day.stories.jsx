@@ -1,6 +1,5 @@
-import Day from '@/pages/main/Calendar/Day';
+import Day from '@/pages/calendar/Day';
 import dayjs from 'dayjs';
-import { LastDayWritten } from './Calendar.stories';
 
 const meta = {
     title: 'main/Day',
@@ -54,7 +53,6 @@ export const TodayNotWritten = () => (
         hasWritten={false}
         date={1}
         styleConfig={styleConfig}
-        lastDayWritten={false}
         recordable={true}
         year={2024}
     />
@@ -66,7 +64,6 @@ export const TodayWritten = () => (
         hasWritten={true}
         date={1}
         styleConfig={styleConfig}
-        lastDayWritten={false}
         recordable={true}
         year={2024}
     />
@@ -78,7 +75,6 @@ export const Future = () => (
         hasWritten={false}
         date={1}
         styleConfig={styleConfig}
-        lastDayWritten={false}
         recordable={true}
         year={2024}
     />
@@ -90,7 +86,6 @@ export const PastNotWritten = () => (
         hasWritten={false}
         date={1}
         styleConfig={styleConfig}
-        lastDayWritten={false}
         recordable={true}
         year={2024}
     />
@@ -102,7 +97,6 @@ export const PastWritten = () => (
         hasWritten={true}
         date={1}
         styleConfig={styleConfig}
-        lastDayWritten={false}
         recordable={true}
         year={2024}
     />
@@ -114,7 +108,6 @@ export const AfterEventNotWritten = () => (
         hasWritten={false}
         date={1}
         styleConfig={styleConfig}
-        lastDayWritten={false}
         recordable={false}
         year={2024}
     />
@@ -126,7 +119,6 @@ export const AfterEventWritten = () => (
         hasWritten={true}
         date={1}
         styleConfig={styleConfig}
-        lastDayWritten={false}
         recordable={false}
         year={2024}
     />
@@ -138,7 +130,6 @@ export const MiddleAligned = () => (
         hasWritten={false}
         date={1}
         styleConfig={{ ...styleConfig, position: 'middle' }}
-        lastDayWritten={false}
         recordable={true}
         year={2024}
     />
@@ -150,7 +141,6 @@ export const RightAligned = () => (
         hasWritten={false}
         date={1}
         styleConfig={{ ...styleConfig, position: 'right', variant: 'number2' }}
-        lastDayWritten={false}
         recordable={true}
         year={2024}
     />

@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Stack } from '@mui/material';
+import { IconButton, Stack } from '@mui/material';
 import RecordBoard from '../Record/components/RecordBoard';
 import ImageSaveButton from './ImageSaveButton';
 import html2canvas from 'html2canvas';
-import { CloseIcon } from '@/components/icons';
+import { CloseIcon, ShareIcon } from '@/components/icons';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import { useParams, useNavigate } from 'react-router-dom';
 import ImgShareButton from '@/components/ImgShareButton';
@@ -45,7 +45,7 @@ const RecordFormAfter = () => {
         const fetchMemoryData = async () => {
             try {
                 if (!memoryId || !userId) {
-                    console.error('User ID or Memory ID is missing');
+                    //console.error('User ID or Memory ID is missing');
                     return;
                 }
 
@@ -57,10 +57,10 @@ const RecordFormAfter = () => {
                         },
                     }
                 );
-                console.log('Fetched Memory Data:', response.data);
+                //console.log('Fetched Memory Data:', response.data);
                 setMemoryData(response.data);
             } catch (error) {
-                console.error('Error fetching memory details:', error);
+                //console.error('Error fetching memory details:', error);
             }
         };
 
@@ -87,7 +87,7 @@ const RecordFormAfter = () => {
                     link.click();
                 })
                 .catch((error) => {
-                    console.error('이미지 저장 중 오류 발생:', error);
+                    //console.error('이미지 저장 중 오류 발생:', error);
                 });
         }
     };
@@ -144,14 +144,15 @@ const RecordFormAfter = () => {
                         fontFamily: 'Griun NltoTAENGGU, sans-serif',
                     }}
                 >
-                    <CloseIcon
-                        sx={{
-                            cursor: 'pointer',
-                            position: 'relative',
-                            right: '-30px',
-                        }}
-                        onClick={handleClose}
-                    />
+                    <IconButton onClick={handleClose}>
+                        <CloseIcon
+                            sx={{
+                                cursor: 'pointer',
+                                position: 'relative',
+                                right: '-30px',
+                            }}
+                        />
+                    </IconButton>
                     <span style={{ fontSize: '1.4rem' }}>
                         {memoryData
                             ? formatDate(memoryData.result.create_at)
@@ -161,7 +162,6 @@ const RecordFormAfter = () => {
                         title={
                             '스노우볼에 오늘의 추억이 보관되었어요!\nSNS에 링크를 공유해친구들에게 함께한 추억을 전달받아보세요☃️\n'
                         }
-                        url={`${import.meta.env.BASE_URL}/guest/${userId}`}
                         sx={{
                             cursor: 'pointer',
                             position: 'relative',

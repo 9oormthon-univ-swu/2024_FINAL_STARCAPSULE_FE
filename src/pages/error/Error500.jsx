@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 const Error500 = () => {
     const navigate = useNavigate();
 
-    //뒤로 돌아가는 버튼
     const handleGoBack = () => {
         navigate(-1);
     };
@@ -45,7 +44,7 @@ const ErrorContainer = styled.div`
     display: flex;
     width: 80%;
     maxwidth: 400px;
-    min-height: 90vh;
+    min-height: 90dvh;
     flex-direction: column;
     justify-content: center;
     align-items: center;

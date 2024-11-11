@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import Calendar from './Calendar/Calendar';
+import Calendar from './Calendar';
 import Layout from '@/layouts/Layout';
 import { Button, IconButton, Stack, Typography } from '@mui/material';
 import useSWR from 'swr';
@@ -24,7 +24,7 @@ const CalendarPage = () => {
 
     const { data, isLoading } = useSWR(`/calendar/data`, fetcher, {
         onError: (error) => {
-            console.error(error);
+            //console.error(error);
         },
     });
 
@@ -49,6 +49,7 @@ const CalendarPage = () => {
         <Layout
             snow
             overlay
+            snowflake
             sx={{
                 py: 3,
             }}
