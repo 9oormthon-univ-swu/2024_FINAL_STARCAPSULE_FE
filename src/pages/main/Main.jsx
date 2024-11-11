@@ -163,7 +163,7 @@ const Main = () => {
         infoFetcher,
         {
             onError: (error) => {
-                console.error(error);
+                //console.error(error);
             },
         }
     );
@@ -193,7 +193,7 @@ const Main = () => {
     const daysLeft = getDaysBeforeOpen(serverTime);
 
     const onMemoryClick = (memoryId, objectName) => {
-        console.log('Clicked memory ID:', memoryId); // 콘솔 출력 추가
+        //console.log('Clicked memory ID:', memoryId); // 콘솔 출력 추가
         const userId = param.userId;
         const allowedDate = new Date('2024-10-31');
         const currentDate = new Date();
@@ -220,7 +220,7 @@ const Main = () => {
         } else if (guestObjects.includes(objectName)) {
             navigate(`/guestafter/${userId}/${memoryId}`);
         } else {
-            console.error('Unknown object_name:', objectName);
+            //console.error('Unknown object_name:', objectName);
         }
     };
 

@@ -68,7 +68,7 @@ const Day = ({ time, hasWritten, date, styleConfig, recordable, year }) => {
         const token = localStorage.getItem('token');
         const apiUrl = `${import.meta.env.VITE_API_URL}/calendar/memories/${dateInFormat}`;
 
-        console.log(`${dateInFormat} clicked`);
+        //console.log(`${dateInFormat} clicked`);
         try {
             const response = await axios.get(apiUrl, {
                 headers: {
@@ -99,7 +99,7 @@ const Day = ({ time, hasWritten, date, styleConfig, recordable, year }) => {
                 });
             }
         } catch (error) {
-            console.error('Error fetching memory data:', error);
+            //console.error('Error fetching memory data:', error);
         }
     };
 

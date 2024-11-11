@@ -45,9 +45,9 @@ const CalendarDetail = () => {
     useEffect(() => {
         if (location.state?.data) {
             setMemoryData(location.state.data);
-            console.log('Fetched data in CalendarDetail:', location.state.data);
+            //console.log('Fetched data in CalendarDetail:', location.state.data);
         } else {
-            console.log('No data found in location.state');
+            //console.log('No data found in location.state');
         }
     }, [location.state]);
 
@@ -71,7 +71,7 @@ const CalendarDetail = () => {
                     link.click();
                 })
                 .catch((error) => {
-                    console.error('이미지 저장 중 오류 발생:', error);
+                    //console.error('이미지 저장 중 오류 발생:', error);
                 });
         }
     };
