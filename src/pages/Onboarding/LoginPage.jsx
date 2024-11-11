@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Snowfall from 'react-snowfall';
 import ShareIcon from '../../components/icons/ShareIcon';
 import { Helmet } from 'react-helmet-async';
+import useAuthStore from '@/stores/useAuthStore';
 
 const Container = styled.div`
     display: flex;
@@ -112,17 +113,13 @@ const BottomImage = styled.img`
 
 const LoginPage = () => {
     const navigate = useNavigate();
-
-    const getTokenFromURL = () => {
-        const token = new URL(window.location.href).searchParams.get('token');
-        if (token) {
-            localStorage.setItem('token', token);
-            navigate('/main');
-        }
-    };
+    const { isLoggedIn } = useAuthStore();
 
     useEffect(() => {
-        getTokenFromURL();
+        const userId = localStorage.getItem('userId');
+        if (isLoggedIn && userId) {
+            navigate(`/main/${userId}`);
+        }
     }, []);
 
     const handleShare = async () => {
@@ -139,8 +136,7 @@ const LoginPage = () => {
     };
 
     const handleButtonClick = () => {
-        window.location.href =
-            'http://34.64.85.134:8888/oauth2/authorization/kakao';
+        window.location.href = `${import.meta.env}/oauth2/authorization/kakao`;
     };
 
     return (
