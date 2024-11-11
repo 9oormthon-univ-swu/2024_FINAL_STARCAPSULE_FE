@@ -136,8 +136,7 @@ const LoginPage = () => {
     };
 
     const handleButtonClick = () => {
-        window.location.href =
-            'http://34.64.85.134:8888/oauth2/authorization/kakao';
+        window.location.href = `${import.meta.env}/oauth2/authorization/kakao`;
     };
 
     return (
