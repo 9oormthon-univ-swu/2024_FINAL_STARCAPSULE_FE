@@ -31,7 +31,7 @@ const Input = styled('input')(({ theme }) => ({
     ...theme.typography.Heading1,
 }));
 
-const MainTitle = ({ snowball, setSnowballName, onError }) => {
+const MainTitle = ({ snowball, setSnowballName, onError, serverTime }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [inputWidth, setInputWidth] = useState(0);
     const inputRef = useRef(null);
@@ -109,8 +109,6 @@ const MainTitle = ({ snowball, setSnowballName, onError }) => {
                     minHeight: '4.25rem',
                 }}
             >
-                {/* {currSnowball.length > 5 ? <br /> : ' '} */}
-
                 <StyledTypography variant='Heading1'>
                     {isEditing ? (
                         <Input

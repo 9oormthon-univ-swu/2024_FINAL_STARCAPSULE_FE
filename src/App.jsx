@@ -32,6 +32,7 @@ import { AnimatePresence } from 'framer-motion';
 import Error404 from './pages/error/Error404';
 import Error500 from './pages/error/Error500';
 import ErrorBoundary from './pages/error/ErrorBoundary';
+import { isRecordable } from './utils/isRecordable';
 
 function AnimationRoutes() {
     const location = useLocation();

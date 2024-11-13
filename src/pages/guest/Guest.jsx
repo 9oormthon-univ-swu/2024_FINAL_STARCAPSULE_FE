@@ -8,12 +8,11 @@ import Loading from '@/components/Loading';
 import { StyledButton, MainContainer } from '@/pages/main/Main';
 import Title from './Title';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getDaysBeforeOpen } from '@/utils/getDaysBeforeOpen';
 import axios from 'axios';
 import { useNicknameStore } from 'stores/useNicknameStore';
 import { Helmet } from 'react-helmet-async';
 import { useUserStore } from '@/stores/useUserStore';
-import { useSnackbarStore } from '@/stores/useSnackbarStore';
+import { isRecordable } from '@/utils/isRecordable';
 
 const Guest = () => {
     const [serverTime, setServerTime] = useState('');
@@ -24,10 +23,14 @@ const Guest = () => {
     const { setNickname } = useNicknameStore();
     const { userId } = useUserStore();
 
-    const { setSnackbarOpen } = useSnackbarStore();
-
     const snowballFetcher = (url) =>
-        axios.get(url).then((res) => res.data.result.paginationData);
+        axios
+            .get(url)
+            .then((res) => res.data.result.paginationData)
+            .then((data) => {
+                setServerTime(data.server_time);
+                return data;
+            });
 
     const infoFetcher = (url) =>
         axios.get(url).then((res) => {
@@ -40,7 +43,7 @@ const Guest = () => {
         infoFetcher,
         {
             onError: (error) => {
-               // console.error(error);
+                // console.error(error);
             },
         }
     );
@@ -54,7 +57,7 @@ const Guest = () => {
     if (isLoading) return <Loading snow snowflake />;
     if (error) return <div>failed to load</div>;
 
-    const daysLeft = getDaysBeforeOpen(serverTime);
+    const recordable = isRecordable(2024, serverTime);
 
     return (
         <Layout sx={{ overflow: 'hidden' }} snow snowflake>
@@ -86,7 +89,7 @@ const Guest = () => {
                         justifyContent={'space-between'}
                         alignItems={'center'}
                     >
-                        <DDayTitle />
+                        <DDayTitle serverTime={serverTime} />
                     </Stack>
                     <Title nickname={data?.snowballName ?? ''} />
                 </Stack>
@@ -99,7 +102,7 @@ const Guest = () => {
                     setServerTime={setServerTime}
                     owner={'guest'}
                 />
-                {daysLeft ? (
+                {recordable ? (
                     <StyledButton
                         variant={'contained'}
                         sx={{
