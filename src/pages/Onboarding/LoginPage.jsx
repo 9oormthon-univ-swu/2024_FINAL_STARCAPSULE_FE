@@ -5,6 +5,7 @@ import Snowfall from 'react-snowfall';
 import ShareIcon from '../../components/icons/ShareIcon';
 import { Helmet } from 'react-helmet-async';
 import useAuthStore from '@/stores/useAuthStore';
+import { useSnackbarStore } from '@/stores/useSnackbarStore';
 
 const Container = styled.div`
     display: flex;
@@ -115,6 +116,8 @@ const LoginPage = () => {
     const navigate = useNavigate();
     const { isLoggedIn } = useAuthStore();
 
+    const { setSnackbarOpen } = useSnackbarStore();
+
     useEffect(() => {
         const userId = localStorage.getItem('userId');
         if (isLoggedIn && userId) {
@@ -127,11 +130,13 @@ const LoginPage = () => {
             await navigator.share({
                 title: 'Snow Log',
                 text: '스노우볼에 오늘의 추억을 공유해보세요!',
-                url: 'http://localhost:3000',
+                url: `${import.meta.env.VITE_BASE_URL}`,
             });
-            console.log('공유되었습니다!');
         } catch (err) {
-            console.error('공유 실패:', err);
+            setSnackbarOpen({
+                message: '공유하기를 지원하지 않는 브라우저입니다.',
+                severity: 'error',
+            });
         }
     };
 

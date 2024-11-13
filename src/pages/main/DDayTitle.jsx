@@ -8,8 +8,8 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
     height: '1.5rem',
 }));
 
-const DDayTitle = () => {
-    const daysLeft = getDaysBeforeOpen();
+const DDayTitle = ({ serverTime }) => {
+    const daysLeft = getDaysBeforeOpen(2024, serverTime);
 
     if (daysLeft) {
         return (

@@ -4,17 +4,10 @@ import dayjs from 'dayjs';
 import { dayStyle } from './Calendar.style';
 import Masonry from '@mui/lab/Masonry';
 import { Box, Grid2 } from '@mui/material';
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
-import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import { isRecordable } from '@/utils/isRecordable';
 
-dayjs.extend(isSameOrAfter);
-dayjs.extend(utc);
-dayjs.extend(timezone);
-
 const Calendar = ({ serverTime, hasWritten, year }) => {
-    const today = dayjs(serverTime);
+    const today = dayjs.utc(serverTime).tz('Asia/Seoul');
 
     const recordable = isRecordable(year, serverTime);
 

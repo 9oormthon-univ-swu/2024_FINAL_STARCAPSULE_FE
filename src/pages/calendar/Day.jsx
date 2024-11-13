@@ -58,8 +58,10 @@ const Day = ({ time, hasWritten, date, styleConfig, recordable, year }) => {
     const { userId } = useParams();
     const { setSnackbarOpen } = useSnackbarStore();
 
-    const today = dayjs(time).startOf('day');
-    const startOfPeriod = dayjs(`${year}-11-30`).startOf('day');
+    const startOfPeriod = dayjs(
+        `${year}-${import.meta.env.VITE_RECORD_START_DATE}`
+    ).startOf('day');
+    const today = dayjs.utc(time).tz('Asia/Seoul');
     const currentDay = startOfPeriod.add(date, 'day').startOf('day');
 
     const dateInFormat = currentDay.format('YYYY-MM-DD');
