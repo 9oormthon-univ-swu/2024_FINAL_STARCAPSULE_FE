@@ -5,9 +5,6 @@ const getDaysBeforeOpen = (year, todayISOString) => {
     const today = dayjs(todayISOString);
 
     const recordable = isRecordable(year, todayISOString);
-    console.log('daysLeft:', recordable);
-    console.log('daysLeft:', year);
-    console.log('daysLeft:', todayISOString);
 
     const endDate = dayjs(`${year}-${import.meta.env.VITE_RECORD_END_DATE}`);
 
