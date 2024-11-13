@@ -3,11 +3,10 @@ import styled from 'styled-components';
 import PopupButton from './PopupButton';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Portal } from '@mui/material';
-import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
-import { useUserStore } from '@/stores/useUserStore';
+import dayjs from 'dayjs';
 
 const PopupWrapper = styled.div`
-    display: ${(props) => (props.isOpen ? 'flex' : 'none')};
+    display: ${(props) => props.is_open};
     justify-content: center;
     align-items: center;
     position: fixed;
@@ -112,10 +111,12 @@ const ButtonWrapper = styled.div`
     position: relative;
 `;
 
-const PopupPage = ({ isOpen, onClose, question, date }) => {
+const PopupPage = ({ isOpen, onClose, question, serverTime }) => {
     const [isChecked, setIsChecked] = useState(false);
     const { userId } = useParams();
     const navigate = useNavigate();
+
+    const date = dayjs.utc(serverTime).tz('Asia/Seoul').format('MM월 DD일');
 
     useEffect(() => {
         const lastPopupCheckedDate = localStorage.getItem('popupCheckedDate');
@@ -149,7 +150,7 @@ const PopupPage = ({ isOpen, onClose, question, date }) => {
 
     return (
         <Portal container={document.getElementById('capture-container')}>
-            <PopupWrapper isOpen={isOpen}>
+            <PopupWrapper is_open={isOpen ? 'flex' : 'none'}>
                 <PopupContent>
                     <SvgWrapper>
                         <img src='/assets/Popup.svg' alt='popup' />

@@ -199,10 +199,8 @@ const Main = () => {
     const onMemoryClick = (memoryId, objectName) => {
         //console.log('Clicked memory ID:', memoryId); // 콘솔 출력 추가
         const userId = param.userId;
-        const allowedDate = new Date('2024-10-31');
-        const currentDate = new Date();
 
-        if (currentDate < allowedDate) {
+        if (recordable) {
             setSnackbarOpen({
                 text: '모든 추억은 12월 31일에 공개됩니다!',
                 severity: 'present',
@@ -329,12 +327,12 @@ const Main = () => {
                         </StyledButton>
                     )}
                 </MainContainer>
-                {recordable && !isQuestionLoading && (
+                {recordable && !isQuestionLoading && !hasWritten && (
                     <PopupPage
-                        isOpen={isPopupOpen && !hasWritten}
+                        isOpen={isPopupOpen}
                         onClose={() => setPopupOpen(false)}
                         question={questionData.question}
-                        date={questionData.date}
+                        serverTime={serverTime}
                     />
                 )}
                 {!recordable &&

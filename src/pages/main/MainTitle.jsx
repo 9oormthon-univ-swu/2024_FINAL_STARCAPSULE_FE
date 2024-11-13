@@ -94,7 +94,6 @@ const MainTitle = ({ snowball, setSnowballName, onError, serverTime }) => {
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
-            console.log('enter');
             onConfirmClick();
         } else if (event.key === 'Escape') {
             openModal();
