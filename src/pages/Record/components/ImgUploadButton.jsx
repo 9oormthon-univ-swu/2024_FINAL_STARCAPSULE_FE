@@ -6,6 +6,7 @@ const ImgUploadButton = ({ setImage, handleSetImage, id }) => {
     const [selectedImage, setSelectedImage] = useState(null);
     const fileInputRef = useRef(null);
 
+    // 이미지 업로드 핸들러
     const handleImageUpload = (e) => {
         const file = e.target.files[0] && e.target.files[0];
         if (file) {
@@ -19,6 +20,7 @@ const ImgUploadButton = ({ setImage, handleSetImage, id }) => {
         }
     };
 
+    // 이미지를 클릭했을 때 파일 선택 창을 여는 함수
     const handleImageClick = () => {
         fileInputRef.current.click();
     };

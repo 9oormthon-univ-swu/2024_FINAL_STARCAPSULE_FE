@@ -33,7 +33,6 @@ const RecordForm = () => {
 
     // 업로드 파일 관리
     const handleSetImage = (image) => {
-        console.log('Setting image:', image);
         setImage(image);
     };
 
@@ -50,11 +49,6 @@ const RecordForm = () => {
         const formData = new FormData();
         if (image) formData.append('image', image);
 
-        console.log('image:', image);
-        console.log('title:', title || 'Empty');
-        console.log('answer:', answer || 'Empty');
-        console.log('object_name:', shapeName || 'Empty');
-
         await axiosInstance
             .post(`/api/my_memory/write`, formData, {
                 headers: {
@@ -68,7 +62,6 @@ const RecordForm = () => {
             })
             .then(() => {
                 navigate(`/mycomplete/${userId}`);
-                console.log('Memory successfully uploaded');
             })
             .catch((error) => {
                 console.log('Error:', error);

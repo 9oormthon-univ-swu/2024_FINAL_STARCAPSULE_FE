@@ -43,7 +43,7 @@ const ImgShareButton = ({ title, url }) => {
                 });
             }
         } catch (error) {
-            console.error('공유 실패:', error);
+            //console.error('공유 실패:', error);
             setSnackbarOpen({
                 text: '공유에 실패했습니다. 다시 시도해 주세요.',
                 severity: 'error',

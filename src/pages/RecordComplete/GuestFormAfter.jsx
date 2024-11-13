@@ -118,7 +118,7 @@ const GuestFormAfter = () => {
                 />
                 <meta property='og:type' content='website' />
             </Helmet>
-            <Stack id='capture-container' sx={contentstyle}>
+            <Stack sx={contentstyle}>
                 <Stack
                     direction='row'
                     alignItems='center'

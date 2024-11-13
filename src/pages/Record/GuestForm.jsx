@@ -58,7 +58,6 @@ const GuestForm = () => {
         // FormData 객체를 사용해 이미지 파일과 텍스트 데이터를 서버로 전송
         const formData = new FormData();
         if (uploadedImage) formData.append('image', uploadedImage);
-
         await axiosInstance
             .post(`/api/share_memory/${params.userId}/write`, formData, {
                 headers: {
@@ -76,7 +75,7 @@ const GuestForm = () => {
                 navigate(`/complete/${params.userId}`);
             })
             .catch((error) => {
-                console.log(error);
+                // console.log(error);
                 setSnackbarOpen({
                     severity: 'error',
                     text: '추억 전달에 실패했어요. 다시 시도해주세요.',

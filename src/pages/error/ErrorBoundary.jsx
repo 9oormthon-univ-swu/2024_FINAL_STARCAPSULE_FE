@@ -17,6 +17,7 @@ class ErrorBoundary extends Component {
 
     render() {
         if (this.state.hasError) {
+            // 500 에러 페이지로 리다이렉트
             return <Navigate to='/500' replace />;
         }
         return this.props.children;
