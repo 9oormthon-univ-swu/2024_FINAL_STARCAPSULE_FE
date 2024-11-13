@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 const RecordUpper = () => {
     const navigate = useNavigate();
 
-    //이전페이지로 이동
     const handleGoBack = () => {
         navigate(-1);
     };

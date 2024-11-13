@@ -12,10 +12,12 @@ const RecordBoard = ({
     handleSetImage,
     selectedImage,
     fileInputRef,
-    isReadOnly = false, // 읽기 전용 모드 여부
+    isReadOnly = false,
 }) => {
     return (
-        <div style={RecordBgstyle} className="record-board"> {/* 클래스 추가 */}
+        <div style={RecordBgstyle} className='record-board'>
+            {' '}
+            {}
             <Stack sx={imgcontainer}>
                 {isReadOnly && image_url ? (
                     <img
@@ -32,11 +34,10 @@ const RecordBoard = ({
                     />
                 ) : null}
             </Stack>
-
             <Stack>
                 {isReadOnly ? (
                     <div style={{ ...Textfieldstyle, ...readOnlyTextStyle }}>
-                        {content || "추억이 없습니다."}
+                        {content || '추억이 없습니다.'}
                     </div>
                 ) : (
                     <textarea
@@ -45,11 +46,10 @@ const RecordBoard = ({
                         onChange={handleTextChange}
                         placeholder={showplaceholder}
                         style={Textfieldstyle}
-                        rows={Math.max(4, answer.split('\n').length)} // 내용에 따라 행이 늘어나도록 설정
+                        rows={Math.max(4, answer.split('\n').length)}
                     />
                 )}
             </Stack>
-
             {!isReadOnly && (
                 <Stack>
                     <div style={{ textAlign: 'right' }}>
@@ -79,8 +79,8 @@ const Textfieldstyle = {
 };
 
 const readOnlyTextStyle = {
-    whiteSpace: 'pre-wrap',   // 줄바꿈을 허용
-    wordWrap: 'break-word',   // 단어가 길 경우 줄바꿈
+    whiteSpace: 'pre-wrap',
+    wordWrap: 'break-word',
 };
 
 const imgcontainer = {
