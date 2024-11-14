@@ -40,12 +40,7 @@ const Guest = () => {
 
     const { data, isLoading, error } = useSWR(
         `${import.meta.env.VITE_API_URL}/api/capsule/${param.userId}/info`,
-        infoFetcher,
-        {
-            onError: (error) => {
-                // console.error(error);
-            },
-        }
+        infoFetcher
     );
 
     useEffect(() => {
@@ -107,6 +102,9 @@ const Guest = () => {
                         variant={'contained'}
                         sx={{
                             flexGrow: 0,
+                        }}
+                        onClick={() => {
+                            navigate(`/guestrecord/${param.userId}`);
                         }}
                     >
                         <Typography variant='title2'>추억 전달하기</Typography>
