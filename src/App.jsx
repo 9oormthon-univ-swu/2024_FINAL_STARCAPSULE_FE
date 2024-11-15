@@ -32,6 +32,7 @@ import { AnimatePresence } from 'framer-motion';
 import Error404 from './pages/error/Error404';
 import Error500 from './pages/error/Error500';
 import ErrorBoundary from './pages/error/ErrorBoundary';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 
 function AnimationRoutes() {
     const location = useLocation();
@@ -87,6 +88,7 @@ function App() {
     dayjs.extend(utc);
     dayjs.extend(timezone);
     dayjs.tz.setDefault('Asia/Seoul');
+    dayjs.extend(isSameOrAfter);
 
     const { open, text, severity, setClose } = useSnackbarStore();
     return (

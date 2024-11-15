@@ -147,6 +147,7 @@ const CalendarDetail = () => {
                             cursor: 'pointer',
                             position: 'relative',
                             left: '-30px',
+                            color: 'white'
                         }}
                     />
                 </IconButton>

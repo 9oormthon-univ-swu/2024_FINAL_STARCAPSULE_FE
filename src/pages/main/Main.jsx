@@ -79,6 +79,7 @@ const Main = () => {
     const [isPopupOpen, setPopupOpen] = useState(false); // 팝업이 기본적으로 비활성화 상태로 시작
     const [showLottie, setShowLottie] = useState(false); // 로티 애니메이션도 비활성화 상태로 시작
     const [serverTime, setServerTime] = useState('');
+    const [recordable, setRecordable] = useState(false);
     const [searchParams] = useSearchParams();
     const page = parseInt(searchParams.get('page') || 1);
 
@@ -119,7 +120,13 @@ const Main = () => {
     const axiosInstance = useAxiosWithAuth();
 
     const snowballFetcher = (url) =>
-        axiosInstance.get(url).then((res) => res.data.result.paginationData);
+        axiosInstance.get(url).then((res) => {
+            setServerTime(res.data.result.paginationData.server_time);
+            setRecordable(
+                isRecordable(2024, res.data.result.paginationData.server_time)
+            );
+            return res.data.result.paginationData;
+        });
 
     const infoFetcher = (url) =>
         axiosInstance.get(url).then((res) => {
@@ -134,7 +141,6 @@ const Main = () => {
             .then((data) => {
                 const dateObj = dayjs(data.date);
                 const formattedDate = dateObj.format(`MM월 DD일`);
-                setServerTime(data.date);
                 localStorage.setItem('dailyQuestion', data.question);
                 localStorage.setItem('dailyDate', formattedDate);
                 localStorage.setItem('dailyQuestionId', data.id);
@@ -147,7 +153,8 @@ const Main = () => {
         questionFetcher,
         {
             onError: (error) => {
-                if (error.status === 400) setHasWritten(true);
+                if (error.status === 400 || error.status === 404)
+                    setHasWritten(true);
             },
             revalidateOnMount: true,
             revalidateOnFocus: false,
@@ -190,15 +197,12 @@ const Main = () => {
             });
     };
 
-    const daysLeft = getDaysBeforeOpen(serverTime);
-
     const onMemoryClick = (memoryId, objectName) => {
         //console.log('Clicked memory ID:', memoryId); // 콘솔 출력 추가
         const userId = param.userId;
-        const allowedDate = new Date('2024-10-31');
-        const currentDate = new Date();
+        
 
-        if (currentDate < allowedDate) {
+        if (recordable) {
             setSnackbarOpen({
                 text: '모든 추억은 12월 31일에 공개됩니다!',
                 severity: 'present',
@@ -228,8 +232,6 @@ const Main = () => {
         setShowLottie(false); //로티 클릭하면 팝업 나타남
         setPopupOpen(true);
     };
-
-    const recordable = isRecordable(2024, serverTime);
 
     if (error) return <div>failed to load</div>;
 
@@ -273,7 +275,7 @@ const Main = () => {
                             justifyContent={'space-between'}
                             alignItems={'center'}
                         >
-                            <DDayTitle />
+                            <DDayTitle serverTime={serverTime} />
                             <Stack direction={'row'} spacing={2}>
                                 <StyledIconButton
                                     onClick={() =>
@@ -306,7 +308,7 @@ const Main = () => {
                         fetcher={snowballFetcher}
                         owner={'main'}
                     />
-                    {daysLeft ? (
+                    {recordable ? (
                         <StyledButton
                             variant={'contained'}
                             sx={{
@@ -327,13 +329,12 @@ const Main = () => {
                         </StyledButton>
                     )}
                 </MainContainer>
-                {recordable && !isQuestionLoading && (
-                    // 기록이 가능한 경우 팝업 페이지를 보여줌(12월 31일 포함)
+                {recordable && !isQuestionLoading && !hasWritten && (
                     <PopupPage
-                        isOpen={isPopupOpen && !hasWritten}
+                        isOpen={isPopupOpen}
                         onClose={() => setPopupOpen(false)}
                         question={questionData.question}
-                        date={questionData.date}
+                        serverTime={serverTime}
                     />
                 )}
                 {!recordable &&

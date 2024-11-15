@@ -184,7 +184,7 @@ const SnowballPage = () => {
                 <Button onClick={handleCreateSnowball}>스노우볼 만들기</Button>
 
                 <BottomImage
-                    src={'/assets/snowball_bottom.svg'}
+                    src={'/assets/background_bottom.svg'}
                     alt='Snow background'
                 />
             </Container>

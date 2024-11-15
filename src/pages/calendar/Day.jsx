@@ -9,6 +9,7 @@ import timezone from 'dayjs/plugin/timezone';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import { useParams } from 'react-router-dom';
 import { useSnackbarStore } from '@/stores/useSnackbarStore';
+import { isRecordable } from '@/utils/isRecordable';
 
 // 플러그인 활성화
 dayjs.extend(isSameOrAfter);
@@ -58,8 +59,10 @@ const Day = ({ time, hasWritten, date, styleConfig, recordable, year }) => {
     const { userId } = useParams();
     const { setSnackbarOpen } = useSnackbarStore();
 
-    const today = dayjs(time).startOf('day');
-    const startOfPeriod = dayjs(`${year}-11-30`).startOf('day');
+    const startOfPeriod = dayjs(
+        `${year}-${import.meta.env.VITE_RECORD_START_DATE}`
+    ).startOf('day');
+    const today = dayjs.utc(time).tz('Asia/Seoul');
     const currentDay = startOfPeriod.add(date, 'day').startOf('day');
 
     const dateInFormat = currentDay.format('YYYY-MM-DD');
@@ -67,16 +70,24 @@ const Day = ({ time, hasWritten, date, styleConfig, recordable, year }) => {
     const handleClick = async () => {
         const token = localStorage.getItem('token');
         const apiUrl = `${import.meta.env.VITE_API_URL}/calendar/memories/${dateInFormat}`;
-
-        //console.log(`${dateInFormat} clicked`);
+    
+        
+        if (!recordable) {
+            setSnackbarOpen({
+                text: '모든 추억은 12월 31일에 공개됩니다!',
+                severity: 'present',
+            });
+            return; 
+        }
+    
         try {
             const response = await axios.get(apiUrl, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             });
-
-            // 데이터 확인 후 이동 또는 알림 처리 my_memory, memorie가 둘다 없을 경우
+    
+            // 데이터 확인 후 이동 또는 알림 처리
             if (
                 (response.data.result &&
                     response.data.result.my_memory &&
