@@ -199,6 +199,7 @@ const Main = () => {
     const onMemoryClick = (memoryId, objectName) => {
         //console.log('Clicked memory ID:', memoryId); // 콘솔 출력 추가
         const userId = param.userId;
+        
 
         if (recordable) {
             setSnackbarOpen({
