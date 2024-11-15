@@ -58,12 +58,6 @@ const GuestForm = () => {
         // FormData 객체를 사용해 이미지 파일과 텍스트 데이터를 서버로 전송
         const formData = new FormData();
         if (uploadedImage) formData.append('image', uploadedImage);
-
-        //console.log('answer:', answer);
-        //console.log('image:', uploadedImage);
-        //console.log('writer:', writer);
-       // console.log('object_name:', object_name);
-
         await axiosInstance
             .post(`/api/share_memory/${params.userId}/write`, formData, {
                 headers: {
@@ -81,7 +75,7 @@ const GuestForm = () => {
                 navigate(`/complete/${params.userId}`);
             })
             .catch((error) => {
-               // console.log(error);
+                // console.log(error);
                 setSnackbarOpen({
                     severity: 'error',
                     text: '추억 전달에 실패했어요. 다시 시도해주세요.',
@@ -94,11 +88,9 @@ const GuestForm = () => {
         setOpenModal(false);
     };
 
-    // 폼 제출 처리 함수
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        // 폼 데이터 확인
         if (!object_name) {
             setSnackbarOpen({
                 severity: 'warning',
@@ -113,9 +105,7 @@ const GuestForm = () => {
             });
             recordBoardRef.current.scrollIntoView({ behavior: 'smooth' });
             return;
-        }
-        //장식이 없을 경우
-        else if (!writer) {
+        } else if (!writer) {
             setSnackbarOpen({
                 severity: 'warning',
                 text: '이름을 작성해주세요.',
@@ -124,7 +114,6 @@ const GuestForm = () => {
             return;
         }
 
-        //answer 있을 경우 모달 오픈
         setOpenModal(true);
     };
 
@@ -201,7 +190,6 @@ const GuestForm = () => {
 
 export default GuestForm;
 
-//Design
 const contentstyle = {
     display: 'flex',
     alignItems: 'center',
