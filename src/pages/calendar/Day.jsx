@@ -72,7 +72,7 @@ const Day = ({ time, hasWritten, date, styleConfig, recordable, year }) => {
         const apiUrl = `${import.meta.env.VITE_API_URL}/calendar/memories/${dateInFormat}`;
     
         
-        if (recordable) {
+        if (!isRecordable(year, time)) {
             setSnackbarOpen({
                 text: '모든 추억은 12월 31일에 공개됩니다!',
                 severity: 'present',
