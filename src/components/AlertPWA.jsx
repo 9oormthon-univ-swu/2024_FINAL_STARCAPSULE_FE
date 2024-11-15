@@ -35,8 +35,8 @@ const modalDescriptionStyle = {
 };
 
 const ModalDescriptionIcon = styled(Box)(() => ({
-    width: '3.5rem',
-    height: '3.5rem',
+    width: '4rem',
+    height: '4rem',
     borderRadius: '0.6rem',
     boxShadow: '0px 0px 3.797px 0px rgba(40, 40, 40, 0.20)',
     border: '0.19px solid var(--grey, #D5D1CD)',
