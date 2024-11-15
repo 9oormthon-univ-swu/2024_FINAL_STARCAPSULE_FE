@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import { CloseIcon } from './icons';
 
-// mui의 반응형 적용을 위해 그대로 두었음
+// mui의 반응형 적용을 위해 그대로 둠
 const modalContainerStyle = {
     position: 'absolute',
     top: '50%',
@@ -50,15 +50,15 @@ const ModalButton = styled(Button)(({ theme }) => ({
     width: 'fit-content',
     padding: '1rem 2.55rem',
     justifyContent: 'center',
-    alignitems: 'center',
+    alignItems: 'center',
     borderRadius: '1.25rem',
     backgroundColor: theme.palette.custom.button1,
     marginTop: '1.25rem',
 }));
 
-const AlertPWA = ({ open, onClose, onButtonClick, ...props }) => {
+const AlertPWA = ({ open, onClose, onButtonClick }) => {
     return (
-        <Modal open={open} onClose={onClose} {...props}>
+        <Modal open={open} onClose={onClose}>
             <Stack
                 direction={'column'}
                 justifyContent={'center'}
