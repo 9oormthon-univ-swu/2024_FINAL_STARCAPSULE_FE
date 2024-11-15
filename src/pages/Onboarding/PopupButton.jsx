@@ -1,15 +1,16 @@
 import React from 'react';
 import { Button } from '@mui/material';
 
-const PopupButton = ({ onClick, text }) => { 
+const PopupButton = ({ onClick, text, disabled }) => {
     return (
         <Button
             variant='contained'
-            type='submit' 
+            type='submit'
             sx={formbtn}
             onClick={onClick}
+            disabled={disabled}
         >
-            {text} 
+            {text}
         </Button>
     );
 };

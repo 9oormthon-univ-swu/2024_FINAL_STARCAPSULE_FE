@@ -4,6 +4,7 @@ import PopupButton from './PopupButton';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Portal } from '@mui/material';
 import dayjs from 'dayjs';
+import { useUserStore } from '@/stores/useUserStore';
 
 const PopupWrapper = styled.div`
     display: ${(props) => props.is_open};
@@ -118,6 +119,8 @@ const PopupPage = ({ isOpen, onClose, question, serverTime }) => {
 
     const date = dayjs.utc(serverTime).tz('Asia/Seoul').format('MM월 DD일');
 
+    const { hasWritten } = useUserStore();
+
     useEffect(() => {
         const lastPopupCheckedDate = localStorage.getItem('popupCheckedDate');
         const today = new Date().toLocaleDateString('ko-KR');
@@ -223,6 +226,7 @@ const PopupPage = ({ isOpen, onClose, question, serverTime }) => {
                     </CheckboxWrapper>
                     <ButtonWrapper>
                         <PopupButton
+                            disabled={hasWritten}
                             text='추억 기록하기'
                             onClick={handleButtonClick}
                         />
