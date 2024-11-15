@@ -33,6 +33,7 @@ import Error404 from './pages/error/Error404';
 import Error500 from './pages/error/Error500';
 import ErrorBoundary from './pages/error/ErrorBoundary';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import './firebase-message-sw.js'
 
 function AnimationRoutes() {
     const location = useLocation();
