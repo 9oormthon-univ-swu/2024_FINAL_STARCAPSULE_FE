@@ -153,7 +153,8 @@ const Main = () => {
         questionFetcher,
         {
             onError: (error) => {
-                if (error.status === 400) setHasWritten(true);
+                if (error.status === 400 || error.status === 404)
+                    setHasWritten(true);
             },
             revalidateOnMount: true,
             revalidateOnFocus: false,
