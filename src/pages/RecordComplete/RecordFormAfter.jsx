@@ -129,7 +129,7 @@ const RecordFormAfter = () => {
                 />
                 <meta property='og:type' content='website' />
             </Helmet>
-            <Stack id='capture-container' sx={contentstyle}>
+            <Stack sx={contentstyle}>
                 <Stack
                     direction='row'
                     alignItems='center'
@@ -171,6 +171,7 @@ const RecordFormAfter = () => {
                 </Stack>
 
                 <Stack
+                    id='capture-container'
                     ref={captureRef}
                     sx={{
                         width: '100%',
