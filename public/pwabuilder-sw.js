@@ -47,30 +47,3 @@ self.addEventListener('fetch', (event) => {
         );
     }
 });
-
-self.addEventListener('push', (event) => {
-    const data = event.data.json();
-    const options = {
-        body: data.body,
-        icon: '192.png',
-        badge: '192.png',
-    };
-    event.waitUntil(self.registration.showNotification(data.title, options));
-});
-
-//콘솔창에 넣기_1
-if ('Notification' in window && 'serviceWorker' in navigator) {
-    Notification.requestPermission().then((permission) => {
-        if (permission === 'granted') {
-            console.log('Notification permission granted.');
-        }
-    });
-}
-
-//콘솔창에 넣기_2
-navigator.serviceWorker.ready.then((registration) => {
-    registration.showNotification('테스트 알림 제목', {
-        body: '이것은 푸시 알림 테스트입니다.',
-        icon: './ios/192.png',
-    });
-});
