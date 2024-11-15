@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Stack, Typography } from '@mui/material';
 import RecordBoard from './components/RecordBoard';
 import RecordSaveButton from './components/RecordSaveButton';
@@ -11,6 +11,7 @@ import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import Layout from '@/layouts/Layout';
 import { Helmet } from 'react-helmet-async';
 import { useSnackbarStore } from '@/stores/useSnackbarStore';
+import { useUserStore } from '@/stores/useUserStore';
 
 const RecordForm = () => {
     const navigate = useNavigate();
@@ -30,6 +31,14 @@ const RecordForm = () => {
     const selectObjectRef = useRef(null); // SelectSnowballObject 참조
 
     const goToMain = () => navigate(`/main/${userId}?page=1`);
+
+    const { hasWritten } = useUserStore();
+
+    useEffect(() => {
+        if (hasWritten) {
+            navigate(`/main/${userId}?page=1`);
+        }
+    }, []);
 
     // 업로드 파일 관리
     const handleSetImage = (image) => {
@@ -53,7 +62,7 @@ const RecordForm = () => {
         //console.log('image:', image);
         //console.log('title:', title || 'Empty');
         //console.log('answer:', answer || 'Empty');
-       // console.log('object_name:', shapeName || 'Empty');
+        // console.log('object_name:', shapeName || 'Empty');
 
         await axiosInstance
             .post(`/api/my_memory/write`, formData, {
