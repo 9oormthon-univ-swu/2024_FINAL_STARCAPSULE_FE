@@ -26,7 +26,7 @@ const modalContainerStyle = {
 
 const modalDescriptionStyle = {
     display: 'flex',
-    width: '100%',
+    w: '100%',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
