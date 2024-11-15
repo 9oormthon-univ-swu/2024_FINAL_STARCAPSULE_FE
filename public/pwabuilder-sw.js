@@ -71,6 +71,6 @@ if ('Notification' in window && 'serviceWorker' in navigator) {
 navigator.serviceWorker.ready.then((registration) => {
     registration.showNotification('테스트 알림 제목', {
         body: '이것은 푸시 알림 테스트입니다.',
-        icon: './ios/192.png',
+        icon: '/icon-192x192.png',
     });
 });

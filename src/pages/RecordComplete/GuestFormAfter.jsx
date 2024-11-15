@@ -48,7 +48,7 @@ const GuestFormAfter = () => {
                 const response = await axiosInstance.get(requestUrl);
                 setMemoryData(response.data);
             } catch (error) {
-                console.error('Error fetching memory details:', error);
+                //console.error('Error fetching memory details:', error);
             }
         };
         fetchMemoryData();
@@ -73,7 +73,7 @@ const GuestFormAfter = () => {
                     link.click();
                 })
                 .catch((error) => {
-                    console.error('이미지 저장 중 오류 발생:', error);
+                    //console.error('이미지 저장 중 오류 발생:', error);
                 });
         }
     };
@@ -160,6 +160,7 @@ const GuestFormAfter = () => {
                 </Stack>
 
                 <Stack
+                    id='capture-container'
                     ref={captureRef}
                     sx={{
                         width: '100%',
