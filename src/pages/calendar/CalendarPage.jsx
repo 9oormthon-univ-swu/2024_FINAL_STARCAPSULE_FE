@@ -99,7 +99,7 @@ const CalendarPage = () => {
                     spacing={0.75}
                 >
                     <Typography variant='title3' sx={{ color: 'custom.grey' }}>
-                        {!isRecordable(data.server_time) || lastDayWritten
+                        {!isRecordable(year, data.server_time)
                             ? '추억이 완성되었습니다!'
                             : '당신의 추억을 모아 퍼즐을 완성하세요!'}
                     </Typography>
