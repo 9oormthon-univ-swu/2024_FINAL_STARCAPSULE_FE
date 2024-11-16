@@ -43,7 +43,7 @@ const CalendarPage = () => {
 
     if (isLoading) return <Loading />;
 
-    const lastDayWritten = data.written_array[31];
+    const recordable = isRecordable(year, data.server_time);
 
     return (
         <Layout
@@ -99,7 +99,7 @@ const CalendarPage = () => {
                     spacing={0.75}
                 >
                     <Typography variant='title3' sx={{ color: 'custom.grey' }}>
-                        {!isRecordable(year, data.server_time)
+                        {!recordable
                             ? '추억이 완성되었습니다!'
                             : '당신의 추억을 모아 퍼즐을 완성하세요!'}
                     </Typography>
@@ -122,7 +122,7 @@ const CalendarPage = () => {
                     hasWritten={data.written_array}
                     year={year}
                 />
-                {(!isRecordable(data.server_time) || lastDayWritten) && (
+                {!recordable && (
                     <Button
                         variant='contained'
                         sx={{
