@@ -99,7 +99,7 @@ const Main = () => {
     };
 
     const param = useParams();
-    const { setUserId, hasWritten, userId } = useUserStore();
+    const { setUserId, hasWritten } = useUserStore();
     const { login, isLoggedIn } = useAuthStore();
 
     useEffect(() => {
@@ -172,6 +172,12 @@ const Main = () => {
         {
             onError: (error) => {
                 if (error.status === 404) {
+                    setToastOpen({
+                        text: '다른 사람의 스노우볼입니다. 다시 로그인 해주세요.',
+                        severity: 'error',
+                    });
+                    localStorage.clear();
+                    navigate('/');
                 }
             },
         }
