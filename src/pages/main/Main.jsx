@@ -139,6 +139,7 @@ const Main = () => {
             .get(url)
             .then((res) => res.data.result)
             .then((data) => {
+                setHasWritten(false);
                 const dateObj = dayjs(data.date);
                 const formattedDate = dateObj.format(`MM월 DD일`);
                 localStorage.setItem('dailyQuestion', data.question);
@@ -200,7 +201,6 @@ const Main = () => {
     const onMemoryClick = (memoryId, objectName) => {
         //console.log('Clicked memory ID:', memoryId); // 콘솔 출력 추가
         const userId = param.userId;
-        
 
         if (recordable) {
             setSnackbarOpen({
