@@ -99,7 +99,7 @@ const Main = () => {
     };
 
     const param = useParams();
-    const { setUserId, hasWritten } = useUserStore();
+    const { setUserId, hasWritten, userId } = useUserStore();
     const { login, isLoggedIn } = useAuthStore();
 
     useEffect(() => {
@@ -171,7 +171,8 @@ const Main = () => {
         infoFetcher,
         {
             onError: (error) => {
-                //console.error(error);
+                if (error.status === 404) {
+                }
             },
         }
     );
