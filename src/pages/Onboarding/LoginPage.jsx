@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Snowfall from 'react-snowfall';
@@ -6,22 +6,6 @@ import ShareIcon from '../../components/icons/ShareIcon';
 import { Helmet } from 'react-helmet-async';
 import useAuthStore from '@/stores/useAuthStore';
 import { useSnackbarStore } from '@/stores/useSnackbarStore';
-import AlertPWA from '../../components/AlertPWA';
-import { initializeApp } from 'firebase/app';
-import { getMessaging, getToken } from 'firebase/messaging';
-
-// Firebase 초기화
-const firebaseConfig = {
-    apiKey: 'AIzaSyAgPHpjdSQV0pS0y40s56J1-hw7ZksMEdo',
-    authDomain: 'snowlog-56317.firebaseapp.com',
-    projectId: 'snowlog-56317',
-    storageBucket: 'snowlog-56317.firebasestorage.app',
-    messagingSenderId: '1006468192835',
-    appId: '1:1006468192835:web:d7e195df42051495ef12f6',
-    measurementId: 'G-ZNNB3Y0NJX',
-};
-const app = initializeApp(firebaseConfig);
-const messaging = getMessaging(app);
 
 const Container = styled.div`
     display: flex;
@@ -131,49 +115,15 @@ const BottomImage = styled.img`
 const LoginPage = () => {
     const navigate = useNavigate();
     const { isLoggedIn } = useAuthStore();
+
     const { setSnackbarOpen } = useSnackbarStore();
-    const [openPWA, setOpenPWA] = useState(false);
 
     useEffect(() => {
         const userId = localStorage.getItem('userId');
         if (isLoggedIn && userId) {
             navigate(`/main/${userId}`);
-        } else {
-            checkNotificationPermission(); // 로그인 페이지 로드 시 알림 권한 체크
         }
     }, []);
-
-    const checkNotificationPermission = async () => {
-        const permission = await Notification.requestPermission();
-        if (permission === 'granted') {
-            if (!localStorage.getItem('notificationGranted')) {
-                setOpenPWA(true); // 알림 권한을 처음 허용한 경우에만 모달을 띄운다
-                localStorage.setItem('notificationGranted', 'true'); // 알림 허용 상태를 기록
-            }
-            await getDeviceToken();
-        } else {
-            console.log('알림 권한이 거부되었습니다.');
-        }
-    };
-
-    const getDeviceToken = async () => {
-        try {
-            const currentToken = await getToken(messaging, {
-                vapidKey:
-                    'BNBLWswHiYVgBr4Y9xwgAbUgx8xIb6nj66gCGn0SYkq8zZ0kneMi9Uudb7o9CJ2ADXnRn1IBtArREBi4ffSmgSU',
-            });
-            if (currentToken) {
-                // 토큰을 서버로 전송하거나 UI 업데이트
-                console.log('토큰:', currentToken);
-            } else {
-                console.log(
-                    '토큰을 가져오지 못했습니다. 권한을 다시 요청하세요.'
-                );
-            }
-        } catch (err) {
-            console.error('토큰을 가져오는 중 에러 발생:', err);
-        }
-    };
 
     const handleShare = async () => {
         try {
@@ -234,14 +184,10 @@ const LoginPage = () => {
             <Snowfall
                 color='#ffffffaa'
                 snowflakeCount={70}
-                style={{
-                    position: 'absolute',
-                    top: '0px',
-                    left: '0px',
-                    zIndex: '1',
-                }}
+                speed={[0, 0.5]}
+                wind={[0, 0.5]}
+                radius={[0.5, 3]}
             />
-            <AlertPWA open={openPWA} onClose={() => setOpenPWA(false)} />
         </>
     );
 };
