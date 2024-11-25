@@ -9,6 +9,8 @@ import {
     Typography,
 } from '@mui/material';
 import { CloseIcon, LinkIcon, PhotoShareIcon } from '@/components/icons';
+import { useSnackbarStore } from '@/stores/useSnackbarStore';
+import html2canvas from 'html2canvas';
 
 const modalContainerStyle = {
     position: 'absolute',
@@ -18,14 +20,12 @@ const modalContainerStyle = {
     boxShadow: 24,
     borderRadius: '1.25rem',
     height: 'fit-content',
-    maxWidth: ['20rem', 'fit-content'],
-    maxheight: '11.5rem',
+    maxWidth: 'fit-content',
     overflow: 'hidden',
 };
 
 const modalDescriptionStyle = {
     display: 'flex',
-    w: '100%',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
@@ -35,19 +35,20 @@ const modalDescriptionStyle = {
 
 const LinkCopyButton = styled(Button)(({ theme }) => ({
     display: 'flex',
-    maxwidth: 'fit-content',
+    width: 'fit-content',
+    maxHeight: '3.375rem',
     padding: '0.9375rem 3.84rem',
     justifyContent: 'center',
     alignItems: 'center',
-    gap: '0.125rem',
+    gap: '0.2rem',
     borderRadius: '1.25rem',
     backgroundColor: theme.palette.custom.button1,
 }));
 
-const ImgShareButton = styled(Box)(() => ({
+const ImgShareButton = styled(Button)(() => ({
     display: 'flex',
-    maxwidth: '3.375rem',
-    maxheight: '3.375rem',
+    maxWidth: '3.375rem',
+    maxHeight: '3.375rem',
     padding: '0.9375rem',
     justifyContent: 'center',
     alignItems: 'center',
@@ -55,7 +56,59 @@ const ImgShareButton = styled(Box)(() => ({
     backgroundColor: '#B08F79',
 }));
 
-const ShareModal = ({ open, onClose, onButtonClick, onPhotoShareClick }) => {
+const ShareModal = ({ url, open, onClose }) => {
+    const { setSnackbarOpen } = useSnackbarStore();
+
+    const handleLinkCopy = async () => {
+        try {
+            await navigator.clipboard.writeText(url);
+            setSnackbarOpen({
+                text: '링크가 복사되었습니다',
+                severity: 'success',
+            });
+        } catch (error) {
+            // console.error('복사 실패:', error);
+            setSnackbarOpen({
+                text: '링크 복사에 실패했습니다. 다시 시도해 주세요.',
+                severity: 'error',
+            });
+        }
+    };
+
+    const handleImageShare = async () => {
+        try {
+            const captureImg = document.getElementById('capture-container');
+            const canvas = await html2canvas(captureImg, {
+                backgroundColor: null,
+            });
+            const dataUrl = canvas.toDataURL('image/png');
+            const blob = await (await fetch(dataUrl)).blob();
+            const file = new File([blob], 'layout-image.png', {
+                type: 'image/png',
+            });
+
+            if (navigator.share) {
+                await navigator.share({
+                    title: '스노우볼에 오늘의 추억이 보관되었어요!\nSNS에 링크를 공유해친구들에게 함께한 추억을 전달받아보세요☃️\n',
+                    text: '스노우볼 이미지 공유 완료',
+                    files: [file],
+                });
+                setSnackbarOpen({
+                    text: '공유가 완료되었습니다.',
+                    severity: 'success',
+                });
+            } else {
+                throw new Error('공유 기능이 지원되지 않는 브라우저입니다.');
+            }
+        } catch (error) {
+            //console.error('공유 실패:', error);
+            setSnackbarOpen({
+                text: '공유에 실패했습니다. 다시 시도해 주세요.',
+                severity: 'error',
+            });
+        }
+    };
+
     return (
         <Modal open={open} onClose={onClose}>
             <Stack
@@ -88,14 +141,15 @@ const ShareModal = ({ open, onClose, onButtonClick, onPhotoShareClick }) => {
                     <Stack
                         paddingTop={'0.5rem'}
                         paddingBottom={'1.5rem'}
+                        justifyContent={'center'}
+                        alignItems={'center'}
                         sx={modalDescriptionStyle}
-                        marginInline={'2.5rem'}
                     >
                         <Typography variant='title4' color='#282828'>
                             <Box
                                 component='span'
                                 fontWeight='700'
-                                color='#B08F79'
+                                color='custom.main1'
                             >
                                 스노우볼 이미지
                             </Box>
@@ -103,7 +157,7 @@ const ShareModal = ({ open, onClose, onButtonClick, onPhotoShareClick }) => {
                             <Box
                                 component='span'
                                 fontWeight='700'
-                                color='#B08F79'
+                                color='custom.main1'
                             >
                                 공유
                             </Box>
@@ -127,17 +181,14 @@ const ShareModal = ({ open, onClose, onButtonClick, onPhotoShareClick }) => {
                     >
                         <LinkCopyButton
                             variant='contained'
-                            onClick={onButtonClick}
+                            onClick={handleLinkCopy}
                         >
                             <Typography variant='title2'>
                                 링크 복사하기
                             </Typography>
                             <LinkIcon />
                         </LinkCopyButton>
-                        <ImgShareButton
-                            variant='contained'
-                            onClick={onPhotoShareClick}
-                        >
+                        <ImgShareButton onClick={handleImageShare}>
                             <PhotoShareIcon />
                         </ImgShareButton>
                     </Stack>
