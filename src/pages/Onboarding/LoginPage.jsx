@@ -7,7 +7,6 @@ import { Helmet } from 'react-helmet-async';
 import useAuthStore from '@/stores/useAuthStore';
 import { useSnackbarStore } from '@/stores/useSnackbarStore';
 
-
 const Container = styled.div`
     display: flex;
     flex-direction: column;
@@ -25,7 +24,6 @@ const Container = styled.div`
 
 const Title = styled.h1`
     font-family: 'Rage';
-    src: url('/assets/fonts/RAGE_1.TTF') format('truetype');
     font-size: 76px;
     color: #fff;
     position: absolute;
@@ -37,7 +35,7 @@ const Title = styled.h1`
 
 const SubTitle = styled.p`
     font-size: 22px;
-    color: #fff;
+    color: #d5d1cd;
     position: absolute;
     top: 270px;
     transform: translateX(-50%);
@@ -116,81 +114,37 @@ const BottomImage = styled.img`
 
 const LoginPage = () => {
     const navigate = useNavigate();
+    const { isLoggedIn } = useAuthStore();
 
-    const getTokenFromURL = () => {
-        const token = new URL(window.location.href).searchParams.get('token');
-        if (token) {
-            localStorage.setItem('token', token);
-            navigate('/main');
-        }
-    };
+    const { setSnackbarOpen } = useSnackbarStore();
 
     useEffect(() => {
-        getTokenFromURL();
+        const userId = localStorage.getItem('userId');
+        if (isLoggedIn && userId) {
+            navigate(`/main/${userId}`);
+        }
     }, []);
 
-<<<<<<< HEAD
-=======
-    const checkNotificationPermission = async () => {
-        const permission = await Notification.requestPermission();
-        if (permission === 'granted') {
-            if (!localStorage.getItem('notificationGranted')) {
-                setOpenPWA(true); // 알림 권한을 처음 허용한 경우에만 모달을 띄운다
-                localStorage.setItem('notificationGranted', 'true'); // 알림 허용 상태를 기록
-            }
-            await getDeviceToken();
-        } else {
-            console.log('알림 권한이 거부되었습니다.');
-        }
-    };
-
-    const getDeviceToken = async () => {
-        try {
-            const currentToken = await getToken(messaging, {
-                vapidKey:
-                    'BNBLWswHiYVgBr4Y9xwgAbUgx8xIb6nj66gCGn0SYkq8zZ0kneMi9Uudb7o9CJ2ADXnRn1IBtArREBi4ffSmgSU',
-            });
-            if (currentToken) {
-                // 토큰을 서버로 전송하거나 UI 업데이트
-                console.log('토큰:', currentToken);
-            } else {
-                console.log(
-                    '토큰을 가져오지 못했습니다. 권한을 다시 요청하세요.'
-                );
-            }
-        } catch (err) {
-            console.error('토큰을 가져오는 중 에러 발생:', err);
-        }
-    };
-
->>>>>>> a24c6e9d57b4d83672280daeb06079397071dd6f
     const handleShare = async () => {
         try {
             await navigator.share({
                 title: 'Snow Log',
                 text: '스노우볼에 오늘의 추억을 공유해보세요!',
-                url: 'http://localhost:3000',
+                url: `${import.meta.env.VITE_BASE_URL}`,
             });
-            console.log('공유되었습니다!');
         } catch (err) {
-            console.error('공유 실패:', err);
+            setSnackbarOpen({
+                message: '공유하기를 지원하지 않는 브라우저입니다.',
+                severity: 'error',
+            });
         }
     };
 
     const handleButtonClick = () => {
-        window.location.href =
-            'http://34.64.85.134:8888/oauth2/authorization/kakao';
+        window.location.href = `${import.meta.env.VITE_API_URL}/oauth2/authorization/kakao`;
     };
 
     return (
-<<<<<<< HEAD
-        <Container>
-            <Helmet>
-                <title>스노로그 - 로그인 화면</title>
-                <meta
-                    name='description'
-                    content='스노로그를 카카오 계정으로 로그인하세요.'
-=======
         <>
             <Container>
                 <Helmet>
@@ -225,15 +179,8 @@ const LoginPage = () => {
                 <BottomImage
                     src={'/assets/background_bottom.svg'}
                     alt='Snow background'
->>>>>>> a24c6e9d57b4d83672280daeb06079397071dd6f
                 />
-                <meta property='og:title' content='SnowLog 로그인 화면' />
-                <meta
-                    property='og:description'
-                    content='스노로그를 카카오 계정으로 로그인하세요.'
-                />
-                <meta property='og:type' content='website' />
-            </Helmet>
+            </Container>
             <Snowfall
                 color='#ffffffaa'
                 snowflakeCount={70}
@@ -241,26 +188,7 @@ const LoginPage = () => {
                 wind={[0, 0.5]}
                 radius={[0.5, 3]}
             />
-            <Title>Snow Log</Title>
-            <SubTitle>
-                추억을 보관하고 공유받아
-                <br />
-                나만의 스노우볼을 완성해요
-            </SubTitle>
-            <ShareButton onClick={handleShare}>
-                <ShareIcon style={{ width: '33px', height: '33px' }} />
-            </ShareButton>
-            <KakaoButton onClick={handleButtonClick}>
-                <KakaoIcon>
-                    <KakaoSVG />
-                </KakaoIcon>
-                카카오 로그인
-            </KakaoButton>
-            <BottomImage
-                src={'/assets/background_bottom.svg'}
-                alt='Snow background'
-            />
-        </Container>
+        </>
     );
 };
 
