@@ -80,6 +80,7 @@ const Main = () => {
     const [showLottie, setShowLottie] = useState(false); // 로티 애니메이션도 비활성화 상태로 시작
     const [serverTime, setServerTime] = useState('');
     const [recordable, setRecordable] = useState(false);
+    const [setToastOpen] = useState(false);
     const [searchParams] = useSearchParams();
     const page = parseInt(searchParams.get('page') || 1);
 
