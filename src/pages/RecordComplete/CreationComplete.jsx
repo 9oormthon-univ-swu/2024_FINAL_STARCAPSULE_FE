@@ -51,7 +51,7 @@ const CreationComplete = () => {
     const snowballName = localStorage.getItem('snowballName') || '이름';
 
     const handleClick = () => {
-        navigate(`/main/${userId}?page=1`);
+        navigate(`/guest/${userId}?page=1`);
     };
 
     return (

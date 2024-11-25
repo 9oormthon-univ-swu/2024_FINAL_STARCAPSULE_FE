@@ -6,7 +6,7 @@ import ShareIcon from '../../components/icons/ShareIcon';
 import { Helmet } from 'react-helmet-async';
 import useAuthStore from '@/stores/useAuthStore';
 import { useSnackbarStore } from '@/stores/useSnackbarStore';
-import AlertPWA from '../../components/AlertPWA'; 
+import AlertPWA from '../../components/AlertPWA';
 import { initializeApp } from 'firebase/app';
 import { getMessaging, getToken } from 'firebase/messaging';
 
@@ -93,13 +93,13 @@ const KakaoIcon = styled.span`
 
 const KakaoSVG = () => (
     <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="black"
-        width="24px"
-        height="24px"
+        xmlns='http://www.w3.org/2000/svg'
+        viewBox='0 0 24 24'
+        fill='black'
+        width='24px'
+        height='24px'
     >
-        <path d="M12,2C6.48,2,2,5.58,2,10.14c0,2.58,1.78,4.87,4.45,6.24C6.15,17.85,5.4,19.81,5.27,19.81c0,0,0,0,0,0c0.26,0.02,3.35-1.24,4.92-2.09c0.61,0.11,1.25,0.18,1.91,0.18c5.52,0,10-3.58,10-8.14S17.52,2,12,2z" />
+        <path d='M12,2C6.48,2,2,5.58,2,10.14c0,2.58,1.78,4.87,4.45,6.24C6.15,17.85,5.4,19.81,5.27,19.81c0,0,0,0,0,0c0.26,0.02,3.35-1.24,4.92-2.09c0.61,0.11,1.25,0.18,1.91,0.18c5.52,0,10-3.58,10-8.14S17.52,2,12,2z' />
     </svg>
 );
 
@@ -159,13 +159,16 @@ const LoginPage = () => {
     const getDeviceToken = async () => {
         try {
             const currentToken = await getToken(messaging, {
-                vapidKey: 'BNBLWswHiYVgBr4Y9xwgAbUgx8xIb6nj66gCGn0SYkq8zZ0kneMi9Uudb7o9CJ2ADXnRn1IBtArREBi4ffSmgSU',
+                vapidKey:
+                    'BNBLWswHiYVgBr4Y9xwgAbUgx8xIb6nj66gCGn0SYkq8zZ0kneMi9Uudb7o9CJ2ADXnRn1IBtArREBi4ffSmgSU',
             });
             if (currentToken) {
                 // 토큰을 서버로 전송하거나 UI 업데이트
                 console.log('토큰:', currentToken);
             } else {
-                console.log('토큰을 가져오지 못했습니다. 권한을 다시 요청하세요.');
+                console.log(
+                    '토큰을 가져오지 못했습니다. 권한을 다시 요청하세요.'
+                );
             }
         } catch (err) {
             console.error('토큰을 가져오는 중 에러 발생:', err);
@@ -197,15 +200,15 @@ const LoginPage = () => {
                 <Helmet>
                     <title>스노로그 - 로그인 화면</title>
                     <meta
-                        name="description"
-                        content="스노로그를 카카오 계정으로 로그인하세요."
+                        name='description'
+                        content='스노로그를 카카오 계정으로 로그인하세요.'
                     />
-                    <meta property="og:title" content="SnowLog 로그인 화면" />
+                    <meta property='og:title' content='SnowLog 로그인 화면' />
                     <meta
-                        property="og:description"
-                        content="스노로그를 카카오 계정으로 로그인하세요."
+                        property='og:description'
+                        content='스노로그를 카카오 계정으로 로그인하세요.'
                     />
-                    <meta property="og:type" content="website" />
+                    <meta property='og:type' content='website' />
                 </Helmet>
 
                 <Title>Snow Log</Title>
@@ -225,11 +228,11 @@ const LoginPage = () => {
                 </KakaoButton>
                 <BottomImage
                     src={'/assets/background_bottom.svg'}
-                    alt="Snow background"
+                    alt='Snow background'
                 />
             </Container>
             <Snowfall
-                color="#ffffffaa"
+                color='#ffffffaa'
                 snowflakeCount={70}
                 style={{
                     position: 'absolute',

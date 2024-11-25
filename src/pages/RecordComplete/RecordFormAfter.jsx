@@ -3,7 +3,7 @@ import { IconButton, Stack } from '@mui/material';
 import RecordBoard from '../Record/components/RecordBoard';
 import ImageSaveButton from './ImageSaveButton';
 import html2canvas from 'html2canvas';
-import { CloseIcon, ShareIcon } from '@/components/icons';
+import { CloseIcon } from '@/components/icons';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import { useParams, useNavigate } from 'react-router-dom';
 import ImgShareButton from '@/components/ImgShareButton';
@@ -129,7 +129,7 @@ const RecordFormAfter = () => {
                 />
                 <meta property='og:type' content='website' />
             </Helmet>
-            <Stack sx={contentstyle}>
+            <Stack id='capture-container' sx={contentstyle}>
                 <Stack
                     direction='row'
                     alignItems='center'
@@ -171,7 +171,6 @@ const RecordFormAfter = () => {
                 </Stack>
 
                 <Stack
-                    id='capture-container'
                     ref={captureRef}
                     sx={{
                         width: '100%',
