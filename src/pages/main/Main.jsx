@@ -80,7 +80,6 @@ const Main = () => {
     const [showLottie, setShowLottie] = useState(false); // 로티 애니메이션도 비활성화 상태로 시작
     const [serverTime, setServerTime] = useState('');
     const [recordable, setRecordable] = useState(false);
-    const [setToastOpen] = useState(false);
     const [searchParams] = useSearchParams();
     const page = parseInt(searchParams.get('page') || 1);
 
@@ -173,7 +172,7 @@ const Main = () => {
         {
             onError: (error) => {
                 if (error.status === 404) {
-                    setToastOpen({
+                    setSnackbarOpen({
                         text: '다른 사람의 스노우볼입니다. 다시 로그인 해주세요.',
                         severity: 'error',
                     });
