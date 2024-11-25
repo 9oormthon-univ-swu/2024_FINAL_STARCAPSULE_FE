@@ -25,3 +25,6 @@ yarn-error.log*
 
 *storybook.log
 .env
+
+# StoryBook
+.stories.jsx
