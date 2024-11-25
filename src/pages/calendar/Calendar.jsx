@@ -11,6 +11,8 @@ const Calendar = ({ serverTime, hasWritten, year }) => {
 
     const recordable = isRecordable(year, serverTime);
 
+    console.log('recordable', recordable);
+
     return (
         <Box
             sx={{

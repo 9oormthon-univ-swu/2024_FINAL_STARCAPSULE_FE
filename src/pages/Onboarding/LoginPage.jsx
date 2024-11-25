@@ -4,6 +4,27 @@ import styled from 'styled-components';
 import Snowfall from 'react-snowfall';
 import ShareIcon from '../../components/icons/ShareIcon';
 import { Helmet } from 'react-helmet-async';
+<<<<<<< HEAD
+=======
+import useAuthStore from '@/stores/useAuthStore';
+import { useSnackbarStore } from '@/stores/useSnackbarStore';
+import AlertPWA from '../../components/AlertPWA';
+import { initializeApp } from 'firebase/app';
+import { getMessaging, getToken } from 'firebase/messaging';
+
+// Firebase 초기화
+const firebaseConfig = {
+    apiKey: 'AIzaSyAgPHpjdSQV0pS0y40s56J1-hw7ZksMEdo',
+    authDomain: 'snowlog-56317.firebaseapp.com',
+    projectId: 'snowlog-56317',
+    storageBucket: 'snowlog-56317.firebasestorage.app',
+    messagingSenderId: '1006468192835',
+    appId: '1:1006468192835:web:d7e195df42051495ef12f6',
+    measurementId: 'G-ZNNB3Y0NJX',
+};
+const app = initializeApp(firebaseConfig);
+const messaging = getMessaging(app);
+>>>>>>> a24c6e9d57b4d83672280daeb06079397071dd6f
 
 const Container = styled.div`
     display: flex;
@@ -126,6 +147,41 @@ const LoginPage = () => {
         getTokenFromURL();
     }, []);
 
+<<<<<<< HEAD
+=======
+    const checkNotificationPermission = async () => {
+        const permission = await Notification.requestPermission();
+        if (permission === 'granted') {
+            if (!localStorage.getItem('notificationGranted')) {
+                setOpenPWA(true); // 알림 권한을 처음 허용한 경우에만 모달을 띄운다
+                localStorage.setItem('notificationGranted', 'true'); // 알림 허용 상태를 기록
+            }
+            await getDeviceToken();
+        } else {
+            console.log('알림 권한이 거부되었습니다.');
+        }
+    };
+
+    const getDeviceToken = async () => {
+        try {
+            const currentToken = await getToken(messaging, {
+                vapidKey:
+                    'BNBLWswHiYVgBr4Y9xwgAbUgx8xIb6nj66gCGn0SYkq8zZ0kneMi9Uudb7o9CJ2ADXnRn1IBtArREBi4ffSmgSU',
+            });
+            if (currentToken) {
+                // 토큰을 서버로 전송하거나 UI 업데이트
+                console.log('토큰:', currentToken);
+            } else {
+                console.log(
+                    '토큰을 가져오지 못했습니다. 권한을 다시 요청하세요.'
+                );
+            }
+        } catch (err) {
+            console.error('토큰을 가져오는 중 에러 발생:', err);
+        }
+    };
+
+>>>>>>> a24c6e9d57b4d83672280daeb06079397071dd6f
     const handleShare = async () => {
         try {
             await navigator.share({
@@ -145,12 +201,49 @@ const LoginPage = () => {
     };
 
     return (
+<<<<<<< HEAD
         <Container>
             <Helmet>
                 <title>스노로그 - 로그인 화면</title>
                 <meta
                     name='description'
                     content='스노로그를 카카오 계정으로 로그인하세요.'
+=======
+        <>
+            <Container>
+                <Helmet>
+                    <title>스노로그 - 로그인 화면</title>
+                    <meta
+                        name='description'
+                        content='스노로그를 카카오 계정으로 로그인하세요.'
+                    />
+                    <meta property='og:title' content='SnowLog 로그인 화면' />
+                    <meta
+                        property='og:description'
+                        content='스노로그를 카카오 계정으로 로그인하세요.'
+                    />
+                    <meta property='og:type' content='website' />
+                </Helmet>
+
+                <Title>Snow Log</Title>
+                <SubTitle>
+                    추억을 보관하고 공유받아
+                    <br />
+                    나만의 스노우볼을 완성해요
+                </SubTitle>
+                <ShareButton onClick={handleShare}>
+                    <ShareIcon style={{ width: '33px', height: '33px' }} />
+                </ShareButton>
+                <KakaoButton onClick={handleButtonClick}>
+                    <KakaoIcon>
+                        <KakaoSVG />
+                    </KakaoIcon>
+                    카카오 로그인
+                </KakaoButton>
+                <BottomImage
+                    src={'/assets/background_bottom.svg'}
+                    alt='Snow background'
+>>>>>>> a24c6e9d57b4d83672280daeb06079397071dd6f
                 />
                 <meta property='og:title' content='SnowLog 로그인 화면' />
                 <meta

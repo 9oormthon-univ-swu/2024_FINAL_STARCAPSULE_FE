@@ -70,23 +70,23 @@ const Day = ({ time, hasWritten, date, styleConfig, recordable, year }) => {
     const handleClick = async () => {
         const token = localStorage.getItem('token');
         const apiUrl = `${import.meta.env.VITE_API_URL}/calendar/memories/${dateInFormat}`;
-    
-        
-        if (!recordable) {
+
+        // 작성 가능 기간일 때 열람 불가능하도록 처리
+        if (recordable) {
             setSnackbarOpen({
                 text: '모든 추억은 12월 31일에 공개됩니다!',
                 severity: 'present',
             });
-            return; 
+            return;
         }
-    
+
         try {
             const response = await axios.get(apiUrl, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             });
-    
+
             // 데이터 확인 후 이동 또는 알림 처리
             if (
                 (response.data.result &&
