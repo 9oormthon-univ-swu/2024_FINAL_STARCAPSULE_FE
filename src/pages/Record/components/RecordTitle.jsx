@@ -52,7 +52,7 @@ const RecordTitle = ({ title, setTitle, goToMain }) => {
     }, []);
 
     return (
-        <Typography sx={titlestyle} component='div'>
+        <Typography sx={titlestyle} variant='body1' component='div'>
             {isTitleEdit ? (
                 <Input
                     type='text'
@@ -91,7 +91,4 @@ export default RecordTitle;
 const titlestyle = {
     margin: '2.25rem 0rem 0.75rem',
     color: '#fffcfa',
-    fontFamily: 'Griun NoltoTAENGGU',
-    fontSize: '1.25rem',
-    lineHeight: '1.75rem',
 };

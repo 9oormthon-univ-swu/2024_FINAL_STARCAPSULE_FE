@@ -62,7 +62,7 @@ const GuestForm = () => {
         //console.log('answer:', answer);
         //console.log('image:', uploadedImage);
         //console.log('writer:', writer);
-       // console.log('object_name:', object_name);
+        // console.log('object_name:', object_name);
 
         await axiosInstance
             .post(`/api/share_memory/${params.userId}/write`, formData, {
@@ -81,7 +81,7 @@ const GuestForm = () => {
                 navigate(`/complete/${params.userId}`);
             })
             .catch((error) => {
-               // console.log(error);
+                // console.log(error);
                 setSnackbarOpen({
                     severity: 'error',
                     text: '추억 전달에 실패했어요. 다시 시도해주세요.',
