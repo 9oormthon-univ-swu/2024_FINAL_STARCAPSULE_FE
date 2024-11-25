@@ -12,7 +12,7 @@ import MainTitle from './MainTitle';
 import Snowball from './Snowball/Snowball';
 import Layout from '@/layouts/Layout';
 import useSWR, { mutate } from 'swr';
-import { CalendarIcon } from '@/components/icons';
+import { CalendarIcon, ShareIcon } from '@/components/icons';
 import PopupPage from '../Onboarding/PopupPage';
 import { getDaysBeforeOpen } from '@/utils/getDaysBeforeOpen';
 import PopupAfter from '../Onboarding/PopupAfter';
@@ -23,11 +23,11 @@ import useAuthStore from 'stores/useAuthStore';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import { useNavigate } from 'react-router-dom';
 import '@dotlottie/player-component';
-import ImgShareButton from '@/components/ImgShareButton';
 import { Helmet } from 'react-helmet-async';
 import { useSnackbarStore } from '@/stores/useSnackbarStore';
 import { isRecordable } from '@/utils/isRecordable';
 import dayjs from 'dayjs';
+import ShareModal from '@/components/ShareModal';
 
 export const MainContainer = styled(Stack)(() => ({
     padding: '2rem 0 2.25rem 0',
@@ -80,6 +80,7 @@ const Main = () => {
     const [showLottie, setShowLottie] = useState(false); // 로티 애니메이션도 비활성화 상태로 시작
     const [serverTime, setServerTime] = useState('');
     const [recordable, setRecordable] = useState(false);
+    const [openShareModal, setOpenShareModal] = useState(false);
     const [searchParams] = useSearchParams();
     const page = parseInt(searchParams.get('page') || 1);
 
@@ -242,6 +243,10 @@ const Main = () => {
 
     if (error) return <div>failed to load</div>;
 
+    const onCloseShareModal = () => {
+        setOpenShareModal(false);
+    };
+
     return (
         <div>
             <Helmet>
@@ -291,12 +296,11 @@ const Main = () => {
                                 >
                                     <CalendarIcon />
                                 </StyledIconButton>
-                                <ImgShareButton
-                                    title={
-                                        '스노우볼에 오늘의 추억이 보관되었어요!\nSNS에 링크를 공유해친구들에게 함께한 추억을 전달받아보세요☃️\n'
-                                    }
-                                    url={`${import.meta.env.BASE_URL}/guest/${param.userId}`}
-                                />
+                                <StyledIconButton
+                                    onClick={() => setOpenShareModal(true)}
+                                >
+                                    <ShareIcon />
+                                </StyledIconButton>
                             </Stack>
                         </Stack>
 
@@ -380,6 +384,11 @@ const Main = () => {
                             />
                         </Portal>
                     ))}
+                <ShareModal
+                    open={openShareModal}
+                    onClose={onCloseShareModal}
+                    url={`${import.meta.env.VITE_BASE_URL}/guest/${param.userId}`}
+                ></ShareModal>
             </Layout>
         </div>
     );

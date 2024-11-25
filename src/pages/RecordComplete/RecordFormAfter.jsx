@@ -6,7 +6,6 @@ import html2canvas from 'html2canvas';
 import { CloseIcon } from '@/components/icons';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import { useParams, useNavigate } from 'react-router-dom';
-import ImgShareButton from '@/components/ImgShareButton';
 import { Helmet } from 'react-helmet-async';
 
 const contentstyle = {
@@ -158,16 +157,6 @@ const RecordFormAfter = () => {
                             ? formatDate(memoryData.result.create_at)
                             : '로딩 중...'}
                     </span>
-                    <ImgShareButton
-                        title={
-                            '스노우볼에 오늘의 추억이 보관되었어요!\nSNS에 링크를 공유해친구들에게 함께한 추억을 전달받아보세요☃️\n'
-                        }
-                        sx={{
-                            cursor: 'pointer',
-                            position: 'relative',
-                            left: '-30px',
-                        }}
-                    />
                 </Stack>
 
                 <Stack
