@@ -4,27 +4,9 @@ import styled from 'styled-components';
 import Snowfall from 'react-snowfall';
 import ShareIcon from '../../components/icons/ShareIcon';
 import { Helmet } from 'react-helmet-async';
-<<<<<<< HEAD
-=======
 import useAuthStore from '@/stores/useAuthStore';
 import { useSnackbarStore } from '@/stores/useSnackbarStore';
-import AlertPWA from '../../components/AlertPWA';
-import { initializeApp } from 'firebase/app';
-import { getMessaging, getToken } from 'firebase/messaging';
 
-// Firebase 초기화
-const firebaseConfig = {
-    apiKey: 'AIzaSyAgPHpjdSQV0pS0y40s56J1-hw7ZksMEdo',
-    authDomain: 'snowlog-56317.firebaseapp.com',
-    projectId: 'snowlog-56317',
-    storageBucket: 'snowlog-56317.firebasestorage.app',
-    messagingSenderId: '1006468192835',
-    appId: '1:1006468192835:web:d7e195df42051495ef12f6',
-    measurementId: 'G-ZNNB3Y0NJX',
-};
-const app = initializeApp(firebaseConfig);
-const messaging = getMessaging(app);
->>>>>>> a24c6e9d57b4d83672280daeb06079397071dd6f
 
 const Container = styled.div`
     display: flex;
