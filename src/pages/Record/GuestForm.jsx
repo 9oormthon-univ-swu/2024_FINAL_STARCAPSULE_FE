@@ -128,6 +128,8 @@ const GuestForm = () => {
             return;
         }
 
+        localStorage.setItem('selectedObject', object_name);
+
         //answer 있을 경우 모달 오픈
         setOpenModal(true);
     };

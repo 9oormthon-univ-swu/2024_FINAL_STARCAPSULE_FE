@@ -51,6 +51,18 @@ const CalendarDetail = () => {
         }
     }, [location.state]);
 
+    useEffect(() => {
+        const handlePopState = () => {
+            navigate(`/calendar/${userId}`); 
+        };
+
+        window.addEventListener('popstate', handlePopState);
+
+        return () => {
+            window.removeEventListener('popstate', handlePopState);
+        };
+    }, [navigate, userId]);
+
     const handleSaveImage = (e) => {
         e.preventDefault();
         if (captureRef.current) {
@@ -64,12 +76,13 @@ const CalendarDetail = () => {
                 height: elementHeight,
                 windowHeight: elementHeight,
             })
-                .then((canvas) => {
-                    const link = document.createElement('a');
-                    link.href = canvas.toDataURL('image/png');
-                    link.download = 'calendar_detail.png';
-                    link.click();
-                })
+            .then((canvas) => {
+                const link = document.createElement('a');
+                const formattedDateForFilename = dayjs(location.state?.selectedDate).format('YYYY-MM-DD');
+                link.href = canvas.toDataURL('image/png');
+                link.download = `${formattedDateForFilename}.png`;
+                link.click();
+            })
                 .catch((error) => {
                     //console.error('이미지 저장 중 오류 발생:', error);
                 });

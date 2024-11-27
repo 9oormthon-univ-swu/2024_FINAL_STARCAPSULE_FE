@@ -96,6 +96,7 @@ const RecordForm = () => {
     const handleCloseModal = () => {
         setOpenModal(false);
     };
+    
 
     // 폼 제출 처리 함수
     const handleSubmit = (e) => {
@@ -117,6 +118,8 @@ const RecordForm = () => {
             recordBoardRef.current.scrollIntoView({ behavior: 'smooth' });
             return;
         }
+
+        localStorage.setItem('selectedObject', shapeName);
 
         // text가 있을 경우 모달 오픈
         setOpenModal(true);
