@@ -1,5 +1,5 @@
 import React from 'react';
-import { Stack } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import ImgUploadButton from './ImgUploadButton';
 
 const RecordBoard = ({
@@ -40,13 +40,16 @@ const RecordBoard = ({
                         {content || '추억이 없습니다.'}
                     </div>
                 ) : (
-                    <textarea
+                    <Typography
                         id='answer'
+                        component='textarea'
                         value={answer}
                         onChange={handleTextChange}
                         placeholder={showplaceholder}
-                        style={Textfieldstyle}
-                        rows={Math.max(4, answer.split('\n').length)} // 내용에 따라 행이 늘어나도록 설정
+                        rows={Math.max(4, answer.split('\n').length)}
+                        variant='body2'
+                        color='#282828'
+                        sx={Textfieldstyle}
                     />
                 )}
             </Stack>
@@ -69,13 +72,10 @@ const Textfieldstyle = {
     width: '100%',
     minHeight: '16.5rem',
     background: '#fffcfa',
-    color: '#282828',
-    fontSize: '1.125rem',
-    lineHeight: '1.75rem',
-    fontFamily: '"Griun NoltoTAENGGU", sans-serif',
     resize: 'none',
     border: 'none',
     outline: 'none',
+    overflow: 'auto',
 };
 
 const readOnlyTextStyle = {
