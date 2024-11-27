@@ -19,9 +19,9 @@ const PhotoShareIcon = createSvgIcon(
         <path
             d='M3 15.9998L8 10.9998C8.928 10.1068 10.072 10.1068 11 10.9998L14 13.9998L15 12.9998C15.928 12.1068 17.072 12.1068 18 12.9998M16 21.9998L21 16.9998M21 16.9998V21.4998M21 16.9998H16.5'
             stroke='#FFFCFA'
-            stroke-width='2'
-            stroke-linecap='round'
-            stroke-linejoin='round'
+            strokeWidth='2'
+            strokeLinecap='round'
+            strokeLinejoin='round'
         />
     </svg>,
     'PhotoShareIcon'
