@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 
@@ -44,15 +44,38 @@ const SVGImage = styled.img`
     height: 150px;
 `;
 
+const ObjectImage = styled.img`
+    position: absolute;
+    top: 52%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70px;
+    height: 70px;
+    flex-shrink: 0;
+`;
+
 const CreationComplete = () => {
     const { userId } = useParams();
     const navigate = useNavigate();
 
     const snowballName = localStorage.getItem('snowballName') || '이름';
+    const selectedObject = localStorage.getItem('selectedObject') || '없음';
 
     const handleClick = () => {
         navigate(`/guest/${userId}?page=1`);
     };
+
+    const getObjectImagePath = (objectName) => {
+        return `/assets/object/${objectName.toLowerCase()}.svg`;  
+    };
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            navigate(`/guest/${userId}?page=1`);
+        }, 5000); 
+
+        return () => clearTimeout(timer); 
+    }, [navigate, userId]); 
 
     return (
         <Container onClick={handleClick}>
@@ -78,6 +101,7 @@ const CreationComplete = () => {
                 추억이 전달되었어요
             </SubTitle>
             <SVGImage src={'/assets/Frame_26085556.svg'} alt='Frame SVG' />
+            <ObjectImage src={getObjectImagePath(selectedObject)} alt='Selected Object SVG' />
         </Container>
     );
 };
