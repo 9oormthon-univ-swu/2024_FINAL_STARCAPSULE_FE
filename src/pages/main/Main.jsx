@@ -244,7 +244,7 @@ const Main = () => {
     };
 
     return (
-        <div>
+        <>
             <Helmet>
                 <title>스노로그 - 2024의 추억이 쌓이는 곳</title>
                 <meta
@@ -322,6 +322,7 @@ const Main = () => {
                                 flexGrow: 0,
                             }}
                             disabled={hasWritten}
+                            onClick={() => navigate(`/record/${param.userId}`)}
                         >
                             <Typography variant='title2'>
                                 추억 전달하기
@@ -380,13 +381,13 @@ const Main = () => {
                             />
                         </Portal>
                     ))}
-                <ShareModal
-                    open={openShareModal}
-                    onClose={onCloseShareModal}
-                    url={`${import.meta.env.VITE_BASE_URL}/guest/${param.userId}`}
-                ></ShareModal>
             </Layout>
-        </div>
+            <ShareModal
+                open={openShareModal}
+                onClose={onCloseShareModal}
+                url={`${import.meta.env.VITE_BASE_URL}/guest/${param.userId}`}
+            />
+        </>
     );
 };
 
