@@ -42,7 +42,32 @@ const SubTitle = styled.p`
     left: 185px;
     line-height: 1.4;
     margin: 5px 0;
+
+    @media (max-width: 490px) {
+    font-size: 16px; 
+    white-space: normal;
+    color: #d5d1cd;
+    position: absolute;
+    top: 270px;
+    transform: translateX(-50%);
+    left: 155px;
+    line-height: 1.4;
+    margin: 5px 0;
+    }
+
+    @media (max-width: 360px) {
+    font-size: 14px; 
+    white-space: normal;
+    color: #d5d1cd;
+    position: absolute;
+    top: 270px;
+    transform: translateX(-50%);
+    left: 140px;
+    line-height: 1.4;
+    margin: 5px 0;
+    }
 `;
+
 
 const KakaoButton = styled.button`
     background-color: #fee500;
