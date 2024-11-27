@@ -72,7 +72,7 @@ const Textfieldstyle = {
     color: '#282828',
     fontSize: '1.125rem',
     lineHeight: '1.75rem',
-    fontFamily: 'Griun NoltoTAENGGU',
+    fontFamily: '"Griun NoltoTAENGGU", sans-serif',
     resize: 'none',
     border: 'none',
     outline: 'none',
