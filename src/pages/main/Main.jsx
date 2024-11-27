@@ -14,7 +14,6 @@ import Layout from '@/layouts/Layout';
 import useSWR, { mutate } from 'swr';
 import { CalendarIcon, ShareIcon } from '@/components/icons';
 import PopupPage from '../Onboarding/PopupPage';
-import { getDaysBeforeOpen } from '@/utils/getDaysBeforeOpen';
 import PopupAfter from '../Onboarding/PopupAfter';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useUserStore } from 'stores/useUserStore';
@@ -108,7 +107,7 @@ const Main = () => {
         const today = new Date().toLocaleDateString('ko-KR');
 
         if (lastPopupCheckedDate !== today) {
-            setShowLottie(true); // 체크되지 않은 경우 로티와 팝업을 표시
+            setShowLottie(true);
             setPopupOpen(true);
         }
     }, []);
@@ -207,7 +206,6 @@ const Main = () => {
     };
 
     const onMemoryClick = (memoryId, objectName) => {
-        //console.log('Clicked memory ID:', memoryId); // 콘솔 출력 추가
         const userId = param.userId;
 
         if (recordable) {
@@ -231,8 +229,6 @@ const Main = () => {
             navigate(`/recordafter/${userId}/${memoryId}`);
         } else if (guestObjects.includes(objectName)) {
             navigate(`/guestafter/${userId}/${memoryId}`);
-        } else {
-            //console.error('Unknown object_name:', objectName);
         }
     };
 
@@ -248,7 +244,7 @@ const Main = () => {
     };
 
     return (
-        <div>
+        <>
             <Helmet>
                 <title>스노로그 - 2024의 추억이 쌓이는 곳</title>
                 <meta
@@ -326,6 +322,7 @@ const Main = () => {
                                 flexGrow: 0,
                             }}
                             disabled={hasWritten}
+                            onClick={() => navigate(`/record/${param.userId}`)}
                         >
                             <Typography variant='title2'>
                                 추억 전달하기
@@ -384,13 +381,13 @@ const Main = () => {
                             />
                         </Portal>
                     ))}
-                <ShareModal
-                    open={openShareModal}
-                    onClose={onCloseShareModal}
-                    url={`${import.meta.env.VITE_BASE_URL}/guest/${param.userId}`}
-                ></ShareModal>
             </Layout>
-        </div>
+            <ShareModal
+                open={openShareModal}
+                onClose={onCloseShareModal}
+                url={`${import.meta.env.VITE_BASE_URL}/guest/${param.userId}`}
+            />
+        </>
     );
 };
 
