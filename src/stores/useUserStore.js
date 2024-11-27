@@ -4,8 +4,13 @@ import { create } from 'zustand';
 export const useUserStore = create((set) => {
     const setUserId = (userId) => {
         if (userId !== null) {
-            localStorage.setItem('userId', userId);
-            set((prev) => ({ ...prev, userId }));
+            set((prev) => {
+                if (prev.userId !== userId) {
+                    return prev;
+                }
+                localStorage.setItem('userId', userId);
+                return { ...prev, userId };
+            });
         }
     };
     const setSnowball = (snowball) => set((prev) => ({ ...prev, snowball }));
