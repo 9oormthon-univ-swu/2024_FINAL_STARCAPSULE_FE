@@ -73,6 +73,9 @@ const RecordFormAfter = () => {
             const element = captureRef.current;
             const elementHeight = element.scrollHeight;
 
+            const date = new Date(memoryData?.result.create_at);
+            const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+
             html2canvas(element, {
                 scale: 2,
                 useCORS: true,
@@ -83,7 +86,7 @@ const RecordFormAfter = () => {
                 .then((canvas) => {
                     const link = document.createElement('a');
                     link.href = canvas.toDataURL('image/png');
-                    link.download = 'record.png';
+                    link.download = `${formattedDate}.png`;
                     link.click();
                 })
                 .catch((error) => {
