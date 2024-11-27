@@ -48,8 +48,12 @@ const GuestForm = () => {
 
     // 텍스트 변경 및 글자수 계산 처리 함수
     const handleAnswerChange = (e) => {
-        setAnswer(e.target.value.slice(0, 199));
-        setInputCount(e.target.value.length);
+        if (e.target.value.length <= 200) {
+            setAnswer(e.target.value.slice(0, 199));
+            setInputCount(e.target.value.length);
+        } else {
+            setInputCount(200);
+        }
     };
 
     //모달 확인 버튼 처리 함수&데이터전달

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Input, Typography, IconButton, Box } from '@mui/material';
+import { Input, Typography, IconButton } from '@mui/material';
 import { EditIcon, CheckIcon } from '@/components/icons';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 
