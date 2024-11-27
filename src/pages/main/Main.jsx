@@ -140,7 +140,7 @@ const Main = () => {
             .then((res) => res.data.result)
             .then((data) => {
                 setHasWritten(false);
-                const dateObj = dayjs(data.date);
+                const dateObj = dayjs.utc(data.date).tz('Asia/Seoul');
                 const formattedDate = dateObj.format(`MM월 DD일`);
                 localStorage.setItem('dailyQuestion', data.question);
                 localStorage.setItem('dailyDate', formattedDate);
