@@ -188,7 +188,7 @@ const ShareModal = ({ url, open, onClose }) => {
                     <Stack
                         gap={'0.5rem'}
                         justifyContent={'center'}
-                        direction={'col'}
+                        direction={'column'}
                     >
                         <LinkCopyButton
                             variant='contained'

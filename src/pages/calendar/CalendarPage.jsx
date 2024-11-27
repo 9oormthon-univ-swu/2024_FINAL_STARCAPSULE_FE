@@ -9,6 +9,8 @@ import Loading from '@/components/Loading';
 import { CloseIcon } from '@/components/icons';
 import { isRecordable } from '@/utils/isRecordable';
 import { Helmet } from 'react-helmet-async';
+import { useSnackbarStore } from '@/stores/useSnackbarStore';
+import axios from 'axios';
 
 const CalendarPage = () => {
     // 2025년도 서버 운영 시를 고려하여 year 값을 Calendar->  day 컴포넌트로 넘기도록 처리.
@@ -19,12 +21,17 @@ const CalendarPage = () => {
 
     const axiosWithAuth = useAxiosWithAuth();
 
+    const { setSnackbarOpen } = useSnackbarStore();
+
     const fetcher = (url) =>
         axiosWithAuth.get(url).then((res) => res.data.result);
 
     const { data, isLoading } = useSWR(`/calendar/data`, fetcher, {
-        onError: (error) => {
-            //console.error(error);
+        onError: () => {
+            setSnackbarOpen({
+                text: '캘린더 데이터를 불러오는데 실패했습니다. 다시 시도해 주세요.',
+                severity: 'error',
+            });
         },
     });
 
@@ -32,13 +39,29 @@ const CalendarPage = () => {
         navigate(-1);
     };
 
-    const handleSave = () => {
-        const imgUrl = `/assets/calendar/image.png`;
+    const handleSave = async () => {
+        const imgUrl = `${import.meta.env.VITE_BASE_URL}/assets/calendar/image.png`;
 
-        const a = document.createElement('a');
-        a.href = imgUrl;
-        a.download = '퍼즐-완성본.png';
-        a.click();
+        try {
+            const response = await axios.get(imgUrl, {
+                responseType: 'blob',
+            });
+
+            const blobUrl = URL.createObjectURL(response.data);
+
+            const a = document.createElement('a');
+            a.href = blobUrl;
+            a.download = '퍼즐-완성본.png';
+            a.click();
+
+            URL.revokeObjectURL(blobUrl);
+        } catch (error) {
+            console.error('Error downloading the file:', error);
+            setSnackbarOpen({
+                text: '이미지 저장에 실패했습니다. 다시 시도해 주세요.',
+                severity: 'error',
+            });
+        }
     };
 
     if (isLoading) return <Loading />;
