@@ -77,12 +77,23 @@ const SVGImage = styled.img`
     height: 150px;
 `;
 
+const ObjectImage = styled.img`
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70px;
+    height: 70px;
+    flex-shrink: 0;
+`;
+
 const MyCreationComplete = () => {
     const { userId } = useParams(); // userId를 useParams로 가져오기
     const navigate = useNavigate();
 
     const [questionId, setQuestionId] = useState('');
     const [question, setQuestion] = useState('');
+    const selectedObject = localStorage.getItem('selectedObject') || '없음';
 
     useEffect(() => {
         const storedQuestionId = localStorage.getItem('dailyQuestionId');
@@ -96,8 +107,20 @@ const MyCreationComplete = () => {
         }
     }, []);
 
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            navigate(`/main/${userId}?page=1`); // 일정 시간 후 자동 이동
+        }, 5000); 
+
+        return () => clearTimeout(timer); 
+    }, [navigate, userId]); 
+
     const handleClick = () => {
         navigate(`/main/${userId}?page=1`); // userId를 URL에 반영
+    };
+
+    const getObjectImagePath = (objectName) => {
+        return `/assets/object/${objectName.toLowerCase()}.svg`;  
     };
 
     return (
@@ -124,6 +147,7 @@ const MyCreationComplete = () => {
             </QuestionText>
             <SubTitle>추억이 보관되었어요</SubTitle>
             <SVGImage src={'/assets/Frame_26085556.svg'} alt='Frame SVG' />
+            <ObjectImage src={getObjectImagePath(selectedObject)} alt='Selected Object SVG' />
         </Container>
     );
 };
