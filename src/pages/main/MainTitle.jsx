@@ -93,7 +93,9 @@ const MainTitle = ({ snowball, setSnowballName, onError, serverTime }) => {
     };
 
     const handleKeyDown = (event) => {
+        event?.preventDefault();
         if (event.key === 'Enter') {
+            setIsSaving(true);
             onConfirmClick();
         } else if (event.key === 'Escape') {
             openModal();

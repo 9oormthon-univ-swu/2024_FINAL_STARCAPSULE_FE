@@ -193,6 +193,7 @@ const Day = ({ time, hasWritten, date, styleConfig, recordable, year }) => {
                           : 'start'
                 }
                 component={Button}
+                disabled={date === 31}
                 onClick={handleClick} // 클릭 이벤트 추가
             >
                 <img
