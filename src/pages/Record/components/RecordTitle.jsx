@@ -64,7 +64,9 @@ const RecordTitle = ({ title, setTitle, goToMain }) => {
                     style={{ width: '16rem', color: '#fff' }}
                 />
             ) : (
-                <Typography variant='body1'>{title}</Typography>
+                <Typography component='span' variant='body1'>
+                    {title}
+                </Typography>
             )}
             {isTitleEdit ? (
                 <IconButton onClick={onConfirmClick} disabled={!title.length}>
