@@ -199,12 +199,14 @@ const GuestFormAfter = () => {
               width: '100%',
               marginTop: '2rem',
               maxHeight: 'calc(100vh - 300px)',
-              overflowY: 'auto',
+              position: 'relative', 
+              display: 'flex',
+              flexDirection: 'column',
               paddingBottom: '2rem',
             }}
           >
             <RecordBoard
-              content={memoryData?.result.answer || ''}
+              content={memoryData?.result.answer || ' '}
               image_url={memoryData?.result.image_url}
               isReadOnly={true}
             />

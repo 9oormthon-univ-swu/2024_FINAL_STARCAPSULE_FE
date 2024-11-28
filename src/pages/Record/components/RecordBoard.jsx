@@ -99,7 +99,7 @@ const RecordBgstyle = {
     background: '#FFFCFA',
     boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
     width: '100%',
-    maxWidth: '312px',
+    maxWidth: '100%',
     margin: '0 auto',
     boxSizing: 'border-box',
 };
