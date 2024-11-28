@@ -112,11 +112,6 @@ const Main = () => {
         }
     }, []);
 
-    useEffect(() => {
-        saveTokenFromURL(login);
-        setUserId(param.userId);
-    }, []);
-
     const axiosInstance = useAxiosWithAuth();
 
     const snowballFetcher = (url) =>
@@ -385,7 +380,7 @@ const Main = () => {
             <ShareModal
                 open={openShareModal}
                 onClose={onCloseShareModal}
-                url={`${import.meta.env.VITE_BASE_URL}/guest/${param.userId}`}
+                url={`${import.meta.env.VITE_BASE_URL}/main/${param.userId}`}
             />
         </>
     );

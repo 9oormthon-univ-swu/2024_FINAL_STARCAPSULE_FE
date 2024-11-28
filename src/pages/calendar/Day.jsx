@@ -9,7 +9,6 @@ import timezone from 'dayjs/plugin/timezone';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import { useParams } from 'react-router-dom';
 import { useSnackbarStore } from '@/stores/useSnackbarStore';
-import { isRecordable } from '@/utils/isRecordable';
 
 // 플러그인 활성화
 dayjs.extend(isSameOrAfter);
