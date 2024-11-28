@@ -56,7 +56,7 @@ const memoryPosition = [
     { top: '11%', right: '18%', zIndex: 51 },
 ];
 
-const Snowball = ({ received, self, onMemoryClick, fetcher, owner }) => {
+const Snowball = ({ received, self, onMemoryClick, fetcher }) => {
     const params = useParams();
     const [searchParams] = useSearchParams();
     const page = parseInt(searchParams.get('page') || 1);
@@ -77,12 +77,12 @@ const Snowball = ({ received, self, onMemoryClick, fetcher, owner }) => {
 
     const onLeftClick = () => {
         if (page === 1) return;
-        navigate(`/${owner}/${params.userId}?page=${page - 1}`);
+        navigate(`/main/${params.userId}?page=${page - 1}`);
     };
 
     const onRightClick = () => {
         if (page === totalPage) return;
-        navigate(`/${owner}/${params.userId}?page=${page + 1}`);
+        navigate(`/main/${params.userId}?page=${page + 1}`);
     };
 
     return (

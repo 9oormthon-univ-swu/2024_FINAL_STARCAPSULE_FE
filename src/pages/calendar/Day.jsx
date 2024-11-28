@@ -1,19 +1,11 @@
+import React, { memo, useMemo, useCallback } from 'react';
 import { Stack, Typography, useTheme } from '@mui/material';
 import { Button } from '@mui/base';
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
-import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import { useParams } from 'react-router-dom';
 import { useSnackbarStore } from '@/stores/useSnackbarStore';
-
-// 플러그인 활성화
-dayjs.extend(isSameOrAfter);
-dayjs.extend(utc);
-dayjs.extend(timezone);
+import { fetchMemoryData } from '@/utils/fetchMemoryData';
 
 const containerStyle = {
     boxSizing: 'border-box',
@@ -44,179 +36,168 @@ const triangleStyle = {
     pointerEvents: 'none',
 };
 
-// 스타일 및 날짜 관련 설정 추상화
-const Day = ({ time, hasWritten, date, styleConfig, recordable, year }) => {
-    /*
-        20xx-11-30 ~ 20xx-12-31: 작성 가능
-        20xx-12-31 ~ 20xx-11-29: 작성 불가능, 작년 기록으로 조회해야함
-        
-        작업자의 판단 : 구름톤 유니브 4기에서 작년도 기록을 확인 할 수 있도록 리펙토링 해야함.
-        따라서 Calendar 컴포넌트에서 Day 컴포넌트로 몇 년도 캘린더인지 알 수 있는 year를 제공하는 것으로 처리함.
-    */
-    const theme = useTheme();
-    const navigate = useNavigate();
-    const { userId } = useParams();
-    const { setSnackbarOpen } = useSnackbarStore();
+const Day = memo(
+    ({ time, hasWritten, date, styleConfig, recordable, year }) => {
+        const theme = useTheme();
+        const navigate = useNavigate();
+        const { userId } = useParams();
+        const { setSnackbarOpen } = useSnackbarStore();
 
-    const startOfPeriod = dayjs(
-        `${year}-${import.meta.env.VITE_RECORD_START_DATE}`
-    ).startOf('day');
-    const today = dayjs.utc(time).tz('Asia/Seoul');
-    const currentDay = startOfPeriod.add(date, 'day').startOf('day');
+        const startOfPeriod = useMemo(
+            () =>
+                dayjs(
+                    `${year}-${import.meta.env.VITE_RECORD_START_DATE}`
+                ).startOf('day'),
+            [year]
+        );
+        const today = useMemo(() => dayjs.utc(time).tz('Asia/Seoul'), [time]);
+        const currentDay = useMemo(
+            () => startOfPeriod.add(date, 'day').startOf('day'),
+            [startOfPeriod, date]
+        );
+        const dateInFormat = useMemo(
+            () => currentDay.format('YYYY-MM-DD'),
+            [currentDay]
+        );
 
-    const dateInFormat = currentDay.format('YYYY-MM-DD');
+        // 스타일 계산 최적화
+        const { style, color, imgDisplay, triangleDisplay } = useMemo(() => {
+            let style = {
+                backgroundColor: 'transparent',
+                border: 'none',
+            };
+            let color = theme.palette.custom.white;
+            let imgDisplay = false;
+            let triangleDisplay = false;
 
-    const handleClick = async () => {
-        const token = localStorage.getItem('token');
-        const apiUrl = `${import.meta.env.VITE_API_URL}/calendar/memories/${dateInFormat}`;
-
-        // 작성 가능 기간일 때 열람 불가능하도록 처리
-        if (recordable) {
-            setSnackbarOpen({
-                text: '모든 추억은 12월 31일에 공개됩니다!',
-                severity: 'present',
-            });
-            return;
-        }
-
-        try {
-            const response = await axios.get(apiUrl, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-
-            // 데이터 확인 후 이동 또는 알림 처리
-            if (
-                (response.data.result &&
-                    response.data.result.my_memory &&
-                    response.data.result.my_memory.length > 0) ||
-                (response.data.result &&
-                    response.data.result.memories &&
-                    response.data.result.memories.length > 0)
-            ) {
-                // 데이터가 존재할 때 상세 페이지로 이동
-                navigate(`/calendar-detail/${userId}`, {
-                    state: {
-                        data: response.data.result,
-                        selectedDate: dateInFormat,
-                    },
-                });
+            if (recordable) {
+                if (hasWritten) {
+                    style.backgroundColor = 'rgba(255, 252, 250, 0.40)';
+                    color = theme.palette.custom.font;
+                    imgDisplay = true;
+                } else if (currentDay.isSame(today, 'day')) {
+                    style.border = `1px solid ${theme.palette.custom.white}`;
+                    style.backgroundColor = theme.palette.custom.white;
+                    color = theme.palette.custom.font;
+                } else if (currentDay.isAfter(today)) {
+                    style.border = `1px solid ${theme.palette.custom.white}`;
+                    if (date === 31) triangleDisplay = true;
+                } else {
+                    style.backgroundColor = 'rgba(255, 252, 250, 0.1)';
+                }
             } else {
-                setSnackbarOpen({
-                    text: '보관된 추억이 없습니다.',
-                    severity: 'warning',
-                });
+                imgDisplay = true;
+                if (hasWritten) {
+                    style.backgroundColor = 'transparent';
+                    color = 'transparent';
+                } else {
+                    style.backgroundColor = 'rgba(255, 252, 250, 0.40)';
+                    color = theme.palette.custom.font;
+                }
             }
-        } catch (error) {
-            //console.error('Error fetching memory data:', error);
-        }
-    };
 
-    // 기본 스타일
-    let style = {
-        backgroundColor: 'transparent',
-        border: 'none',
-    };
-    let color = theme.palette.custom.white;
-    let imgDisplay = false;
-    let triangleDisplay = false;
+            return { style, color, imgDisplay, triangleDisplay };
+        }, [
+            recordable,
+            hasWritten,
+            currentDay,
+            today,
+            date,
+            theme.palette.custom,
+        ]);
 
-    // 기록 작성 가능 기간: 11월 30일 ~ 12월 30일 (범위 내)
-    if (recordable) {
-        if (hasWritten) {
-            // 작성 완료: 오늘과 지나간 날 동일 스타일
-            style.backgroundColor = 'rgba(255, 252, 250, 0.40)';
-            color = theme.palette.custom.font;
-            imgDisplay = true;
-        } else if (currentDay.isSame(today, 'day')) {
-            // 오늘 작성 안함
-            style.border = `1px solid ${theme.palette.custom.white}`;
-            style.backgroundColor = theme.palette.custom.white;
-            color = theme.palette.custom.font;
-        } else if (currentDay.isAfter(today)) {
-            // 미래 날짜
-            style.border = `1px solid ${theme.palette.custom.white}`;
-            if (date === 31) triangleDisplay = true;
-        } else {
-            // 지나간 날짜 작성 안함
-            style.backgroundColor = 'rgba(255, 252, 250, 0.1)';
-        }
-    }
+        // 클릭 이벤트 최적화
+        const handleClick = useCallback(async () => {
+            if (recordable) {
+                setSnackbarOpen({
+                    text: '모든 추억은 12월 31일에 공개됩니다!',
+                    severity: 'present',
+                });
+                return;
+            }
 
-    // 기록 공개 기간: 12월 31일 이후
-    if (recordable === false) {
-        imgDisplay = true;
-        if (hasWritten) {
-            // 작성 완료
-            style.backgroundColor = 'transparent';
-            color = 'transparent';
-        } else {
-            // 작성 안함
-            style.backgroundColor = 'rgba(255, 252, 250, 0.40)';
-            color = theme.palette.custom.font;
-        }
-    }
+            try {
+                const data = await fetchMemoryData(dateInFormat, userId);
+                if (data) {
+                    navigate(`/calendar-detail/${userId}`, {
+                        state: {
+                            data,
+                            selectedDate: dateInFormat,
+                        },
+                    });
+                } else {
+                    setSnackbarOpen({
+                        text: '보관된 추억이 없습니다.',
+                        severity: 'warning',
+                    });
+                }
+            } catch (error) {
+                console.error('Error fetching memory data:', error);
+            }
+        }, [recordable, dateInFormat, navigate, setSnackbarOpen, userId]);
 
-    return (
-        <Stack
-            sx={{
-                backgroundImage: imgDisplay
-                    ? `url("/assets/calendar/puzzle_${date}.svg")`
-                    : 'none',
-                backgroundColor: style.backgroundColor,
-                ...containerStyle,
-                ...styleConfig.boxStyle,
-            }}
-            justifyContent={'center'}
-            alignItems={'center'}
-        >
+        return (
             <Stack
                 sx={{
-                    border: style.border,
-                    backgroundColor: `${style.backgroundColor} !important`,
+                    backgroundImage: imgDisplay
+                        ? `url("/assets/calendar/puzzle_${date}.svg")`
+                        : 'none',
+                    backgroundColor: style.backgroundColor,
+                    ...containerStyle,
                     ...styleConfig.boxStyle,
-                    ...dayButtonStyle,
                 }}
-                justifyContent={
-                    styleConfig.position === 'middle' && !triangleDisplay
-                        ? 'center'
-                        : 'flex-start'
-                }
-                alignItems={
-                    styleConfig.position === 'middle'
-                        ? 'center'
-                        : styleConfig.position === 'right'
-                          ? 'end'
-                          : 'start'
-                }
-                component={Button}
-                disabled={date === 31}
-                onClick={handleClick} // 클릭 이벤트 추가
+                justifyContent='center'
+                alignItems='center'
             >
-                <img
-                    src={`/assets/calendar/triangle.svg`}
-                    style={{
-                        display: triangleDisplay ? 'block' : 'none',
-                        width: '100%',
-                        transform: 'translateY(-1px)',
-                        ...triangleStyle,
-                    }}
-                />
-                <Typography
+                <Stack
                     sx={{
-                        color: color,
-                        pointerEvents: 'none',
-                        transform: triangleDisplay ? 'translateY(3px)' : 0,
-                        mx: '6px',
+                        border: style.border,
+                        backgroundColor: `${style.backgroundColor} !important`,
+                        ...styleConfig.boxStyle,
+                        ...dayButtonStyle,
                     }}
-                    variant={triangleDisplay ? 'number2' : styleConfig.variant}
+                    justifyContent={
+                        styleConfig.position === 'middle' && !triangleDisplay
+                            ? 'center'
+                            : 'flex-start'
+                    }
+                    alignItems={
+                        styleConfig.position === 'middle'
+                            ? 'center'
+                            : styleConfig.position === 'right'
+                              ? 'end'
+                              : 'start'
+                    }
+                    component={Button}
+                    disabled={date === 31}
+                    onClick={handleClick}
                 >
-                    {date ? date : '11.30'}
-                </Typography>
+                    <img
+                        src={`/assets/calendar/triangle.svg`}
+                        style={{
+                            display: triangleDisplay ? 'block' : 'none',
+                            width: '100%',
+                            transform: 'translateY(-1px)',
+                            ...triangleStyle,
+                        }}
+                    />
+                    <Typography
+                        sx={{
+                            color: color,
+                            pointerEvents: 'none',
+                            transform: triangleDisplay ? 'translateY(3px)' : 0,
+                            mx: '6px',
+                        }}
+                        variant={
+                            triangleDisplay ? 'number2' : styleConfig.variant
+                        }
+                    >
+                        {date || '11.30'}
+                    </Typography>
+                </Stack>
             </Stack>
-        </Stack>
-    );
-};
+        );
+    }
+);
 
 export default Day;
