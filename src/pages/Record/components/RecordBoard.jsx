@@ -79,8 +79,10 @@ const Textfieldstyle = {
 };
 
 const readOnlyTextStyle = {
-    whiteSpace: 'pre-wrap', // 줄바꿈을 허용
-    wordWrap: 'break-word', // 단어가 길 경우 줄바꿈
+    whiteSpace: 'pre-wrap', 
+    wordWrap: 'break-word', 
+    fontSize: '20px',
+    fontFamily: 'Griun NltoTAENGGU, sans-serif', 
 };
 
 const imgcontainer = {
