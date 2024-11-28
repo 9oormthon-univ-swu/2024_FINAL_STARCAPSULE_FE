@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 
@@ -61,8 +61,8 @@ const ObjectImage = styled.img`
 const CreationComplete = () => {
     const { userId } = useParams();
     const navigate = useNavigate();
-
-    const snowballName = localStorage.getItem('snowballName') || '이름';
+    const [memoryData, setMemoryData] = useState(null);
+    // const snowballName = localStorage.getItem('snowballName') || '이름';
     const selectedObject = localStorage.getItem('selectedObject') || '없음';
 
     const handleClick = () => {
@@ -101,7 +101,10 @@ const CreationComplete = () => {
             </Helmet>
             <SVGImageContainer>
                 <SubTitle>
-                    <SnowballName>{snowballName}</SnowballName>님과의
+                    <SnowballName>
+                        {memoryData?.result?.writer || '작성자'}
+                    </SnowballName>
+                    님과의
                     <br />
                     추억이 전달되었어요
                 </SubTitle>
