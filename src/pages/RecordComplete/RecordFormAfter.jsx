@@ -171,7 +171,7 @@ const RecordFormAfter = () => {
                     <HeaderDate>
                         {memoryData
                             ? formatDate(memoryData.result.create_at)
-                            : '로딩중'}
+                            : '로딩중..'}
                     </HeaderDate>
                     <HeaderIconRight></HeaderIconRight>
                 </HeaderContainer>
