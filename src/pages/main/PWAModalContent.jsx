@@ -22,7 +22,7 @@ const PWAModalContent = () => {
                     variant='subtitle2'
                     fontWeight={'700'}
                 >
-                    {` 스노로그 `}
+                    {` 스노로그`}
                 </Typography>
                 를 추가하고 로그인하면
                 <Typography variant='title4' color='#63422C'>

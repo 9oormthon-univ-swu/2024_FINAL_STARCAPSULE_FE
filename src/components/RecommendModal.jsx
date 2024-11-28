@@ -21,7 +21,7 @@ const modalContainerStyle = {
     height: 'fit-content',
     minHeight: '10rem',
     minWidth: '20rem',
-    width: ['calc(100vw - 2.5rem)', 'fit-content'],
+    width: ['calc(100vw - 2.5rem)', 'calc(600px - 2.5rem)'],
     maxWidth: '20rem',
     overflow: 'hidden',
     boxSizing: 'border-box',
