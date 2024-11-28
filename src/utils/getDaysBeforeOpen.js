@@ -11,8 +11,6 @@ const getDaysBeforeOpen = (year, todayISOString) => {
     if (recordable) {
         const daysLeft = endDate.diff(today, 'day');
 
-        console.log('daysLeft:', daysLeft);
-
         return daysLeft;
     } else {
         return 0;

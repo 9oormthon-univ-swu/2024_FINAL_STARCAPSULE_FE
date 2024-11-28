@@ -6,7 +6,6 @@ import html2canvas from 'html2canvas';
 import { CloseIcon } from '@/components/icons';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import { useParams, useNavigate } from 'react-router-dom';
-import ImgShareButton from '@/components/ImgShareButton';
 import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
 

@@ -12,9 +12,8 @@ import MainTitle from './MainTitle';
 import Snowball from './Snowball/Snowball';
 import Layout from '@/layouts/Layout';
 import useSWR, { mutate } from 'swr';
-import { CalendarIcon } from '@/components/icons';
+import { CalendarIcon, ShareIcon } from '@/components/icons';
 import PopupPage from '../Onboarding/PopupPage';
-import { getDaysBeforeOpen } from '@/utils/getDaysBeforeOpen';
 import PopupAfter from '../Onboarding/PopupAfter';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useUserStore } from 'stores/useUserStore';
@@ -23,11 +22,11 @@ import useAuthStore from 'stores/useAuthStore';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import { useNavigate } from 'react-router-dom';
 import '@dotlottie/player-component';
-import ImgShareButton from '@/components/ImgShareButton';
 import { Helmet } from 'react-helmet-async';
 import { useSnackbarStore } from '@/stores/useSnackbarStore';
 import { isRecordable } from '@/utils/isRecordable';
 import dayjs from 'dayjs';
+import ShareModal from '@/components/ShareModal';
 
 export const MainContainer = styled(Stack)(() => ({
     padding: '2rem 0 2.25rem 0',
@@ -80,6 +79,7 @@ const Main = () => {
     const [showLottie, setShowLottie] = useState(false); // 로티 애니메이션도 비활성화 상태로 시작
     const [serverTime, setServerTime] = useState('');
     const [recordable, setRecordable] = useState(false);
+    const [openShareModal, setOpenShareModal] = useState(false);
     const [searchParams] = useSearchParams();
     const page = parseInt(searchParams.get('page') || 1);
 
@@ -107,7 +107,7 @@ const Main = () => {
         const today = new Date().toLocaleDateString('ko-KR');
 
         if (lastPopupCheckedDate !== today) {
-            setShowLottie(true); // 체크되지 않은 경우 로티와 팝업을 표시
+            setShowLottie(true);
             setPopupOpen(true);
         }
     }, []);
@@ -140,7 +140,7 @@ const Main = () => {
             .then((res) => res.data.result)
             .then((data) => {
                 setHasWritten(false);
-                const dateObj = dayjs(data.date);
+                const dateObj = dayjs.utc(data.date).tz('Asia/Seoul');
                 const formattedDate = dateObj.format(`MM월 DD일`);
                 localStorage.setItem('dailyQuestion', data.question);
                 localStorage.setItem('dailyDate', formattedDate);
@@ -206,7 +206,6 @@ const Main = () => {
     };
 
     const onMemoryClick = (memoryId, objectName) => {
-        //console.log('Clicked memory ID:', memoryId); // 콘솔 출력 추가
         const userId = param.userId;
 
         if (recordable) {
@@ -230,8 +229,6 @@ const Main = () => {
             navigate(`/recordafter/${userId}/${memoryId}`);
         } else if (guestObjects.includes(objectName)) {
             navigate(`/guestafter/${userId}/${memoryId}`);
-        } else {
-            //console.error('Unknown object_name:', objectName);
         }
     };
 
@@ -242,8 +239,12 @@ const Main = () => {
 
     if (error) return <div>failed to load</div>;
 
+    const onCloseShareModal = () => {
+        setOpenShareModal(false);
+    };
+
     return (
-        <div>
+        <>
             <Helmet>
                 <title>스노로그 - 2024의 추억이 쌓이는 곳</title>
                 <meta
@@ -291,12 +292,11 @@ const Main = () => {
                                 >
                                     <CalendarIcon />
                                 </StyledIconButton>
-                                <ImgShareButton
-                                    title={
-                                        '스노우볼에 오늘의 추억이 보관되었어요!\nSNS에 링크를 공유해친구들에게 함께한 추억을 전달받아보세요☃️\n'
-                                    }
-                                    url={`${import.meta.env.BASE_URL}/guest/${param.userId}`}
-                                />
+                                <StyledIconButton
+                                    onClick={() => setOpenShareModal(true)}
+                                >
+                                    <ShareIcon />
+                                </StyledIconButton>
                             </Stack>
                         </Stack>
 
@@ -322,6 +322,7 @@ const Main = () => {
                                 flexGrow: 0,
                             }}
                             disabled={hasWritten}
+                            onClick={() => navigate(`/record/${param.userId}`)}
                         >
                             <Typography variant='title2'>
                                 추억 전달하기
@@ -381,7 +382,12 @@ const Main = () => {
                         </Portal>
                     ))}
             </Layout>
-        </div>
+            <ShareModal
+                open={openShareModal}
+                onClose={onCloseShareModal}
+                url={`${import.meta.env.VITE_BASE_URL}/guest/${param.userId}`}
+            />
+        </>
     );
 };
 

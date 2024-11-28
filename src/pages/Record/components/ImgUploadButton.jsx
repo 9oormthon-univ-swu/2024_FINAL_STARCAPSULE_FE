@@ -1,22 +1,35 @@
 import React, { useState, useRef } from 'react';
 import { Button, Box } from '@mui/material';
 import { PhotoIcon } from '@/components/icons';
+import { useSnackbarStore } from '@/stores/useSnackbarStore';
 
 const ImgUploadButton = ({ setImage, handleSetImage, id }) => {
     const [selectedImage, setSelectedImage] = useState(null);
     const fileInputRef = useRef(null);
+    const { setSnackbarOpen } = useSnackbarStore();
+    const MAX_FILE_SIZE_MB = 5; //이미지 5MB 제한
 
     // 이미지 업로드 핸들러
     const handleImageUpload = (e) => {
         const file = e.target.files[0] && e.target.files[0];
         if (file) {
-            const reader = new FileReader();
-            setImage(file);
-            reader.onload = (e) => {
-                setSelectedImage(e.target.result);
-                if (handleSetImage) handleSetImage(file);
-            };
-            reader.readAsDataURL(file);
+            if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
+                setSnackbarOpen({
+                    text: `이미지의 크기가 너무 큽니다. 최대 ${MAX_FILE_SIZE_MB}MB까지 업로드 가능합니다.`,
+                    severity: 'error',
+                });
+                setSelectedImage(null);
+                e.target.value = '';
+                return;
+            } else {
+                const reader = new FileReader();
+                setImage(file);
+                reader.onload = (e) => {
+                    setSelectedImage(e.target.result);
+                    if (handleSetImage) handleSetImage(file);
+                };
+                reader.readAsDataURL(file);
+            }
         }
     };
 

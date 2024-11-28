@@ -25,7 +25,6 @@ const NavigationButtonContainer = styled(Stack)(() => ({
 }));
 
 const NavigationButton = ({ current, total, onLeftClick, onRightClick }) => {
-    console.log('NavigationButton', current, total);
     return (
         <NavigationButtonContainer
             direction={'row'}

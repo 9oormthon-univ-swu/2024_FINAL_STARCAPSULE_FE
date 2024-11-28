@@ -132,7 +132,6 @@ const Day = ({ time, hasWritten, date, styleConfig, recordable, year }) => {
             imgDisplay = true;
         } else if (currentDay.isSame(today, 'day')) {
             // 오늘 작성 안함
-            //console.log('today:', date);
             style.border = `1px solid ${theme.palette.custom.white}`;
             style.backgroundColor = theme.palette.custom.white;
             color = theme.palette.custom.font;
@@ -193,6 +192,7 @@ const Day = ({ time, hasWritten, date, styleConfig, recordable, year }) => {
                           : 'start'
                 }
                 component={Button}
+                disabled={date === 31}
                 onClick={handleClick} // 클릭 이벤트 추가
             >
                 <img
