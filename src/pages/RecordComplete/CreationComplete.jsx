@@ -57,8 +57,8 @@ const ObjectImage = styled.img`
 const CreationComplete = () => {
     const { userId } = useParams();
     const navigate = useNavigate();
-
-    const snowballName = localStorage.getItem('snowballName') || '이름';
+    const [memoryData, setMemoryData] = useState(null);
+    // const snowballName = localStorage.getItem('snowballName') || '이름';
     const selectedObject = localStorage.getItem('selectedObject') || '없음';
 
     const handleClick = () => {
@@ -96,7 +96,7 @@ const CreationComplete = () => {
                 <meta property='og:type' content='website' />
             </Helmet>
             <SubTitle>
-                <SnowballName>{snowballName}</SnowballName>님과의
+                <SnowballName>{memoryData?.result?.writer || '작성자'}</SnowballName>님과의
                 <br />
                 추억이 전달되었어요
             </SubTitle>

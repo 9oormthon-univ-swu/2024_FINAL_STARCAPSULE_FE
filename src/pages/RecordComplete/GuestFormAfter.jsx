@@ -149,7 +149,6 @@ const GuestFormAfter = () => {
                 </Stack>
 
                 <Stack
-                    id='capture-container'
                     ref={captureRef}
                     sx={{
                         width: '100%',
@@ -181,7 +180,7 @@ const GuestFormAfter = () => {
                             width: '100%',
                             marginTop: '2rem',
                             maxHeight: 'calc(100vh - 300px)',
-                            overflowY: 'auto',
+                            overflowY: 'visible',
                             paddingBottom: '2rem',
                         }}
                     >
