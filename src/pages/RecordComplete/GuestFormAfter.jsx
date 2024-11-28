@@ -8,97 +8,134 @@ import ImgShareButton from '@/components/ImgShareButton';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import styled from 'styled-components';
+
+const HeaderContainer = styled.div`
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  right: 1rem;
+  z-index: 10;
+  color: white;
+  font-family: 'Griun NltoTAENGGU', sans-serif;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const HeaderDate = styled.div`
+  font-size: 1.5rem;
+  text-align: center;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  color: white;
+`;
+
+const HeaderIconLeft = styled(IconButton)`
+  cursor: pointer;
+  padding: 0;
+  margin-right: auto;
+`;
+
+const HeaderIconRight = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
 
 const contentstyle = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    minHeight: '100dvh',
-    maxHeight: '100dvh',
-    width: '100%',
-    maxWidth: '600px',
-    margin: '0 auto',
-    padding: '0',
-    boxSizing: 'border-box',
-    position: 'relative',
-    overflowY: 'auto',
-    overflowX: 'hidden',
-    background: 'linear-gradient(180deg, #0b0a1b 0%, #27405e 100%)',
-    '&::-webkit-scrollbar': {
-        display: 'none',
-    },
-    '-ms-overflow-style': 'none',
-    'scrollbar-width': 'none',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'flex-start',
+  minHeight: '100dvh',
+  maxHeight: '100dvh',
+  width: '100%',
+  maxWidth: '600px',
+  margin: '0 auto',
+  padding: '0',
+  boxSizing: 'border-box',
+  position: 'relative',
+  overflowY: 'auto',
+  overflowX: 'hidden',
+  background: 'linear-gradient(180deg, #0b0a1b 0%, #27405e 100%)',
+  '&::-webkit-scrollbar': {
+    display: 'none',
+  },
+  '-ms-overflow-style': 'none',
+  'scrollbar-width': 'none',
 };
 
 const GuestFormAfter = () => {
-    const captureRef = useRef(null);
-    const { userId, memoryId } = useParams();
-    const navigate = useNavigate();
-    const axiosInstance = useAxiosWithAuth();
-    const [memoryData, setMemoryData] = useState(null);
-    const nickname = localStorage.getItem('snowballName') || '닉네임';
-    const snowballAPI = `${import.meta.env.VITE_API_URL}/api/share_memory`;
+  const captureRef = useRef(null);
+  const { userId, memoryId } = useParams();
+  const navigate = useNavigate();
+  const axiosInstance = useAxiosWithAuth();
+  const [memoryData, setMemoryData] = useState(null);
+  const nickname = localStorage.getItem('snowballName') || '닉네임';
+  const snowballAPI = `${import.meta.env.VITE_API_URL}/api/share_memory`;
 
-    useEffect(() => {
-        const fetchMemoryData = async () => {
-            try {
-                if (!memoryId || !userId) return;
-                const requestUrl = `${snowballAPI}/${userId}/${memoryId}`;
-                const response = await axiosInstance.get(requestUrl);
-                setMemoryData(response.data);
-            } catch (error) {
-                //console.error('Error fetching memory details:', error);
-            }
-        };
-        fetchMemoryData();
-    }, [memoryId, userId]);
-
-    const handleSaveImage = (e) => {
-        e.preventDefault();
-        if (captureRef.current) {
-            const element = captureRef.current;
-
-            html2canvas(element, {
-                scale: 2,
-                useCORS: true,
-                backgroundColor: '#132034',
-                scrollX: 0, // 스크롤 위치 무시하고 캡처
-                scrollY: 0,
-            })
-                .then((canvas) => {
-                    const link = document.createElement('a');
-                    link.href = canvas.toDataURL('image/png');
-                    link.download = 'record.png';
-                    link.click();
-                })
-                .catch((error) => {
-                    //console.error('이미지 저장 중 오류 발생:', error);
-                });
-        }
+  useEffect(() => {
+    const fetchMemoryData = async () => {
+      try {
+        if (!memoryId || !userId) return;
+        const requestUrl = `${snowballAPI}/${userId}/${memoryId}`;
+        const response = await axiosInstance.get(requestUrl);
+        setMemoryData(response.data);
+      } catch (error) {
+        //console.error('Error fetching memory details:', error);
+      }
     };
+    fetchMemoryData();
+  }, [memoryId, userId]);
 
-    const handleClose = () => {
-        navigate(-1);
-    };
+  const handleSaveImage = (e) => {
+    e.preventDefault();
+    if (captureRef.current) {
+      const element = captureRef.current;
+      const date = new Date(memoryData?.result.create_at);
+      const formattedDate = `${date.getFullYear()}-${String(
+        date.getMonth() + 1
+      ).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 
-    const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        return (
-            <span style={{ fontSize: '1.4rem' }}>
-                <span style={{ color: '#DDB892' }}>{date.getFullYear()}</span>
-                년&nbsp;
-                <span style={{ color: '#DDB892' }}>
-                    {String(date.getMonth() + 1).padStart(2, '0')}
-                </span>
-                월&nbsp;
-                <span style={{ color: '#DDB892' }}>
-                    {String(date.getDate()).padStart(2, '0')}
-                </span>
-                일
-            </span>
-        );
-    };
+      html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#132034',
+        scrollX: 0,
+        scrollY: 0,
+      })
+        .then((canvas) => {
+          const link = document.createElement('a');
+          link.href = canvas.toDataURL('image/png');
+          link.download = `${formattedDate}.png`;
+          link.click();
+        })
+        .catch((error) => {
+          //console.error('이미지 저장 중 오류 발생:', error);
+        });
+    }
+  };
+
+  const handleClose = () => {
+    navigate(-1);
+  };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return (
+      <HeaderDate>
+        <span style={{ color: '#DDB892' }}>{date.getFullYear()}</span>년&nbsp;
+        <span style={{ color: '#DDB892' }}>
+          {String(date.getMonth() + 1).padStart(2, '0')}
+        </span>
+        월&nbsp;
+        <span style={{ color: '#DDB892' }}>
+          {String(date.getDate()).padStart(2, '0')}
+        </span>
+        일
+      </HeaderDate>
+    );
+  };
 
     return (
         <div>
@@ -118,46 +155,22 @@ const GuestFormAfter = () => {
                 />
                 <meta property='og:type' content='website' />
             </Helmet>
-            <Stack sx={contentstyle}>
-                <Stack
-                    direction='row'
-                    alignItems='center'
-                    justifyContent='space-between'
-                    sx={{
-                        position: 'absolute',
-                        top: 'calc(1rem + 29px)',
-                        left: '1rem',
-                        right: '1rem',
-                        zIndex: 10,
-                        color: 'white',
-                        fontFamily: 'Griun NltoTAENGGU, sans-serif',
-                    }}
-                >
-                    <IconButton onClick={handleClose}>
-                        <CloseIcon
-                            sx={{
-                                cursor: 'pointer',
-                                position: 'relative',
-                                right: '-30px',
-                            }}
-                        />
-                    </IconButton>
-                    <span style={{ fontSize: '1.4rem' }}>
-                        {memoryData
-                            ? formatDate(memoryData.result.create_at)
-                            : '로딩 중...'}
-                    </span>
-                    <ImgShareButton
-                        title={
-                            '스노우볼에 오늘의 추억이 보관되었어요!\nSNS에 링크를 공유해친구들에게 함께한 추억을 전달받아보세요☃️\n'
-                        }
-                        sx={{
-                            cursor: 'pointer',
-                            position: 'relative',
-                            left: '-30px',
-                        }}
-                    />
-                </Stack>
+            <Stack id="capture-container" sx={contentstyle}>
+        <HeaderContainer>
+          <HeaderIconLeft onClick={handleClose}>
+            <CloseIcon />
+          </HeaderIconLeft>
+          <HeaderDate>
+            {memoryData ? formatDate(memoryData.result.create_at) : '20243월31일'}
+          </HeaderDate>
+          <HeaderIconRight>
+            <ImgShareButton
+              title={
+                '스노우볼에 오늘의 추억이 보관되었어요!\nSNS에 링크를 공유해 친구들에게 함께한 추억을 전달받아보세요☃️\n'
+              }
+            />
+          </HeaderIconRight>
+        </HeaderContainer>
 
                 <Stack
                     id='capture-container'
