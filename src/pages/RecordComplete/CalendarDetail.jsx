@@ -175,6 +175,7 @@ const CalendarDetail = () => {
                     flexDirection: 'column',
                     alignItems: 'center',
                     overflow: 'visible',
+                    position: 'relative',
                     marginTop: '6.5rem',
                 }}
             >
@@ -210,6 +211,10 @@ const CalendarDetail = () => {
                                 fontFamily: 'Griun NltoTAENGGU, sans-serif',
                                 marginTop: '16px',
                                 marginLeft: '200px',
+                                textAlign: 'center',
+                                position: 'relative',
+                                transform: 'translateX(-50%)',
+                                whiteSpace: 'nowrap',
                             }}
                         >
                             {currentItem.writer
@@ -243,11 +248,8 @@ const CalendarDetail = () => {
                     padding: '1rem',
                     backgroundColor: '#3a3a3a',
                     color: 'white',
-                    position:
-                        currentItem && currentItem.answer.length < 100
-                            ? 'absolute'
-                            : 'sticky',
-                    bottom: -45,
+                    position: 'absolute',
+                    bottom: 0,
                     zIndex: 10,
                     marginTop: '1rem',
                 }}
