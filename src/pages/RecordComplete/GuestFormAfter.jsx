@@ -187,7 +187,7 @@ const GuestFormAfter = () => {
           <span
             style={{
               position: 'absolute',
-              top: 'calc(0rem + -0.5rem)',
+              top: 'calc(0rem + 0rem)',
               left: '2.7rem',
               color: 'white',
               fontSize: '1.3rem',
