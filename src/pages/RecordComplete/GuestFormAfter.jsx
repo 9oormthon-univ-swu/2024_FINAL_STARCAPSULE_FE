@@ -136,113 +136,114 @@ const GuestFormAfter = () => {
     );
   };
 
-    return (
-        <div>
-            <Helmet>
-                <title>스노로그 - 2024의 추억이 쌓이는 곳</title>
-                <meta
-                    name='description'
-                    content='스노로그에서 쌓았던 2024의 추억을 확인해보세요.'
-                />
-                <meta
-                    property='og:title'
-                    content='스노로그 - 2024의 추억이 쌓이는 곳'
-                />
-                <meta
-                    property='og:description'
-                    content='스노로그에서 쌓았던 2024의 추억을 확인해보세요.'
-                />
-                <meta property='og:type' content='website' />
-            </Helmet>
-            <Stack id="capture-container" sx={contentstyle}>
+  return (
+    <div>
+      <Helmet>
+        <title>스노로그 - 2024의 추억이 쌓이는 곳</title>
+        <meta
+          name="description"
+          content="스노로그에서 쌓았던 2024의 추억을 확인해보세요."
+        />
+        <meta
+          property="og:title"
+          content="스노로그 - 2024의 추억이 쌓이는 곳"
+        />
+        <meta
+          property="og:description"
+          content="스노로그에서 쌓았던 2024의 추억을 확인해보세요."
+        />
+        <meta property="og:type" content="website" />
+      </Helmet>
+      <Stack id="capture-container" sx={contentstyle}>
         <HeaderContainer>
           <HeaderIconLeft onClick={handleClose}>
             <CloseIcon />
           </HeaderIconLeft>
           <HeaderDate>
-            {memoryData ? formatDate(memoryData.result.create_at) : '20243월31일'}
+            {memoryData ? formatDate(memoryData.result.create_at) : '로딩중'}
           </HeaderDate>
-          <HeaderIconRight>
-            
-          </HeaderIconRight>
+          <HeaderIconRight></HeaderIconRight>
         </HeaderContainer>
 
-                <Stack
-                    id='capture-container'
-                    ref={captureRef}
-                    sx={{
-                        width: '100%',
-                        maxWidth: '300px',
-                        padding: '1.6rem',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        overflow: 'visible',
-                        marginTop: '8rem',
-                        paddingBottom: '0.1rem',
-                    }}
-                >
-                    <span
-                        style={{
-                            position: 'absolute',
-                            top: 'calc(1rem + 8rem)',
-                            left: '9.5rem',
-                            color: 'white',
-                            fontSize: '1.3rem',
-                            fontFamily: 'Griun NltoTAENGGU, sans-serif',
-                        }}
-                    >
-                        To. <span style={{ color: '#DDB892' }}>{nickname}</span>
-                    </span>
+        <Stack
+          id="capture-container"
+          ref={captureRef}
+          sx={{
+            width: '100%',
+            maxWidth: '300px',
+            padding: '1.6rem',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            overflow: 'visible',
+            marginTop: '8rem',
+            paddingBottom: '0.1rem',
+            position: 'relative',
+          }}
+        >
+          <span
+            style={{
+              position: 'absolute',
+              top: 'calc(1rem + 0.5rem)',
+              left: '2.7rem',
+              color: 'white',
+              fontSize: '1.3rem',
+              fontFamily: 'Griun NltoTAENGGU, sans-serif',
+            }}
+          >
+            To. <span style={{ color: '#DDB892' }}>{nickname}</span>
+          </span>
 
-                    <Stack
-                        sx={{
-                            width: '100%',
-                            marginTop: '2rem',
-                            maxHeight: 'calc(100vh - 300px)',
-                            overflowY: 'auto',
-                            paddingBottom: '2rem',
-                        }}
-                    >
-                        <RecordBoard
-                            content={memoryData?.result.answer || ''}
-                            image_url={memoryData?.result.image_url}
-                            isReadOnly={true}
-                        />
-                    </Stack>
+          <Stack
+            sx={{
+              width: '100%',
+              marginTop: '2rem',
+              maxHeight: 'calc(100vh - 300px)',
+              overflowY: 'auto',
+              paddingBottom: '2rem',
+            }}
+          >
+            <RecordBoard
+              content={memoryData?.result.answer || ''}
+              image_url={memoryData?.result.image_url}
+              isReadOnly={true}
+            />
+          </Stack>
 
-                    <span
-                        style={{
-                            color: 'white',
-                            fontSize: '1.3rem',
-                            fontFamily: 'Griun NltoTAENGGU, sans-serif',
-                            textAlign: 'center',
-                            position: 'relative',
-                            top: '-12px',
-                            marginLeft: '200px',
-                        }}
-                    >
-                        From.{' '}
-                        <span style={{ color: '#DDB892' }}>
-                            {memoryData?.result?.writer || '작성자'}
-                        </span>
-                    </span>
+          <span
+            style={{
+              color: 'white',
+              fontSize: '1.3rem',
+              fontFamily: 'Griun NltoTAENGGU, sans-serif',
+              textAlign: 'center',
+              position: 'relative',
+              top: '-12px',
+              left: '46%',
+              transform: 'translateX(-50%)',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            From.{' '}
+            <span style={{ color: '#DDB892' }}>
+              {memoryData?.result?.writer || '작성자'}
+            </span>
+          </span>
 
-                    <Stack
-                        component='form'
-                        sx={{
-                            marginTop: '15px',
-                            alignItems: 'center',
-                            width: 'fit-content',
-                        }}
-                        data-html2canvas-ignore='true'
-                    >
-                        <ImageSaveButton onClick={handleSaveImage} />
-                    </Stack>
-                </Stack>
-            </Stack>
-        </div>
-    );
+          <Stack
+            component="form"
+            sx={{
+              marginTop: '15px',
+              alignItems: 'center',
+              width: 'fit-content',
+            }}
+            data-html2canvas-ignore="true"
+          >
+            <ImageSaveButton onClick={handleSaveImage} />
+          </Stack>
+        </Stack>
+      </Stack>
+    </div>
+  );
 };
 
 export default GuestFormAfter;
