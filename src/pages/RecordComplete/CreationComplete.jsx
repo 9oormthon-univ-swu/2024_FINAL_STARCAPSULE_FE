@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 
@@ -16,7 +16,6 @@ const Container = styled.div`
     margin: 0 auto;
     background-color: #27405e;
 `;
-
 
 const SnowballName = styled.span`
     color: #ddb892;
@@ -41,7 +40,7 @@ const SubTitle = styled.p`
     text-align: center;
     font-family: 'Noto Sans';
     font-weight: 700;
-    margin-bottom: 20px; 
+    margin-bottom: 20px;
 `;
 
 const SVGImage = styled.img`
@@ -62,25 +61,25 @@ const ObjectImage = styled.img`
 const CreationComplete = () => {
     const { userId } = useParams();
     const navigate = useNavigate();
-
-    const snowballName = localStorage.getItem('snowballName') || '이름';
+    const [memoryData, setMemoryData] = useState(null);
+    // const snowballName = localStorage.getItem('snowballName') || '이름';
     const selectedObject = localStorage.getItem('selectedObject') || '없음';
 
     const handleClick = () => {
-        navigate(`/guest/${userId}?page=1`);
+        navigate(`/main/${userId}?page=1`);
     };
 
     const getObjectImagePath = (objectName) => {
-        return `/assets/object/${objectName.toLowerCase()}.svg`;  
+        return `/assets/object/${objectName.toLowerCase()}.svg`;
     };
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            navigate(`/guest/${userId}?page=1`);
-        }, 5000); 
+            navigate(`/main/${userId}?page=1`);
+        }, 5000);
 
-        return () => clearTimeout(timer); 
-    }, [navigate, userId]); 
+        return () => clearTimeout(timer);
+    }, [navigate, userId]);
 
     return (
         <Container onClick={handleClick}>
@@ -102,12 +101,18 @@ const CreationComplete = () => {
             </Helmet>
             <SVGImageContainer>
                 <SubTitle>
-                    <SnowballName>{snowballName}</SnowballName>님과의
+                    <SnowballName>
+                        {memoryData?.result?.writer || '작성자'}
+                    </SnowballName>
+                    님과의
                     <br />
                     추억이 전달되었어요
                 </SubTitle>
-                <SVGImage src={'/assets/Frame_26085556.svg'} alt="Frame SVG" />
-                <ObjectImage src={getObjectImagePath(selectedObject)} alt="Selected Object SVG" />
+                <SVGImage src={'/assets/Frame_26085556.svg'} alt='Frame SVG' />
+                <ObjectImage
+                    src={getObjectImagePath(selectedObject)}
+                    alt='Selected Object SVG'
+                />
             </SVGImageContainer>
         </Container>
     );

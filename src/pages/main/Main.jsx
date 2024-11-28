@@ -112,11 +112,6 @@ const Main = () => {
         }
     }, []);
 
-    useEffect(() => {
-        saveTokenFromURL(login);
-        setUserId(param.userId);
-    }, []);
-
     const axiosInstance = useAxiosWithAuth();
 
     const snowballFetcher = (url) =>
@@ -313,7 +308,6 @@ const Main = () => {
                         self={data?.selfCount}
                         onMemoryClick={onMemoryClick}
                         fetcher={snowballFetcher}
-                        owner={'main'}
                     />
                     {recordable ? (
                         <StyledButton
@@ -325,7 +319,7 @@ const Main = () => {
                             onClick={() => navigate(`/record/${param.userId}`)}
                         >
                             <Typography variant='title2'>
-                                추억 전달하기
+                                추억 보관하기
                             </Typography>
                         </StyledButton>
                     ) : (
@@ -385,7 +379,7 @@ const Main = () => {
             <ShareModal
                 open={openShareModal}
                 onClose={onCloseShareModal}
-                url={`${import.meta.env.VITE_BASE_URL}/guest/${param.userId}`}
+                url={`${import.meta.env.VITE_BASE_URL}/main/${param.userId}`}
             />
         </>
     );

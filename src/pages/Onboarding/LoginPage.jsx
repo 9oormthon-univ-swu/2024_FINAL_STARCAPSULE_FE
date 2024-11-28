@@ -45,30 +45,29 @@ const SubTitle = styled.p`
     margin: 5px 0;
 
     @media (max-width: 490px) {
-    font-size: 16px; 
-    white-space: normal;
-    color: #d5d1cd;
-    position: absolute;
-    top: 270px;
-    transform: translateX(-50%);
-    left: 155px;
-    line-height: 1.4;
-    margin: 5px 0;
+        font-size: 16px;
+        white-space: normal;
+        color: #d5d1cd;
+        position: absolute;
+        top: 270px;
+        transform: translateX(-50%);
+        left: 155px;
+        line-height: 1.4;
+        margin: 5px 0;
     }
 
     @media (max-width: 360px) {
-    font-size: 14px; 
-    white-space: normal;
-    color: #d5d1cd;
-    position: absolute;
-    top: 270px;
-    transform: translateX(-50%);
-    left: 140px;
-    line-height: 1.4;
-    margin: 5px 0;
+        font-size: 14px;
+        white-space: normal;
+        color: #d5d1cd;
+        position: absolute;
+        top: 270px;
+        transform: translateX(-50%);
+        left: 140px;
+        line-height: 1.4;
+        margin: 5px 0;
     }
 `;
-
 
 const KakaoButton = styled.button`
     background-color: #fee500;
@@ -154,8 +153,8 @@ const LoginPage = () => {
     const handleShare = async () => {
         try {
             await navigator.share({
-                title: 'Snow Log',
-                text: '스노우볼에 오늘의 추억을 공유해보세요!',
+                title: '⛄ 눈이 펑펑 내리는 추운 겨울, 한 해의 추억을 돌아보며 자신만의 스노우볼을 만들어 볼까요?⛄',
+                text: `스노우볼 시작하기:${import.meta.env.VITE_BASE_URL}`,
                 url: `${import.meta.env.VITE_BASE_URL}`,
             });
         } catch (err) {
