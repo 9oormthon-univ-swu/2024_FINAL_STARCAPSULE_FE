@@ -42,7 +42,6 @@ const CalendarDetail = () => {
     const [pageIndex, setPageIndex] = useState(0);
     const nickname = localStorage.getItem('snowballName') || '닉네임';
     
-    
     useEffect(() => {
         if (location.state?.data) {
             setMemoryData(location.state.data);
@@ -194,10 +193,11 @@ const CalendarDetail = () => {
                                     : '-200px',
                             }}
                         >
-                            {currentItem.daily_question?.question
+                              {currentItem.daily_question?.question
                                 ? currentItem.daily_question.question
-                                : `To. ${nickname}`}
-                        </span>
+                                : `To.`} 
+                              {currentItem.daily_question?.question ? '' : <span style={{ color: '#DDB892' }}>{nickname}</span>}  
+                            </span>
 
                         <RecordBoard
                             content={currentItem.answer}
@@ -218,10 +218,9 @@ const CalendarDetail = () => {
                                 whiteSpace: 'nowrap',
                             }}
                         >
-                            {currentItem.writer
-                                ? `From. ${currentItem.writer}`
-                                : ''}
-                        </span>
+                             {currentItem.writer ? `From. ` : ''}
+                          <span style={{ color: '#DDB892' }}>{currentItem.writer}</span> 
+                            </span>
                     </>
                 )}
             </Stack>

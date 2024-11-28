@@ -184,7 +184,7 @@ const GuestFormAfter = () => {
           <span
             style={{
               position: 'absolute',
-              top: 'calc(1rem + 0.5rem)',
+              top: 'calc(0rem + -0.5rem)',
               left: '2.7rem',
               color: 'white',
               fontSize: '1.3rem',
@@ -197,16 +197,13 @@ const GuestFormAfter = () => {
           <Stack
             sx={{
               width: '100%',
-              marginTop: '2rem',
-              maxHeight: 'calc(100vh - 300px)',
-              position: 'relative', 
-              display: 'flex',
+              alignItems: 'center',
+              marginBottom: '1rem',
               flexDirection: 'column',
-              paddingBottom: '2rem',
             }}
           >
             <RecordBoard
-              content={memoryData?.result.answer || ' '}
+              content={memoryData?.result.answer || ''}
               image_url={memoryData?.result.image_url}
               isReadOnly={true}
             />
@@ -219,7 +216,7 @@ const GuestFormAfter = () => {
               fontFamily: 'Griun NltoTAENGGU, sans-serif',
               textAlign: 'center',
               position: 'relative',
-              top: '-12px',
+              top: '-5px',
               left: '46%',
               transform: 'translateX(-50%)',
               whiteSpace: 'nowrap',
@@ -232,16 +229,16 @@ const GuestFormAfter = () => {
           </span>
 
           <Stack
-            component="form"
-            sx={{
-              marginTop: '15px',
-              alignItems: 'center',
-              width: 'fit-content',
-            }}
-            data-html2canvas-ignore="true"
-          >
-            <ImageSaveButton onClick={handleSaveImage} />
-          </Stack>
+          component="form"
+          sx={{
+            alignItems: 'center',
+            width: 'fit-content',
+            marginTop: '2rem', 
+          }}
+          data-html2canvas-ignore="true"
+        >
+          <ImageSaveButton onClick={handleSaveImage} />
+        </Stack>
         </Stack>
       </Stack>
     </div>
