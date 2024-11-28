@@ -41,7 +41,8 @@ const CalendarDetail = () => {
     const [memoryData, setMemoryData] = useState(null);
     const [pageIndex, setPageIndex] = useState(0);
     const nickname = localStorage.getItem('snowballName') || '닉네임';
-
+    
+    
     useEffect(() => {
         if (location.state?.data) {
             setMemoryData(location.state.data);
@@ -175,6 +176,7 @@ const CalendarDetail = () => {
                     flexDirection: 'column',
                     alignItems: 'center',
                     overflow: 'visible',
+                    position: 'relative',
                     marginTop: '6.5rem',
                 }}
             >
@@ -209,7 +211,11 @@ const CalendarDetail = () => {
                                 fontSize: '1.3rem',
                                 fontFamily: 'Griun NltoTAENGGU, sans-serif',
                                 marginTop: '16px',
-                                marginLeft: '200px',
+                                marginLeft: '260px',
+                                textAlign: 'center',
+                                position: 'relative',
+                                transform: 'translateX(-50%)',
+                                whiteSpace: 'nowrap',
                             }}
                         >
                             {currentItem.writer
@@ -232,89 +238,87 @@ const CalendarDetail = () => {
             </Stack>
 
             <Stack
-                direction='row'
-                alignItems='center'
-                justifyContent='space-between'
-                data-html2canvas-ignore='true'
-                sx={{
-                    width: '100%',
-                    height: '30px',
-                    fontSize: '20px',
-                    padding: '1rem',
-                    backgroundColor: '#3a3a3a',
-                    color: 'white',
-                    position:
-                        currentItem && currentItem.answer.length < 100
-                            ? 'absolute'
-                            : 'sticky',
-                    bottom: -45,
-                    zIndex: 10,
-                    marginTop: '1rem',
-                }}
-            >
-                <span
-                    style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        cursor: pageIndex === 0 ? 'not-allowed' : 'pointer',
-                        opacity: pageIndex === 0 ? 0.5 : 1,
-                        pointerEvents: pageIndex === 0 ? 'none' : 'auto',
-                        fontFamily: 'Griun NltoTAENGGU, sans-serif',
-                        marginLeft: '15px',
-                    }}
-                    onClick={handlePrevious}
-                >
-                    <svg
-                        xmlns='http://www.w3.org/2000/svg'
-                        width='24'
-                        height='24'
-                        viewBox='0 0 24 24'
-                        fill='none'
-                    >
-                        <path
-                            d='M15 6L9 12L15 18'
-                            stroke='#D5D1CD'
-                            strokeWidth='2'
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
-                        />
-                    </svg>
-                    이전
-                </span>
-                <span
-                    style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        cursor:
-                            pageIndex === totalItems - 1
-                                ? 'not-allowed'
-                                : 'pointer',
-                        opacity: pageIndex === totalItems - 1 ? 0.5 : 1,
-                        pointerEvents:
-                            pageIndex === totalItems - 1 ? 'none' : 'auto',
-                        fontFamily: 'Griun NltoTAENGGU, sans-serif',
-                        marginRight: '15px',
-                    }}
-                    onClick={handleNext}
-                >
-                    다음
-                    <svg
-                        xmlns='http://www.w3.org/2000/svg'
-                        width='24'
-                        height='24'
-                        viewBox='0 0 24 24'
-                        fill='none'
-                    >
-                        <path
-                            d='M9 18L15 12L9 6'
-                            stroke='#D5D1CD'
-                            strokeWidth='2'
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
-                        />
-                    </svg>
-                </span>
-            </Stack>
+    direction='row'
+    alignItems='center'
+    justifyContent='space-between'
+    data-html2canvas-ignore='true'
+    sx={{
+        width: '100%',
+        height: '30px',
+        fontSize: '20px',
+        padding: '1rem',
+        backgroundColor: '#3a3a3a',
+        color: 'white',
+        position: 'fixed',  
+        bottom: 0,  
+        zIndex: 10,
+        marginTop: '1rem',
+    }}
+>
+    <span
+        style={{
+            display: 'flex',
+            alignItems: 'center',
+            cursor: pageIndex === 0 ? 'not-allowed' : 'pointer',
+            opacity: pageIndex === 0 ? 0.5 : 1,
+            pointerEvents: pageIndex === 0 ? 'none' : 'auto',
+            fontFamily: 'Griun NltoTAENGGU, sans-serif',
+            marginLeft: '15px',
+        }}
+        onClick={handlePrevious}
+    >
+        <svg
+            xmlns='http://www.w3.org/2000/svg'
+            width='24'
+            height='24'
+            viewBox='0 0 24 24'
+            fill='none'
+        >
+            <path
+                d='M15 6L9 12L15 18'
+                stroke='#D5D1CD'
+                strokeWidth='2'
+                strokeLinecap='round'
+                strokeLinejoin='round'
+            />
+        </svg>
+        이전
+    </span>
+    <span
+        style={{
+            display: 'flex',
+            alignItems: 'center',
+            cursor:
+                pageIndex === totalItems - 1
+                    ? 'not-allowed'
+                    : 'pointer',
+            opacity: pageIndex === totalItems - 1 ? 0.5 : 1,
+            pointerEvents:
+                pageIndex === totalItems - 1 ? 'none' : 'auto',
+            fontFamily: 'Griun NltoTAENGGU, sans-serif',
+            marginRight: '15px',
+        }}
+        onClick={handleNext}
+    >
+        다음
+        <svg
+            xmlns='http://www.w3.org/2000/svg'
+            width='24'
+            height='24'
+            viewBox='0 0 24 24'
+            fill='none'
+        >
+            <path
+                d='M9 18L15 12L9 6'
+                stroke='#D5D1CD'
+                strokeWidth='2'
+                strokeLinecap='round'
+                strokeLinejoin='round'
+            />
+        </svg>
+    </span>
+</Stack>
+
         </Stack>
     );
 };

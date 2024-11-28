@@ -17,43 +17,47 @@ const Container = styled.div`
     background-color: #27405e;
 `;
 
+const SnowballName = styled.span`
+    color: #ddb892;
+`;
+
+const SVGImageContainer = styled.div`
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    top: calc(-5%);
+    width: 250px;
+    height: 150px;
+`;
+
 const SubTitle = styled.p`
     font-size: 24px;
-    position: absolute;
-    bottom: 550px;
-    transform: translateX(-50%);
-    left: 50%;
     color: white;
     white-space: nowrap;
     line-height: 1.5;
     text-align: center;
     font-family: 'Noto Sans';
     font-weight: 700;
-`;
-
-const SnowballName = styled.span`
-    color: #ddb892;
+    margin-bottom: 20px;
 `;
 
 const SVGImage = styled.img`
-    position: absolute;
-    bottom: 380px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 250px;
-    height: 150px;
+    width: 100%;
+    height: 100%;
+    position: relative;
 `;
 
 const ObjectImage = styled.img`
     position: absolute;
-    top: 52%;
+    top: 80%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 70px;
-    height: 70px;
+    width: 65px;
+    height: 65px;
     flex-shrink: 0;
 `;
-
 const CreationComplete = () => {
     const { userId } = useParams();
     const navigate = useNavigate();
@@ -62,20 +66,20 @@ const CreationComplete = () => {
     const selectedObject = localStorage.getItem('selectedObject') || '없음';
 
     const handleClick = () => {
-        navigate(`/guest/${userId}?page=1`);
+        navigate(`/main/${userId}?page=1`);
     };
 
     const getObjectImagePath = (objectName) => {
-        return `/assets/object/${objectName.toLowerCase()}.svg`;  
+        return `/assets/object/${objectName.toLowerCase()}.svg`;
     };
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            navigate(`/guest/${userId}?page=1`);
-        }, 5000); 
+            navigate(`/main/${userId}?page=1`);
+        }, 5000);
 
-        return () => clearTimeout(timer); 
-    }, [navigate, userId]); 
+        return () => clearTimeout(timer);
+    }, [navigate, userId]);
 
     return (
         <Container onClick={handleClick}>
@@ -95,13 +99,21 @@ const CreationComplete = () => {
                 />
                 <meta property='og:type' content='website' />
             </Helmet>
-            <SubTitle>
-                <SnowballName>{memoryData?.result?.writer || '작성자'}</SnowballName>님과의
-                <br />
-                추억이 전달되었어요
-            </SubTitle>
-            <SVGImage src={'/assets/Frame_26085556.svg'} alt='Frame SVG' />
-            <ObjectImage src={getObjectImagePath(selectedObject)} alt='Selected Object SVG' />
+            <SVGImageContainer>
+                <SubTitle>
+                    <SnowballName>
+                        {memoryData?.result?.writer || '작성자'}
+                    </SnowballName>
+                    님과의
+                    <br />
+                    추억이 전달되었어요
+                </SubTitle>
+                <SVGImage src={'/assets/Frame_26085556.svg'} alt='Frame SVG' />
+                <ObjectImage
+                    src={getObjectImagePath(selectedObject)}
+                    alt='Selected Object SVG'
+                />
+            </SVGImageContainer>
         </Container>
     );
 };

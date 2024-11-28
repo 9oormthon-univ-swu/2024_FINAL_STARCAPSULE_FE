@@ -35,6 +35,7 @@ const Title = styled.h1`
 
 const SubTitle = styled.p`
     font-size: 22px;
+    font-family: 'Noto Sans';
     color: #d5d1cd;
     position: absolute;
     top: 270px;

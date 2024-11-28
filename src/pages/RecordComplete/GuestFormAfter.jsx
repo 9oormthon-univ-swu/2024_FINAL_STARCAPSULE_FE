@@ -7,6 +7,40 @@ import { CloseIcon } from '@/components/icons';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import styled from 'styled-components';
+
+const HeaderContainer = styled.div`
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    right: 1rem;
+    z-index: 10;
+    color: white;
+    font-family: 'Griun NltoTAENGGU', sans-serif;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+`;
+
+const HeaderDate = styled.div`
+    font-size: 1.5rem;
+    text-align: center;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    color: white;
+`;
+
+const HeaderIconLeft = styled(IconButton)`
+    cursor: pointer;
+    padding: 0;
+    margin-right: auto;
+`;
+
+const HeaderIconRight = styled.div`
+    display: flex;
+    justify-content: flex-end;
+`;
 
 const contentstyle = {
     display: 'flex',
@@ -57,18 +91,22 @@ const GuestFormAfter = () => {
         e.preventDefault();
         if (captureRef.current) {
             const element = captureRef.current;
+            const date = new Date(memoryData?.result.create_at);
+            const formattedDate = `${date.getFullYear()}-${String(
+                date.getMonth() + 1
+            ).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 
             html2canvas(element, {
                 scale: 2,
                 useCORS: true,
                 backgroundColor: '#132034',
-                scrollX: 0, // 스크롤 위치 무시하고 캡처
+                scrollX: 0,
                 scrollY: 0,
             })
                 .then((canvas) => {
                     const link = document.createElement('a');
                     link.href = canvas.toDataURL('image/png');
-                    link.download = 'record.png';
+                    link.download = `${formattedDate}.png`;
                     link.click();
                 })
                 .catch((error) => {
@@ -84,7 +122,7 @@ const GuestFormAfter = () => {
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         return (
-            <span style={{ fontSize: '1.4rem' }}>
+            <HeaderDate>
                 <span style={{ color: '#DDB892' }}>{date.getFullYear()}</span>
                 년&nbsp;
                 <span style={{ color: '#DDB892' }}>
@@ -95,7 +133,7 @@ const GuestFormAfter = () => {
                     {String(date.getDate()).padStart(2, '0')}
                 </span>
                 일
-            </span>
+            </HeaderDate>
         );
     };
 
@@ -118,35 +156,17 @@ const GuestFormAfter = () => {
                 <meta property='og:type' content='website' />
             </Helmet>
             <Stack sx={contentstyle}>
-                <Stack
-                    direction='row'
-                    alignItems='center'
-                    justifyContent='space-between'
-                    sx={{
-                        position: 'absolute',
-                        top: 'calc(1rem + 29px)',
-                        left: '1rem',
-                        right: '1rem',
-                        zIndex: 10,
-                        color: 'white',
-                        fontFamily: 'Griun NltoTAENGGU, sans-serif',
-                    }}
-                >
-                    <IconButton onClick={handleClose}>
-                        <CloseIcon
-                            sx={{
-                                cursor: 'pointer',
-                                position: 'relative',
-                                right: '-30px',
-                            }}
-                        />
-                    </IconButton>
-                    <span style={{ fontSize: '1.4rem' }}>
+                <HeaderContainer>
+                    <HeaderIconLeft onClick={handleClose}>
+                        <CloseIcon />
+                    </HeaderIconLeft>
+                    <HeaderDate>
                         {memoryData
                             ? formatDate(memoryData.result.create_at)
-                            : '로딩 중...'}
-                    </span>
-                </Stack>
+                            : '로딩중'}
+                    </HeaderDate>
+                    <HeaderIconRight></HeaderIconRight>
+                </HeaderContainer>
 
                 <Stack
                     ref={captureRef}
@@ -160,13 +180,14 @@ const GuestFormAfter = () => {
                         overflow: 'visible',
                         marginTop: '8rem',
                         paddingBottom: '0.1rem',
+                        position: 'relative',
                     }}
                 >
                     <span
                         style={{
                             position: 'absolute',
-                            top: 'calc(1rem + 8rem)',
-                            left: '9.5rem',
+                            top: 'calc(1rem + 0.5rem)',
+                            left: '2.7rem',
                             color: 'white',
                             fontSize: '1.3rem',
                             fontFamily: 'Griun NltoTAENGGU, sans-serif',
@@ -180,12 +201,14 @@ const GuestFormAfter = () => {
                             width: '100%',
                             marginTop: '2rem',
                             maxHeight: 'calc(100vh - 300px)',
-                            overflowY: 'visible',
+                            position: 'relative',
+                            display: 'flex',
+                            flexDirection: 'column',
                             paddingBottom: '2rem',
                         }}
                     >
                         <RecordBoard
-                            content={memoryData?.result.answer || ''}
+                            content={memoryData?.result.answer || ' '}
                             image_url={memoryData?.result.image_url}
                             isReadOnly={true}
                         />
@@ -199,7 +222,9 @@ const GuestFormAfter = () => {
                             textAlign: 'center',
                             position: 'relative',
                             top: '-12px',
-                            marginLeft: '200px',
+                            left: '46%',
+                            transform: 'translateX(-50%)',
+                            whiteSpace: 'nowrap',
                         }}
                     >
                         From.{' '}
