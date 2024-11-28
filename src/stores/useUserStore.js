@@ -5,7 +5,7 @@ export const useUserStore = create((set) => {
     const setUserId = (userId) => {
         if (userId !== null) {
             set((prev) => {
-                if (prev.userId !== userId) {
+                if (prev.userId && prev.userId !== userId) {
                     return prev;
                 }
                 localStorage.setItem('userId', userId);
