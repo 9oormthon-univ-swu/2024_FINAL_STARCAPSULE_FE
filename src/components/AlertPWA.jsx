@@ -22,41 +22,19 @@ const modalContainerStyle = {
     width: ['20rem', 'fit-content'],
     maxWidth: '20rem',
     overflow: 'hidden',
+    boxSizing: 'border-box',
+    p: 0,
 };
 
-const modalDescriptionStyle = {
-    display: 'flex',
-    w: '100%',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    textAlign: 'center',
-    gap: '1.2rem',
-};
-
-const ModalDescriptionIcon = styled(Box)(() => ({
-    width: '4rem',
-    height: '4rem',
-    borderRadius: '0.6rem',
-    boxShadow: '0px 0px 3.797px 0px rgba(40, 40, 40, 0.20)',
-    border: '0.19px solid var(--grey, #D5D1CD)',
-    backgroundImage: 'url(/ios/72.png)',
-    objectFit: 'cover',
-    backgroundPosition: 'center',
-}));
-
-const ModalButton = styled(Button)(({ theme }) => ({
-    display: 'inline-flex',
-    width: 'fit-content',
-    padding: '1rem 2.55rem',
-    justifyContent: 'center',
-    alignItems: 'center',
+const motionButtonStyle = {
+    width: '100%',
     borderRadius: '1.25rem',
-    backgroundColor: theme.palette.custom.button1,
+    backgroundColor: 'custom.button1',
     marginTop: '1.25rem',
-}));
+    height: '3.375rem',
+};
 
-const AlertPWA = ({ open, onClose, onButtonClick }) => {
+const AlertPWA = ({ open, onClose, onButtonClick, buttonText }) => {
     return (
         <Modal open={open} onClose={onClose}>
             <Stack
@@ -66,7 +44,7 @@ const AlertPWA = ({ open, onClose, onButtonClick }) => {
             >
                 <Stack
                     direction={'column'}
-                    p={2}
+                    p={1}
                     sx={{
                         bgcolor: 'background.paper',
                     }}
@@ -82,28 +60,55 @@ const AlertPWA = ({ open, onClose, onButtonClick }) => {
                             <CloseIcon />
                         </IconButton>
                     </Stack>
-                    <Stack sx={modalDescriptionStyle}>
-                        <ModalDescriptionIcon component='img' />
-                        <Typography variant='subtitle2' color='#282828'>
-                            홈 화면에{' '}
-                            <Box
+                    <Stack
+                        direction={'column'}
+                        justifyContent={'center'}
+                        alignItems={'center'}
+                        spacing={2}
+                        sx={{
+                            w: '100%',
+                            textAlign: 'center',
+                        }}
+                    >
+                        <Box
+                            component='img'
+                            src={'/ios/72.png'}
+                            sx={{
+                                width: '3.5rem',
+                                height: '3.5rem',
+                                objectFit: '/ios/72.png',
+                                backgroundPosition: 'center',
+                            }}
+                        />
+                        <Typography
+                            variant='subtitle2'
+                            color='#282828'
+                            fontWeight={'700'}
+                        >
+                            홈 화면에
+                            <Typography
                                 component='span'
-                                fontWeight='700'
-                                color='#63422C'
+                                sx={{ color: 'custom.button2' }}
+                                variant='subtitle2'
+                                fontWeight={'700'}
                             >
-                                스노로그
-                            </Box>
+                                {` 스노로그 `}
+                            </Typography>
                             를 추가하고 로그인하면
                             <Typography variant='title4' color='#63422C'>
                                 새로운 질문을 받아볼 수 있어요.
                             </Typography>
                         </Typography>
                     </Stack>
-                    <ModalButton variant='contained' onClick={onButtonClick}>
+                    <Button
+                        variant='contained'
+                        onClick={onButtonClick}
+                        sx={motionButtonStyle}
+                    >
                         <Typography variant='title2'>
                             설치없이 스노로그 알림 받기
                         </Typography>
-                    </ModalButton>
+                    </Button>
                 </Stack>
             </Stack>
         </Modal>
