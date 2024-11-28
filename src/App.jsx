@@ -16,7 +16,7 @@ import CreationComplete from './pages/RecordComplete/CreationComplete';
 import MyCreationComplete from './pages/RecordComplete/MyCreationComplete';
 import Main from './pages/main/Main';
 import GuestForm from './pages/Record/GuestForm';
-import Guest from './pages/guest/Guest';
+import Guest from './pages/main/guest/Guest';
 import CalendarPage from './pages/calendar/CalendarPage';
 import RecordFormAfter from './pages/RecordComplete/RecordFormAfter';
 import GuestFormAfter from './pages/RecordComplete/GuestFormAfter';
@@ -33,6 +33,7 @@ import Error404 from './pages/error/Error404';
 import Error500 from './pages/error/Error500';
 import ErrorBoundary from './pages/error/ErrorBoundary';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import MainPage from './pages/main/MainPage';
 
 function AnimationRoutes() {
     const location = useLocation();
@@ -44,8 +45,7 @@ function AnimationRoutes() {
                     <Route path='/' element={<LoginPage />} />
                     <Route path='/popupafter' element={<PopupAfter />} />
                     <Route path='/snowballmake' element={<SnowballMake />} />
-                    <Route path='/main/:userId' element={<Main />} />
-                    <Route path='/guest/:userId' element={<Guest />} />
+                    <Route path='/main/:userId' element={<MainPage />} />
                     <Route path='/record/:userId' element={<RecordForm />} />
                     <Route
                         path='/recordafter/:userId/:memoryId'
