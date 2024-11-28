@@ -95,7 +95,6 @@ const Guest = () => {
                     self={data?.selfCount}
                     fetcher={snowballFetcher}
                     setServerTime={setServerTime}
-                    owner={'guest'}
                 />
                 {recordable ? (
                     <StyledButton

@@ -308,7 +308,6 @@ const Main = () => {
                         self={data?.selfCount}
                         onMemoryClick={onMemoryClick}
                         fetcher={snowballFetcher}
-                        owner={'main'}
                     />
                     {recordable ? (
                         <StyledButton
