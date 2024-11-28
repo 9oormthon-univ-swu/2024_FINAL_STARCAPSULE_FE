@@ -242,16 +242,19 @@ const CalendarDetail = () => {
     justifyContent='space-between'
     data-html2canvas-ignore='true'
     sx={{
-        width: '100%',
+        width: '100%',  // 기본적으로 모바일에서는 100%로 설정
         height: '30px',
         fontSize: '20px',
         padding: '1rem',
         backgroundColor: '#3a3a3a',
         color: 'white',
-        position: 'fixed',  
-        bottom: 0,  
+        position: 'fixed',
+        bottom: 0,
         zIndex: 10,
         marginTop: '1rem',
+        '@media (min-width: 568px)': {
+            width: '568px',  // 화면이 568px 이상일 때 너비를 568px로 설정
+        },
     }}
 >
     <span
