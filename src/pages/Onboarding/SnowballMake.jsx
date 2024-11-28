@@ -35,6 +35,7 @@ const Container = styled.div`
 
 const SubTitle = styled.p`
     font-size: 19px;
+    font-family: 'Noto Sans';
     color: #fff;
     position: absolute;
     bottom: 300px;

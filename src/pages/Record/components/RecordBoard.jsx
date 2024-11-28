@@ -1,5 +1,5 @@
 import React from 'react';
-import { Stack } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import ImgUploadButton from './ImgUploadButton';
 
 const RecordBoard = ({
@@ -40,13 +40,16 @@ const RecordBoard = ({
                         {content || '추억이 없습니다.'}
                     </div>
                 ) : (
-                    <textarea
+                    <Typography
                         id='answer'
+                        component='textarea'
                         value={answer}
                         onChange={handleTextChange}
                         placeholder={showplaceholder}
-                        style={Textfieldstyle}
-                        rows={Math.max(4, answer.split('\n').length)} // 내용에 따라 행이 늘어나도록 설정
+                        rows={Math.max(4, answer.split('\n').length)}
+                        variant='body2'
+                        color='#282828'
+                        sx={Textfieldstyle}
                     />
                 )}
             </Stack>
@@ -69,18 +72,17 @@ const Textfieldstyle = {
     width: '100%',
     minHeight: '16.5rem',
     background: '#fffcfa',
-    color: '#282828',
-    fontSize: '1.125rem',
-    lineHeight: '1.75rem',
-    fontFamily: '"Griun NoltoTAENGGU", sans-serif',
     resize: 'none',
     border: 'none',
     outline: 'none',
+    overflow: 'auto',
 };
 
 const readOnlyTextStyle = {
-    whiteSpace: 'pre-wrap', // 줄바꿈을 허용
-    wordWrap: 'break-word', // 단어가 길 경우 줄바꿈
+    whiteSpace: 'pre-wrap', 
+    wordWrap: 'break-word', 
+    fontSize: '20px',
+    fontFamily: 'Griun NltoTAENGGU, sans-serif', 
 };
 
 const imgcontainer = {
@@ -97,7 +99,7 @@ const RecordBgstyle = {
     background: '#FFFCFA',
     boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
     width: '100%',
-    maxWidth: '312px',
+    maxWidth: '100%',
     margin: '0 auto',
     boxSizing: 'border-box',
 };

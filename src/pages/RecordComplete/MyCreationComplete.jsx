@@ -17,6 +17,8 @@ const Container = styled.div`
     background-color: #27405e;
 `;
 
+
+
 const Title = styled.p`
     color: var(--kakao-logo, #000);
     text-align: center;
@@ -61,20 +63,26 @@ const SubTitle = styled.p`
     line-height: normal;
     color: #d5d1cd;
     position: fixed;
-    top: 35%;
+    top: -33%;
     left: 50%;
     transform: translateX(-50%);
     white-space: nowrap;
     line-height: 1.5;
 `;
 
-const SVGImage = styled.img`
+const SVGImageContainer = styled.div`
     position: fixed;
-    top: calc(40%);
+    top: calc(45%);
     left: 50%;
     transform: translateX(-50%);
     width: 250px;
     height: 150px;
+`;
+
+const SVGImage = styled.img`
+    width: 100%;
+    height: 100%;
+    position: relative;
 `;
 
 const ObjectImage = styled.img`
@@ -82,10 +90,11 @@ const ObjectImage = styled.img`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 70px;
-    height: 70px;
+    width: 65px;
+    height: 65px;
     flex-shrink: 0;
 `;
+
 
 const MyCreationComplete = () => {
     const { userId } = useParams(); // userId를 useParams로 가져오기
@@ -141,13 +150,13 @@ const MyCreationComplete = () => {
                 />
                 <meta property='og:type' content='website' />
             </Helmet>
+            <SVGImageContainer>
             <Title>self {questionId || '1'}</Title>
-            <QuestionText>
-                {question || '가장 행복했던 일은 무엇인가요?'}
-            </QuestionText>
+            <QuestionText>{question || '가장 행복했던 일은 무엇인가요?'}</QuestionText>
+            <SVGImage src={'/assets/Frame_26085556.svg'} alt="Frame SVG" />
+            <ObjectImage src={getObjectImagePath(selectedObject)} alt="Selected Object SVG" />
             <SubTitle>추억이 보관되었어요</SubTitle>
-            <SVGImage src={'/assets/Frame_26085556.svg'} alt='Frame SVG' />
-            <ObjectImage src={getObjectImagePath(selectedObject)} alt='Selected Object SVG' />
+        </SVGImageContainer>
         </Container>
     );
 };

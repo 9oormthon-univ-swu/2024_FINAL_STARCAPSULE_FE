@@ -20,7 +20,6 @@ const modalContainerStyle = {
     boxShadow: 24,
     borderRadius: '1.25rem',
     height: 'fit-content',
-    maxWidth: 'fit-content',
     overflow: 'hidden',
 };
 
@@ -61,15 +60,27 @@ const ShareModal = ({ url, open, onClose }) => {
 
     const handleLinkCopy = async () => {
         try {
-            await navigator.clipboard.writeText(url);
-            setSnackbarOpen({
-                text: '링크가 복사되었습니다',
-                severity: 'success',
-            });
+            if (navigator.share) {
+                await navigator.share({
+                    title: '스노우볼에 오늘의 추억이 보관되었어요!\nSNS에 링크를 공유해친구들에게 함께한 추억을 전달받아보세요☃️\n',
+                    text: '스노우볼 링크 공유 완료',
+                    url: url,
+                });
+                setSnackbarOpen({
+                    text: '링크가 공유되었습니다',
+                    severity: 'success',
+                });
+            } else {
+                await navigator.clipboard.writeText(url);
+                setSnackbarOpen({
+                    text: '링크가 복사되었습니다',
+                    severity: 'success',
+                });
+            }
         } catch (error) {
             // console.error('복사 실패:', error);
             setSnackbarOpen({
-                text: '링크 복사에 실패했습니다. 다시 시도해 주세요.',
+                text: '링크 공유가 실패했습니다. 다시 시도해 주세요.',
                 severity: 'error',
             });
         }
@@ -177,13 +188,30 @@ const ShareModal = ({ url, open, onClose }) => {
                     <Stack
                         gap={'0.5rem'}
                         justifyContent={'center'}
-                        direction={'column'}
+                        direction={'row'}
                     >
                         <LinkCopyButton
                             variant='contained'
                             onClick={handleLinkCopy}
+                            sx={{
+                                padding: {
+                                    xs: '0.9375rem 2.84rem',
+                                    sm: '0.9375rem 3.84rem',
+                                    md: '0.9375rem 3.84rem',
+                                },
+                            }}
                         >
-                            <Typography variant='title2'>
+                            <Typography
+                                variant='title2'
+                                sx={{
+                                    width: 'max-content',
+                                    fontSize: {
+                                        xs: '0.79rem',
+                                        sm: '1rem',
+                                        md: '1rem',
+                                    },
+                                }}
+                            >
                                 링크 복사하기
                             </Typography>
                             <LinkIcon />
