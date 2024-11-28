@@ -308,7 +308,6 @@ const Main = () => {
                         self={data?.selfCount}
                         onMemoryClick={onMemoryClick}
                         fetcher={snowballFetcher}
-                        owner={'main'}
                     />
                     {recordable ? (
                         <StyledButton
@@ -320,7 +319,7 @@ const Main = () => {
                             onClick={() => navigate(`/record/${param.userId}`)}
                         >
                             <Typography variant='title2'>
-                                추억 전달하기
+                                추억 보관하기
                             </Typography>
                         </StyledButton>
                     ) : (
