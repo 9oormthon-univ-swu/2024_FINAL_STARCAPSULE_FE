@@ -68,15 +68,14 @@ export const StyledButton = styled(Button)(({ theme }) => ({
     boxSizing: 'border-box',
     width: '100% !important',
     height: '3.875rem',
-    backgroundColor: theme.palette.custom.button1,
-    color: theme.palette.custom.white,
+    backgroundColor: theme.palette.custom.main2,
     borderRadius: '1.25rem',
     padding: '1.25rem 0',
     boxShadow: '0px 0px 4px 0px rgba(40, 40, 40, 0.20)',
 }));
 
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
-    color: theme.palette.custom.grey,
+    color: theme.palette.custom.font,
     width: '1.5rem',
     height: '1.5rem',
 }));
@@ -343,7 +342,10 @@ const Main = () => {
                             disabled={hasWritten}
                             onClick={() => navigate(`/record/${param.userId}`)}
                         >
-                            <Typography variant='title2'>
+                            <Typography
+                                variant='title2'
+                                sx={{ color: 'custom.white' }}
+                            >
                                 추억 보관하기
                             </Typography>
                         </StyledButton>
@@ -352,7 +354,12 @@ const Main = () => {
                             variant={'contained'}
                             sx={{ flexGrow: 0, width: 'fit-content' }}
                         >
-                            <Typography variant='title2'>팀 소개</Typography>
+                            <Typography
+                                variant='title2'
+                                sx={{ color: 'custom.white' }}
+                            >
+                                팀 소개
+                            </Typography>
                         </StyledButton>
                     )}
                 </MainContainer>

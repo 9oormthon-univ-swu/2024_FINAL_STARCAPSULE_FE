@@ -5,7 +5,7 @@ import { Box, IconButton, Stack, styled, Typography } from '@mui/material';
 import React, { useState, useEffect, useRef } from 'react';
 
 export const StyledTypography = styled(Typography)(({ theme }) => ({
-    color: theme.palette.custom.white,
+    color: theme.palette.custom.font,
     wordBreak: 'keep-all',
     whiteSpace: 'pre',
     padding: 0,
@@ -147,14 +147,14 @@ const MainTitle = ({ snowball, setSnowballName, onError, serverTime }) => {
                             <CheckIcon
                                 sx={{
                                     color: currSnowball.length
-                                        ? 'custom.main1'
+                                        ? 'custom.main2'
                                         : 'custom.grey',
                                 }}
                             />
                         </StyledIconButton>
                     ) : (
                         <StyledIconButton onClick={handleEdit}>
-                            <EditIcon sx={{ color: 'custom.white' }} />
+                            <EditIcon sx={{ color: 'custom.font' }} />
                         </StyledIconButton>
                     )}
                 </StyledTypography>
