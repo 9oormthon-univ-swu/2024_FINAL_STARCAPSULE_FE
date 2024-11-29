@@ -18,7 +18,7 @@ const Container = styled.div`
 `;
 
 const SnowballName = styled.span`
-    color: #ddb892;
+    color: #405eab;
 `;
 
 const SVGImageContainer = styled.div`
@@ -75,7 +75,7 @@ const CreationComplete = () => {
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            navigate(`/main/${userId}?page=1`);
+            navigate(`/main/${userId}?page=1&makeSnowball=true`);
         }, 5000);
 
         return () => clearTimeout(timer);

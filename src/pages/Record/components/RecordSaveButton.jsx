@@ -9,7 +9,7 @@ const RecordSaveButton = ({ recordsavebtnText, onClick }) => {
             sx={formbtn}
             onClick={onClick}
         >
-            <Typography variant='title2' sx={{ color: '#5A5A5A' }}>
+            <Typography variant='title2' sx={{ color: 'custom.white' }}>
                 {recordsavebtnText}
             </Typography>
         </Button>
@@ -26,7 +26,7 @@ const formbtn = {
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: '1.25rem',
-    background: '#C3DEF7',
+    backgroundColor: 'custom.main2',
     boxShadow: '0px 0px 4px 0px rgba(40, 40, 40, 0.20)',
     marginTop: '2.25rem',
     marginBottom: '1.94rem',

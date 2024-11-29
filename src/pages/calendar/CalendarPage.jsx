@@ -76,6 +76,7 @@ const CalendarPage = () => {
             sx={{
                 py: 3,
             }}
+            opacity={0.3}
         >
             <Helmet>
                 <title>스노로그 - 2024의 추억이 쌓이는 곳</title>

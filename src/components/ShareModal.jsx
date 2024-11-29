@@ -209,6 +209,7 @@ const ShareModal = ({ url, open, onClose }) => {
                                         sm: '1rem',
                                         md: '1rem',
                                     },
+                                    color: 'custom.white',
                                 }}
                             >
                                 링크 복사하기

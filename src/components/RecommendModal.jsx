@@ -85,7 +85,14 @@ const RecommendModal = ({
                         onClick={onButtonClick}
                         sx={motionButtonStyle}
                     >
-                        <Typography variant='title2'>{buttonText}</Typography>
+                        <Typography
+                            variant='title2'
+                            sx={{
+                                color: 'custom.white',
+                            }}
+                        >
+                            {buttonText}
+                        </Typography>
                     </Button>
                 </Stack>
             </Stack>

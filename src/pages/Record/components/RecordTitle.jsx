@@ -64,7 +64,11 @@ const RecordTitle = ({ title, setTitle, goToMain }) => {
                     style={{ width: '16rem', color: '#fff' }}
                 />
             ) : (
-                <Typography component='span' variant='body1'>
+                <Typography
+                    component='span'
+                    variant='body1'
+                    sx={{ color: 'custom.white' }}
+                >
                     {title}
                 </Typography>
             )}
