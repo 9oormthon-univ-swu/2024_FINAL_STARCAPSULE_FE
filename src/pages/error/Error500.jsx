@@ -1,5 +1,5 @@
 import { Button, Stack, Typography } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import Layout from '@/layouts/Layout';
 import { useNavigate } from 'react-router-dom';
