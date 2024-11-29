@@ -85,11 +85,13 @@ const MainTitle = ({ snowball, setSnowballName, onError, serverTime }) => {
         setIsSaving(true);
         if (!currSnowball.length) return;
         setSnowballName(currSnowball)
-            .then(() => setIsEditing(false))
+            .then(() => {
+                setIsSaving(false);
+                setIsEditing(false);
+            })
             .catch((e) => {
                 onError(e);
             });
-        setIsSaving(false);
     };
 
     const handleKeyDown = (event) => {
