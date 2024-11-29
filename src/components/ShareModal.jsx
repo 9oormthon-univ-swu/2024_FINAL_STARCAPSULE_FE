@@ -52,7 +52,7 @@ const ImgShareButton = styled(Button)(() => ({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: '3.5rem',
-    backgroundColor: '#B08F79',
+    backgroundColor: '#C3DEF7',
 }));
 
 const ShareModal = ({ url, open, onClose }) => {
@@ -158,7 +158,7 @@ const ShareModal = ({ url, open, onClose }) => {
                             <Box
                                 component='span'
                                 fontWeight='700'
-                                color='custom.main1'
+                                color='#405EAB'
                             >
                                 스노우볼 이미지
                             </Box>
@@ -166,7 +166,7 @@ const ShareModal = ({ url, open, onClose }) => {
                             <Box
                                 component='span'
                                 fontWeight='700'
-                                color='custom.main1'
+                                color='#405EAB'
                             >
                                 공유
                             </Box>
@@ -175,7 +175,7 @@ const ShareModal = ({ url, open, onClose }) => {
                                 <Box
                                     component='span'
                                     fontWeight='700'
-                                    color='#7F5539'
+                                    color='#405EAB'
                                 >
                                     링크를 복사
                                 </Box>

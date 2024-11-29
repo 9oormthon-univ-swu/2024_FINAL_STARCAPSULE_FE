@@ -232,7 +232,7 @@ const modaltextstyle1 = {
     fontSize: '0.92rem',
     fontWeight: '700',
     textAlign: 'center',
-    color: '#7F5539',
+    color: '#6485CF',
 };
 const modaltextstyle2 = {
     fontFamily: 'Noto Sans',
