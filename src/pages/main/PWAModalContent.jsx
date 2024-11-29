@@ -14,20 +14,22 @@ const PWAModalContent = () => {
                     backgroundPosition: 'center',
                 }}
             />
-            <Typography variant='subtitle2' color='#282828' fontWeight={'700'}>
-                홈 화면에
-                <Typography
-                    component='span'
-                    sx={{ color: 'custom.button2' }}
-                    variant='subtitle2'
-                    fontWeight={'700'}
-                >
-                    {` 스노로그`}
-                </Typography>
-                를 추가하고 로그인하면
-                <Typography variant='title4' color='#63422C'>
-                    새로운 질문을 받아볼 수 있어요.
-                </Typography>
+            <Typography
+                variant='subtitle2'
+                sx={{
+                    textAlign: 'center',
+                    whiteSpace: 'pre-line',
+                    fontWeight: 700,
+                    color: 'custom.font',
+                    '& span': {
+                        color: 'custom.button2',
+                    },
+                }}
+            >
+                {'홈 화면에'}
+                <span>{` 스노로그`}</span>
+                {'를 추가하고 로그인하여\n'}
+                <span>{'매일매일 소중한 추억을 기록해보세요!'}</span>
             </Typography>
         </>
     );
