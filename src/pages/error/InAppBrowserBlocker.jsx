@@ -2,13 +2,18 @@ import { Button, Stack, Typography } from '@mui/material';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import Layout from '@/layouts/Layout';
-import { useNavigate } from 'react-router-dom';
 
 const InAppBrowserBlocker = () => {
-    const navigate = useNavigate();
-
     const handleEnterBrowser = () => {
-        navigate(`${import.meta.env.VITE_BASE_URL}`);
+        const externalURL = `${import.meta.env.VITE_BASE_URL}`;
+
+        if (/android/i.test(navigator.userAgent)) {
+            window.location.href = `intent://${externalURL.replace(/^https?:\/\//, '')}#Intent;scheme=https;package=com.android.chrome;end`;
+        } else if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+            window.open(externalURL, '_blank');
+        } else {
+            window.location.href = externalURL;
+        }
     };
 
     useEffect(() => {
