@@ -4,11 +4,12 @@ import React from 'react';
 const MakeSnowballContent = () => {
     return (
         <Typography
-            variant='subtitle1'
+            variant='subtitle2'
             sx={{
                 color: 'custom.font',
                 textAlign: 'center',
                 whiteSpace: 'pre-line',
+                fontWeight: 700,
                 '& span': {
                     color: 'custom.button2',
                 },
