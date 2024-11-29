@@ -63,7 +63,6 @@ const ShareModal = ({ url, open, onClose }) => {
             if (navigator.share) {
                 await navigator.share({
                     title: '☃️ 스노우볼에 오늘의 추억이 보관되었어요! ☃️\nSNS에 공유하여 친구들과 함께한 추억을 전달받아보세요\n',
-                    text: '스노우볼 링크가 공유되었습니다.',
                     url: url,
                 });
                 setSnackbarOpen({
@@ -101,7 +100,6 @@ const ShareModal = ({ url, open, onClose }) => {
             if (navigator.share) {
                 await navigator.share({
                     title: '☃️ 스노우볼에 오늘의 추억이 보관되었어요! ☃️\nSNS에 공유하여 친구들과 함께한 추억을 전달받아보세요\n',
-                    text: '스노우볼 이미지가 공유되었습니다.',
                     files: [file],
                 });
                 setSnackbarOpen({
