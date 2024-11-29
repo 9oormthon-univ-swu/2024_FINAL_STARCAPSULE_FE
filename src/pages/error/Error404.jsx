@@ -18,6 +18,11 @@ const Error404 = () => {
         navigate(`/main/${userId}`);
         console.log(userId);
     };
+    useEffect(() => {
+        document.body.style.margin = '0';
+        document.body.style.padding = '0';
+        document.body.style.overflow = 'hidden';
+    }, []);
 
     return (
         <Layout sx={{ overflow: 'hidden' }} snow>
@@ -28,13 +33,13 @@ const Error404 = () => {
                             PAGE NOT FOUND
                         </Typography>
                     </Stack>
-                    <ErrorFavicon src={'/FaviconError.svg'}></ErrorFavicon>
+                    <ErrorFavicon src={'/Favicon_256.svg'}></ErrorFavicon>
                     <Stack>
                         <Typography
                             variant='subtitle1'
                             sx={{
                                 textAlign: 'center',
-                                color: 'custom.grey',
+                                color: '#282828',
                                 lineHeight: '2rem',
                                 wordWrap: 'break-word',
                                 alignSelf: 'stretch',
@@ -101,7 +106,7 @@ const formbtn = {
     width: '100%',
     borderRadius: '1.25rem',
     color: 'custom.white',
-    background: '#7F5539',
+    background: '#405EAB',
     boxShadow: '0px 0px 4px 0px rgba(40, 40, 40, 0.20)',
     padding: '1.25rem 6.8125rem',
     alignItems: 'center',

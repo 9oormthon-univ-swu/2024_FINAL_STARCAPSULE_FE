@@ -54,12 +54,12 @@ const InAppBrowserBlocker = () => {
                         {platform} 접속을 권장해요.
                     </Typography>
                 </Stack>
-                <ErrorFavicon src={'/FaviconError.svg'} />
+                <ErrorFavicon src={'/Favicon_256.svg'} />
                 <Stack>
                     <Typography
                         variant='subtitle1'
                         sx={{
-                            color: 'custom.grey',
+                            color: '#282828',
                             lineHeight: '2rem',
                             fontSize: {
                                 xs: '1rem',
@@ -75,7 +75,7 @@ const InAppBrowserBlocker = () => {
                         variant='subtitle1'
                         sx={{
                             paddingTop: '20px',
-                            color: 'custom.grey',
+                            color: '#282828',
                             lineHeight: '2rem',
                             fontSize: {
                                 xs: '1rem',
@@ -147,7 +147,7 @@ const formbtn = {
     alignItems: 'center',
     borderRadius: '1.25rem',
     color: 'custom.white',
-    background: '#7F5539',
+    background: '#405EAB',
     boxShadow: '0px 0px 4px 0px rgba(40, 40, 40, 0.20)',
     fontFamily: 'Noto Sans',
     whiteSpace: 'nowrap',
