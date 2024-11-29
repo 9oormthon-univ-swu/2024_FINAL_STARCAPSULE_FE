@@ -1,5 +1,6 @@
 import './App.css';
 import { ThemeProvider } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import theme from './constants/theme';
 import React, { useEffect } from 'react';
 import {
@@ -32,9 +33,24 @@ import Error500 from './pages/error/Error500';
 import ErrorBoundary from './pages/error/ErrorBoundary';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import MainPage from './pages/main/MainPage';
+import InAppBrowserBlocker from './pages/error/InAppBrowserBlocker';
 
 function AnimationRoutes() {
     const location = useLocation();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const userAgent =
+            navigator.userAgent || navigator.vendor || window.opera;
+
+        const isInAppBrowser = /FBAN|FBAV|Instagram|KAKAOTALK|Line/.test(
+            userAgent
+        );
+
+        if (isInAppBrowser) {
+            navigate('/in-app-browser-blocker');
+        }
+    }, [navigate]);
 
     return (
         <AnimatePresence>
@@ -75,6 +91,10 @@ function AnimationRoutes() {
                     />
                     <Route path='/500' element={<Error500 />} />
                     <Route path='*' element={<Error404 />} />
+                    <Route
+                        path='/in-app-browser-blocker'
+                        element={<InAppBrowserBlocker />}
+                    />
                 </Routes>
             </ErrorBoundary>
         </AnimatePresence>

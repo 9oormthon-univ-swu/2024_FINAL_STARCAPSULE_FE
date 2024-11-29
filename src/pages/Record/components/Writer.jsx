@@ -1,8 +1,8 @@
-import React, { useState,} from 'react';
-import { Input, Typography, IconButton, Box, } from '@mui/material';
+import React, { useState } from 'react';
+import { Input, Typography, IconButton, Box } from '@mui/material';
 import { EditIcon, CheckIcon } from '@/components/icons';
 
-const Writer = ({fwriter, setfwriter}) => {
+const Writer = ({ fwriter, setfwriter }) => {
     // 작성자, 수정상태 관리
     const [writer, setwriter] = useState(fwriter);
     const [iswriterEdit, setIswriterEdit] = useState(false);
@@ -26,43 +26,45 @@ const Writer = ({fwriter, setfwriter}) => {
     // 엔터키를 눌렀을 때 저장
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
-        event.preventDefault(); // 기본 엔터 동작 방지
-        onConfirmClick(); // 저장 동작 실행
+            event.preventDefault(); // 기본 엔터 동작 방지
+            onConfirmClick(); // 저장 동작 실행
         }
     };
 
-    return(
+    return (
         <Typography sx={titlestyle}>
-        From.&nbsp;
-        {iswriterEdit ? (
-            <Input
-            type="text"
-            placeholder='이름을 작성해주세요.'
-            value={writer}
-            onChange={handleWriterChange}
-            onBlur={onConfirmClick} // 수정 모드 종료 및 저장
-            spellCheck="false"
-            onKeyDown={handleKeyDown}
-            style={{width:'10rem', color:'#fff'}}
-            />
-        ) : (
-            <Box component={'span'} sx={{ color: '#fff' }}>
-                {writer}
-            </Box>
-        )}
-        {iswriterEdit ? (
-            <IconButton onClick={onConfirmClick} disabled={!writer.length}>
-            <CheckIcon
-                sx={{
-                color: writer.length ? 'custom.main1' : 'custom.grey',
-                }}
-            />
-            </IconButton>
-        ) : (
-            <IconButton onClick={handleWriterEdit}>
-                <EditIcon sx={{ color: 'custom.white' }} />
-            </IconButton>
-        )}
+            From.&nbsp;
+            {iswriterEdit ? (
+                <Input
+                    type='text'
+                    placeholder='이름을 작성해주세요.'
+                    value={writer}
+                    onChange={handleWriterChange}
+                    onBlur={onConfirmClick} // 수정 모드 종료 및 저장
+                    spellCheck='false'
+                    onKeyDown={handleKeyDown}
+                    style={{ width: '10rem', color: '#C3DEF7' }}
+                />
+            ) : (
+                <Box component={'span'} sx={{ color: '#C3DEF7' }}>
+                    {writer}
+                </Box>
+            )}
+            {iswriterEdit ? (
+                <IconButton onClick={onConfirmClick} disabled={!writer.length}>
+                    <CheckIcon
+                        sx={{
+                            color: writer.length
+                                ? 'custom.main1'
+                                : 'custom.grey',
+                        }}
+                    />
+                </IconButton>
+            ) : (
+                <IconButton onClick={handleWriterEdit}>
+                    <EditIcon sx={{ color: 'custom.white' }} />
+                </IconButton>
+            )}
         </Typography>
     );
 };
@@ -71,7 +73,7 @@ export default Writer;
 
 //Design
 const titlestyle = {
-    color: '#fff',
+    color: '#FFFCFA',
     marginTop: '1rem',
     textAlign: 'right',
-  }
+};

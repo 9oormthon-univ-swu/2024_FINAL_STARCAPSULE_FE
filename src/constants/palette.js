@@ -1,5 +1,5 @@
 const palette = {
-    button1: '#7F5539',
+    button1: '#6485CF',
     button2: '#63422C',
     main1: '#B08F79',
     main2: '#DDB892',

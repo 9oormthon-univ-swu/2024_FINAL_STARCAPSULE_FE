@@ -163,7 +163,8 @@ const GuestForm = () => {
                     </Stack>
                     <Stack>
                         <Typography sx={titlestyle}>
-                            TO.&nbsp;{nickname}
+                            TO.&nbsp;
+                            <span style={{ color: '#C3DEF7' }}>{nickname}</span>
                         </Typography>
                     </Stack>
                     <form onSubmit={handleSubmit}>
@@ -231,7 +232,7 @@ const modaltextstyle1 = {
     fontSize: '0.92rem',
     fontWeight: '700',
     textAlign: 'center',
-    color: '#7F5539',
+    color: '#6485CF',
 };
 const modaltextstyle2 = {
     fontFamily: 'Noto Sans',

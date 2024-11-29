@@ -56,8 +56,9 @@ const RecordBoard = ({
             {!isReadOnly && (
                 <Stack>
                     <div style={{ textAlign: 'right' }}>
-                        <span>{inputCount}</span>
-                        <span>/200</span>
+                        <span>(</span>
+                        <span style={{ color: '#6485CF' }}>{inputCount}</span>
+                        <span>/200)</span>
                     </div>
                 </Stack>
             )}
@@ -79,10 +80,10 @@ const Textfieldstyle = {
 };
 
 const readOnlyTextStyle = {
-    whiteSpace: 'pre-wrap', 
-    wordWrap: 'break-word', 
+    whiteSpace: 'pre-wrap',
+    wordWrap: 'break-word',
     fontSize: '20px',
-    fontFamily: 'Griun NltoTAENGGU, sans-serif', 
+    fontFamily: 'Griun NltoTAENGGU, sans-serif',
 };
 
 const imgcontainer = {
