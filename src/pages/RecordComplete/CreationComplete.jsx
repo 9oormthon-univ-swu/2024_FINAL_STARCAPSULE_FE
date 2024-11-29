@@ -66,7 +66,7 @@ const CreationComplete = () => {
     const selectedObject = localStorage.getItem('selectedObject') || '없음';
 
     const handleClick = () => {
-        navigate(`/main/${userId}?page=1`);
+        navigate(`/main/${userId}?page=1&makeSnowball=true`);
     };
 
     const getObjectImagePath = (objectName) => {
