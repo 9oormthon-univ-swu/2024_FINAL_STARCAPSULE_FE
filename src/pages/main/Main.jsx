@@ -99,8 +99,8 @@ const Main = () => {
     };
 
     const param = useParams();
-    const { setUserId, hasWritten } = useUserStore();
-    const { login, isLoggedIn } = useAuthStore();
+    const { hasWritten } = useUserStore();
+    const { isLoggedIn } = useAuthStore();
 
     useEffect(() => {
         const lastPopupCheckedDate = localStorage.getItem('popupCheckedDate');

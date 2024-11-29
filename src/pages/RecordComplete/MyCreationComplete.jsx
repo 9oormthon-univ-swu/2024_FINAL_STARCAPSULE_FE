@@ -17,8 +17,6 @@ const Container = styled.div`
     background-color: #27405e;
 `;
 
-
-
 const Title = styled.p`
     color: var(--kakao-logo, #000);
     text-align: center;
@@ -95,7 +93,6 @@ const ObjectImage = styled.img`
     flex-shrink: 0;
 `;
 
-
 const MyCreationComplete = () => {
     const { userId } = useParams(); // userId를 useParams로 가져오기
     const navigate = useNavigate();
@@ -118,18 +115,18 @@ const MyCreationComplete = () => {
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            navigate(`/main/${userId}?page=1`); // 일정 시간 후 자동 이동
-        }, 5000); 
+            navigate(`/main/${userId}?page=1&pwa=true`); // 일정 시간 후 자동 이동
+        }, 5000);
 
-        return () => clearTimeout(timer); 
-    }, [navigate, userId]); 
+        return () => clearTimeout(timer);
+    }, [navigate, userId]);
 
     const handleClick = () => {
         navigate(`/main/${userId}?page=1`); // userId를 URL에 반영
     };
 
     const getObjectImagePath = (objectName) => {
-        return `/assets/object/${objectName.toLowerCase()}.svg`;  
+        return `/assets/object/${objectName.toLowerCase()}.svg`;
     };
 
     return (
@@ -151,12 +148,17 @@ const MyCreationComplete = () => {
                 <meta property='og:type' content='website' />
             </Helmet>
             <SVGImageContainer>
-            <Title>self {questionId || '1'}</Title>
-            <QuestionText>{question || '가장 행복했던 일은 무엇인가요?'}</QuestionText>
-            <SVGImage src={'/assets/Frame_26085556.svg'} alt="Frame SVG" />
-            <ObjectImage src={getObjectImagePath(selectedObject)} alt="Selected Object SVG" />
-            <SubTitle>추억이 보관되었어요</SubTitle>
-        </SVGImageContainer>
+                <Title>self {questionId || '1'}</Title>
+                <QuestionText>
+                    {question || '가장 행복했던 일은 무엇인가요?'}
+                </QuestionText>
+                <SVGImage src={'/assets/Frame_26085556.svg'} alt='Frame SVG' />
+                <ObjectImage
+                    src={getObjectImagePath(selectedObject)}
+                    alt='Selected Object SVG'
+                />
+                <SubTitle>추억이 보관되었어요</SubTitle>
+            </SVGImageContainer>
         </Container>
     );
 };
