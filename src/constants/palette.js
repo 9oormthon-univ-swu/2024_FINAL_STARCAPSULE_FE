@@ -4,7 +4,7 @@ const palette = {
     main1: '#C3DEF7',
     main2: '#405EAB',
     font: '#282828',
-    grey: '#D5D1CD',
+    grey: '#282828',
     white: '#FFFCFA',
 };
 

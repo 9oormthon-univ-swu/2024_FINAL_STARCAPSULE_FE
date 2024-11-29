@@ -127,14 +127,19 @@ const Guest = () => {
                                 navigate(`/guestrecord/${param.userId}`);
                             }}
                         >
-                            <Typography variant='title2'>
+                            <Typography
+                                variant='title2'
+                                sx={{
+                                    color: 'custom.white',
+                                }}
+                            >
                                 추억 전달하기
                             </Typography>
                         </StyledButton>
                     ) : (
                         <StyledButton
                             variant={'contained'}
-                            sx={{ flexGrow: 0 }}
+                            sx={{ flexGrow: 0, color: 'custom.white' }}
                         >
                             <Typography variant='title2'>팀 소개</Typography>
                         </StyledButton>
