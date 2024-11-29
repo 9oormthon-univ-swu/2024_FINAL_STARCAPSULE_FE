@@ -85,7 +85,7 @@ const Main = () => {
     const [searchParams] = useSearchParams();
     const page = parseInt(searchParams.get('page') || 1);
 
-    const pwa = Boolean.valueOf(searchParams.get('pwa'));
+    const pwa = searchParams.get('pwa') === 'true';
 
     const navigate = useNavigate();
 

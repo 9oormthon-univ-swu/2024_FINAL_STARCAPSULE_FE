@@ -61,8 +61,8 @@ const ObjectImage = styled.img`
 const CreationComplete = () => {
     const { userId } = useParams();
     const navigate = useNavigate();
-    const [memoryData, setMemoryData] = useState(null);
-    // const snowballName = localStorage.getItem('snowballName') || '이름';
+    const [memoryData, _] = useState(null);
+
     const selectedObject = localStorage.getItem('selectedObject') || '없음';
 
     const handleClick = () => {
