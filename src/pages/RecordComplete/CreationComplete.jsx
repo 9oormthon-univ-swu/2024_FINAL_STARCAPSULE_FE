@@ -18,7 +18,7 @@ const Container = styled.div`
 `;
 
 const SnowballName = styled.span`
-    color: #ddb892;
+    color: #405eab;
 `;
 
 const SVGImageContainer = styled.div`

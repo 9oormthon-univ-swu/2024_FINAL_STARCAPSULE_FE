@@ -97,7 +97,14 @@ const AlertModal = ({
                     </Box>
                 </Stack>
                 <ModalButton variant='contained' onClick={onButtonClick}>
-                    <Typography variant='title2'>{buttonText}</Typography>
+                    <Typography
+                        variant='title2'
+                        sx={{
+                            color: 'custom.white',
+                        }}
+                    >
+                        {buttonText}
+                    </Typography>
                 </ModalButton>
             </Stack>
         </Modal>
