@@ -41,7 +41,7 @@ const CalendarDetail = () => {
     const [memoryData, setMemoryData] = useState(null);
     const [pageIndex, setPageIndex] = useState(0);
     const nickname = localStorage.getItem('snowballName') || '닉네임';
-    
+
     useEffect(() => {
         if (location.state?.data) {
             setMemoryData(location.state.data);
@@ -53,7 +53,7 @@ const CalendarDetail = () => {
 
     useEffect(() => {
         const handlePopState = () => {
-            navigate(`/calendar/${userId}`); 
+            navigate(`/calendar/${userId}`);
         };
 
         window.addEventListener('popstate', handlePopState);
@@ -76,13 +76,15 @@ const CalendarDetail = () => {
                 height: elementHeight,
                 windowHeight: elementHeight,
             })
-            .then((canvas) => {
-                const link = document.createElement('a');
-                const formattedDateForFilename = dayjs(location.state?.selectedDate).format('YYYY-MM-DD');
-                link.href = canvas.toDataURL('image/png');
-                link.download = `${formattedDateForFilename}.png`;
-                link.click();
-            })
+                .then((canvas) => {
+                    const link = document.createElement('a');
+                    const formattedDateForFilename = dayjs(
+                        location.state?.selectedDate
+                    ).format('YYYY-MM-DD');
+                    link.href = canvas.toDataURL('image/png');
+                    link.download = `${formattedDateForFilename}.png`;
+                    link.click();
+                })
                 .catch((error) => {
                     //console.error('이미지 저장 중 오류 발생:', error);
                 });
@@ -150,6 +152,7 @@ const CalendarDetail = () => {
                             cursor: 'pointer',
                             position: 'relative',
                             right: '-30px',
+                            color: 'custom.grey',
                         }}
                     />
                 </IconButton>
@@ -160,7 +163,7 @@ const CalendarDetail = () => {
                             cursor: 'pointer',
                             position: 'relative',
                             left: '-30px',
-                            color: 'white'
+                            color: 'white',
                         }}
                     />
                 </IconButton>
@@ -193,11 +196,17 @@ const CalendarDetail = () => {
                                     : '-200px',
                             }}
                         >
-                              {currentItem.daily_question?.question
+                            {currentItem.daily_question?.question
                                 ? currentItem.daily_question.question
-                                : `To.`} 
-                              {currentItem.daily_question?.question ? '' : <span style={{ color: '#DDB892' }}>{nickname}</span>}  
-                            </span>
+                                : `To.`}
+                            {currentItem.daily_question?.question ? (
+                                ''
+                            ) : (
+                                <span style={{ color: '#DDB892' }}>
+                                    {nickname}
+                                </span>
+                            )}
+                        </span>
 
                         <RecordBoard
                             content={currentItem.answer}
@@ -218,9 +227,11 @@ const CalendarDetail = () => {
                                 whiteSpace: 'nowrap',
                             }}
                         >
-                             {currentItem.writer ? `From. ` : ''}
-                          <span style={{ color: '#DDB892' }}>{currentItem.writer}</span> 
+                            {currentItem.writer ? `From. ` : ''}
+                            <span style={{ color: '#DDB892' }}>
+                                {currentItem.writer}
                             </span>
+                        </span>
                     </>
                 )}
             </Stack>
@@ -237,90 +248,89 @@ const CalendarDetail = () => {
             </Stack>
 
             <Stack
-    direction='row'
-    alignItems='center'
-    justifyContent='space-between'
-    data-html2canvas-ignore='true'
-    sx={{
-        width: '100%',  // 기본적으로 모바일에서는 100%로 설정
-        height: '30px',
-        fontSize: '20px',
-        padding: '1rem',
-        backgroundColor: '#3a3a3a',
-        color: 'white',
-        position: 'fixed',
-        bottom: 0,
-        zIndex: 10,
-        marginTop: '1rem',
-        '@media (min-width: 568px)': {
-            width: '568px',  // 화면이 568px 이상일 때 너비를 568px로 설정
-        },
-    }}
->
-    <span
-        style={{
-            display: 'flex',
-            alignItems: 'center',
-            cursor: pageIndex === 0 ? 'not-allowed' : 'pointer',
-            opacity: pageIndex === 0 ? 0.5 : 1,
-            pointerEvents: pageIndex === 0 ? 'none' : 'auto',
-            fontFamily: 'Griun NltoTAENGGU, sans-serif',
-            marginLeft: '15px',
-        }}
-        onClick={handlePrevious}
-    >
-        <svg
-            xmlns='http://www.w3.org/2000/svg'
-            width='24'
-            height='24'
-            viewBox='0 0 24 24'
-            fill='none'
-        >
-            <path
-                d='M15 6L9 12L15 18'
-                stroke='#D5D1CD'
-                strokeWidth='2'
-                strokeLinecap='round'
-                strokeLinejoin='round'
-            />
-        </svg>
-        이전
-    </span>
-    <span
-        style={{
-            display: 'flex',
-            alignItems: 'center',
-            cursor:
-                pageIndex === totalItems - 1
-                    ? 'not-allowed'
-                    : 'pointer',
-            opacity: pageIndex === totalItems - 1 ? 0.5 : 1,
-            pointerEvents:
-                pageIndex === totalItems - 1 ? 'none' : 'auto',
-            fontFamily: 'Griun NltoTAENGGU, sans-serif',
-            marginRight: '15px',
-        }}
-        onClick={handleNext}
-    >
-        다음
-        <svg
-            xmlns='http://www.w3.org/2000/svg'
-            width='24'
-            height='24'
-            viewBox='0 0 24 24'
-            fill='none'
-        >
-            <path
-                d='M9 18L15 12L9 6'
-                stroke='#D5D1CD'
-                strokeWidth='2'
-                strokeLinecap='round'
-                strokeLinejoin='round'
-            />
-        </svg>
-    </span>
-</Stack>
-
+                direction='row'
+                alignItems='center'
+                justifyContent='space-between'
+                data-html2canvas-ignore='true'
+                sx={{
+                    width: '100%', // 기본적으로 모바일에서는 100%로 설정
+                    height: '30px',
+                    fontSize: '20px',
+                    padding: '1rem',
+                    backgroundColor: '#3a3a3a',
+                    color: 'white',
+                    position: 'fixed',
+                    bottom: 0,
+                    zIndex: 10,
+                    marginTop: '1rem',
+                    '@media (min-width: 568px)': {
+                        width: '568px', // 화면이 568px 이상일 때 너비를 568px로 설정
+                    },
+                }}
+            >
+                <span
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        cursor: pageIndex === 0 ? 'not-allowed' : 'pointer',
+                        opacity: pageIndex === 0 ? 0.5 : 1,
+                        pointerEvents: pageIndex === 0 ? 'none' : 'auto',
+                        fontFamily: 'Griun NltoTAENGGU, sans-serif',
+                        marginLeft: '15px',
+                    }}
+                    onClick={handlePrevious}
+                >
+                    <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        width='24'
+                        height='24'
+                        viewBox='0 0 24 24'
+                        fill='none'
+                    >
+                        <path
+                            d='M15 6L9 12L15 18'
+                            stroke='#D5D1CD'
+                            strokeWidth='2'
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                        />
+                    </svg>
+                    이전
+                </span>
+                <span
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        cursor:
+                            pageIndex === totalItems - 1
+                                ? 'not-allowed'
+                                : 'pointer',
+                        opacity: pageIndex === totalItems - 1 ? 0.5 : 1,
+                        pointerEvents:
+                            pageIndex === totalItems - 1 ? 'none' : 'auto',
+                        fontFamily: 'Griun NltoTAENGGU, sans-serif',
+                        marginRight: '15px',
+                    }}
+                    onClick={handleNext}
+                >
+                    다음
+                    <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        width='24'
+                        height='24'
+                        viewBox='0 0 24 24'
+                        fill='none'
+                    >
+                        <path
+                            d='M9 18L15 12L9 6'
+                            stroke='#D5D1CD'
+                            strokeWidth='2'
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                        />
+                    </svg>
+                </span>
+            </Stack>
         </Stack>
     );
 };
