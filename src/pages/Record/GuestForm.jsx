@@ -163,7 +163,8 @@ const GuestForm = () => {
                     </Stack>
                     <Stack>
                         <Typography sx={titlestyle}>
-                            TO.&nbsp;{nickname}
+                            TO.&nbsp;
+                            <span style={{ color: '#C3DEF7' }}>{nickname}</span>
                         </Typography>
                     </Stack>
                     <form onSubmit={handleSubmit}>
