@@ -12,9 +12,9 @@ const Layout = ({ sx, snow, snowflake, overlay, children, id }) => {
                 minHeight: '100dvh',
                 boxSizing: 'border-box',
                 background: `
-                            ${overlay ? 'linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),' : ''}
+                            ${overlay ? 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),' : ''}
                             ${snow ? "url('/assets/background_bottom.svg') bottom center / contain no-repeat," : ''}
-                            linear-gradient(0deg, #27405e 0%, #0b0a1b 100%)`,
+                            linear-gradient(0deg, #93C2DF 0%, #C3DEF7 59%, #B6D8E1 100%)`,
                 ...sx,
             }}
         >
