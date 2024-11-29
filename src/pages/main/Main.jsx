@@ -17,7 +17,6 @@ import PopupPage from '../Onboarding/PopupPage';
 import PopupAfter from '../Onboarding/PopupAfter';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useUserStore } from 'stores/useUserStore';
-import { saveTokenFromURL } from '@/utils/saveTokenFromURL';
 import useAuthStore from 'stores/useAuthStore';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import { useNavigate } from 'react-router-dom';
@@ -27,6 +26,9 @@ import { useSnackbarStore } from '@/stores/useSnackbarStore';
 import { isRecordable } from '@/utils/isRecordable';
 import dayjs from 'dayjs';
 import ShareModal from '@/components/ShareModal';
+import RecommendModal from '@/components/RecommendModal';
+import PWAModalContent from './PWAModalContent';
+import useModal from '@/hooks/useModal';
 
 export const MainContainer = styled(Stack)(() => ({
     padding: '2rem 0 2.25rem 0',
@@ -83,6 +85,8 @@ const Main = () => {
     const [searchParams] = useSearchParams();
     const page = parseInt(searchParams.get('page') || 1);
 
+    const pwa = searchParams.get('pwa') === 'true';
+
     const navigate = useNavigate();
 
     const successMessage = '스노우볼 이름이 변경되었어요.';
@@ -90,6 +94,29 @@ const Main = () => {
 
     const { setSnackbarOpen } = useSnackbarStore();
     const { setHasWritten } = useUserStore();
+
+    const {
+        openModal: openRecommendModal,
+        closeModal: closeRecommendModal,
+        isOpen: isRecommendOpen,
+    } = useModal();
+
+    const handleInstall = () => {
+        if (window.deferredPrompt) {
+            window.deferredPrompt.prompt();
+            window.deferredPrompt.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                    localStorage.setItem('doNotShowPWA', 'true');
+                }
+            });
+        }
+        closeRecommendModal();
+    };
+
+    const onCloseRecommendModal = () => {
+        localStorage.setItem('doNotShowPWA', 'true');
+        closeRecommendModal();
+    };
 
     const onError = () => {
         setSnackbarOpen({
@@ -334,7 +361,12 @@ const Main = () => {
                 {recordable && !isQuestionLoading && !hasWritten && (
                     <PopupPage
                         isOpen={isPopupOpen}
-                        onClose={() => setPopupOpen(false)}
+                        onClose={() => {
+                            setPopupOpen(false);
+                            if (pwa) {
+                                openRecommendModal();
+                            }
+                        }}
                         question={questionData.question}
                         serverTime={serverTime}
                     />
@@ -381,6 +413,14 @@ const Main = () => {
                 onClose={onCloseShareModal}
                 url={`${import.meta.env.VITE_BASE_URL}/main/${param.userId}`}
             />
+            <RecommendModal
+                open={isRecommendOpen}
+                onClose={onCloseRecommendModal}
+                onButtonClick={handleInstall}
+                buttonText={'홈 화면에 스노로그 추가하기'}
+            >
+                <PWAModalContent />
+            </RecommendModal>
         </>
     );
 };
