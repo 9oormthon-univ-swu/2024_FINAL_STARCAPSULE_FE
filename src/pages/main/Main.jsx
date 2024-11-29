@@ -29,7 +29,11 @@ import ShareModal from '@/components/ShareModal';
 import RecommendModal from '@/components/RecommendModal';
 import PWAModalContent from './PWAModalContent';
 import useModal from '@/hooks/useModal';
-import { isGuestObject } from '@/utils/isGuestObjects';
+import {
+    isGuestObject,
+    recordObjects,
+    guestObjects,
+} from '@/utils/isGuestObjects';
 
 export const MainContainer = styled(Stack)(() => ({
     padding: '2rem 0 2.25rem 0',
