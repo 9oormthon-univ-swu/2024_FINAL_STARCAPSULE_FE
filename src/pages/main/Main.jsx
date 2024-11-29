@@ -29,6 +29,11 @@ import ShareModal from '@/components/ShareModal';
 import RecommendModal from '@/components/RecommendModal';
 import PWAModalContent from './PWAModalContent';
 import useModal from '@/hooks/useModal';
+import {
+    isGuestObject,
+    recordObjects,
+    guestObjects,
+} from '@/utils/isGuestObjects';
 
 export const MainContainer = styled(Stack)(() => ({
     padding: '2rem 0 2.25rem 0',
@@ -230,22 +235,15 @@ const Main = () => {
     const onMemoryClick = (memoryId, objectName) => {
         const userId = param.userId;
 
-        if (recordable) {
+        const isGuest = isGuestObject(objectName);
+
+        if (recordable && !isGuest) {
             setSnackbarOpen({
                 text: '모든 추억은 12월 31일에 공개됩니다!',
                 severity: 'present',
             });
             return;
         }
-
-        // object_name에 따라 페이지 이동을 다르게 설정
-        const recordObjects = [
-            'christmas_tree',
-            'gingerbread_house',
-            'lamplight',
-            'santa_sleigh',
-        ];
-        const guestObjects = ['moon', 'santa', 'snowflake', 'snowman'];
 
         if (recordObjects.includes(objectName)) {
             navigate(`/recordafter/${userId}/${memoryId}`);

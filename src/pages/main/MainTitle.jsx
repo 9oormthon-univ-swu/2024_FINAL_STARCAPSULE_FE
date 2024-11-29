@@ -141,6 +141,7 @@ const MainTitle = ({ snowball, setSnowballName, onError, serverTime }) => {
                     {isEditing ? (
                         <StyledIconButton
                             onMouseDown={onConfirmClick}
+                            touchstart={onConfirmClick}
                             disabled={!currSnowball.length}
                         >
                             <CheckIcon

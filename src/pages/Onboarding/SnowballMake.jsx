@@ -82,7 +82,6 @@ const SnowballPage = () => {
     useEffect(() => {
         saveTokenFromURL(login);
     }, [login]);
-
     // 버튼 클릭 시 스노우볼 생성 API 호출
     const handleCreateSnowball = () => {
         const token = localStorage.getItem('token');
@@ -111,25 +110,15 @@ const SnowballPage = () => {
                         snowballData.snowball_name &&
                         snowballData.shared_link
                     ) {
-                        localStorage.setItem('snowball_id', snowballData.id);
                         localStorage.setItem(
                             'snowball_name',
                             snowballData.snowball_name
                         );
-                        localStorage.setItem(
-                            'snowball_link',
-                            snowballData.shared_link
-                        );
                         //console.log('로컬 스토리지에 저장 완료');
-                    } else {
-                        /*console.error(
-                            '스노우볼 데이터가 유효하지 않습니다:',
-                            snowballData
-                        ); */
                     }
 
                     // 메인 페이지로 이동
-                    navigate(`/main/${snowballData.id}?page=1`);
+                    navigate(`${snowballData.shared_link}?page=1`); //
                 })
                 .catch((error) => {
                     //console.error('스노우볼 생성 실패:', error);
