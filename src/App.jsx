@@ -1,7 +1,7 @@
 import './App.css';
 import { ThemeProvider } from '@mui/material';
 import theme from './constants/theme';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
     BrowserRouter as Router,
     Route,
@@ -14,9 +14,7 @@ import SnowballMake from './pages/Onboarding/SnowballMake';
 import RecordForm from './pages/Record/RecordForm';
 import CreationComplete from './pages/RecordComplete/CreationComplete';
 import MyCreationComplete from './pages/RecordComplete/MyCreationComplete';
-import Main from './pages/main/Main';
 import GuestForm from './pages/Record/GuestForm';
-import Guest from './pages/main/guest/Guest';
 import CalendarPage from './pages/calendar/CalendarPage';
 import RecordFormAfter from './pages/RecordComplete/RecordFormAfter';
 import GuestFormAfter from './pages/RecordComplete/GuestFormAfter';
@@ -91,6 +89,33 @@ function App() {
     dayjs.extend(isSameOrAfter);
 
     const { open, text, severity, setClose } = useSnackbarStore();
+
+    useEffect(() => {
+        const handleAppInstalled = () => {
+            localStorage.setItem('pwaInstalled', 'true');
+        };
+
+        const handleBeforeInstallPrompt = (event) => {
+            window.deferredPrompt = event;
+            const doNotShowPWA = localStorage.getItem('doNotShowPWA');
+            if (doNotShowPWA === 'true') return;
+            localStorage.setItem('pwaInstalled', 'false');
+        };
+
+        window.addEventListener('appinstalled', handleAppInstalled);
+        window.addEventListener(
+            'beforeinstallprompt',
+            handleBeforeInstallPrompt
+        );
+
+        return () => {
+            window.removeEventListener('appinstalled', handleAppInstalled);
+            window.removeEventListener(
+                'beforeinstallprompt',
+                handleBeforeInstallPrompt
+            );
+        };
+    }, []);
     return (
         <HelmetProvider>
             <ThemeProvider theme={theme}>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import { isPwaInstalled } from '@/utils/isPWAInstalled';
 
 const Container = styled.div`
     display: flex;
@@ -114,15 +115,25 @@ const MyCreationComplete = () => {
     }, []);
 
     useEffect(() => {
+        const doNotShowPWA = localStorage.getItem('doNotShowPWA');
+
+        const isInstalled = isPwaInstalled();
+
         const timer = setTimeout(() => {
-            navigate(`/main/${userId}?page=1&pwa=true`); // 일정 시간 후 자동 이동
+            navigate(
+                `/main/${userId}?page=1&pwa=${doNotShowPWA == 'true' || isInstalled ? 'false' : 'true'}`
+            );
         }, 5000);
 
         return () => clearTimeout(timer);
     }, [navigate, userId]);
 
     const handleClick = () => {
-        navigate(`/main/${userId}?page=1`); // userId를 URL에 반영
+        const doNotShowPWA = localStorage.getItem('doNotShowPWA');
+
+        navigate(
+            `/main/${userId}?page=1&pwa=${doNotShowPWA == 'true' ? 'false' : 'true'}`
+        );
     };
 
     const getObjectImagePath = (objectName) => {
