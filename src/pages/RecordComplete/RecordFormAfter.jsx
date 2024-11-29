@@ -165,7 +165,12 @@ const RecordFormAfter = () => {
             </Helmet>
             <Stack sx={contentstyle}>
                 <HeaderContainer>
-                    <HeaderIconLeft onClick={handleClose}>
+                    <HeaderIconLeft
+                        onClick={handleClose}
+                        sx={{
+                            color: 'custom.grey',
+                        }}
+                    >
                         <CloseIcon />
                     </HeaderIconLeft>
                     <HeaderDate>

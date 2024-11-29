@@ -83,6 +83,7 @@ const AlertModal = ({
                             sx={{
                                 w: '1.5rem',
                                 h: '1.5rem',
+                                color: 'custom.grey',
                             }}
                         >
                             <CloseIcon />
