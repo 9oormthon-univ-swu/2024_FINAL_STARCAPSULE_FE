@@ -2,7 +2,7 @@ import './App.css';
 import { ThemeProvider } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import theme from './constants/theme';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
     BrowserRouter as Router,
     Route,
