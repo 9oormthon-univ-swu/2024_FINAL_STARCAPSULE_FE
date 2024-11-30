@@ -6,6 +6,7 @@ import axios from 'axios';
 import '@dotlottie/player-component';
 import useAuthStore from 'stores/useAuthStore';
 import { saveTokenFromURL } from '@/utils/saveTokenFromURL';
+import { useUserStore } from '@/stores/useUserStore';
 
 const FullScreenSnowfall = styled.div`
     position: fixed;
@@ -42,7 +43,7 @@ const SubTitle = styled.p`
     color: #5a5a5a;
     font-weight: 700;
     position: absolute;
-    bottom: 300px;
+    bottom: 40%;
     transform: translateX(-50%);
     left: 50%;
     white-space: nowrap;
@@ -83,6 +84,7 @@ const BottomImage = styled.img`
 const SnowballPage = () => {
     const navigate = useNavigate();
     const { login } = useAuthStore();
+    const { setUserId } = useUserStore();
 
     useEffect(() => {
         saveTokenFromURL(login);
@@ -109,6 +111,7 @@ const SnowballPage = () => {
                         'snowball_name',
                         snowballData.snowball_name
                     );
+                    setUserId(snowballData.userId);
                     navigate(`/main/${snowballData.userId}?page=1`);
                 })
                 .catch((error) => {
@@ -139,16 +142,16 @@ const SnowballPage = () => {
                     radius={[0.5, 3]}
                 />
 
-                {/* Lottie 애니메이션 추가 */}
+              
                 <dotlottie-player
                     src='https://lottie.host/a61cf0d6-677a-49e6-9281-13c0fd97b35a/NkiF3jmTpw.lottie'
                     background='transparent'
                     speed='1'
                     style={{
-                        width: '300px',
-                        height: '300px',
+                        width: '290px',
+                        height: '290px',
                         position: 'absolute',
-                        bottom: '410px',
+                        bottom: '50%',
                         left: '50%',
                         transform: 'translateX(-50%)',
                     }}

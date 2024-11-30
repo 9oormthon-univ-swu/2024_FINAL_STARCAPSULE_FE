@@ -137,24 +137,20 @@ const PopupPage = ({ isOpen, onClose, question, serverTime }) => {
         const lastPopupCheckedDate = localStorage.getItem('popupCheckedDate');
         const today = new Date().toLocaleDateString('ko-KR');
 
+
         if (lastPopupCheckedDate === today) {
             onClose();
-        } else {
-            setIsChecked(false); // 처음 뜰 때 체크박스는 항상 해제된 상태로 설정
         }
-    }, []);
+    }, [onClose]);
 
     const handleCheckboxChange = () => {
         const newCheckedStatus = !isChecked;
         setIsChecked(newCheckedStatus);
 
-        const today = new Date().toLocaleDateString('ko-KR'); // 한국 시간 기준 날짜 형식으로 저장
         if (newCheckedStatus) {
+            const today = new Date().toLocaleDateString('ko-KR');
             localStorage.setItem('popupCheckedDate', today);
-            localStorage.setItem('popupCheckboxStatus', 'true');
-        } else {
-            localStorage.removeItem('popupCheckedDate'); // 체크 해제 시 날짜 제거
-            localStorage.setItem('popupCheckboxStatus', 'false');
+            onClose(); 
         }
     };
 
