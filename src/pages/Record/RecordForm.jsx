@@ -96,7 +96,6 @@ const RecordForm = () => {
     const handleCloseModal = () => {
         setOpenModal(false);
     };
-    
 
     // 폼 제출 처리 함수
     const handleSubmit = (e) => {
@@ -218,7 +217,7 @@ const modaltextstyle1 = {
     fontSize: '0.92rem',
     fontWeight: '700',
     textAlign: 'center',
-    color: '#7F5539',
+    color: 'custom.main1',
 };
 
 const modaltextstyle2 = {
@@ -226,5 +225,5 @@ const modaltextstyle2 = {
     fontSize: '0.92rem',
     fontWeight: '700',
     textAlign: 'center',
-    color: '#282828',
+    color: 'custom.font',
 };

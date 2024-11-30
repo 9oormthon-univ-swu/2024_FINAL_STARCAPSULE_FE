@@ -134,14 +134,20 @@ const Main = () => {
     const { isLoggedIn } = useAuthStore();
 
     useEffect(() => {
-        const lastPopupCheckedDate = localStorage.getItem('popupCheckedDate');
-        const today = new Date().toLocaleDateString('ko-KR');
+        if (serverTime) {
+            const lastPopupCheckedDate =
+                localStorage.getItem('popupCheckedDate');
+            const today = dayjs
+                .utc(serverTime)
+                .tz('Asia/Seoul')
+                .format('YYYY. MM. DD.');
 
-        if (lastPopupCheckedDate !== today) {
-            setShowLottie(true);
-            setPopupOpen(true);
+            if (lastPopupCheckedDate !== today) {
+                setShowLottie(true);
+                setPopupOpen(true);
+            }
         }
-    }, []);
+    }, [serverTime]);
 
     const axiosInstance = useAxiosWithAuth();
 
