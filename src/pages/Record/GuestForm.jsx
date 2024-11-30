@@ -22,6 +22,7 @@ const GuestForm = () => {
     const [uploadedImage, setUploadedImage] = useState(null);
     const [object_name, setObjectName] = useState('');
     const [openModal, setOpenModal] = useState(false);
+
     // RecordBoard 참조 (자동스크롤)
     const recordBoardRef = useRef(null); // RecordBoard 참조
     const writerRef = useRef(null); //Writer 참조
