@@ -31,7 +31,7 @@ const InAppBrowserBlocker = () => {
             document.getElementsByTagName('head')[0].appendChild(mobile);
             copytoclipboard(externalURL);
             alert(
-                '하단 공유아이콘을 눌르고 "Safari 열기"를 통해 접속해주시길 바랍니다.'
+                '하단 공유아이콘을 누르고 "Safari 열기"를 통해 접속해주시길 바랍니다.'
             );
         } else {
             window.location.href = externalURL;
