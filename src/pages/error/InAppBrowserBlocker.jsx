@@ -2,17 +2,24 @@ import { Button, Stack, Typography } from '@mui/material';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import Layout from '@/layouts/Layout';
+import { useSearchParams } from 'react-router-dom';
 
 const InAppBrowserBlocker = () => {
-    const handleEnterBrowser = () => {
-        const currentPath = window.location.pathname + window.location.search;
+    const [searchParams] = useSearchParams();
 
+    const handleEnterBrowser = () => {
+        const currentPath = searchParams.get('redirect') || '/';
         const externalURL = `${import.meta.env.VITE_BASE_URL}${currentPath}`;
 
         if (/android/i.test(navigator.userAgent)) {
             window.location.href = `intent://${externalURL.replace(/^https?:\/\//, '')}#Intent;scheme=https;package=com.android.chrome;end`;
         } else if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
-            window.open(externalURL, '_blank');
+            const newWindow = window.open(externalURL, '_blank');
+            if (!newWindow) {
+                alert(
+                    '팝업 차단이 활성화되어 있습니다. Safari 브라우저에서 직접 열어주세요.'
+                );
+            }
         } else {
             window.location.href = externalURL;
         }

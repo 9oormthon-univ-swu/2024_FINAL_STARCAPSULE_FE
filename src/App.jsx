@@ -43,11 +43,15 @@ function AnimationRoutes() {
         const userAgent =
             navigator.userAgent || navigator.vendor || window.opera;
 
+        // 인앱 브라우저 감지
         const isInAppBrowser = /FBAN|FBAV|Instagram|KAKAOTALK|Line/.test(
             userAgent
         );
 
-        if (isInAppBrowser) {
+        // 크롬 브라우저 감지 (인앱 브라우저와 구분)
+        const isChrome = /Chrome/i.test(userAgent) && !isInAppBrowser;
+
+        if (isInAppBrowser && location.pathname !== '/in-app-browser-blocker') {
             // 현재 경로를 쿼리 파라미터로 전달
             const currentPath = location.pathname + location.search;
             navigate(
