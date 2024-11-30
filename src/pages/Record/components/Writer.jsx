@@ -46,7 +46,7 @@ const Writer = ({ fwriter, setfwriter }) => {
                     style={{ width: '10rem', color: '#C3DEF7' }}
                 />
             ) : (
-                <Box component={'span'} sx={{ color: 'custom.main2' }}>
+                <Box component={'span'} sx={{ color: '#C3DEF7' }}>
                     {writer}
                 </Box>
             )}

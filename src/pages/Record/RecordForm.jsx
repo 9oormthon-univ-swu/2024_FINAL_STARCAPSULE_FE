@@ -217,7 +217,7 @@ const modaltextstyle1 = {
     fontSize: '0.92rem',
     fontWeight: '700',
     textAlign: 'center',
-    color: 'custom.main1',
+    color: '#6485CF',
 };
 
 const modaltextstyle2 = {
@@ -225,5 +225,5 @@ const modaltextstyle2 = {
     fontSize: '0.92rem',
     fontWeight: '700',
     textAlign: 'center',
-    color: 'custom.font',
+    color: '#282828',
 };

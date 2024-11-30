@@ -77,7 +77,6 @@ const GuestForm = () => {
                     answer: answer,
                     object_name: object_name,
                     writer: writer,
-                    user_id: params.userId,
                 },
             })
             .then(() => {
@@ -163,7 +162,7 @@ const GuestForm = () => {
                     <Stack>
                         <Typography sx={titlestyle}>
                             TO.&nbsp;
-                            <span>{nickname}</span>
+                            <span style={{ color: '#C3DEF7' }}>{nickname}</span>
                         </Typography>
                     </Stack>
                     <form onSubmit={handleSubmit}>
@@ -234,7 +233,7 @@ const modaltextstyle1 = {
     fontSize: '0.92rem',
     fontWeight: '700',
     textAlign: 'center',
-    color: 'custom.button1',
+    color: '#6485CF',
 };
 const modaltextstyle2 = {
     fontFamily: 'Noto Sans',
