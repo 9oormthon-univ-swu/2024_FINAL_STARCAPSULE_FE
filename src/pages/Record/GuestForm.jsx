@@ -77,7 +77,6 @@ const GuestForm = () => {
                     answer: answer,
                     object_name: object_name,
                     writer: writer,
-                    user_id: params.userId,
                 },
             })
             .then(() => {
