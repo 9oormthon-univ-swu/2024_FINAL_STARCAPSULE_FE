@@ -109,6 +109,7 @@ const SnowballPage = () => {
                         'snowball_name',
                         snowballData.snowball_name
                     );
+                    localStorage.setItem('userId', snowballData.userId);
                     navigate(`/main/${snowballData.userId}?page=1`);
                 })
                 .catch((error) => {
