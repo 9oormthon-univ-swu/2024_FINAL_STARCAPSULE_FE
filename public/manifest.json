@@ -1,7 +1,7 @@
 {
     "name": "스노로그",
-    "theme_color": "#132034",
-    "background_color": "#132034",
+    "theme_color": "#C3DEF7",
+    "background_color": "#C3DEF7",
     "short_name": "스노로그",
     "start_url": "/",
     "orientation": "portrait",
