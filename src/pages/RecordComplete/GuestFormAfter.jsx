@@ -157,7 +157,12 @@ const GuestFormAfter = () => {
             </Helmet>
             <Stack sx={contentstyle}>
                 <HeaderContainer>
-                    <HeaderIconLeft onClick={handleClose}>
+                    <HeaderIconLeft
+                        onClick={handleClose}
+                        sx={{
+                            color: 'custom.grey',
+                        }}
+                    >
                         <CloseIcon />
                     </HeaderIconLeft>
                     <HeaderDate>
@@ -168,84 +173,84 @@ const GuestFormAfter = () => {
                     <HeaderIconRight></HeaderIconRight>
                 </HeaderContainer>
 
-        <Stack
-          id="capture-container"
-          ref={captureRef}
-          sx={{
-            width: '100%',
-            maxWidth: '300px',
-            padding: '1.6rem',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            overflow: 'visible',
-            marginTop: '8rem',
-            paddingBottom: '0.1rem',
-            position: 'relative',
-          }}
-        >
-          <span
-            style={{
-              position: 'absolute',
-              top: 'calc(0rem + 0rem)',
-              left: '2.7rem',
-              color: 'white',
-              fontSize: '1.3rem',
-              fontFamily: 'Griun NltoTAENGGU, sans-serif',
-            }}
-          >
-            To. <span style={{ color: '#DDB892' }}>{nickname}</span>
-          </span>
+                <Stack
+                    id='capture-container'
+                    ref={captureRef}
+                    sx={{
+                        width: '100%',
+                        maxWidth: '300px',
+                        padding: '1.6rem',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        overflow: 'visible',
+                        marginTop: '8rem',
+                        paddingBottom: '0.1rem',
+                        position: 'relative',
+                    }}
+                >
+                    <span
+                        style={{
+                            position: 'absolute',
+                            top: 'calc(0rem + 0rem)',
+                            left: '2.7rem',
+                            color: 'white',
+                            fontSize: '1.3rem',
+                            fontFamily: 'Griun NltoTAENGGU, sans-serif',
+                        }}
+                    >
+                        To. <span style={{ color: '#DDB892' }}>{nickname}</span>
+                    </span>
 
-          <Stack
-            sx={{
-              width: '100%',
-              alignItems: 'center',
-              marginBottom: '1rem',
-              flexDirection: 'column',
-            }}
-          >
-            <RecordBoard
-              content={memoryData?.result.answer || ''}
-              image_url={memoryData?.result.image_url}
-              isReadOnly={true}
-            />
-          </Stack>
+                    <Stack
+                        sx={{
+                            width: '100%',
+                            alignItems: 'center',
+                            marginBottom: '1rem',
+                            flexDirection: 'column',
+                        }}
+                    >
+                        <RecordBoard
+                            content={memoryData?.result.answer || ''}
+                            image_url={memoryData?.result.image_url}
+                            isReadOnly={true}
+                        />
+                    </Stack>
 
-          <span
-            style={{
-              color: 'white',
-              fontSize: '1.3rem',
-              fontFamily: 'Griun NltoTAENGGU, sans-serif',
-              textAlign: 'center',
-              position: 'relative',
-              top: '-5px',
-              left: '46%',
-              transform: 'translateX(-50%)',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            From.{' '}
-            <span style={{ color: '#DDB892' }}>
-              {memoryData?.result?.writer || '작성자'}
-            </span>
-          </span>
+                    <span
+                        style={{
+                            color: 'white',
+                            fontSize: '1.3rem',
+                            fontFamily: 'Griun NltoTAENGGU, sans-serif',
+                            textAlign: 'center',
+                            position: 'relative',
+                            top: '-5px',
+                            left: '46%',
+                            transform: 'translateX(-50%)',
+                            whiteSpace: 'nowrap',
+                        }}
+                    >
+                        From.{' '}
+                        <span style={{ color: '#DDB892' }}>
+                            {memoryData?.result?.writer || '작성자'}
+                        </span>
+                    </span>
 
-          <Stack
-          component="form"
-          sx={{
-            alignItems: 'center',
-            width: 'fit-content',
-            marginTop: '2rem', 
-          }}
-          data-html2canvas-ignore="true"
-        >
-          <ImageSaveButton onClick={handleSaveImage} />
-        </Stack>
-        </Stack>
-      </Stack>
-    </div>
-  );
+                    <Stack
+                        component='form'
+                        sx={{
+                            alignItems: 'center',
+                            width: 'fit-content',
+                            marginTop: '2rem',
+                        }}
+                        data-html2canvas-ignore='true'
+                    >
+                        <ImageSaveButton onClick={handleSaveImage} />
+                    </Stack>
+                </Stack>
+            </Stack>
+        </div>
+    );
 };
 
 export default GuestFormAfter;

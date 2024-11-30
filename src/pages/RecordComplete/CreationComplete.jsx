@@ -61,12 +61,12 @@ const ObjectImage = styled.img`
 const CreationComplete = () => {
     const { userId } = useParams();
     const navigate = useNavigate();
-    const [memoryData, setMemoryData] = useState(null);
-    // const snowballName = localStorage.getItem('snowballName') || '이름';
+    const [memoryData, _] = useState(null);
+
     const selectedObject = localStorage.getItem('selectedObject') || '없음';
 
     const handleClick = () => {
-        navigate(`/main/${userId}?page=1`);
+        navigate(`/main/${userId}?page=1&makeSnowball=true`);
     };
 
     const getObjectImagePath = (objectName) => {
@@ -75,7 +75,7 @@ const CreationComplete = () => {
 
      useEffect(() => {
         const timer = setTimeout(() => {
-            navigate(`/main/${userId}?page=1`);
+            navigate(`/main/${userId}?page=1&makeSnowball=true`);
         }, 5000);
 
         return () => clearTimeout(timer);

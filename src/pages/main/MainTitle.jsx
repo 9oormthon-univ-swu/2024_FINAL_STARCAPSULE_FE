@@ -5,7 +5,7 @@ import { Box, IconButton, Stack, styled, Typography } from '@mui/material';
 import React, { useState, useEffect, useRef } from 'react';
 
 export const StyledTypography = styled(Typography)(({ theme }) => ({
-    color: theme.palette.custom.white,
+    color: theme.palette.custom.font,
     wordBreak: 'keep-all',
     whiteSpace: 'pre',
     padding: 0,
@@ -85,16 +85,18 @@ const MainTitle = ({ snowball, setSnowballName, onError, serverTime }) => {
         setIsSaving(true);
         if (!currSnowball.length) return;
         setSnowballName(currSnowball)
-            .then(() => setIsEditing(false))
+            .then(() => {
+                setIsSaving(false);
+                setIsEditing(false);
+            })
             .catch((e) => {
                 onError(e);
             });
-        setIsSaving(false);
     };
 
     const handleKeyDown = (event) => {
-        event?.preventDefault();
         if (event.key === 'Enter') {
+            event.preventDefault();
             setIsSaving(true);
             onConfirmClick();
         } else if (event.key === 'Escape') {
@@ -117,7 +119,7 @@ const MainTitle = ({ snowball, setSnowballName, onError, serverTime }) => {
                             type='text'
                             value={currSnowball}
                             onChange={handleSnowballChange}
-                            onBlur={handleBlur}
+                            // onBlur={handleBlur}
                             spellCheck='false'
                             onKeyDown={handleKeyDown}
                             style={{
@@ -138,20 +140,20 @@ const MainTitle = ({ snowball, setSnowballName, onError, serverTime }) => {
                     {'스노우볼'}
                     {isEditing ? (
                         <StyledIconButton
-                            onMouseDown={onConfirmClick}
+                            onClick={onConfirmClick}
                             disabled={!currSnowball.length}
                         >
                             <CheckIcon
                                 sx={{
                                     color: currSnowball.length
-                                        ? 'custom.main1'
+                                        ? 'custom.main2'
                                         : 'custom.grey',
                                 }}
                             />
                         </StyledIconButton>
                     ) : (
                         <StyledIconButton onClick={handleEdit}>
-                            <EditIcon sx={{ color: 'custom.white' }} />
+                            <EditIcon sx={{ color: 'custom.font' }} />
                         </StyledIconButton>
                     )}
                 </StyledTypography>

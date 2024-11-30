@@ -43,4 +43,5 @@ const iconstyle = {
     width: '0.75rem',
     height: '0.75rem',
     marginBottom: '1rem',
+    color: 'custom.grey',
 };

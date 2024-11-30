@@ -63,7 +63,7 @@ const theme = createTheme({
             },
             styleOverrides: {
                 root: {
-                    color: palette.white,
+                    color: palette.font,
                 },
             },
         },

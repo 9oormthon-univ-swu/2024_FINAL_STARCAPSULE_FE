@@ -11,7 +11,7 @@ const SnackbarContainer = styled(Snackbar)({
 });
 
 const SnackbarContent = styled(Alert)(({ theme }) => ({
-    backgroundColor: theme.palette.custom.main2,
+    backgroundColor: '#405EAB',
     width: '100%',
     maxWidth: '34.5rem',
     height: '3.875rem',
@@ -46,12 +46,12 @@ const SnackbarNoti = ({
                     success: <span>✅</span>,
                     error: <span>❌</span>,
                     warning: <span>❗</span>,
-                    present: <span>🎁</span>
+                    present: <span>🎁</span>,
                 }}
             >
                 <Typography
                     variant='title4'
-                    sx={{ color: 'custom.font', wordBreak: 'keep-all' }}
+                    sx={{ color: '#FFFCFA', wordBreak: 'keep-all' }}
                 >
                     {snackbarText}
                 </Typography>

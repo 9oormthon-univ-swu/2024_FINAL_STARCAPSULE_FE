@@ -163,7 +163,8 @@ const GuestForm = () => {
                     </Stack>
                     <Stack>
                         <Typography sx={titlestyle}>
-                            TO.&nbsp;{nickname}
+                            TO.&nbsp;
+                            <span>{nickname}</span>
                         </Typography>
                     </Stack>
                     <form onSubmit={handleSubmit}>
@@ -222,6 +223,9 @@ const contentstyle = {
 
 const titlestyle = {
     color: 'custom.white',
+    '& span': {
+        color: 'custom.main2',
+    },
     float: 'left',
     margin: '2.25rem 1rem 1rem',
 };
@@ -231,7 +235,7 @@ const modaltextstyle1 = {
     fontSize: '0.92rem',
     fontWeight: '700',
     textAlign: 'center',
-    color: '#7F5539',
+    color: '#6485CF',
 };
 const modaltextstyle2 = {
     fontFamily: 'Noto Sans',

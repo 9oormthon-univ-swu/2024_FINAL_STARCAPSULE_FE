@@ -52,7 +52,7 @@ const ImgShareButton = styled(Button)(() => ({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: '3.5rem',
-    backgroundColor: '#B08F79',
+    backgroundColor: '#C3DEF7',
 }));
 
 const ShareModal = ({ url, open, onClose }) => {
@@ -63,7 +63,6 @@ const ShareModal = ({ url, open, onClose }) => {
             if (navigator.share) {
                 await navigator.share({
                     title: '☃️ 스노우볼에 오늘의 추억이 보관되었어요! ☃️\nSNS에 공유하여 친구들과 함께한 추억을 전달받아보세요\n',
-                    text: '스노우볼 링크가 공유되었습니다.',
                     url: url,
                 });
                 setSnackbarOpen({
@@ -101,7 +100,6 @@ const ShareModal = ({ url, open, onClose }) => {
             if (navigator.share) {
                 await navigator.share({
                     title: '☃️ 스노우볼에 오늘의 추억이 보관되었어요! ☃️\nSNS에 공유하여 친구들과 함께한 추억을 전달받아보세요\n',
-                    text: '스노우볼 이미지가 공유되었습니다.',
                     files: [file],
                 });
                 setSnackbarOpen({
@@ -144,6 +142,7 @@ const ShareModal = ({ url, open, onClose }) => {
                             sx={{
                                 w: '1.5rem',
                                 h: '1.5rem',
+                                color: 'custom.font',
                             }}
                         >
                             <CloseIcon />
@@ -160,7 +159,7 @@ const ShareModal = ({ url, open, onClose }) => {
                             <Box
                                 component='span'
                                 fontWeight='700'
-                                color='custom.main1'
+                                color='#405EAB'
                             >
                                 스노우볼 이미지
                             </Box>
@@ -168,7 +167,7 @@ const ShareModal = ({ url, open, onClose }) => {
                             <Box
                                 component='span'
                                 fontWeight='700'
-                                color='custom.main1'
+                                color='#405EAB'
                             >
                                 공유
                             </Box>
@@ -177,7 +176,7 @@ const ShareModal = ({ url, open, onClose }) => {
                                 <Box
                                     component='span'
                                     fontWeight='700'
-                                    color='#7F5539'
+                                    color='#405EAB'
                                 >
                                     링크를 복사
                                 </Box>
@@ -210,6 +209,7 @@ const ShareModal = ({ url, open, onClose }) => {
                                         sm: '1rem',
                                         md: '1rem',
                                     },
+                                    color: 'custom.white',
                                 }}
                             >
                                 링크 복사하기

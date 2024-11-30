@@ -17,7 +17,6 @@ import PopupPage from '../Onboarding/PopupPage';
 import PopupAfter from '../Onboarding/PopupAfter';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useUserStore } from 'stores/useUserStore';
-import { saveTokenFromURL } from '@/utils/saveTokenFromURL';
 import useAuthStore from 'stores/useAuthStore';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import { useNavigate } from 'react-router-dom';
@@ -27,6 +26,14 @@ import { useSnackbarStore } from '@/stores/useSnackbarStore';
 import { isRecordable } from '@/utils/isRecordable';
 import dayjs from 'dayjs';
 import ShareModal from '@/components/ShareModal';
+import RecommendModal from '@/components/RecommendModal';
+import PWAModalContent from './PWAModalContent';
+import useModal from '@/hooks/useModal';
+import {
+    isGuestObject,
+    recordObjects,
+    guestObjects,
+} from '@/utils/isGuestObjects';
 
 export const MainContainer = styled(Stack)(() => ({
     padding: '2rem 0 2.25rem 0',
@@ -61,15 +68,14 @@ export const StyledButton = styled(Button)(({ theme }) => ({
     boxSizing: 'border-box',
     width: '100% !important',
     height: '3.875rem',
-    backgroundColor: theme.palette.custom.button1,
-    color: theme.palette.custom.white,
+    backgroundColor: theme.palette.custom.main2,
     borderRadius: '1.25rem',
     padding: '1.25rem 0',
     boxShadow: '0px 0px 4px 0px rgba(40, 40, 40, 0.20)',
 }));
 
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
-    color: theme.palette.custom.grey,
+    color: theme.palette.custom.font,
     width: '1.5rem',
     height: '1.5rem',
 }));
@@ -83,6 +89,8 @@ const Main = () => {
     const [searchParams] = useSearchParams();
     const page = parseInt(searchParams.get('page') || 1);
 
+    const pwa = searchParams.get('pwa') === 'true';
+
     const navigate = useNavigate();
 
     const successMessage = '스노우볼 이름이 변경되었어요.';
@@ -90,6 +98,29 @@ const Main = () => {
 
     const { setSnackbarOpen } = useSnackbarStore();
     const { setHasWritten } = useUserStore();
+
+    const {
+        openModal: openRecommendModal,
+        closeModal: closeRecommendModal,
+        isOpen: isRecommendOpen,
+    } = useModal();
+
+    const handleInstall = () => {
+        if (window.deferredPrompt) {
+            window.deferredPrompt.prompt();
+            window.deferredPrompt.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                    localStorage.setItem('doNotShowPWA', 'true');
+                }
+            });
+        }
+        closeRecommendModal();
+    };
+
+    const onCloseRecommendModal = () => {
+        localStorage.setItem('doNotShowPWA', 'true');
+        closeRecommendModal();
+    };
 
     const onError = () => {
         setSnackbarOpen({
@@ -99,8 +130,8 @@ const Main = () => {
     };
 
     const param = useParams();
-    const { setUserId, hasWritten } = useUserStore();
-    const { login, isLoggedIn } = useAuthStore();
+    const { hasWritten } = useUserStore();
+    const { isLoggedIn } = useAuthStore();
 
     useEffect(() => {
         const lastPopupCheckedDate = localStorage.getItem('popupCheckedDate');
@@ -203,22 +234,15 @@ const Main = () => {
     const onMemoryClick = (memoryId, objectName) => {
         const userId = param.userId;
 
-        if (recordable) {
+        const isGuest = isGuestObject(objectName);
+
+        if (recordable && !isGuest) {
             setSnackbarOpen({
                 text: '모든 추억은 12월 31일에 공개됩니다!',
                 severity: 'present',
             });
             return;
         }
-
-        // object_name에 따라 페이지 이동을 다르게 설정
-        const recordObjects = [
-            'christmas_tree',
-            'gingerbread_house',
-            'lamplight',
-            'santa_sleigh',
-        ];
-        const guestObjects = ['moon', 'santa', 'snowflake', 'snowman'];
 
         if (recordObjects.includes(objectName)) {
             navigate(`/recordafter/${userId}/${memoryId}`);
@@ -318,7 +342,10 @@ const Main = () => {
                             disabled={hasWritten}
                             onClick={() => navigate(`/record/${param.userId}`)}
                         >
-                            <Typography variant='title2'>
+                            <Typography
+                                variant='title2'
+                                sx={{ color: 'custom.white' }}
+                            >
                                 추억 보관하기
                             </Typography>
                         </StyledButton>
@@ -327,14 +354,24 @@ const Main = () => {
                             variant={'contained'}
                             sx={{ flexGrow: 0, width: 'fit-content' }}
                         >
-                            <Typography variant='title2'>팀 소개</Typography>
+                            <Typography
+                                variant='title2'
+                                sx={{ color: 'custom.white' }}
+                            >
+                                팀 소개
+                            </Typography>
                         </StyledButton>
                     )}
                 </MainContainer>
                 {recordable && !isQuestionLoading && !hasWritten && (
                     <PopupPage
                         isOpen={isPopupOpen}
-                        onClose={() => setPopupOpen(false)}
+                        onClose={() => {
+                            setPopupOpen(false);
+                            if (pwa) {
+                                openRecommendModal();
+                            }
+                        }}
                         question={questionData.question}
                         serverTime={serverTime}
                     />
@@ -381,6 +418,14 @@ const Main = () => {
                 onClose={onCloseShareModal}
                 url={`${import.meta.env.VITE_BASE_URL}/main/${param.userId}`}
             />
+            <RecommendModal
+                open={isRecommendOpen}
+                onClose={onCloseRecommendModal}
+                onButtonClick={handleInstall}
+                buttonText={'홈 화면에 스노로그 추가하기'}
+            >
+                <PWAModalContent />
+            </RecommendModal>
         </>
     );
 };

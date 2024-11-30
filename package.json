@@ -102,5 +102,8 @@
         "prop-types": "^15.8.1",
         "storybook": "^8.3.3",
         "vite-plugin-eslint": "^1.8.1"
+    },
+    "overrides": {
+        "cross-spawn": "^7.0.5"
     }
 }
