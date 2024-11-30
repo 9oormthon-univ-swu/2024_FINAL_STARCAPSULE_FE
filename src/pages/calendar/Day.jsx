@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 import { useParams } from 'react-router-dom';
 import { useSnackbarStore } from '@/stores/useSnackbarStore';
 import { fetchMemoryData } from '@/utils/fetchMemoryData';
+import puzzles from '@/assets/puzzles';
 
 const containerStyle = {
     boxSizing: 'border-box',
@@ -140,7 +141,7 @@ const Day = memo(
             <Stack
                 sx={{
                     backgroundImage: imgDisplay
-                        ? `url("/assets/calendar/puzzle_${date}.svg")`
+                        ? `url(${puzzles[date]})`
                         : 'none',
                     backgroundColor: style.backgroundColor,
                     ...containerStyle,
