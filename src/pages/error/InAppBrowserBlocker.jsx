@@ -5,7 +5,9 @@ import Layout from '@/layouts/Layout';
 
 const InAppBrowserBlocker = () => {
     const handleEnterBrowser = () => {
-        const externalURL = `${import.meta.env.VITE_BASE_URL}`;
+        const currentPath = window.location.pathname + window.location.search;
+
+        const externalURL = `${import.meta.env.VITE_BASE_URL}${currentPath}`;
 
         if (/android/i.test(navigator.userAgent)) {
             window.location.href = `intent://${externalURL.replace(/^https?:\/\//, '')}#Intent;scheme=https;package=com.android.chrome;end`;

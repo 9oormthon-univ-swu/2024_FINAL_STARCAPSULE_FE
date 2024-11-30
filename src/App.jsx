@@ -48,9 +48,13 @@ function AnimationRoutes() {
         );
 
         if (isInAppBrowser) {
-            navigate('/in-app-browser-blocker');
+            // 현재 경로를 쿼리 파라미터로 전달
+            const currentPath = location.pathname + location.search;
+            navigate(
+                `/in-app-browser-blocker?redirect=${encodeURIComponent(currentPath)}`
+            );
         }
-    }, [navigate]);
+    }, [navigate, location]);
 
     return (
         <AnimatePresence>
