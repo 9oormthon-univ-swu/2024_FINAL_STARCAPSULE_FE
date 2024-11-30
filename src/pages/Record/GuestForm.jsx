@@ -48,8 +48,12 @@ const GuestForm = () => {
 
     // 텍스트 변경 및 글자수 계산 처리 함수
     const handleAnswerChange = (e) => {
-        setAnswer(e.target.value.slice(0, 199));
-        setInputCount(e.target.value.length);
+        if (e.target.value.length <= 200) {
+            setAnswer(e.target.value.slice(0, 199));
+            setInputCount(e.target.value.length);
+        } else {
+            setInputCount(200);
+        }
     };
 
     //모달 확인 버튼 처리 함수&데이터전달
@@ -62,7 +66,7 @@ const GuestForm = () => {
         //console.log('answer:', answer);
         //console.log('image:', uploadedImage);
         //console.log('writer:', writer);
-       // console.log('object_name:', object_name);
+        // console.log('object_name:', object_name);
 
         await axiosInstance
             .post(`/api/share_memory/${params.userId}/write`, formData, {
@@ -81,7 +85,7 @@ const GuestForm = () => {
                 navigate(`/complete/${params.userId}`);
             })
             .catch((error) => {
-               // console.log(error);
+                // console.log(error);
                 setSnackbarOpen({
                     severity: 'error',
                     text: '추억 전달에 실패했어요. 다시 시도해주세요.',
@@ -124,6 +128,8 @@ const GuestForm = () => {
             return;
         }
 
+        localStorage.setItem('selectedObject', object_name);
+
         //answer 있을 경우 모달 오픈
         setOpenModal(true);
     };
@@ -157,7 +163,8 @@ const GuestForm = () => {
                     </Stack>
                     <Stack>
                         <Typography sx={titlestyle}>
-                            TO.&nbsp;{nickname}
+                            TO.&nbsp;
+                            <span>{nickname}</span>
                         </Typography>
                     </Stack>
                     <form onSubmit={handleSubmit}>
@@ -216,6 +223,9 @@ const contentstyle = {
 
 const titlestyle = {
     color: 'custom.white',
+    '& span': {
+        color: 'custom.main2',
+    },
     float: 'left',
     margin: '2.25rem 1rem 1rem',
 };
@@ -225,12 +235,12 @@ const modaltextstyle1 = {
     fontSize: '0.92rem',
     fontWeight: '700',
     textAlign: 'center',
-    color: '#7F5539',
+    color: 'custom.button1',
 };
 const modaltextstyle2 = {
     fontFamily: 'Noto Sans',
     fontSize: '0.92rem',
     fontWeight: '700',
     textAlign: 'center',
-    color: '#282828',
+    color: 'custom.font',
 };

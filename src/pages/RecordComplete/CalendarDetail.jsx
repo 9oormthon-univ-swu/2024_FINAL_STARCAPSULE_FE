@@ -21,7 +21,7 @@ const contentstyle = {
     position: 'relative',
     overflowY: 'auto',
     overflowX: 'hidden',
-    background: 'linear-gradient(180deg, #0b0a1b 0%, #27405e 100%)',
+    background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.50) 0%, rgba(0, 0, 0, 0.50) 100%), linear-gradient(0deg, #93C2DF 9.29%, #C3DEF7 50.84%, #B6D8E1 109.34%)',
     '&::-webkit-scrollbar': {
         display: 'none',
     },
@@ -41,6 +41,7 @@ const CalendarDetail = () => {
     const [memoryData, setMemoryData] = useState(null);
     const [pageIndex, setPageIndex] = useState(0);
     const nickname = localStorage.getItem('snowballName') || '닉네임';
+    
 
     useEffect(() => {
         if (location.state?.data) {
@@ -51,6 +52,18 @@ const CalendarDetail = () => {
         }
     }, [location.state]);
 
+    useEffect(() => {
+        const handlePopState = () => {
+            navigate(`/calendar/${userId}`);
+        };
+
+        window.addEventListener('popstate', handlePopState);
+
+        return () => {
+            window.removeEventListener('popstate', handlePopState);
+        };
+    }, [navigate, userId]);
+
     const handleSaveImage = (e) => {
         e.preventDefault();
         if (captureRef.current) {
@@ -60,14 +73,17 @@ const CalendarDetail = () => {
             html2canvas(element, {
                 scale: 2,
                 useCORS: true,
-                backgroundColor: '#132034',
+                backgroundColor: '#5B91B6',
                 height: elementHeight,
                 windowHeight: elementHeight,
             })
                 .then((canvas) => {
                     const link = document.createElement('a');
+                    const formattedDateForFilename = dayjs(
+                        location.state?.selectedDate
+                    ).format('YYYY-MM-DD');
                     link.href = canvas.toDataURL('image/png');
-                    link.download = 'calendar_detail.png';
+                    link.download = `${formattedDateForFilename}.png`;
                     link.click();
                 })
                 .catch((error) => {
@@ -80,7 +96,7 @@ const CalendarDetail = () => {
         .split(/(\d{4})(년)|(\d{2})(월)|(\d{2})(일)/)
         .map((part, index) =>
             part && /\d/.test(part) ? (
-                <span key={index} style={{ color: '#DDB892' }}>
+                <span key={index} style={{ color: '#C3DEF7' }}>
                     {part}
                 </span>
             ) : (
@@ -137,6 +153,7 @@ const CalendarDetail = () => {
                             cursor: 'pointer',
                             position: 'relative',
                             right: '-30px',
+                            color: 'white',
                         }}
                     />
                 </IconButton>
@@ -147,6 +164,7 @@ const CalendarDetail = () => {
                             cursor: 'pointer',
                             position: 'relative',
                             left: '-30px',
+                            color: 'white',
                         }}
                     />
                 </IconButton>
@@ -161,6 +179,7 @@ const CalendarDetail = () => {
                     flexDirection: 'column',
                     alignItems: 'center',
                     overflow: 'visible',
+                    position: 'relative',
                     marginTop: '6.5rem',
                 }}
             >
@@ -180,7 +199,14 @@ const CalendarDetail = () => {
                         >
                             {currentItem.daily_question?.question
                                 ? currentItem.daily_question.question
-                                : `To. ${nickname}`}
+                                : `To.`}
+                            {currentItem.daily_question?.question ? (
+                                ''
+                            ) : (
+                                <span style={{ color: '#C3DEF7' }}>
+                                    {nickname}
+                                </span>
+                            )}
                         </span>
 
                         <RecordBoard
@@ -195,12 +221,17 @@ const CalendarDetail = () => {
                                 fontSize: '1.3rem',
                                 fontFamily: 'Griun NltoTAENGGU, sans-serif',
                                 marginTop: '16px',
-                                marginLeft: '200px',
+                                marginLeft: '260px',
+                                textAlign: 'center',
+                                position: 'relative',
+                                transform: 'translateX(-50%)',
+                                whiteSpace: 'nowrap',
                             }}
                         >
-                            {currentItem.writer
-                                ? `From. ${currentItem.writer}`
-                                : ''}
+                            {currentItem.writer ? `From. ` : ''}
+                            <span style={{ color: '#C3DEF7' }}>
+                                {currentItem.writer}
+                            </span>
                         </span>
                     </>
                 )}
@@ -223,19 +254,19 @@ const CalendarDetail = () => {
                 justifyContent='space-between'
                 data-html2canvas-ignore='true'
                 sx={{
-                    width: '100%',
+                    width: '100%', // 기본적으로 모바일에서는 100%로 설정
                     height: '30px',
                     fontSize: '20px',
                     padding: '1rem',
                     backgroundColor: '#3a3a3a',
                     color: 'white',
-                    position:
-                        currentItem && currentItem.answer.length < 100
-                            ? 'absolute'
-                            : 'sticky',
-                    bottom: -45,
+                    position: 'fixed',
+                    bottom: 0,
                     zIndex: 10,
                     marginTop: '1rem',
+                    '@media (min-width: 568px)': {
+                        width: '568px', // 화면이 568px 이상일 때 너비를 568px로 설정
+                    },
                 }}
             >
                 <span

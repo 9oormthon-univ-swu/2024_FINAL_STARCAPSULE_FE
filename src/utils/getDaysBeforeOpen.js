@@ -1,18 +1,14 @@
 import dayjs from 'dayjs';
-import isBetween from 'dayjs/plugin/isBetween';
+import { isRecordable } from './isRecordable';
 
-dayjs.extend(isBetween);
-
-const getDaysBeforeOpen = (todayISOString) => {
+const getDaysBeforeOpen = (year, todayISOString) => {
     const today = dayjs(todayISOString);
 
-    const year =
-        today.format('12-31') === '12-31' ? today.year() : today.year() - 1;
+    const recordable = isRecordable(year, todayISOString);
 
-    const startDate = dayjs(`${year}-11-30`);
-    const endDate = dayjs(`${year}-12-31`);
+    const endDate = dayjs(`${year}-${import.meta.env.VITE_RECORD_END_DATE}`);
 
-    if (today.isBetween(startDate, endDate)) {
+    if (recordable) {
         const daysLeft = endDate.diff(today, 'day');
 
         return daysLeft;

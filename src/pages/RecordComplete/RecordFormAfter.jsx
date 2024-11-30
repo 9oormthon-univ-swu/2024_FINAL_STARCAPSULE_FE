@@ -3,11 +3,44 @@ import { IconButton, Stack } from '@mui/material';
 import RecordBoard from '../Record/components/RecordBoard';
 import ImageSaveButton from './ImageSaveButton';
 import html2canvas from 'html2canvas';
-import { CloseIcon, ShareIcon } from '@/components/icons';
+import { CloseIcon } from '@/components/icons';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import { useParams, useNavigate } from 'react-router-dom';
-import ImgShareButton from '@/components/ImgShareButton';
 import { Helmet } from 'react-helmet-async';
+import styled from 'styled-components';
+
+const HeaderContainer = styled.div`
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    right: 1rem;
+    z-index: 10;
+    color: white;
+    font-family: 'Griun NltoTAENGGU', sans-serif;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+`;
+
+const HeaderDate = styled.div`
+    font-size: 1.5rem;
+    text-align: center;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    color: white;
+`;
+
+const HeaderIconLeft = styled(IconButton)`
+    cursor: pointer;
+    padding: 0;
+    margin-right: auto;
+`;
+
+const HeaderIconRight = styled.div`
+    display: flex;
+    justify-content: flex-end;
+`;
 
 const contentstyle = {
     display: 'flex',
@@ -23,7 +56,7 @@ const contentstyle = {
     position: 'relative',
     overflowY: 'auto',
     overflowX: 'hidden',
-    background: 'linear-gradient(180deg, #0b0a1b 0%, #27405e 100%)',
+    background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.50) 0%, rgba(0, 0, 0, 0.50) 100%), linear-gradient(0deg, #93C2DF 9.29%, #C3DEF7 50.84%, #B6D8E1 109.34%)',
     '&::-webkit-scrollbar': {
         display: 'none',
     },
@@ -44,10 +77,7 @@ const RecordFormAfter = () => {
     useEffect(() => {
         const fetchMemoryData = async () => {
             try {
-                if (!memoryId || !userId) {
-                    //console.error('User ID or Memory ID is missing');
-                    return;
-                }
+                if (!memoryId || !userId) return;
 
                 const response = await axiosInstance.get(
                     `${snowballAPI}/${memoryId}`,
@@ -57,7 +87,6 @@ const RecordFormAfter = () => {
                         },
                     }
                 );
-                //console.log('Fetched Memory Data:', response.data);
                 setMemoryData(response.data);
             } catch (error) {
                 //console.error('Error fetching memory details:', error);
@@ -73,17 +102,23 @@ const RecordFormAfter = () => {
             const element = captureRef.current;
             const elementHeight = element.scrollHeight;
 
+
+            const date = new Date(memoryData?.result.create_at);
+            const formattedDate = `${date.getFullYear()}-${String(
+                date.getMonth() + 1
+            ).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+
             html2canvas(element, {
                 scale: 2,
                 useCORS: true,
-                backgroundColor: '#132034',
+                backgroundColor: '#5B91B6',
                 height: elementHeight,
                 windowHeight: elementHeight,
             })
                 .then((canvas) => {
                     const link = document.createElement('a');
                     link.href = canvas.toDataURL('image/png');
-                    link.download = 'record.png';
+                    link.download = `${formattedDate}.png`;
                     link.click();
                 })
                 .catch((error) => {
@@ -103,11 +138,11 @@ const RecordFormAfter = () => {
         const day = String(date.getDate()).padStart(2, '0');
 
         return (
-            <span style={{ fontSize: '1.4rem' }}>
-                <span style={{ color: '#DDB892' }}>{year}</span>년&nbsp;
-                <span style={{ color: '#DDB892' }}>{month}</span>월&nbsp;
-                <span style={{ color: '#DDB892' }}>{day}</span>일
-            </span>
+            <HeaderDate>
+                <span style={{ color: '#C3DEF7' }}>{year}</span>년&nbsp;
+                <span style={{ color: '#C3DEF7' }}>{month}</span>월&nbsp;
+                <span style={{ color: '#C3DEF7' }}>{day}</span>일
+            </HeaderDate>
         );
     };
 
@@ -130,48 +165,24 @@ const RecordFormAfter = () => {
                 <meta property='og:type' content='website' />
             </Helmet>
             <Stack sx={contentstyle}>
-                <Stack
-                    direction='row'
-                    alignItems='center'
-                    justifyContent='space-between'
-                    sx={{
-                        position: 'absolute',
-                        top: 'calc(1rem + 29px)',
-                        left: '1rem',
-                        right: '1rem',
-                        zIndex: 10,
-                        color: 'white',
-                        fontFamily: 'Griun NltoTAENGGU, sans-serif',
-                    }}
-                >
-                    <IconButton onClick={handleClose}>
-                        <CloseIcon
-                            sx={{
-                                cursor: 'pointer',
-                                position: 'relative',
-                                right: '-30px',
-                            }}
-                        />
-                    </IconButton>
-                    <span style={{ fontSize: '1.4rem' }}>
+                <HeaderContainer>
+                    <HeaderIconLeft
+                        onClick={handleClose}
+                        sx={{
+                            color: 'white',
+                        }}
+                    >
+                        <CloseIcon />
+                    </HeaderIconLeft>
+                    <HeaderDate>
                         {memoryData
                             ? formatDate(memoryData.result.create_at)
-                            : '로딩 중...'}
-                    </span>
-                    <ImgShareButton
-                        title={
-                            '스노우볼에 오늘의 추억이 보관되었어요!\nSNS에 링크를 공유해친구들에게 함께한 추억을 전달받아보세요☃️\n'
-                        }
-                        sx={{
-                            cursor: 'pointer',
-                            position: 'relative',
-                            left: '-30px',
-                        }}
-                    />
-                </Stack>
+                            : '로딩중..'}
+                    </HeaderDate>
+                    <HeaderIconRight></HeaderIconRight>
+                </HeaderContainer>
 
                 <Stack
-                    id='capture-container'
                     ref={captureRef}
                     sx={{
                         width: '100%',

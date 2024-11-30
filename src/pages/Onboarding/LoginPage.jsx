@@ -5,16 +5,20 @@ import Snowfall from 'react-snowfall';
 import ShareIcon from '../../components/icons/ShareIcon';
 import { Helmet } from 'react-helmet-async';
 import useAuthStore from '@/stores/useAuthStore';
+import { useSnackbarStore } from '@/stores/useSnackbarStore';
 
 const Container = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    height: 100dvh;
     width: 100vw;
     max-width: 600px;
-    background: linear-gradient(180deg, #0b0a1b 0%, #27405e 100%);
+    background: var(
+        --background,
+        linear-gradient(0deg, #93c2df 0%, #c3def7 59%, #b6d8e1 100%)
+    );
     position: relative;
     overflow: hidden;
     margin: 0 auto;
@@ -34,13 +38,41 @@ const Title = styled.h1`
 
 const SubTitle = styled.p`
     font-size: 22px;
-    color: #d5d1cd;
+    font-family: 'Noto Sans';
+    color: #5a5a5a;
     position: absolute;
     top: 270px;
     transform: translateX(-50%);
     left: 185px;
+    font-weight: 700;
     line-height: 1.4;
     margin: 5px 0;
+
+    @media (max-width: 490px) {
+        font-size: 16px;
+        white-space: normal;
+        color: #5a5a5a;
+        font-weight: 600;
+        position: absolute;
+        top: 270px;
+        transform: translateX(-50%);
+        left: 155px;
+        line-height: 1.4;
+        margin: 5px 0;
+    }
+
+    @media (max-width: 360px) {
+        font-size: 14px;
+        white-space: normal;
+        color: #5a5a5a;
+        font-weight: 500;
+        position: absolute;
+        top: 270px;
+        transform: translateX(-50%);
+        left: 140px;
+        line-height: 1.4;
+        margin: 5px 0;
+    }
 `;
 
 const KakaoButton = styled.button`
@@ -91,7 +123,7 @@ const ShareButton = styled.button`
     top: 50px;
     right: 22px;
     background-color: transparent;
-    color: #d5d1cd;
+    color: #282828;
     border: none;
     cursor: pointer;
     z-index: 10;
@@ -104,8 +136,6 @@ const ShareButton = styled.button`
 const BottomImage = styled.img`
     position: absolute;
     bottom: 0;
-    height: 100vh;
-    bottom: -335px;
     width: 100vw;
     max-width: 600px;
     object-fit: contain;
@@ -114,6 +144,8 @@ const BottomImage = styled.img`
 const LoginPage = () => {
     const navigate = useNavigate();
     const { isLoggedIn } = useAuthStore();
+
+    const { setSnackbarOpen } = useSnackbarStore();
 
     useEffect(() => {
         const userId = localStorage.getItem('userId');
@@ -125,13 +157,15 @@ const LoginPage = () => {
     const handleShare = async () => {
         try {
             await navigator.share({
-                title: 'Snow Log',
-                text: '스노우볼에 오늘의 추억을 공유해보세요!',
-                url: 'http://localhost:3000',
+                title: '⛄ 눈이 펑펑 내리는 추운 겨울, 한 해의 추억을 돌아보며 자신만의 스노우볼을 만들어 볼까요?⛄',
+                text: `${import.meta.env.VITE_BASE_URL}`,
+                url: `${import.meta.env.VITE_BASE_URL}`,
             });
-            console.log('공유되었습니다!');
         } catch (err) {
-            console.error('공유 실패:', err);
+            setSnackbarOpen({
+                message: '공유하기를 지원하지 않는 브라우저입니다.',
+                severity: 'error',
+            });
         }
     };
 

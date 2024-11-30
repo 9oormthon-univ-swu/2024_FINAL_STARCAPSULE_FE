@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Input, Typography, IconButton, Box } from '@mui/material';
+import { Input, Typography, IconButton } from '@mui/material';
 import { EditIcon, CheckIcon } from '@/components/icons';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 
@@ -52,7 +52,7 @@ const RecordTitle = ({ title, setTitle, goToMain }) => {
     }, []);
 
     return (
-        <Typography sx={titlestyle} component='div'>
+        <Typography sx={titlestyle} variant='body1' component='div'>
             {isTitleEdit ? (
                 <Input
                     type='text'
@@ -64,7 +64,13 @@ const RecordTitle = ({ title, setTitle, goToMain }) => {
                     style={{ width: '16rem', color: '#fff' }}
                 />
             ) : (
-                <Box sx={{ display: 'inline', color: '#fff' }}>{title}</Box>
+                <Typography
+                    component='span'
+                    variant='body1'
+                    sx={{ color: 'custom.white' }}
+                >
+                    {title}
+                </Typography>
             )}
             {isTitleEdit ? (
                 <IconButton onClick={onConfirmClick} disabled={!title.length}>
@@ -91,7 +97,4 @@ export default RecordTitle;
 const titlestyle = {
     margin: '2.25rem 0rem 0.75rem',
     color: '#fffcfa',
-    fontFamily: 'Griun NoltoTAENGGU',
-    fontSize: '1.25rem',
-    lineHeight: '1.75rem',
 };

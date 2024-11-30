@@ -1,7 +1,8 @@
 import './App.css';
 import { ThemeProvider } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import theme from './constants/theme';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
     BrowserRouter as Router,
     Route,
@@ -14,9 +15,7 @@ import SnowballMake from './pages/Onboarding/SnowballMake';
 import RecordForm from './pages/Record/RecordForm';
 import CreationComplete from './pages/RecordComplete/CreationComplete';
 import MyCreationComplete from './pages/RecordComplete/MyCreationComplete';
-import Main from './pages/main/Main';
 import GuestForm from './pages/Record/GuestForm';
-import Guest from './pages/guest/Guest';
 import CalendarPage from './pages/calendar/CalendarPage';
 import RecordFormAfter from './pages/RecordComplete/RecordFormAfter';
 import GuestFormAfter from './pages/RecordComplete/GuestFormAfter';
@@ -32,9 +31,26 @@ import { AnimatePresence } from 'framer-motion';
 import Error404 from './pages/error/Error404';
 import Error500 from './pages/error/Error500';
 import ErrorBoundary from './pages/error/ErrorBoundary';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import MainPage from './pages/main/MainPage';
+import InAppBrowserBlocker from './pages/error/InAppBrowserBlocker';
 
 function AnimationRoutes() {
     const location = useLocation();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const userAgent =
+            navigator.userAgent || navigator.vendor || window.opera;
+
+        const isInAppBrowser = /FBAN|FBAV|Instagram|KAKAOTALK|Line/.test(
+            userAgent
+        );
+
+        if (isInAppBrowser) {
+            navigate('/in-app-browser-blocker');
+        }
+    }, [navigate]);
 
     return (
         <AnimatePresence>
@@ -43,8 +59,7 @@ function AnimationRoutes() {
                     <Route path='/' element={<LoginPage />} />
                     <Route path='/popupafter' element={<PopupAfter />} />
                     <Route path='/snowballmake' element={<SnowballMake />} />
-                    <Route path='/main/:userId' element={<Main />} />
-                    <Route path='/guest/:userId' element={<Guest />} />
+                    <Route path='/main/:userId' element={<MainPage />} />
                     <Route path='/record/:userId' element={<RecordForm />} />
                     <Route
                         path='/recordafter/:userId/:memoryId'
@@ -76,6 +91,10 @@ function AnimationRoutes() {
                     />
                     <Route path='/500' element={<Error500 />} />
                     <Route path='*' element={<Error404 />} />
+                    <Route
+                        path='/in-app-browser-blocker'
+                        element={<InAppBrowserBlocker />}
+                    />
                 </Routes>
             </ErrorBoundary>
         </AnimatePresence>
@@ -87,8 +106,36 @@ function App() {
     dayjs.extend(utc);
     dayjs.extend(timezone);
     dayjs.tz.setDefault('Asia/Seoul');
+    dayjs.extend(isSameOrAfter);
 
     const { open, text, severity, setClose } = useSnackbarStore();
+
+    useEffect(() => {
+        const handleAppInstalled = () => {
+            localStorage.setItem('pwaInstalled', 'true');
+        };
+
+        const handleBeforeInstallPrompt = (event) => {
+            window.deferredPrompt = event;
+            const doNotShowPWA = localStorage.getItem('doNotShowPWA');
+            if (doNotShowPWA === 'true') return;
+            localStorage.setItem('pwaInstalled', 'false');
+        };
+
+        window.addEventListener('appinstalled', handleAppInstalled);
+        window.addEventListener(
+            'beforeinstallprompt',
+            handleBeforeInstallPrompt
+        );
+
+        return () => {
+            window.removeEventListener('appinstalled', handleAppInstalled);
+            window.removeEventListener(
+                'beforeinstallprompt',
+                handleBeforeInstallPrompt
+            );
+        };
+    }, []);
     return (
         <HelmetProvider>
             <ThemeProvider theme={theme}>

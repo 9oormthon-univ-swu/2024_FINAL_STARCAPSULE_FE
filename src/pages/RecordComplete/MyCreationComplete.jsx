@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import { isPwaInstalled } from '@/utils/isPWAInstalled';
 
 const Container = styled.div`
     display: flex;
@@ -10,11 +11,11 @@ const Container = styled.div`
     justify-content: center;
     height: 100dvh;
     width: 100vw;
-    max-width: 480px;
+    max-width: 600px;
     position: relative;
     overflow: hidden;
     margin: 0 auto;
-    background-color: #27405e;
+    background-color: #c3def7;
 `;
 
 const Title = styled.p`
@@ -28,7 +29,6 @@ const Title = styled.p`
     font-weight: bold;
     line-height: normal;
     background-color: #fff;
-    color: #27405e;
     padding: 5px 10px;
     border-radius: 15px;
     position: fixed;
@@ -39,7 +39,7 @@ const Title = styled.p`
 
 const QuestionText = styled.p`
     font-size: 18px;
-    color: #fff;
+    color: #405eab;
     position: fixed;
     font-family: 'Griun NltoTAENGGU', sans-serif;
     top: calc(50% - 155px);
@@ -47,7 +47,7 @@ const QuestionText = styled.p`
     transform: translateX(-50%);
     white-space: nowrap;
     text-align: center;
-    color: var(--main2, #ddb892);
+    color: var(--main2, #405eab);
     font-style: normal;
     font-weight: 400;
     line-height: normal;
@@ -59,22 +59,37 @@ const SubTitle = styled.p`
     font-style: normal;
     font-weight: 700;
     line-height: normal;
-    color: #d5d1cd;
+    color: #4a4d48;
     position: fixed;
-    top: 35%;
+    top: -33%;
     left: 50%;
     transform: translateX(-50%);
     white-space: nowrap;
     line-height: 1.5;
 `;
 
-const SVGImage = styled.img`
+const SVGImageContainer = styled.div`
     position: fixed;
-    top: calc(40%);
+    top: calc(45%);
     left: 50%;
     transform: translateX(-50%);
     width: 250px;
     height: 150px;
+`;
+
+const SVGImage = styled.img`
+    width: 100%;
+    height: 100%;
+    position: relative;
+`;
+const ObjectImage = styled.img`
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 3rem;
+    height: 3rem;
+    flex-shrink: 0;
 `;
 
 const MyCreationComplete = () => {
@@ -83,6 +98,7 @@ const MyCreationComplete = () => {
 
     const [questionId, setQuestionId] = useState('');
     const [question, setQuestion] = useState('');
+    const selectedObject = localStorage.getItem('selectedObject') || '없음';
 
     useEffect(() => {
         const storedQuestionId = localStorage.getItem('dailyQuestionId');
@@ -96,8 +112,30 @@ const MyCreationComplete = () => {
         }
     }, []);
 
+    useEffect(() => {
+        const doNotShowPWA = localStorage.getItem('doNotShowPWA');
+
+        const isInstalled = isPwaInstalled();
+
+        const timer = setTimeout(() => {
+            navigate(
+                `/main/${userId}?page=1&pwa=${doNotShowPWA == 'true' || isInstalled ? 'false' : 'true'}`
+            );
+        }, 5000);
+
+        return () => clearTimeout(timer);
+    }, [navigate, userId]);
+
     const handleClick = () => {
-        navigate(`/main/${userId}?page=1`); // userId를 URL에 반영
+        const doNotShowPWA = localStorage.getItem('doNotShowPWA');
+
+        navigate(
+            `/main/${userId}?page=1&pwa=${doNotShowPWA == 'true' ? 'false' : 'true'}`
+        );
+    };
+
+    const getObjectImagePath = (objectName) => {
+        return `/assets/object/${objectName.toLowerCase()}.svg`;
     };
 
     return (
@@ -118,12 +156,21 @@ const MyCreationComplete = () => {
                 />
                 <meta property='og:type' content='website' />
             </Helmet>
-            <Title>self {questionId || '1'}</Title>
-            <QuestionText>
-                {question || '가장 행복했던 일은 무엇인가요?'}
-            </QuestionText>
-            <SubTitle>추억이 보관되었어요</SubTitle>
-            <SVGImage src={'/assets/Frame_26085556.svg'} alt='Frame SVG' />
+            <SVGImageContainer>
+                <Title>self {questionId || '1'}</Title>
+                <QuestionText>
+                    {question || '가장 행복했던 일은 무엇인가요?'}
+                </QuestionText>
+                <SVGImage
+                    src={'/assets/Frame_1321315804.svg'}
+                    alt='Frame SVG'
+                />
+                <ObjectImage
+                    src={getObjectImagePath(selectedObject)}
+                    alt='Selected Object SVG'
+                />
+                <SubTitle>추억이 보관되었어요</SubTitle>
+            </SVGImageContainer>
         </Container>
     );
 };

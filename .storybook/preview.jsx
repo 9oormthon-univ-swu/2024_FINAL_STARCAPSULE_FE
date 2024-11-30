@@ -6,6 +6,7 @@ import '../src/index.css';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc'; // utc 플러그인
 import timezone from 'dayjs/plugin/timezone';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import 'dayjs/locale/ko';
 import { BrowserRouter as Router } from 'react-router-dom';
 
@@ -30,13 +31,14 @@ const preview = {
     },
 };
 
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.tz.setDefault('Asia/Seoul');
+dayjs.locale('ko');
+dayjs.extend(isSameOrAfter);
+
 export const decorators = [
     (Story) => {
-        dayjs.extend(utc);
-        dayjs.extend(timezone);
-        dayjs.tz.setDefault('Asia/Seoul');
-        dayjs.locale('ko');
-
         return (
             <ThemeProvider theme={theme}>
                 <Router>

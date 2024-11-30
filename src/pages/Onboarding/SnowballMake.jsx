@@ -12,7 +12,7 @@ const FullScreenSnowfall = styled.div`
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: 100dvh;
     pointer-events: none;
     z-index: 0;
 `;
@@ -22,10 +22,13 @@ const Container = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    height: 100dvh;
     width: 100vw;
     max-width: 600px;
-    background: linear-gradient(180deg, #0b0a1b 0%, #27405e 100%);
+    background: var(
+        --background,
+        linear-gradient(0deg, #93c2df 0%, #c3def7 59%, #b6d8e1 100%)
+    );
     position: relative;
     overflow: hidden;
     margin: 0 auto;
@@ -35,7 +38,9 @@ const Container = styled.div`
 
 const SubTitle = styled.p`
     font-size: 19px;
-    color: #fff;
+    font-family: 'Noto Sans';
+    color: #5a5a5a;
+    font-weight: 700;
     position: absolute;
     bottom: 300px;
     transform: translateX(-50%);
@@ -54,10 +59,11 @@ const Button = styled.button`
     flex-shrink: 0;
     border: none;
     border-radius: 20px;
-    background: var(--main2, #ddb892);
+    background: var(--main2, #6485cf);
     box-shadow: 0px 0px 4px 0px rgba(40, 40, 40, 0.2);
     font-size: 16px;
     font-weight: bold;
+    color: #fffcfa;
     cursor: pointer;
     position: absolute;
     bottom: 40px;
@@ -67,7 +73,7 @@ const Button = styled.button`
 const BottomImage = styled.img`
     position: absolute;
     bottom: 0;
-    height: 100vh;
+    height: 100dvh;
     bottom: -335px;
     width: 100vw;
     max-width: 600px;
@@ -81,7 +87,6 @@ const SnowballPage = () => {
     useEffect(() => {
         saveTokenFromURL(login);
     }, [login]);
-
     // 버튼 클릭 시 스노우볼 생성 API 호출
     const handleCreateSnowball = () => {
         const token = localStorage.getItem('token');
@@ -99,36 +104,12 @@ const SnowballPage = () => {
                 )
                 .then((response) => {
                     const snowballData = response.data.result;
-
-                    // 응답 데이터를 로그로 출력해서 확인
-                    //console.log('응답 데이터:', snowballData);
-
-                    // 응답 데이터가 올바르게 존재하는지 확인하고 로컬 스토리지에 저장
-                    if (
-                        snowballData &&
-                        snowballData.id &&
-                        snowballData.snowball_name &&
-                        snowballData.shared_link
-                    ) {
-                        localStorage.setItem('snowball_id', snowballData.id);
-                        localStorage.setItem(
-                            'snowball_name',
-                            snowballData.snowball_name
-                        );
-                        localStorage.setItem(
-                            'snowball_link',
-                            snowballData.shared_link
-                        );
-                        //console.log('로컬 스토리지에 저장 완료');
-                    } else {
-                        /*console.error(
-                            '스노우볼 데이터가 유효하지 않습니다:',
-                            snowballData
-                        ); */
-                    }
-
-                    // 메인 페이지로 이동
-                    navigate(`/main/${snowballData.id}?page=1`);
+                    console.log(snowballData);
+                    localStorage.setItem(
+                        'snowball_name',
+                        snowballData.snowball_name
+                    );
+                    navigate(`/main/${snowballData.userId}?page=1`);
                 })
                 .catch((error) => {
                     //console.error('스노우볼 생성 실패:', error);
@@ -160,7 +141,7 @@ const SnowballPage = () => {
 
                 {/* Lottie 애니메이션 추가 */}
                 <dotlottie-player
-                    src='https://lottie.host/699c976a-3836-4dd2-9858-edaa2d16b866/KDNntsFKi1.json'
+                    src='https://lottie.host/a61cf0d6-677a-49e6-9281-13c0fd97b35a/NkiF3jmTpw.lottie'
                     background='transparent'
                     speed='1'
                     style={{
@@ -184,7 +165,7 @@ const SnowballPage = () => {
                 <Button onClick={handleCreateSnowball}>스노우볼 만들기</Button>
 
                 <BottomImage
-                    src={'/assets/snowball_bottom.svg'}
+                    src={'/assets/background_bottom.svg'}
                     alt='Snow background'
                 />
             </Container>

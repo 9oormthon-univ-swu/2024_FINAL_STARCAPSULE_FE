@@ -5,7 +5,7 @@ import { Box, IconButton, Stack, styled, Typography } from '@mui/material';
 import React, { useState, useEffect, useRef } from 'react';
 
 export const StyledTypography = styled(Typography)(({ theme }) => ({
-    color: theme.palette.custom.white,
+    color: theme.palette.custom.font,
     wordBreak: 'keep-all',
     whiteSpace: 'pre',
     padding: 0,
@@ -31,7 +31,7 @@ const Input = styled('input')(({ theme }) => ({
     ...theme.typography.Heading1,
 }));
 
-const MainTitle = ({ snowball, setSnowballName, onError }) => {
+const MainTitle = ({ snowball, setSnowballName, onError, serverTime }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [inputWidth, setInputWidth] = useState(0);
     const inputRef = useRef(null);
@@ -85,16 +85,19 @@ const MainTitle = ({ snowball, setSnowballName, onError }) => {
         setIsSaving(true);
         if (!currSnowball.length) return;
         setSnowballName(currSnowball)
-            .then(() => setIsEditing(false))
+            .then(() => {
+                setIsSaving(false);
+                setIsEditing(false);
+            })
             .catch((e) => {
                 onError(e);
             });
-        setIsSaving(false);
     };
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
-            console.log('enter');
+            event.preventDefault();
+            setIsSaving(true);
             onConfirmClick();
         } else if (event.key === 'Escape') {
             openModal();
@@ -109,8 +112,6 @@ const MainTitle = ({ snowball, setSnowballName, onError }) => {
                     minHeight: '4.25rem',
                 }}
             >
-                {/* {currSnowball.length > 5 ? <br /> : ' '} */}
-
                 <StyledTypography variant='Heading1'>
                     {isEditing ? (
                         <Input
@@ -118,7 +119,7 @@ const MainTitle = ({ snowball, setSnowballName, onError }) => {
                             type='text'
                             value={currSnowball}
                             onChange={handleSnowballChange}
-                            onBlur={handleBlur}
+                            // onBlur={handleBlur}
                             spellCheck='false'
                             onKeyDown={handleKeyDown}
                             style={{
@@ -139,20 +140,20 @@ const MainTitle = ({ snowball, setSnowballName, onError }) => {
                     {'스노우볼'}
                     {isEditing ? (
                         <StyledIconButton
-                            onMouseDown={onConfirmClick}
+                            onClick={onConfirmClick}
                             disabled={!currSnowball.length}
                         >
                             <CheckIcon
                                 sx={{
                                     color: currSnowball.length
-                                        ? 'custom.main1'
+                                        ? 'custom.main2'
                                         : 'custom.grey',
                                 }}
                             />
                         </StyledIconButton>
                     ) : (
                         <StyledIconButton onClick={handleEdit}>
-                            <EditIcon sx={{ color: 'custom.white' }} />
+                            <EditIcon sx={{ color: 'custom.font' }} />
                         </StyledIconButton>
                     )}
                 </StyledTypography>

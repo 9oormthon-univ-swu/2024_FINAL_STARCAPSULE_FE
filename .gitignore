@@ -10,7 +10,7 @@
 
 # production
 /dist
-dev-dist/
+/dev-dist
 
 # misc
 .DS_Store

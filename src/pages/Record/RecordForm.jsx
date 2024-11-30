@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Stack, Typography } from '@mui/material';
 import RecordBoard from './components/RecordBoard';
 import RecordSaveButton from './components/RecordSaveButton';
@@ -11,6 +11,7 @@ import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import Layout from '@/layouts/Layout';
 import { Helmet } from 'react-helmet-async';
 import { useSnackbarStore } from '@/stores/useSnackbarStore';
+import { useUserStore } from '@/stores/useUserStore';
 
 const RecordForm = () => {
     const navigate = useNavigate();
@@ -31,6 +32,14 @@ const RecordForm = () => {
 
     const goToMain = () => navigate(`/main/${userId}?page=1`);
 
+    const { hasWritten } = useUserStore();
+
+    useEffect(() => {
+        if (hasWritten) {
+            navigate(`/main/${userId}?page=1`);
+        }
+    }, []);
+
     // 업로드 파일 관리
     const handleSetImage = (image) => {
         //console.log('Setting image:', image);
@@ -39,8 +48,12 @@ const RecordForm = () => {
 
     // 텍스트 변경 및 글자수 계산 처리 함수
     const handleAnswerChange = (e) => {
-        setAnswer(e.target.value.slice(0, 199));
-        setInputCount(e.target.value.length);
+        if (e.target.value.length <= 200) {
+            setAnswer(e.target.value.slice(0, 199));
+            setInputCount(e.target.value.length);
+        } else {
+            setInputCount(200);
+        }
     };
 
     //모달 확인 버튼 처리 함수 & 데이터 전달
@@ -53,7 +66,7 @@ const RecordForm = () => {
         //console.log('image:', image);
         //console.log('title:', title || 'Empty');
         //console.log('answer:', answer || 'Empty');
-       // console.log('object_name:', shapeName || 'Empty');
+        // console.log('object_name:', shapeName || 'Empty');
 
         await axiosInstance
             .post(`/api/my_memory/write`, formData, {
@@ -104,6 +117,8 @@ const RecordForm = () => {
             recordBoardRef.current.scrollIntoView({ behavior: 'smooth' });
             return;
         }
+
+        localStorage.setItem('selectedObject', shapeName);
 
         // text가 있을 경우 모달 오픈
         setOpenModal(true);
@@ -202,7 +217,7 @@ const modaltextstyle1 = {
     fontSize: '0.92rem',
     fontWeight: '700',
     textAlign: 'center',
-    color: '#7F5539',
+    color: 'custom.main1',
 };
 
 const modaltextstyle2 = {
@@ -210,5 +225,5 @@ const modaltextstyle2 = {
     fontSize: '0.92rem',
     fontWeight: '700',
     textAlign: 'center',
-    color: '#282828',
+    color: 'custom.font',
 };

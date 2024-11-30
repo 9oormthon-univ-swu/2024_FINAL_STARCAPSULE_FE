@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import PopupButton from './PopupButton';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Portal } from '@mui/material';
-import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
+import dayjs from 'dayjs';
 import { useUserStore } from '@/stores/useUserStore';
 
 const PopupWrapper = styled.div`
-    display: ${(props) => (props.isOpen ? 'flex' : 'none')};
+    display: ${(props) => props.is_open};
     justify-content: center;
     align-items: center;
     position: fixed;
@@ -55,31 +55,39 @@ const TextWrapper = styled.div`
 `;
 
 const StyledTitle = styled.div`
-    color: #7f5539;
+    color: #6485cf;
     text-align: center;
-    -webkit-text-stroke-width: 0.7px;
-    -webkit-text-stroke-color: var(--button1, #7f5539);
-    font-size: 23px;
-    font-style: normal;
-    margin-top: 13px;
-    line-height: 28px;
+
+    -webkit-text-stroke-width: 0.30000001192092896;
+    -webkit-text-stroke-color: var(--blue01, #6485cf);
     font-family: 'Griun NltoTAENGGU', sans-serif;
+    word-break: keep-all;
+    font-size: 1.25rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.75rem;
 `;
 
 const StyledBodyText = styled.div`
-    color: #282828;
+    color: #4a4d48;
     text-align: center;
-    font-family: 'Noto Sans', sans-serif;
-    font-size: 18px;
+
+    font-family: 'Noto Sans';
+    font-size: 0.875rem;
     font-style: normal;
     font-weight: 700;
+    line-height: normal;
+
     margin-top: 20px;
-    line-height: 1.4;
     width: 220px;
     white-space: normal;
     word-break: break-word;
 
     span {
+        color: #a56592;
+    }
+
+    .number {
         font-family: 'Bigshot One', cursive;
     }
 `;
@@ -101,10 +109,14 @@ const StyledCheckbox = styled.div`
 `;
 
 const CheckboxLabel = styled.label`
-    font-size: 16px;
-    color: white;
     margin-left: 8px;
     cursor: pointer;
+    font-family: 'Noto Sans';
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    color: #fafbff;
 `;
 
 const ButtonWrapper = styled.div`
@@ -112,10 +124,14 @@ const ButtonWrapper = styled.div`
     position: relative;
 `;
 
-const PopupPage = ({ isOpen, onClose, question, date }) => {
+const PopupPage = ({ isOpen, onClose, question, serverTime }) => {
     const [isChecked, setIsChecked] = useState(false);
     const { userId } = useParams();
     const navigate = useNavigate();
+
+    const date = dayjs.utc(serverTime).tz('Asia/Seoul').format('MM월 DD일');
+
+    const { hasWritten } = useUserStore();
 
     useEffect(() => {
         const lastPopupCheckedDate = localStorage.getItem('popupCheckedDate');
@@ -149,7 +165,7 @@ const PopupPage = ({ isOpen, onClose, question, date }) => {
 
     return (
         <Portal container={document.getElementById('capture-container')}>
-            <PopupWrapper isOpen={isOpen}>
+            <PopupWrapper is_open={isOpen ? 'flex' : 'none'}>
                 <PopupContent>
                     <SvgWrapper>
                         <img src='/assets/Popup.svg' alt='popup' />
@@ -159,12 +175,16 @@ const PopupPage = ({ isOpen, onClose, question, date }) => {
                                 {question || '질문을 불러오는 중입니다...'}
                             </StyledTitle>
                             <StyledBodyText>
-                                <span>{date.split('월')[0] || '01'}</span>월{' '}
-                                <span>
-                                    {date.split('월 ')[1]?.split('일')[0] ||
-                                        '01'}
+                                <span className='number'>{`${date.split('월')[0] || '01'}`}</span>
+                                <span>{'월 '}</span>
+                                <span className='number'>
+                                    {`${
+                                        date.split('월 ')[1]?.split('일')[0] ||
+                                        '01'
+                                    }`}
                                 </span>
-                                일 질문에 대한
+                                <span>{'일 '}</span>
+                                질문에 대한
                                 <br />
                                 추억을 기록하러 가볼까요?
                             </StyledBodyText>
@@ -184,36 +204,37 @@ const PopupPage = ({ isOpen, onClose, question, date }) => {
                                         width='20'
                                         height='20'
                                         rx='4'
-                                        fill='#7F5539'
+                                        fill='#6485CF'
                                     />
                                     <path
                                         d='M5 9L9 14L15.5 6'
-                                        stroke='#FFFCFA'
-                                        strokeWidth='3'
-                                        strokeLinecap='round'
-                                        strokeLinejoin='round'
+                                        stroke='#FAFBFF'
+                                        stroke-width='3'
+                                        stroke-linecap='round'
+                                        stroke-linejoin='round'
                                     />
                                 </svg>
                             ) : (
                                 <svg
                                     xmlns='http://www.w3.org/2000/svg'
-                                    width='20'
+                                    width='21'
                                     height='20'
-                                    viewBox='0 0 20 20'
+                                    viewBox='0 0 21 20'
                                     fill='none'
                                 >
                                     <rect
+                                        x='0.5'
                                         width='20'
                                         height='20'
                                         rx='4'
-                                        fill='#FFFCFA'
+                                        fill='#FAFBFF'
                                     />
                                     <path
-                                        d='M5 9L9 14L15.5 6'
-                                        stroke='#D5D1CD'
-                                        strokeWidth='3'
-                                        strokeLinecap='round'
-                                        strokeLinejoin='round'
+                                        d='M5.5 9L9.5 14L16 6'
+                                        stroke='#B7B7B7'
+                                        stroke-width='3'
+                                        stroke-linecap='round'
+                                        stroke-linejoin='round'
                                     />
                                 </svg>
                             )}
@@ -222,6 +243,7 @@ const PopupPage = ({ isOpen, onClose, question, date }) => {
                     </CheckboxWrapper>
                     <ButtonWrapper>
                         <PopupButton
+                            disabled={hasWritten}
                             text='추억 기록하기'
                             onClick={handleButtonClick}
                         />

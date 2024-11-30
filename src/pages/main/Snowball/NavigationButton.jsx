@@ -25,7 +25,6 @@ const NavigationButtonContainer = styled(Stack)(() => ({
 }));
 
 const NavigationButton = ({ current, total, onLeftClick, onRightClick }) => {
-    console.log('NavigationButton', current, total);
     return (
         <NavigationButtonContainer
             direction={'row'}
@@ -35,6 +34,10 @@ const NavigationButton = ({ current, total, onLeftClick, onRightClick }) => {
             <StyledIconButton
                 sx={{
                     visibility: total <= 1 ? 'hidden' : 'visible',
+                    filter:
+                        total <= 1
+                            ? 'none'
+                            : 'drop-shadow(0px 0px 4px rgba(40, 40, 40, 0.50))',
                 }}
                 disabled={current === 1}
                 onClick={onLeftClick}
@@ -44,6 +47,10 @@ const NavigationButton = ({ current, total, onLeftClick, onRightClick }) => {
             <StyledIconButton
                 sx={{
                     visibility: total <= 1 ? 'hidden' : 'visible',
+                    filter:
+                        total <= 1
+                            ? 'none'
+                            : 'drop-shadow(0px 0px 4px rgba(40, 40, 40, 0.50))',
                 }}
                 disabled={current === total}
                 onClick={onRightClick}

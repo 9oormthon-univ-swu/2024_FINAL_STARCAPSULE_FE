@@ -12,22 +12,28 @@ import MainTitle from './MainTitle';
 import Snowball from './Snowball/Snowball';
 import Layout from '@/layouts/Layout';
 import useSWR, { mutate } from 'swr';
-import { CalendarIcon } from '@/components/icons';
+import { CalendarIcon, ShareIcon } from '@/components/icons';
 import PopupPage from '../Onboarding/PopupPage';
-import { getDaysBeforeOpen } from '@/utils/getDaysBeforeOpen';
 import PopupAfter from '../Onboarding/PopupAfter';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useUserStore } from 'stores/useUserStore';
-import { saveTokenFromURL } from '@/utils/saveTokenFromURL';
 import useAuthStore from 'stores/useAuthStore';
 import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import { useNavigate } from 'react-router-dom';
 import '@dotlottie/player-component';
-import ImgShareButton from '@/components/ImgShareButton';
 import { Helmet } from 'react-helmet-async';
 import { useSnackbarStore } from '@/stores/useSnackbarStore';
 import { isRecordable } from '@/utils/isRecordable';
 import dayjs from 'dayjs';
+import ShareModal from '@/components/ShareModal';
+import RecommendModal from '@/components/RecommendModal';
+import PWAModalContent from './PWAModalContent';
+import useModal from '@/hooks/useModal';
+import {
+    isGuestObject,
+    recordObjects,
+    guestObjects,
+} from '@/utils/isGuestObjects';
 
 export const MainContainer = styled(Stack)(() => ({
     padding: '2rem 0 2.25rem 0',
@@ -63,14 +69,13 @@ export const StyledButton = styled(Button)(({ theme }) => ({
     width: '100% !important',
     height: '3.875rem',
     backgroundColor: theme.palette.custom.button1,
-    color: theme.palette.custom.white,
     borderRadius: '1.25rem',
     padding: '1.25rem 0',
     boxShadow: '0px 0px 4px 0px rgba(40, 40, 40, 0.20)',
 }));
 
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
-    color: theme.palette.custom.grey,
+    color: theme.palette.custom.font,
     width: '1.5rem',
     height: '1.5rem',
 }));
@@ -79,8 +84,12 @@ const Main = () => {
     const [isPopupOpen, setPopupOpen] = useState(false); // 팝업이 기본적으로 비활성화 상태로 시작
     const [showLottie, setShowLottie] = useState(false); // 로티 애니메이션도 비활성화 상태로 시작
     const [serverTime, setServerTime] = useState('');
+    const [recordable, setRecordable] = useState(false);
+    const [openShareModal, setOpenShareModal] = useState(false);
     const [searchParams] = useSearchParams();
     const page = parseInt(searchParams.get('page') || 1);
+
+    const pwa = searchParams.get('pwa') === 'true';
 
     const navigate = useNavigate();
 
@@ -90,6 +99,29 @@ const Main = () => {
     const { setSnackbarOpen } = useSnackbarStore();
     const { setHasWritten } = useUserStore();
 
+    const {
+        openModal: openRecommendModal,
+        closeModal: closeRecommendModal,
+        isOpen: isRecommendOpen,
+    } = useModal();
+
+    const handleInstall = () => {
+        if (window.deferredPrompt) {
+            window.deferredPrompt.prompt();
+            window.deferredPrompt.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                    localStorage.setItem('doNotShowPWA', 'true');
+                }
+            });
+        }
+        closeRecommendModal();
+    };
+
+    const onCloseRecommendModal = () => {
+        localStorage.setItem('doNotShowPWA', 'true');
+        closeRecommendModal();
+    };
+
     const onError = () => {
         setSnackbarOpen({
             text: errorMessage,
@@ -98,28 +130,35 @@ const Main = () => {
     };
 
     const param = useParams();
-    const { setUserId, hasWritten } = useUserStore();
-    const { login, isLoggedIn } = useAuthStore();
+    const { hasWritten } = useUserStore();
+    const { isLoggedIn } = useAuthStore();
 
     useEffect(() => {
-        const lastPopupCheckedDate = localStorage.getItem('popupCheckedDate');
-        const today = new Date().toLocaleDateString('ko-KR');
+        if (serverTime) {
+            const lastPopupCheckedDate =
+                localStorage.getItem('popupCheckedDate');
+            const today = dayjs
+                .utc(serverTime)
+                .tz('Asia/Seoul')
+                .format('YYYY. MM. DD.');
 
-        if (lastPopupCheckedDate !== today) {
-            setShowLottie(true); // 체크되지 않은 경우 로티와 팝업을 표시
-            setPopupOpen(true);
+            if (lastPopupCheckedDate !== today) {
+                setShowLottie(true);
+                setPopupOpen(true);
+            }
         }
-    }, []);
-
-    useEffect(() => {
-        saveTokenFromURL(login);
-        setUserId(param.userId);
-    }, []);
+    }, [serverTime]);
 
     const axiosInstance = useAxiosWithAuth();
 
     const snowballFetcher = (url) =>
-        axiosInstance.get(url).then((res) => res.data.result.paginationData);
+        axiosInstance.get(url).then((res) => {
+            setServerTime(res.data.result.paginationData.server_time);
+            setRecordable(
+                isRecordable(2024, res.data.result.paginationData.server_time)
+            );
+            return res.data.result.paginationData;
+        });
 
     const infoFetcher = (url) =>
         axiosInstance.get(url).then((res) => {
@@ -132,9 +171,9 @@ const Main = () => {
             .get(url)
             .then((res) => res.data.result)
             .then((data) => {
-                const dateObj = dayjs(data.date);
+                setHasWritten(false);
+                const dateObj = dayjs.utc(data.date).tz('Asia/Seoul');
                 const formattedDate = dateObj.format(`MM월 DD일`);
-                setServerTime(data.date);
                 localStorage.setItem('dailyQuestion', data.question);
                 localStorage.setItem('dailyDate', formattedDate);
                 localStorage.setItem('dailyQuestionId', data.id);
@@ -147,7 +186,8 @@ const Main = () => {
         questionFetcher,
         {
             onError: (error) => {
-                if (error.status === 400) setHasWritten(true);
+                if (error.status === 400 || error.status === 404)
+                    setHasWritten(true);
             },
             revalidateOnMount: true,
             revalidateOnFocus: false,
@@ -163,7 +203,14 @@ const Main = () => {
         infoFetcher,
         {
             onError: (error) => {
-                //console.error(error);
+                if (error.status === 404) {
+                    setSnackbarOpen({
+                        text: '다른 사람의 스노우볼입니다. 다시 로그인 해주세요.',
+                        severity: 'error',
+                    });
+                    localStorage.clear();
+                    navigate('/');
+                }
             },
         }
     );
@@ -190,15 +237,12 @@ const Main = () => {
             });
     };
 
-    const daysLeft = getDaysBeforeOpen(serverTime);
-
     const onMemoryClick = (memoryId, objectName) => {
-        //console.log('Clicked memory ID:', memoryId); // 콘솔 출력 추가
         const userId = param.userId;
-        const allowedDate = new Date('2024-10-31');
-        const currentDate = new Date();
 
-        if (currentDate < allowedDate) {
+        const isGuest = isGuestObject(objectName);
+
+        if (recordable && !isGuest) {
             setSnackbarOpen({
                 text: '모든 추억은 12월 31일에 공개됩니다!',
                 severity: 'present',
@@ -206,21 +250,10 @@ const Main = () => {
             return;
         }
 
-        // object_name에 따라 페이지 이동을 다르게 설정
-        const recordObjects = [
-            'christmas_tree',
-            'gingerbread_house',
-            'lamplight',
-            'santa_sleigh',
-        ];
-        const guestObjects = ['moon', 'santa', 'snowflake', 'snowman'];
-
         if (recordObjects.includes(objectName)) {
             navigate(`/recordafter/${userId}/${memoryId}`);
         } else if (guestObjects.includes(objectName)) {
             navigate(`/guestafter/${userId}/${memoryId}`);
-        } else {
-            //console.error('Unknown object_name:', objectName);
         }
     };
 
@@ -229,12 +262,14 @@ const Main = () => {
         setPopupOpen(true);
     };
 
-    const recordable = isRecordable(2024, serverTime);
-
     if (error) return <div>failed to load</div>;
 
+    const onCloseShareModal = () => {
+        setOpenShareModal(false);
+    };
+
     return (
-        <div>
+        <>
             <Helmet>
                 <title>스노로그 - 2024의 추억이 쌓이는 곳</title>
                 <meta
@@ -273,7 +308,7 @@ const Main = () => {
                             justifyContent={'space-between'}
                             alignItems={'center'}
                         >
-                            <DDayTitle />
+                            <DDayTitle serverTime={serverTime} />
                             <Stack direction={'row'} spacing={2}>
                                 <StyledIconButton
                                     onClick={() =>
@@ -282,12 +317,11 @@ const Main = () => {
                                 >
                                     <CalendarIcon />
                                 </StyledIconButton>
-                                <ImgShareButton
-                                    title={
-                                        '스노우볼에 오늘의 추억이 보관되었어요!\nSNS에 링크를 공유해친구들에게 함께한 추억을 전달받아보세요☃️\n'
-                                    }
-                                    url={`${import.meta.env.BASE_URL}/guest/${param.userId}`}
-                                />
+                                <StyledIconButton
+                                    onClick={() => setOpenShareModal(true)}
+                                >
+                                    <ShareIcon />
+                                </StyledIconButton>
                             </Stack>
                         </Stack>
 
@@ -304,18 +338,21 @@ const Main = () => {
                         self={data?.selfCount}
                         onMemoryClick={onMemoryClick}
                         fetcher={snowballFetcher}
-                        owner={'main'}
                     />
-                    {daysLeft ? (
+                    {recordable ? (
                         <StyledButton
                             variant={'contained'}
                             sx={{
                                 flexGrow: 0,
                             }}
                             disabled={hasWritten}
+                            onClick={() => navigate(`/record/${param.userId}`)}
                         >
-                            <Typography variant='title2'>
-                                추억 전달하기
+                            <Typography
+                                variant='title2'
+                                sx={{ color: 'custom.white' }}
+                            >
+                                추억 보관하기
                             </Typography>
                         </StyledButton>
                     ) : (
@@ -323,17 +360,26 @@ const Main = () => {
                             variant={'contained'}
                             sx={{ flexGrow: 0, width: 'fit-content' }}
                         >
-                            <Typography variant='title2'>팀 소개</Typography>
+                            <Typography
+                                variant='title2'
+                                sx={{ color: 'custom.white' }}
+                            >
+                                팀 소개
+                            </Typography>
                         </StyledButton>
                     )}
                 </MainContainer>
-                {recordable && !isQuestionLoading && (
-                    // 기록이 가능한 경우 팝업 페이지를 보여줌(12월 31일 포함)
+                {recordable && !isQuestionLoading && !hasWritten && (
                     <PopupPage
-                        isOpen={isPopupOpen && !hasWritten}
-                        onClose={() => setPopupOpen(false)}
+                        isOpen={isPopupOpen}
+                        onClose={() => {
+                            setPopupOpen(false);
+                            if (pwa) {
+                                openRecommendModal();
+                            }
+                        }}
                         question={questionData.question}
-                        date={questionData.date}
+                        serverTime={serverTime}
                     />
                 )}
                 {!recordable &&
@@ -347,7 +393,7 @@ const Main = () => {
                             <Overlay onClick={handleLottieClick}>
                                 <PopupContainer>
                                     <dotlottie-player
-                                        src='https://lottie.host/e35fc1c8-f985-4963-940e-0e4e0b630cd9/eNIuonSNHz.json'
+                                        src='https://lottie.host/73355e5c-c8c9-4583-967b-fed46bde0b83/5Ls1wxQRsp.lottie'
                                         background='transparent'
                                         speed='1'
                                         style={{
@@ -368,12 +414,31 @@ const Main = () => {
                         >
                             <PopupAfter
                                 isOpen={isPopupOpen}
-                                onClose={() => setPopupOpen(false)}
+                                onClose={() => {
+                                    setPopupOpen(false);
+                                    if (pwa) {
+                                        console.log('test');
+                                        openRecommendModal();
+                                    }
+                                }}
                             />
                         </Portal>
                     ))}
             </Layout>
-        </div>
+            <ShareModal
+                open={openShareModal}
+                onClose={onCloseShareModal}
+                url={`${import.meta.env.VITE_BASE_URL}/main/${param.userId}`}
+            />
+            <RecommendModal
+                open={isRecommendOpen}
+                onClose={onCloseRecommendModal}
+                onButtonClick={handleInstall}
+                buttonText={'홈 화면에 스노로그 추가하기'}
+            >
+                <PWAModalContent />
+            </RecommendModal>
+        </>
     );
 };
 

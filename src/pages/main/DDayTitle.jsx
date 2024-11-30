@@ -8,26 +8,26 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
     height: '1.5rem',
 }));
 
-const DDayTitle = () => {
-    const daysLeft = getDaysBeforeOpen();
+const DDayTitle = ({ serverTime }) => {
+    const daysLeft = getDaysBeforeOpen(2024, serverTime);
 
     if (daysLeft) {
         return (
-            <StyledTypography variant='title3'>
+            <StyledTypography
+                variant='title3'
+                sx={{
+                    color: 'custom.font',
+                    '& span': { color: 'custom.main2' },
+                }}
+            >
                 {'추억이 '}
-                <span
-                    style={{
-                        color: palette.main2,
-                    }}
-                >
-                    {`${daysLeft}일`}
-                </span>
+                <span>{`${daysLeft}일`}</span>
                 {' 뒤에 공개돼요!'}
             </StyledTypography>
         );
     } else {
         return (
-            <StyledTypography variant='title3'>
+            <StyledTypography variant='title3' sx={{ color: 'custom.font' }}>
                 {'쌓인 추억이 공개되었습니다!'}
             </StyledTypography>
         );

@@ -9,6 +9,8 @@ import Loading from '@/components/Loading';
 import { CloseIcon } from '@/components/icons';
 import { isRecordable } from '@/utils/isRecordable';
 import { Helmet } from 'react-helmet-async';
+import { useSnackbarStore } from '@/stores/useSnackbarStore';
+import axios from 'axios';
 
 const CalendarPage = () => {
     // 2025년도 서버 운영 시를 고려하여 year 값을 Calendar->  day 컴포넌트로 넘기도록 처리.
@@ -19,12 +21,17 @@ const CalendarPage = () => {
 
     const axiosWithAuth = useAxiosWithAuth();
 
+    const { setSnackbarOpen } = useSnackbarStore();
+
     const fetcher = (url) =>
         axiosWithAuth.get(url).then((res) => res.data.result);
 
     const { data, isLoading } = useSWR(`/calendar/data`, fetcher, {
-        onError: (error) => {
-            //console.error(error);
+        onError: () => {
+            setSnackbarOpen({
+                text: '캘린더 데이터를 불러오는데 실패했습니다. 다시 시도해 주세요.',
+                severity: 'error',
+            });
         },
     });
 
@@ -32,18 +39,34 @@ const CalendarPage = () => {
         navigate(-1);
     };
 
-    const handleSave = () => {
-        const imgUrl = `/assets/calendar/image.png`;
+    const handleSave = async () => {
+        const imgUrl = `${import.meta.env.VITE_BASE_URL}/assets/calendar/image.png`;
 
-        const a = document.createElement('a');
-        a.href = imgUrl;
-        a.download = '퍼즐-완성본.png';
-        a.click();
+        try {
+            const response = await axios.get(imgUrl, {
+                responseType: 'blob',
+            });
+
+            const blobUrl = URL.createObjectURL(response.data);
+
+            const a = document.createElement('a');
+            a.href = blobUrl;
+            a.download = '퍼즐-완성본.png';
+            a.click();
+
+            URL.revokeObjectURL(blobUrl);
+        } catch (error) {
+            console.error('Error downloading the file:', error);
+            setSnackbarOpen({
+                text: '이미지 저장에 실패했습니다. 다시 시도해 주세요.',
+                severity: 'error',
+            });
+        }
     };
 
     if (isLoading) return <Loading />;
 
-    const lastDayWritten = data.written_array[31];
+    const recordable = isRecordable(year, data.server_time);
 
     return (
         <Layout
@@ -53,6 +76,7 @@ const CalendarPage = () => {
             sx={{
                 py: 3,
             }}
+            opacity={0.3}
         >
             <Helmet>
                 <title>스노로그 - 2024의 추억이 쌓이는 곳</title>
@@ -99,7 +123,7 @@ const CalendarPage = () => {
                     spacing={0.75}
                 >
                     <Typography variant='title3' sx={{ color: 'custom.grey' }}>
-                        {!isRecordable(data.server_time) || lastDayWritten
+                        {!recordable
                             ? '추억이 완성되었습니다!'
                             : '당신의 추억을 모아 퍼즐을 완성하세요!'}
                     </Typography>
@@ -122,7 +146,7 @@ const CalendarPage = () => {
                     hasWritten={data.written_array}
                     year={year}
                 />
-                {(!isRecordable(data.server_time) || lastDayWritten) && (
+                {!recordable && (
                     <Button
                         variant='contained'
                         sx={{
