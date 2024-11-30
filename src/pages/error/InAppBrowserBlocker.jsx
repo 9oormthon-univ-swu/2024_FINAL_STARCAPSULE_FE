@@ -8,11 +8,11 @@ const InAppBrowserBlocker = () => {
     const [searchParams] = useSearchParams();
 
     const handleEnterBrowser = () => {
-        const currentPath = searchParams.get('redirect') || '/'; // "redirect" 값 또는 기본값 "/"
+        const currentPath = searchParams.get('redirect') || '/';
         const externalURL = `${import.meta.env.VITE_BASE_URL}${currentPath}`;
 
         if (/android/i.test(navigator.userAgent)) {
-            window.location.href = externalURL;
+            window.location.href = `intent://${externalURL.replace(/^https?:\/\//, '')}#Intent;scheme=https;package=com.android.chrome;end`;
         } else if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
             alert(
                 '팝업 차단이 활성화되어 있습니다. Safari 브라우저에서 직접 열어주세요.'
