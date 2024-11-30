@@ -12,7 +12,7 @@ const FullScreenSnowfall = styled.div`
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: 100dvh;
     pointer-events: none;
     z-index: 0;
 `;
@@ -22,7 +22,7 @@ const Container = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    height: 100dvh;
     width: 100vw;
     max-width: 600px;
     background: var(
@@ -73,7 +73,7 @@ const Button = styled.button`
 const BottomImage = styled.img`
     position: absolute;
     bottom: 0;
-    height: 100vh;
+    height: 100dvh;
     bottom: -335px;
     width: 100vw;
     max-width: 600px;
