@@ -48,14 +48,15 @@ const TextWrapper = styled.div`
 `;
 
 const StyledBodyText = styled.div`
-    color: #7f5539;
+    color: #2b478d;
     text-align: center;
     -webkit-text-stroke-width: 0.7px;
-    -webkit-text-stroke-color: var(--button1, #7f5539);
-    font-size: 30px;
+    -webkit-text-stroke-color: var(--button2, #2b478d);
+    font-size: 1.75rem;
     font-style: normal;
+    font-weight: 400;
+    line-height: 2.1875rem;
     margin-top: 13px;
-    line-height: 36px;
     font-family: 'Griun NltoTAENGGU', sans-serif;
     white-space: nowrap;
 `;
@@ -143,7 +144,7 @@ const PopupAfter = ({ isOpen, onClose }) => {
                                     width='20'
                                     height='20'
                                     rx='4'
-                                    fill='#7F5539'
+                                    fill='#6485CF'
                                 />
                                 <path
                                     d='M5 9L9 14L15.5 6'

@@ -109,10 +109,14 @@ const StyledCheckbox = styled.div`
 `;
 
 const CheckboxLabel = styled.label`
-    font-size: 16px;
-    color: white;
     margin-left: 8px;
     cursor: pointer;
+    font-family: 'Noto Sans';
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    color: #fafbff;
 `;
 
 const ButtonWrapper = styled.div`
