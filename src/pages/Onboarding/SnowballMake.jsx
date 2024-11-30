@@ -12,7 +12,7 @@ const FullScreenSnowfall = styled.div`
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: 100dvh;
     pointer-events: none;
     z-index: 0;
 `;
@@ -22,10 +22,13 @@ const Container = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    height: 100dvh;
     width: 100vw;
     max-width: 600px;
-    background: var(--background, linear-gradient(0deg, #93C2DF 0%, #C3DEF7 59%, #B6D8E1 100%));
+    background: var(
+        --background,
+        linear-gradient(0deg, #93c2df 0%, #c3def7 59%, #b6d8e1 100%)
+    );
     position: relative;
     overflow: hidden;
     margin: 0 auto;
@@ -36,7 +39,7 @@ const Container = styled.div`
 const SubTitle = styled.p`
     font-size: 19px;
     font-family: 'Noto Sans';
-    color: #5A5A5A;
+    color: #5a5a5a;
     font-weight: 700;
     position: absolute;
     bottom: 300px;
@@ -56,11 +59,11 @@ const Button = styled.button`
     flex-shrink: 0;
     border: none;
     border-radius: 20px;
-    background: var(--main2, #6485CF);
+    background: var(--main2, #6485cf);
     box-shadow: 0px 0px 4px 0px rgba(40, 40, 40, 0.2);
     font-size: 16px;
     font-weight: bold;
-    color: #FFFCFA;
+    color: #fffcfa;
     cursor: pointer;
     position: absolute;
     bottom: 40px;
@@ -70,7 +73,7 @@ const Button = styled.button`
 const BottomImage = styled.img`
     position: absolute;
     bottom: 0;
-    height: 100vh;
+    height: 100dvh;
     bottom: -335px;
     width: 100vw;
     max-width: 600px;
@@ -100,27 +103,29 @@ const SnowballPage = () => {
                     }
                 )
                 .then((response) => {
+                    console.log(response);
                     const snowballData = response.data.result;
 
                     // 응답 데이터를 로그로 출력해서 확인
                     //console.log('응답 데이터:', snowballData);
 
                     // 응답 데이터가 올바르게 존재하는지 확인하고 로컬 스토리지에 저장
-                    if (
-                        snowballData &&
-                        snowballData.id &&
-                        snowballData.snowball_name &&
-                        snowballData.shared_link
-                    ) {
-                        localStorage.setItem(
-                            'snowball_name',
-                            snowballData.snowball_name
-                        );
-                        //console.log('로컬 스토리지에 저장 완료');
-                    }
+                    console.log(snowballData);
+                    // if (
+                    //     snowballData &&
+                    //     snowballData.id &&
+                    //     snowballData.snowball_name &&
+                    //     snowballData.shared_link
+                    // ) {
+                    localStorage.setItem(
+                        'snowball_name',
+                        snowballData.snowball_name
+                    );
+                    //console.log('로컬 스토리지에 저장 완료');
+                    // }
 
                     // 메인 페이지로 이동
-                    navigate(`${snowballData.shared_link}?page=1`); //
+                    window.location.href = `${snowballData.shared_link}?page=1`;
                 })
                 .catch((error) => {
                     //console.error('스노우볼 생성 실패:', error);

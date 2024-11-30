@@ -68,7 +68,7 @@ export const StyledButton = styled(Button)(({ theme }) => ({
     boxSizing: 'border-box',
     width: '100% !important',
     height: '3.875rem',
-    backgroundColor: theme.palette.custom.main2,
+    backgroundColor: theme.palette.custom.button1,
     borderRadius: '1.25rem',
     padding: '1.25rem 0',
     boxShadow: '0px 0px 4px 0px rgba(40, 40, 40, 0.20)',
@@ -134,14 +134,20 @@ const Main = () => {
     const { isLoggedIn } = useAuthStore();
 
     useEffect(() => {
-        const lastPopupCheckedDate = localStorage.getItem('popupCheckedDate');
-        const today = new Date().toLocaleDateString('ko-KR');
+        if (serverTime) {
+            const lastPopupCheckedDate =
+                localStorage.getItem('popupCheckedDate');
+            const today = dayjs
+                .utc(serverTime)
+                .tz('Asia/Seoul')
+                .format('YYYY. MM. DD.');
 
-        if (lastPopupCheckedDate !== today) {
-            setShowLottie(true);
-            setPopupOpen(true);
+            if (lastPopupCheckedDate !== today) {
+                setShowLottie(true);
+                setPopupOpen(true);
+            }
         }
-    }, []);
+    }, [serverTime]);
 
     const axiosInstance = useAxiosWithAuth();
 

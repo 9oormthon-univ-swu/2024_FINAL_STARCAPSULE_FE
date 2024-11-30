@@ -122,7 +122,6 @@ const Snowball = ({ received, self, onMemoryClick, fetcher }) => {
                                             id={memory.id}
                                             writer={memory.writer_name}
                                             variant={memory.object_name}
-                                            black={index === 0}
                                         />
                                     </motion.div>
                                 ))}

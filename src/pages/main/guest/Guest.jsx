@@ -139,9 +139,16 @@ const Guest = () => {
                     ) : (
                         <StyledButton
                             variant={'contained'}
-                            sx={{ flexGrow: 0, color: 'custom.white' }}
+                            sx={{ flexGrow: 0 }}
                         >
-                            <Typography variant='title2'>팀 소개</Typography>
+                            <Typography
+                                variant='title2'
+                                sx={{
+                                    color: 'custom.white',
+                                }}
+                            >
+                                팀 소개
+                            </Typography>
                         </StyledButton>
                     )}
                 </MainContainer>

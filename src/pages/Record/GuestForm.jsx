@@ -235,12 +235,12 @@ const modaltextstyle1 = {
     fontSize: '0.92rem',
     fontWeight: '700',
     textAlign: 'center',
-    color: '#6485CF',
+    color: 'custom.button1',
 };
 const modaltextstyle2 = {
     fontFamily: 'Noto Sans',
     fontSize: '0.92rem',
     fontWeight: '700',
     textAlign: 'center',
-    color: '#282828',
+    color: 'custom.font',
 };
