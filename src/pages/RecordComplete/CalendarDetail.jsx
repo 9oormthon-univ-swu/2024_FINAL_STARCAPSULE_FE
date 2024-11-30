@@ -21,7 +21,7 @@ const contentstyle = {
     position: 'relative',
     overflowY: 'auto',
     overflowX: 'hidden',
-    background: 'linear-gradient(180deg, #0b0a1b 0%, #27405e 100%)',
+    background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.50) 0%, rgba(0, 0, 0, 0.50) 100%), linear-gradient(0deg, #93C2DF 9.29%, #C3DEF7 50.84%, #B6D8E1 109.34%)',
     '&::-webkit-scrollbar': {
         display: 'none',
     },
@@ -41,6 +41,7 @@ const CalendarDetail = () => {
     const [memoryData, setMemoryData] = useState(null);
     const [pageIndex, setPageIndex] = useState(0);
     const nickname = localStorage.getItem('snowballName') || '닉네임';
+    
 
     useEffect(() => {
         if (location.state?.data) {
@@ -72,7 +73,7 @@ const CalendarDetail = () => {
             html2canvas(element, {
                 scale: 2,
                 useCORS: true,
-                backgroundColor: '#132034',
+                backgroundColor: '#5B91B6',
                 height: elementHeight,
                 windowHeight: elementHeight,
             })
@@ -95,7 +96,7 @@ const CalendarDetail = () => {
         .split(/(\d{4})(년)|(\d{2})(월)|(\d{2})(일)/)
         .map((part, index) =>
             part && /\d/.test(part) ? (
-                <span key={index} style={{ color: '#DDB892' }}>
+                <span key={index} style={{ color: '#C3DEF7' }}>
                     {part}
                 </span>
             ) : (
@@ -152,7 +153,7 @@ const CalendarDetail = () => {
                             cursor: 'pointer',
                             position: 'relative',
                             right: '-30px',
-                            color: 'custom.grey',
+                            color: 'white',
                         }}
                     />
                 </IconButton>
@@ -202,7 +203,7 @@ const CalendarDetail = () => {
                             {currentItem.daily_question?.question ? (
                                 ''
                             ) : (
-                                <span style={{ color: '#DDB892' }}>
+                                <span style={{ color: '#C3DEF7' }}>
                                     {nickname}
                                 </span>
                             )}
@@ -228,7 +229,7 @@ const CalendarDetail = () => {
                             }}
                         >
                             {currentItem.writer ? `From. ` : ''}
-                            <span style={{ color: '#DDB892' }}>
+                            <span style={{ color: '#C3DEF7' }}>
                                 {currentItem.writer}
                             </span>
                         </span>

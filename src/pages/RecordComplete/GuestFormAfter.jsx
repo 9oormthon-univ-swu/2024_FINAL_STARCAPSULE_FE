@@ -56,7 +56,7 @@ const contentstyle = {
     position: 'relative',
     overflowY: 'auto',
     overflowX: 'hidden',
-    background: 'linear-gradient(180deg, #0b0a1b 0%, #27405e 100%)',
+    background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.50) 0%, rgba(0, 0, 0, 0.50) 100%), linear-gradient(0deg, #93C2DF 9.29%, #C3DEF7 50.84%, #B6D8E1 109.34%)',
     '&::-webkit-scrollbar': {
         display: 'none',
     },
@@ -99,7 +99,7 @@ const GuestFormAfter = () => {
             html2canvas(element, {
                 scale: 2,
                 useCORS: true,
-                backgroundColor: '#132034',
+                backgroundColor: '#5B91B6',
                 scrollX: 0,
                 scrollY: 0,
             })
@@ -123,13 +123,13 @@ const GuestFormAfter = () => {
         const date = new Date(dateString);
         return (
             <HeaderDate>
-                <span style={{ color: '#DDB892' }}>{date.getFullYear()}</span>
+                <span style={{ color: '#C3DEF7' }}>{date.getFullYear()}</span>
                 년&nbsp;
-                <span style={{ color: '#DDB892' }}>
+                <span style={{ color: '#C3DEF7' }}>
                     {String(date.getMonth() + 1).padStart(2, '0')}
                 </span>
                 월&nbsp;
-                <span style={{ color: '#DDB892' }}>
+                <span style={{ color: '#C3DEF7' }}>
                     {String(date.getDate()).padStart(2, '0')}
                 </span>
                 일
@@ -160,7 +160,7 @@ const GuestFormAfter = () => {
                     <HeaderIconLeft
                         onClick={handleClose}
                         sx={{
-                            color: 'custom.grey',
+                            color: 'white',
                         }}
                     >
                         <CloseIcon />
@@ -199,7 +199,7 @@ const GuestFormAfter = () => {
                             fontFamily: 'Griun NltoTAENGGU, sans-serif',
                         }}
                     >
-                        To. <span style={{ color: '#DDB892' }}>{nickname}</span>
+                        To. <span style={{ color: '#C3DEF7' }}>{nickname}</span>
                     </span>
 
                     <Stack
@@ -231,7 +231,7 @@ const GuestFormAfter = () => {
                         }}
                     >
                         From.{' '}
-                        <span style={{ color: '#DDB892' }}>
+                        <span style={{ color: '#C3DEF7' }}>
                             {memoryData?.result?.writer || '작성자'}
                         </span>
                     </span>
