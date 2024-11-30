@@ -119,7 +119,7 @@ const MainTitle = ({ snowball, setSnowballName, onError, serverTime }) => {
                             type='text'
                             value={currSnowball}
                             onChange={handleSnowballChange}
-                            onBlur={handleBlur}
+                            // onBlur={handleBlur}
                             spellCheck='false'
                             onKeyDown={handleKeyDown}
                             style={{
@@ -140,8 +140,7 @@ const MainTitle = ({ snowball, setSnowballName, onError, serverTime }) => {
                     {'스노우볼'}
                     {isEditing ? (
                         <StyledIconButton
-                            onMouseDown={onConfirmClick}
-                            touchstart={onConfirmClick}
+                            onClick={onConfirmClick}
                             disabled={!currSnowball.length}
                         >
                             <CheckIcon
