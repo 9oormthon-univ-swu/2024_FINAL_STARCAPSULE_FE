@@ -6,6 +6,7 @@ import axios from 'axios';
 import '@dotlottie/player-component';
 import useAuthStore from 'stores/useAuthStore';
 import { saveTokenFromURL } from '@/utils/saveTokenFromURL';
+import { useUserStore } from '@/stores/useUserStore';
 
 const FullScreenSnowfall = styled.div`
     position: fixed;
@@ -83,6 +84,7 @@ const BottomImage = styled.img`
 const SnowballPage = () => {
     const navigate = useNavigate();
     const { login } = useAuthStore();
+    const { setUserId } = useUserStore();
 
     useEffect(() => {
         saveTokenFromURL(login);
@@ -109,7 +111,7 @@ const SnowballPage = () => {
                         'snowball_name',
                         snowballData.snowball_name
                     );
-                    localStorage.setItem('userId', snowballData.userId);
+                    setUserId(snowballData.userId);
                     navigate(`/main/${snowballData.userId}?page=1`);
                 })
                 .catch((error) => {
