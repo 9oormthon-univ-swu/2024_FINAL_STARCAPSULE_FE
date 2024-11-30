@@ -55,7 +55,7 @@ const TextWrapper = styled.div`
 `;
 
 const StyledTitle = styled.div`
-    color: #7f5539;
+    color: #6485CF;
     text-align: center;
     -webkit-text-stroke-width: 0.7px;
     -webkit-text-stroke-color: var(--button1, #7f5539);
@@ -177,49 +177,15 @@ const PopupPage = ({ isOpen, onClose, question, serverTime }) => {
                     <CheckboxWrapper onClick={handleCheckboxChange}>
                         <StyledCheckbox>
                             {isChecked ? (
-                                <svg
-                                    xmlns='http://www.w3.org/2000/svg'
-                                    width='20'
-                                    height='20'
-                                    viewBox='0 0 20 20'
-                                    fill='none'
-                                >
-                                    <rect
-                                        width='20'
-                                        height='20'
-                                        rx='4'
-                                        fill='#7F5539'
-                                    />
-                                    <path
-                                        d='M5 9L9 14L15.5 6'
-                                        stroke='#FFFCFA'
-                                        strokeWidth='3'
-                                        strokeLinecap='round'
-                                        strokeLinejoin='round'
-                                    />
-                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <rect width="20" height="20" rx="4" fill="#6485CF"/>
+                                <path d="M5 9L9 14L15.5 6" stroke="#FAFBFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                              </svg>
                             ) : (
-                                <svg
-                                    xmlns='http://www.w3.org/2000/svg'
-                                    width='20'
-                                    height='20'
-                                    viewBox='0 0 20 20'
-                                    fill='none'
-                                >
-                                    <rect
-                                        width='20'
-                                        height='20'
-                                        rx='4'
-                                        fill='#FFFCFA'
-                                    />
-                                    <path
-                                        d='M5 9L9 14L15.5 6'
-                                        stroke='#D5D1CD'
-                                        strokeWidth='3'
-                                        strokeLinecap='round'
-                                        strokeLinejoin='round'
-                                    />
-                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20" fill="none">
+                                <rect x="0.5" width="20" height="20" rx="4" fill="#FAFBFF"/>
+                                <path d="M5.5 9L9.5 14L16 6" stroke="#B7B7B7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                              </svg>
                             )}
                         </StyledCheckbox>
                         <CheckboxLabel>오늘 하루 질문 보지 않기</CheckboxLabel>

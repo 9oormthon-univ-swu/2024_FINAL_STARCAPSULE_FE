@@ -14,11 +14,11 @@ const Container = styled.div`
     position: relative;
     overflow: hidden;
     margin: 0 auto;
-    background-color: #27405e;
+    background-color: #C3DEF7;
 `;
 
 const SnowballName = styled.span`
-    color: #405eab;
+    color: #405EAB;
 `;
 
 const SVGImageContainer = styled.div`
@@ -29,7 +29,7 @@ const SVGImageContainer = styled.div`
     justify-content: center;
     top: calc(-5%);
     width: 250px;
-    height: 150px;
+    height: 250px;
 `;
 
 const SubTitle = styled.p`
@@ -43,9 +43,9 @@ const SubTitle = styled.p`
     margin-bottom: 20px;
 `;
 
-const SVGImage = styled.img`
-    width: 100%;
-    height: 100%;
+const SVG = styled.svg`
+    width: 200px;
+    height: 200px;
     position: relative;
 `;
 
@@ -73,13 +73,13 @@ const CreationComplete = () => {
         return `/assets/object/${objectName.toLowerCase()}.svg`;
     };
 
-    useEffect(() => {
+     useEffect(() => {
         const timer = setTimeout(() => {
             navigate(`/main/${userId}?page=1&makeSnowball=true`);
         }, 5000);
 
         return () => clearTimeout(timer);
-    }, [navigate, userId]);
+    }, [navigate, userId]); 
 
     return (
         <Container onClick={handleClick}>
@@ -108,7 +108,11 @@ const CreationComplete = () => {
                     <br />
                     추억이 전달되었어요
                 </SubTitle>
-                <SVGImage src={'/assets/Frame_26085556.svg'} alt='Frame SVG' />
+                <SVG xmlns="http://www.w3.org/2000/svg" width="230" height="153" viewBox="0 0 230 153" fill="none">
+                    <path d="M0 136.729V16.3662C0 7.52965 7.16344 0.366211 16 0.366211H121.179L213.467 0.366187C222.304 0.366185 229.467 7.52962 229.467 16.3662V136.729C229.467 145.565 222.304 152.729 213.467 152.729H16C7.16344 152.729 0 145.565 0 136.729Z" fill="#5A77B7"/>
+                    <path d="M85.0285 81.9596C104.757 63.485 135.595 64.0321 154.655 83.195L217.933 146.813C219.815 148.705 218.475 151.928 215.806 151.928L17.905 151.928C15.1846 151.928 13.8687 148.598 15.8544 146.739L85.0285 81.9596Z" fill="#5A77B7"/>
+                    <path d="M126.961 106.893C119.67 112.698 109.336 112.698 102.045 106.893L0.000175817 25.6455L0.00017666 16.0001C0.000177432 7.16356 7.16361 0.000125564 16.0002 0.000126337L213.006 0.000128301C221.842 0.000129073 229.006 7.16357 229.006 16.0001L229.006 25.6455L126.961 106.893Z" fill="#7296E6"/>
+                </SVG>
                 <ObjectImage
                     src={getObjectImagePath(selectedObject)}
                     alt='Selected Object SVG'
