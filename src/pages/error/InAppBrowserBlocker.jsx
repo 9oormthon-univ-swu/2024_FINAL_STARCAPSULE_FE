@@ -6,11 +6,20 @@ import { useSearchParams } from 'react-router-dom';
 
 const InAppBrowserBlocker = () => {
     const [searchParams] = useSearchParams();
+    const currentPath = searchParams.get('redirect') || '/';
+    const externalURL = `${import.meta.env.VITE_BASE_URL}${currentPath}`;
+
+    useEffect(() => {
+        // 인앱 브라우저로 접근했을 때 주소창을 externalURL로 변경
+        if (
+            window.navigator.standalone ||
+            /iPad|iPhone|iPod/.test(navigator.userAgent)
+        ) {
+            window.history.replaceState(null, '', externalURL);
+        }
+    }, [externalURL]);
 
     const handleEnterBrowser = () => {
-        const currentPath = searchParams.get('redirect') || '/';
-        const externalURL = `${import.meta.env.VITE_BASE_URL}${currentPath}`;
-
         if (/android/i.test(navigator.userAgent)) {
             window.location.href = `intent://${externalURL.replace(/^https?:\/\//, '')}#Intent;scheme=https;package=com.android.chrome;end`;
         } else if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
@@ -20,12 +29,10 @@ const InAppBrowserBlocker = () => {
             mobile.content =
                 'width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no, minimal-ui';
             document.getElementsByTagName('head')[0].appendChild(mobile);
-
-            window.open(externalURL, '_system'); // 시스템 브라우저에서 열기
-            // alert(
-            //     '팝업 차단이 활성화되어 있습니다. Safari 브라우저에서 직접 열어주세요.'
-            // );
-            // copytoclipboard(externalURL);
+            copytoclipboard(externalURL);
+            alert(
+                '하단 공유아이콘을 눌러 "Safari 열기"를 눌러 접속해주시길 바랍니다.'
+            );
         } else {
             window.location.href = externalURL;
         }
