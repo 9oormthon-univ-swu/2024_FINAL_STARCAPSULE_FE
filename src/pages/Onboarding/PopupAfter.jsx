@@ -70,7 +70,6 @@ const StyledCheckbox = styled.div`
     width: 20px;
     height: 20px;
     cursor: pointer;
-
     svg {
         display: block;
     }
@@ -92,7 +91,6 @@ const PopupAfter = ({ isOpen, onClose }) => {
     const [isChecked, setIsChecked] = useState(false);
 
     useEffect(() => {
-        
         const lastPopupCheckedDate = localStorage.getItem('popupCheckedDate');
         const today = new Date().toLocaleDateString('ko-KR');
 
@@ -130,18 +128,52 @@ const PopupAfter = ({ isOpen, onClose }) => {
                         </StyledBodyText>
                     </TextWrapper>
                 </SvgWrapper>
-                
+
                 <CheckboxWrapper onClick={handleCheckboxChange}>
                     <StyledCheckbox>
                         {isChecked ? (
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <rect width="20" height="20" rx="4" fill="#7F5539"/>
-                                <path d="M5 9L9 14L15.5 6" stroke="#FFFCFA" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+                            <svg
+                                xmlns='http://www.w3.org/2000/svg'
+                                width='20'
+                                height='20'
+                                viewBox='0 0 20 20'
+                                fill='none'
+                            >
+                                <rect
+                                    width='20'
+                                    height='20'
+                                    rx='4'
+                                    fill='#7F5539'
+                                />
+                                <path
+                                    d='M5 9L9 14L15.5 6'
+                                    stroke='#FFFCFA'
+                                    strokeWidth='3'
+                                    strokeLinecap='round'
+                                    strokeLinejoin='round'
+                                />
                             </svg>
                         ) : (
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <rect width="20" height="20" rx="4" fill="#FFFCFA"/>
-                                <path d="M5 9L9 14L15.5 6" stroke="#D5D1CD" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+                            <svg
+                                xmlns='http://www.w3.org/2000/svg'
+                                width='20'
+                                height='20'
+                                viewBox='0 0 20 20'
+                                fill='none'
+                            >
+                                <rect
+                                    width='20'
+                                    height='20'
+                                    rx='4'
+                                    fill='#FFFCFA'
+                                />
+                                <path
+                                    d='M5 9L9 14L15.5 6'
+                                    stroke='#D5D1CD'
+                                    strokeWidth='3'
+                                    strokeLinecap='round'
+                                    strokeLinejoin='round'
+                                />
                             </svg>
                         )}
                     </StyledCheckbox>

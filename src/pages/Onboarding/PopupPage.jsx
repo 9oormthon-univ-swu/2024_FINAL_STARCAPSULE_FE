@@ -55,31 +55,39 @@ const TextWrapper = styled.div`
 `;
 
 const StyledTitle = styled.div`
-    color: #7f5539;
+    color: #6485cf;
     text-align: center;
-    -webkit-text-stroke-width: 0.7px;
-    -webkit-text-stroke-color: var(--button1, #7f5539);
-    font-size: 23px;
-    font-style: normal;
-    margin-top: 13px;
-    line-height: 28px;
+
+    -webkit-text-stroke-width: 0.30000001192092896;
+    -webkit-text-stroke-color: var(--blue01, #6485cf);
     font-family: 'Griun NltoTAENGGU', sans-serif;
+    word-break: keep-all;
+    font-size: 1.25rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.75rem;
 `;
 
 const StyledBodyText = styled.div`
-    color: #282828;
+    color: #4a4d48;
     text-align: center;
-    font-family: 'Noto Sans', sans-serif;
-    font-size: 18px;
+
+    font-family: 'Noto Sans';
+    font-size: 0.875rem;
     font-style: normal;
     font-weight: 700;
+    line-height: normal;
+
     margin-top: 20px;
-    line-height: 1.4;
     width: 220px;
     white-space: normal;
     word-break: break-word;
 
     span {
+        color: #a56592;
+    }
+
+    .number {
         font-family: 'Bigshot One', cursive;
     }
 `;
@@ -163,12 +171,16 @@ const PopupPage = ({ isOpen, onClose, question, serverTime }) => {
                                 {question || '질문을 불러오는 중입니다...'}
                             </StyledTitle>
                             <StyledBodyText>
-                                <span>{date.split('월')[0] || '01'}</span>월{' '}
-                                <span>
-                                    {date.split('월 ')[1]?.split('일')[0] ||
-                                        '01'}
+                                <span className='number'>{`${date.split('월')[0] || '01'}`}</span>
+                                <span>{'월 '}</span>
+                                <span className='number'>
+                                    {`${
+                                        date.split('월 ')[1]?.split('일')[0] ||
+                                        '01'
+                                    }`}
                                 </span>
-                                일 질문에 대한
+                                <span>{'일 '}</span>
+                                질문에 대한
                                 <br />
                                 추억을 기록하러 가볼까요?
                             </StyledBodyText>
