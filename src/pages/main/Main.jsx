@@ -346,9 +346,7 @@ const Main = () => {
                                 flexGrow: 0,
                             }}
                             disabled={hasWritten}
-                            onClick={() =>
-                                navigate(`/guestrecord/${param.userId}`)
-                            }
+                            onClick={() => navigate(`/record/${param.userId}`)}
                         >
                             <Typography
                                 variant='title2'
