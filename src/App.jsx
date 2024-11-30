@@ -51,7 +51,7 @@ function AnimationRoutes() {
         // 크롬 브라우저 감지 (인앱 브라우저와 구분)
         const isChrome = /Chrome/i.test(userAgent) && !isInAppBrowser;
 
-        if (isInAppBrowser) {
+        if (isInAppBrowser && location.pathname !== '/in-app-browser-blocker') {
             // 현재 경로를 쿼리 파라미터로 전달
             const currentPath = location.pathname + location.search;
             navigate(
