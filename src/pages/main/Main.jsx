@@ -414,7 +414,13 @@ const Main = () => {
                         >
                             <PopupAfter
                                 isOpen={isPopupOpen}
-                                onClose={() => setPopupOpen(false)}
+                                onClose={() => {
+                                    setPopupOpen(false);
+                                    if (pwa) {
+                                        console.log('test');
+                                        openRecommendModal();
+                                    }
+                                }}
                             />
                         </Portal>
                     ))}

@@ -4,10 +4,20 @@ importScripts(
     'https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js'
 );
 
-const CACHE = 'pwabuilder-page';
+const CACHE = 'snowlog_1.0.0';
 
 // TODO: replace the following with the correct offline fallback page i.e.: const offlineFallbackPage = "offline.html";
 const offlineFallbackPage = 'offline.html';
+
+// Define assets to pre-cache (Add paths for all files in public/assets)
+const ASSETS_TO_CACHE = [
+    offlineFallbackPage,
+    '/assets/image1.jpg', // 예시 파일 경로
+    '/assets/image2.png', // 추가 파일 경로
+    '/assets/style.css', // 추가 파일 경로
+    '/assets/script.js', // 추가 파일 경로
+    // 필요 시 추가
+];
 
 self.addEventListener('message', (event) => {
     if (event.data && event.data.type === 'SKIP_WAITING') {
@@ -16,10 +26,16 @@ self.addEventListener('message', (event) => {
 });
 
 self.addEventListener('install', async (event) => {
+    console.log('[Service Worker] Installing and caching assets...');
     event.waitUntil(
-        caches.open(CACHE).then((cache) => cache.add(offlineFallbackPage))
+        caches.open(CACHE).then((cache) => {
+            console.log('[Service Worker] Caching offline page and assets');
+            return cache.addAll(ASSETS_TO_CACHE);
+        })
     );
+    self.skipWaiting(); // 즉시 활성화
 });
+
 // eslint-disable-next-line no-undef
 if (workbox.navigationPreload.isSupported()) {
     workbox.navigationPreload.enable();
@@ -39,6 +55,9 @@ self.addEventListener('fetch', (event) => {
                     const networkResp = await fetch(event.request);
                     return networkResp;
                 } catch (error) {
+                    console.log(
+                        '[Service Worker] Fetch failed, serving cached fallback'
+                    );
                     const cache = await caches.open(CACHE);
                     const cachedResp = await cache.match(offlineFallbackPage);
                     return cachedResp;
@@ -73,4 +92,26 @@ navigator.serviceWorker.ready.then((registration) => {
         body: '이것은 푸시 알림 테스트입니다.',
         icon: '/icon-192x192.png',
     });
+});
+
+self.addEventListener('activate', (event) => {
+    console.log('[Service Worker] Activating and cleaning old caches...');
+    const allowedCaches = [CACHE]; // 현재 캐시 이름만 유지
+
+    event.waitUntil(
+        caches.keys().then((cacheNames) =>
+            Promise.all(
+                cacheNames.map((cacheName) => {
+                    if (!allowedCaches.includes(cacheName)) {
+                        console.log(
+                            '[Service Worker] Deleting old cache:',
+                            cacheName
+                        );
+                        return caches.delete(cacheName);
+                    }
+                })
+            )
+        )
+    );
+    return self.clients.claim(); // 활성화 후 즉시 컨트롤
 });
