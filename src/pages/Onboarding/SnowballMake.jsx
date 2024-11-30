@@ -103,29 +103,13 @@ const SnowballPage = () => {
                     }
                 )
                 .then((response) => {
-                    console.log(response);
                     const snowballData = response.data.result;
-
-                    // 응답 데이터를 로그로 출력해서 확인
-                    //console.log('응답 데이터:', snowballData);
-
-                    // 응답 데이터가 올바르게 존재하는지 확인하고 로컬 스토리지에 저장
                     console.log(snowballData);
-                    // if (
-                    //     snowballData &&
-                    //     snowballData.id &&
-                    //     snowballData.snowball_name &&
-                    //     snowballData.shared_link
-                    // ) {
                     localStorage.setItem(
                         'snowball_name',
                         snowballData.snowball_name
                     );
-                    //console.log('로컬 스토리지에 저장 완료');
-                    // }
-
-                    // 메인 페이지로 이동
-                    window.location.href = `${snowballData.shared_link}?page=1`;
+                    navigate(`/main/${snowballData.userId}?page=1`);
                 })
                 .catch((error) => {
                     //console.error('스노우볼 생성 실패:', error);
