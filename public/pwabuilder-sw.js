@@ -4,19 +4,29 @@ importScripts(
     'https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js'
 );
 
-const CACHE = 'snowlog_1.0.0';
+const CACHE = 'snowlog_1.0.1';
 
-// TODO: replace the following with the correct offline fallback page i.e.: const offlineFallbackPage = "offline.html";
-const offlineFallbackPage = 'offline.html';
+const offlineFallbackPage = '/offline.html';
 
-// Define assets to pre-cache (Add paths for all files in public/assets)
 const ASSETS_TO_CACHE = [
     offlineFallbackPage,
-    '/assets/image1.jpg', // 예시 파일 경로
-    '/assets/image2.png', // 추가 파일 경로
-    '/assets/style.css', // 추가 파일 경로
-    '/assets/script.js', // 추가 파일 경로
-    // 필요 시 추가
+    '/manifest.json',
+    '/assets/calendar/image.png',
+    '/assets/calendar/triangle.png',
+    '/assets/object/christmas_tree.svg',
+    '/assets/object/gingerbread_house.svg',
+    '/assets/object/lamplight.svg',
+    '/assets/object/moon.svg',
+    '/assets/object/santa_sleigh.svg',
+    '/assets/object/santa.svg',
+    '/assets/object/snowflake.svg',
+    '/assets/object/snowman.svg',
+    '/assets/object/default_snowball.svg',
+    '/assets/object/selected_snowball.svg',
+    '/assets/background_bottom.svg',
+    '/assets/Frame_1321315804.svg',
+    '/assets/Popup.svg',
+    '/assets/snowball_image.svg',
 ];
 
 self.addEventListener('message', (event) => {
@@ -28,10 +38,21 @@ self.addEventListener('message', (event) => {
 self.addEventListener('install', async (event) => {
     console.log('[Service Worker] Installing and caching assets...');
     event.waitUntil(
-        caches.open(CACHE).then((cache) => {
-            console.log('[Service Worker] Caching offline page and assets');
-            return cache.addAll(ASSETS_TO_CACHE);
-        })
+        (async () => {
+            const cache = await caches.open(CACHE);
+
+            // 리소스 캐싱 처리
+            const cachePromises = ASSETS_TO_CACHE.map(async (asset) => {
+                const response = await fetch(asset, { redirect: 'follow' });
+                if (response.ok) {
+                    await cache.put(asset, response);
+                } else {
+                    console.warn(`[Service Worker] Failed to cache: ${asset}`);
+                }
+            });
+
+            await Promise.all(cachePromises);
+        })()
     );
     self.skipWaiting(); // 즉시 활성화
 });
@@ -53,6 +74,13 @@ self.addEventListener('fetch', (event) => {
                     }
 
                     const networkResp = await fetch(event.request);
+
+                    // 리다이렉션 처리
+                    if (networkResp.redirected) {
+                        const finalResponse = await fetch(networkResp.url);
+                        return finalResponse;
+                    }
+
                     return networkResp;
                 } catch (error) {
                     console.log(
