@@ -25,7 +25,10 @@ const Container = styled.div`
     height: 100vh;
     width: 100vw;
     max-width: 600px;
-    background: var(--background, linear-gradient(0deg, #93C2DF 0%, #C3DEF7 59%, #B6D8E1 100%));
+    background: var(
+        --background,
+        linear-gradient(0deg, #93c2df 0%, #c3def7 59%, #b6d8e1 100%)
+    );
     position: relative;
     overflow: hidden;
     margin: 0 auto;
@@ -36,7 +39,7 @@ const Container = styled.div`
 const SubTitle = styled.p`
     font-size: 19px;
     font-family: 'Noto Sans';
-    color: #5A5A5A;
+    color: #5a5a5a;
     font-weight: 700;
     position: absolute;
     bottom: 300px;
@@ -56,11 +59,11 @@ const Button = styled.button`
     flex-shrink: 0;
     border: none;
     border-radius: 20px;
-    background: var(--main2, #6485CF);
+    background: var(--main2, #6485cf);
     box-shadow: 0px 0px 4px 0px rgba(40, 40, 40, 0.2);
     font-size: 16px;
     font-weight: bold;
-    color: #FFFCFA;
+    color: #fffcfa;
     cursor: pointer;
     position: absolute;
     bottom: 40px;
@@ -120,7 +123,7 @@ const SnowballPage = () => {
                     }
 
                     // 메인 페이지로 이동
-                    navigate(`${snowballData.shared_link}?page=1`); //
+                    window.location.href = `${snowballData.shared_link}?page=1`;
                 })
                 .catch((error) => {
                     //console.error('스노우볼 생성 실패:', error);
