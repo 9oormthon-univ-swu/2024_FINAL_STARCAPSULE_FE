@@ -56,7 +56,7 @@ const contentstyle = {
     position: 'relative',
     overflowY: 'auto',
     overflowX: 'hidden',
-    background: 'linear-gradient(180deg, #0b0a1b 0%, #27405e 100%)',
+    background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.50) 0%, rgba(0, 0, 0, 0.50) 100%), linear-gradient(0deg, #93C2DF 9.29%, #C3DEF7 50.84%, #B6D8E1 109.34%)',
     '&::-webkit-scrollbar': {
         display: 'none',
     },
@@ -102,6 +102,7 @@ const RecordFormAfter = () => {
             const element = captureRef.current;
             const elementHeight = element.scrollHeight;
 
+
             const date = new Date(memoryData?.result.create_at);
             const formattedDate = `${date.getFullYear()}-${String(
                 date.getMonth() + 1
@@ -110,7 +111,7 @@ const RecordFormAfter = () => {
             html2canvas(element, {
                 scale: 2,
                 useCORS: true,
-                backgroundColor: '#132034',
+                backgroundColor: '#5B91B6',
                 height: elementHeight,
                 windowHeight: elementHeight,
             })
@@ -138,9 +139,9 @@ const RecordFormAfter = () => {
 
         return (
             <HeaderDate>
-                <span style={{ color: '#DDB892' }}>{year}</span>년&nbsp;
-                <span style={{ color: '#DDB892' }}>{month}</span>월&nbsp;
-                <span style={{ color: '#DDB892' }}>{day}</span>일
+                <span style={{ color: '#C3DEF7' }}>{year}</span>년&nbsp;
+                <span style={{ color: '#C3DEF7' }}>{month}</span>월&nbsp;
+                <span style={{ color: '#C3DEF7' }}>{day}</span>일
             </HeaderDate>
         );
     };
@@ -168,7 +169,7 @@ const RecordFormAfter = () => {
                     <HeaderIconLeft
                         onClick={handleClose}
                         sx={{
-                            color: 'custom.grey',
+                            color: 'white',
                         }}
                     >
                         <CloseIcon />
