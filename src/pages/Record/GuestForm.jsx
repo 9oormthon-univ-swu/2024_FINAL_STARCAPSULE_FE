@@ -68,17 +68,21 @@ const GuestForm = () => {
         // console.log('object_name:', object_name);
 
         await axios
-            .post(`/api/share_memory/${params.userId}/write`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-                params: {
-                    title: writer,
-                    answer: answer,
-                    object_name: object_name,
-                    writer: writer,
-                },
-            })
+            .post(
+                `${import.meta.env.VITE_API_URL}/api/share_memory/${params.userId}/write`,
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                    params: {
+                        title: writer,
+                        answer: answer,
+                        object_name: object_name,
+                        writer: writer,
+                    },
+                }
+            )
             .then(() => {
                 navigate(`/complete/${params.userId}`);
             })

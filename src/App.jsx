@@ -69,7 +69,6 @@ function AnimationRoutes() {
                     <Route path='/popupafter' element={<PopupAfter />} />
                     <Route path='/snowballmake' element={<SnowballMake />} />
                     <Route path='/main/:userId' element={<MainPage />} />
-                    <Route path='/guest/:userId' element={<Guest />} />
                     <Route path='/record/:userId' element={<RecordForm />} />
                     <Route
                         path='/recordafter/:userId/:memoryId'
