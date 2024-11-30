@@ -163,6 +163,17 @@ const Main = () => {
     const infoFetcher = (url) =>
         axiosInstance.get(url).then((res) => {
             localStorage.setItem('snowballName', res.data.result.snowballName);
+            const receivedCount = localStorage.getItem('receivedCount') || 0;
+            if (receivedCount < res.data.result.receivedCount) {
+                setSnackbarOpen({
+                    text: '스노우볼에 새로운 추억이 도착했어요! 지금 확인해보세요.',
+                    severity: 'present',
+                });
+            }
+            localStorage.setItem(
+                'receivedCount',
+                res.data.result.receivedCount
+            );
             return res.data.result;
         });
 
