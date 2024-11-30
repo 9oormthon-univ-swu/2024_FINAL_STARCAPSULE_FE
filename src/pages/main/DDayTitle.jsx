@@ -20,7 +20,7 @@ const DDayTitle = ({ serverTime }) => {
                     '& span': { color: 'custom.main2' },
                 }}
             >
-                {'추억이 '}
+                {'나의 추억이 '}
                 <span>{`${daysLeft}일`}</span>
                 {' 뒤에 공개돼요!'}
             </StyledTypography>

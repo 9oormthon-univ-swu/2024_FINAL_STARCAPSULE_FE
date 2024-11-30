@@ -244,7 +244,7 @@ const Main = () => {
 
         if (recordable && !isGuest) {
             setSnackbarOpen({
-                text: '모든 추억은 12월 31일에 공개됩니다!',
+                text: '나의 추억은 12월 31일에 공개됩니다!',
                 severity: 'present',
             });
             return;
