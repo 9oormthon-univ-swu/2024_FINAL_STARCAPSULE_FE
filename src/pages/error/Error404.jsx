@@ -108,7 +108,7 @@ const formbtn = {
     color: 'custom.white',
     background: '#405EAB',
     boxShadow: '0px 0px 4px 0px rgba(40, 40, 40, 0.20)',
-    padding: '1.25rem 6.8125rem',
+    padding: '1.25rem 0',
     alignItems: 'center',
     gap: '0.625rem',
     flexShrink: '0',
