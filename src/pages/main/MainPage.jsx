@@ -19,9 +19,7 @@ const MainPage = () => {
         }
     }, [login, params.userId, setUserId]);
 
-    if (!isLoggedIn || !userId) {
-        return null; // 로딩 상태를 보여주는 로직 추가 가능
-    } else if (isLoggedIn && userId === params.userId) {
+    if (isLoggedIn && userId === params.userId) {
         return <Main />;
     } else {
         return <Guest />;
