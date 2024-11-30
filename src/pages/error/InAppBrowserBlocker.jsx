@@ -14,12 +14,9 @@ const InAppBrowserBlocker = () => {
         if (/android/i.test(navigator.userAgent)) {
             window.location.href = externalURL;
         } else if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
-            const newWindow = window.open(externalURL, '_blank');
-            if (!newWindow) {
-                alert(
-                    '팝업 차단이 활성화되어 있습니다. Safari 브라우저에서 직접 열어주세요.'
-                );
-            }
+            alert(
+                '팝업 차단이 활성화되어 있습니다. Safari 브라우저에서 직접 열어주세요.'
+            );
         } else {
             window.location.href = externalURL;
         }
