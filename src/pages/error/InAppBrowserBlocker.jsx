@@ -14,12 +14,28 @@ const InAppBrowserBlocker = () => {
         if (/android/i.test(navigator.userAgent)) {
             window.location.href = `intent://${externalURL.replace(/^https?:\/\//, '')}#Intent;scheme=https;package=com.android.chrome;end`;
         } else if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+            // 강제 사파리 실행 불가 -> 모바일대응뷰포트강제설정
+            var mobile = document.createElement('meta');
+            mobile.name = 'viewport';
+            mobile.content =
+                'width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no, minimal-ui';
+            document.getElementsByTagName('head')[0].appendChild(mobile);
+            copytoclipboard(externalURL);
             alert(
                 '팝업 차단이 활성화되어 있습니다. Safari 브라우저에서 직접 열어주세요.'
             );
         } else {
             window.location.href = externalURL;
         }
+    };
+
+    const copytoclipboard = (val) => {
+        var t = document.createElement('textarea');
+        document.body.appendChild(t);
+        t.value = val;
+        t.select();
+        document.execCommand('copy');
+        document.body.removeChild(t);
     };
 
     useEffect(() => {
