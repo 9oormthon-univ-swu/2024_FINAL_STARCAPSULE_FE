@@ -20,10 +20,10 @@ const InAppBrowserBlocker = () => {
             mobile.content =
                 'width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no, minimal-ui';
             document.getElementsByTagName('head')[0].appendChild(mobile);
-            copytoclipboard(externalURL);
             alert(
                 '팝업 차단이 활성화되어 있습니다. Safari 브라우저에서 직접 열어주세요.'
             );
+            copytoclipboard(externalURL);
         } else {
             window.location.href = externalURL;
         }
