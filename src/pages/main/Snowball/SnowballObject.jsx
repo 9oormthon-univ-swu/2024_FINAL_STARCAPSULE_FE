@@ -34,7 +34,7 @@ const ImageBox = styled(Box)(() => ({
     },
 }));
 
-const SnowballObject = ({ id, writer, variant, sx, black }) => {
+const SnowballObject = ({ id, writer, variant, sx }) => {
     return (
         <SnowballObjectContainer
             key={id}
@@ -46,7 +46,7 @@ const SnowballObject = ({ id, writer, variant, sx, black }) => {
                 variant={'body3'}
                 component={'p'}
                 sx={{
-                    color: black ? 'custom.font' : 'custom.white',
+                    color: 'custom.font',
                 }}
             >
                 {writer}
