@@ -1,4 +1,4 @@
-import { Button, Stack, Typography } from '@mui/material';
+import { Button, Stack, Typography, Box } from '@mui/material';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import Layout from '@/layouts/Layout';
@@ -6,11 +6,20 @@ import { useSearchParams } from 'react-router-dom';
 
 const InAppBrowserBlocker = () => {
     const [searchParams] = useSearchParams();
+    const currentPath = searchParams.get('redirect') || '/';
+    const externalURL = `${import.meta.env.VITE_BASE_URL}${currentPath}`;
+
+    useEffect(() => {
+        // 인앱 브라우저로 접근했을 때 주소창을 externalURL로 변경
+        if (
+            window.navigator.standalone ||
+            /iPad|iPhone|iPod/.test(navigator.userAgent)
+        ) {
+            window.history.replaceState(null, '', externalURL);
+        }
+    }, [externalURL]);
 
     const handleEnterBrowser = () => {
-        const currentPath = searchParams.get('redirect') || '/';
-        const externalURL = `${import.meta.env.VITE_BASE_URL}${currentPath}`;
-
         if (/android/i.test(navigator.userAgent)) {
             window.location.href = `intent://${externalURL.replace(/^https?:\/\//, '')}#Intent;scheme=https;package=com.android.chrome;end`;
         } else if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
@@ -20,10 +29,10 @@ const InAppBrowserBlocker = () => {
             mobile.content =
                 'width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no, minimal-ui';
             document.getElementsByTagName('head')[0].appendChild(mobile);
-            alert(
-                '팝업 차단이 활성화되어 있습니다. Safari 브라우저에서 직접 열어주세요.'
-            );
             copytoclipboard(externalURL);
+            alert(
+                '하단 공유아이콘을 누르고 "Safari 열기"를 통해 접속해주시길 바랍니다.'
+            );
         } else {
             window.location.href = externalURL;
         }
@@ -73,7 +82,8 @@ const InAppBrowserBlocker = () => {
                             },
                         }}
                     >
-                        {platform} 접속을 권장해요.
+                        <p>{platform}를 통해</p>
+                        <p>스노로그와 함께해요☃️</p>
                     </Typography>
                 </Stack>
                 <ErrorFavicon src={'/Favicon_256.svg'} />
@@ -82,7 +92,7 @@ const InAppBrowserBlocker = () => {
                         variant='subtitle1'
                         sx={{
                             color: '#282828',
-                            lineHeight: '2rem',
+                            lineHeight: '1.5rem',
                             fontSize: {
                                 xs: '1rem',
                                 sm: '1rem',
@@ -90,27 +100,36 @@ const InAppBrowserBlocker = () => {
                             },
                         }}
                     >
-                        <p>브라우저 호환 문제로 인해</p>
+                        <p>인앱브라우저 호환 문제로 인해</p>
                         <p>{platform}로 접속을 권장해요.</p>
                     </Typography>
-                    <Typography
-                        variant='subtitle1'
-                        sx={{
-                            paddingTop: '20px',
-                            color: '#282828',
-                            lineHeight: '2rem',
-                            fontSize: {
-                                xs: '1rem',
-                                sm: '1rem',
-                                md: '1rem',
-                            },
-                        }}
-                    >
-                        <p>아래 버튼을 눌러 {platform}로 이동하고</p>
-                        <p>주소창을 길게 터치한 뒤,</p>
-                        <p>‘붙여넣기 및 이동’을 누르면</p>
-                        <p>정상적으로 이용할 수 있습니다.</p>
-                    </Typography>
+
+                    <Box>
+                        {platform === 'Safari' ? (
+                            <SafrariDescript
+                                src={'/Safari_InAppDescript.svg'}
+                            />
+                        ) : (
+                            <Typography
+                                variant='subtitle1'
+                                sx={{
+                                    paddingTop: '20px',
+                                    color: '#282828',
+                                    lineHeight: '2rem',
+                                    fontSize: {
+                                        xs: '1rem',
+                                        sm: '1rem',
+                                        md: '1rem',
+                                    },
+                                }}
+                            >
+                                <p>아래 버튼을 눌러 링크를 복사하고</p>
+                                <p>주소창을 길게 터치한 뒤,</p>
+                                <p>‘붙여넣기 및 이동’을 누르면</p>
+                                <p>정상적으로 이용할 수 있습니다.</p>
+                            </Typography>
+                        )}
+                    </Box>
                 </Stack>
                 <Stack
                     sx={{
@@ -121,20 +140,22 @@ const InAppBrowserBlocker = () => {
                         },
                     }}
                 >
-                    <Button
-                        variant='contained'
-                        sx={formbtn}
-                        onClick={handleEnterBrowser}
-                    >
-                        <Typography
-                            variant='title2'
-                            sx={{
-                                color: 'custom.white',
-                            }}
+                    {platform !== 'Safari' && (
+                        <Button
+                            variant='contained'
+                            sx={formbtn}
+                            onClick={handleEnterBrowser}
                         >
-                            {platform} 열기
-                        </Typography>
-                    </Button>
+                            <Typography
+                                variant='title2'
+                                sx={{
+                                    color: 'custom.white',
+                                }}
+                            >
+                                {platform} 열기
+                            </Typography>
+                        </Button>
+                    )}
                 </Stack>
             </ErrorContainer>
         </Layout>
@@ -159,6 +180,12 @@ const ErrorFavicon = styled.img`
     width: 5.4rem;
     height: 6.25rem;
     padding: 1rem;
+`;
+
+const SafrariDescript = styled.img`
+    padding-top: 20px;
+    width: 18.75rem;
+    height: 18.28rem;
 `;
 
 const formbtn = {
