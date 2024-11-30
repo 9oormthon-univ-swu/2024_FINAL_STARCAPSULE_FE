@@ -33,7 +33,7 @@ const SelectSnowballObject = ({ snowballObject, setSnowballObject, mine }) => {
         </ToggleButton>
     );
 
-    const handleChange = (event, newObject) => {
+    const handleChange = (_, newObject) => {
         setSnowballObject(newObject);
     };
 

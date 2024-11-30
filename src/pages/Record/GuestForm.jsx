@@ -6,13 +6,13 @@ import Writer from './components/Writer';
 import RecordUpper from './components/RecordUpper';
 import AlertModal from '@/components/AlertModal';
 import SelectSnowballObject from '@/components/SelectSnowballObject';
-import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useNicknameStore } from 'stores/useNicknameStore';
 import Layout from '@/layouts/Layout';
 import { Helmet } from 'react-helmet-async';
 import { useSnackbarStore } from '@/stores/useSnackbarStore';
 import { useUserStore } from '@/stores/useUserStore';
+import axios from 'axios';
 
 const GuestForm = () => {
     // useState로 상태 관리
@@ -57,7 +57,6 @@ const GuestForm = () => {
     };
 
     //모달 확인 버튼 처리 함수&데이터전달
-    const axiosInstance = useAxiosWithAuth();
     const handleAcceptModal = async () => {
         // FormData 객체를 사용해 이미지 파일과 텍스트 데이터를 서버로 전송
         const formData = new FormData();
@@ -68,7 +67,7 @@ const GuestForm = () => {
         //console.log('writer:', writer);
         // console.log('object_name:', object_name);
 
-        await axiosInstance
+        await axios
             .post(`/api/share_memory/${params.userId}/write`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',

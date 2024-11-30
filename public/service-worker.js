@@ -4,7 +4,7 @@ importScripts(
     'https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js'
 );
 
-const CACHE_NAME = 'snowlog_1.0.2';
+const CACHE_NAME = 'snowlog_1.0.3';
 const offlineFallbackPage = '/offline.html';
 
 // 리소스 캐싱 리스트
