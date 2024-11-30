@@ -24,10 +24,11 @@ const formbtn = {
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: '22px',
-    background: '#7F5539',
+    background: '#FAFBFF',
     boxShadow: '0px 0px 4px 0px rgba(40, 40, 40, 0.20)',
     marginTop: '-90px',
     marginBottom: '1.94rem',
     fontFamily: 'Noto Sans',
     fontSize: '17px',
+    color: '#405EAB',
 };

@@ -25,7 +25,7 @@ const Container = styled.div`
     height: 100vh;
     width: 100vw;
     max-width: 600px;
-    background: linear-gradient(180deg, #0b0a1b 0%, #27405e 100%);
+    background: var(--background, linear-gradient(0deg, #93C2DF 0%, #C3DEF7 59%, #B6D8E1 100%));
     position: relative;
     overflow: hidden;
     margin: 0 auto;
@@ -36,7 +36,8 @@ const Container = styled.div`
 const SubTitle = styled.p`
     font-size: 19px;
     font-family: 'Noto Sans';
-    color: #fff;
+    color: #5A5A5A;
+    font-weight: 700;
     position: absolute;
     bottom: 300px;
     transform: translateX(-50%);
@@ -55,10 +56,11 @@ const Button = styled.button`
     flex-shrink: 0;
     border: none;
     border-radius: 20px;
-    background: var(--main2, #ddb892);
+    background: var(--main2, #6485CF);
     box-shadow: 0px 0px 4px 0px rgba(40, 40, 40, 0.2);
     font-size: 16px;
     font-weight: bold;
+    color: #FFFCFA;
     cursor: pointer;
     position: absolute;
     bottom: 40px;
@@ -150,7 +152,7 @@ const SnowballPage = () => {
 
                 {/* Lottie 애니메이션 추가 */}
                 <dotlottie-player
-                    src='https://lottie.host/699c976a-3836-4dd2-9858-edaa2d16b866/KDNntsFKi1.json'
+                    src='https://lottie.host/a61cf0d6-677a-49e6-9281-13c0fd97b35a/NkiF3jmTpw.lottie'
                     background='transparent'
                     speed='1'
                     style={{

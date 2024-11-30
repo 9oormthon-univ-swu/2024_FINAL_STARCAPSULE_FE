@@ -200,36 +200,37 @@ const PopupPage = ({ isOpen, onClose, question, serverTime }) => {
                                         width='20'
                                         height='20'
                                         rx='4'
-                                        fill='#7F5539'
+                                        fill='#6485CF'
                                     />
                                     <path
                                         d='M5 9L9 14L15.5 6'
-                                        stroke='#FFFCFA'
-                                        strokeWidth='3'
-                                        strokeLinecap='round'
-                                        strokeLinejoin='round'
+                                        stroke='#FAFBFF'
+                                        stroke-width='3'
+                                        stroke-linecap='round'
+                                        stroke-linejoin='round'
                                     />
                                 </svg>
                             ) : (
                                 <svg
                                     xmlns='http://www.w3.org/2000/svg'
-                                    width='20'
+                                    width='21'
                                     height='20'
-                                    viewBox='0 0 20 20'
+                                    viewBox='0 0 21 20'
                                     fill='none'
                                 >
                                     <rect
+                                        x='0.5'
                                         width='20'
                                         height='20'
                                         rx='4'
-                                        fill='#FFFCFA'
+                                        fill='#FAFBFF'
                                     />
                                     <path
-                                        d='M5 9L9 14L15.5 6'
-                                        stroke='#D5D1CD'
-                                        strokeWidth='3'
-                                        strokeLinecap='round'
-                                        strokeLinejoin='round'
+                                        d='M5.5 9L9.5 14L16 6'
+                                        stroke='#B7B7B7'
+                                        stroke-width='3'
+                                        stroke-linecap='round'
+                                        stroke-linejoin='round'
                                     />
                                 </svg>
                             )}
