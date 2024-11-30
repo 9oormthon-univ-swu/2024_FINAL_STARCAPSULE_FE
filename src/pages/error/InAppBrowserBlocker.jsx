@@ -20,10 +20,12 @@ const InAppBrowserBlocker = () => {
             mobile.content =
                 'width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no, minimal-ui';
             document.getElementsByTagName('head')[0].appendChild(mobile);
-            alert(
-                '팝업 차단이 활성화되어 있습니다. Safari 브라우저에서 직접 열어주세요.'
-            );
-            copytoclipboard(externalURL);
+
+            window.open(externalURL, '_system'); // 시스템 브라우저에서 열기
+            // alert(
+            //     '팝업 차단이 활성화되어 있습니다. Safari 브라우저에서 직접 열어주세요.'
+            // );
+            // copytoclipboard(externalURL);
         } else {
             window.location.href = externalURL;
         }
@@ -132,7 +134,9 @@ const InAppBrowserBlocker = () => {
                                 color: 'custom.white',
                             }}
                         >
-                            {platform} 열기
+                            {platform === 'Safari'
+                                ? '링크 복사하기'
+                                : `${platform} 열기`}
                         </Typography>
                     </Button>
                 </Stack>
