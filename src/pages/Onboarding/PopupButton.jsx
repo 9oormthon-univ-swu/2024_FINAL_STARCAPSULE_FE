@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 
 const PopupButton = ({ onClick, text, disabled }) => {
     return (
@@ -10,7 +10,14 @@ const PopupButton = ({ onClick, text, disabled }) => {
             onClick={onClick}
             disabled={disabled}
         >
-            {text}
+            <Typography
+                variant='title2'
+                sx={{
+                    color: 'custom.main2',
+                }}
+            >
+                {text}
+            </Typography>
         </Button>
     );
 };
