@@ -39,7 +39,7 @@ const SubTitle = styled.p`
     color: #5A5A5A;
     font-weight: 700;
     position: absolute;
-    bottom: 300px;
+    bottom: 40%;
     transform: translateX(-50%);
     left: 50%;
     white-space: nowrap;
@@ -150,16 +150,16 @@ const SnowballPage = () => {
                     radius={[0.5, 3]}
                 />
 
-                {/* Lottie 애니메이션 추가 */}
+              
                 <dotlottie-player
                     src='https://lottie.host/a61cf0d6-677a-49e6-9281-13c0fd97b35a/NkiF3jmTpw.lottie'
                     background='transparent'
                     speed='1'
                     style={{
-                        width: '300px',
-                        height: '300px',
+                        width: '290px',
+                        height: '290px',
                         position: 'absolute',
-                        bottom: '410px',
+                        bottom: '50%',
                         left: '50%',
                         transform: 'translateX(-50%)',
                     }}
