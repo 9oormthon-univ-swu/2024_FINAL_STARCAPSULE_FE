@@ -1,13 +1,13 @@
 /* eslint-disable no-undef */
-// This is the "Offline page" service worker
+// Import Workbox CDN
 importScripts(
     'https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js'
 );
 
-const CACHE = 'snowlog_1.0.1';
-
+const CACHE_NAME = 'snowlog_1.0.2';
 const offlineFallbackPage = '/offline.html';
 
+// 리소스 캐싱 리스트
 const ASSETS_TO_CACHE = [
     offlineFallbackPage,
     '/manifest.json',
@@ -29,117 +29,101 @@ const ASSETS_TO_CACHE = [
     '/assets/snowball_image.svg',
 ];
 
-self.addEventListener('message', (event) => {
-    if (event.data && event.data.type === 'SKIP_WAITING') {
-        self.skipWaiting();
-    }
-});
-
-self.addEventListener('install', async (event) => {
+// Install Event
+self.addEventListener('install', (event) => {
     console.log('[Service Worker] Installing and caching assets...');
     event.waitUntil(
-        (async () => {
-            const cache = await caches.open(CACHE);
-
-            // 리소스 캐싱 처리
-            const cachePromises = ASSETS_TO_CACHE.map(async (asset) => {
-                const response = await fetch(asset, { redirect: 'follow' });
-                if (response.ok) {
-                    await cache.put(asset, response);
-                } else {
-                    console.warn(`[Service Worker] Failed to cache: ${asset}`);
-                }
-            });
-
-            await Promise.all(cachePromises);
-        })()
+        caches.open(CACHE_NAME).then((cache) => {
+            return cache.addAll(ASSETS_TO_CACHE);
+        })
     );
     self.skipWaiting(); // 즉시 활성화
 });
 
-// eslint-disable-next-line no-undef
-if (workbox.navigationPreload.isSupported()) {
-    workbox.navigationPreload.enable();
-}
+// Activate Event
+self.addEventListener('activate', (event) => {
+    console.log('[Service Worker] Activating and cleaning old caches...');
+    event.waitUntil(
+        caches.keys().then((cacheNames) => {
+            return Promise.all(
+                cacheNames.map((cacheName) => {
+                    if (cacheName !== CACHE_NAME) {
+                        console.log(
+                            `[Service Worker] Deleting old cache: ${cacheName}`
+                        );
+                        return caches.delete(cacheName);
+                    }
+                })
+            );
+        })
+    );
+    return self.clients.claim(); // 활성화 후 즉시 컨트롤
+});
 
+// Fetch Event
 self.addEventListener('fetch', (event) => {
     if (event.request.mode === 'navigate') {
         event.respondWith(
             (async () => {
                 try {
-                    const preloadResp = await event.preloadResponse;
-
-                    if (preloadResp) {
-                        return preloadResp;
+                    const preloadResponse = await event.preloadResponse;
+                    if (preloadResponse) {
+                        return preloadResponse;
                     }
 
-                    const networkResp = await fetch(event.request);
+                    const networkResponse = await fetch(event.request);
 
-                    // 리다이렉션 처리
-                    if (networkResp.redirected) {
-                        const finalResponse = await fetch(networkResp.url);
+                    // 리다이렉션된 경우, 최종 URL을 사용
+                    if (networkResponse.redirected) {
+                        const finalResponse = await fetch(networkResponse.url);
                         return finalResponse;
                     }
 
-                    return networkResp;
+                    return networkResponse;
                 } catch (error) {
                     console.log(
                         '[Service Worker] Fetch failed, serving cached fallback'
                     );
-                    const cache = await caches.open(CACHE);
-                    const cachedResp = await cache.match(offlineFallbackPage);
-                    return cachedResp;
+                    const cache = await caches.open(CACHE_NAME);
+                    const cachedResponse =
+                        await cache.match(offlineFallbackPage);
+                    return cachedResponse;
                 }
             })()
+        );
+    } else {
+        event.respondWith(
+            caches.match(event.request).then((response) => {
+                return response || fetch(event.request);
+            })
         );
     }
 });
 
-self.addEventListener('push', (event) => {
-    const data = event.data.json();
-    const options = {
-        body: data.body,
-        icon: '192.png',
-        badge: '192.png',
-    };
-    event.waitUntil(self.registration.showNotification(data.title, options));
-});
+// // Push Notification Event
+// self.addEventListener('push', (event) => {
+//     const data = event.data.json();
+//     const options = {
+//         body: data.body,
+//         icon: '192.png',
+//         badge: '192.png',
+//     };
+//     event.waitUntil(self.registration.showNotification(data.title, options));
+// });
 
-//콘솔창에 넣기_1
-if ('Notification' in window && 'serviceWorker' in navigator) {
-    Notification.requestPermission().then((permission) => {
-        if (permission === 'granted') {
-            console.log('Notification permission granted.');
-        }
-    });
-}
+// // Notification Permission
+// if ('Notification' in window && 'serviceWorker' in navigator) {
+//     Notification.requestPermission().then((permission) => {
+//         if (permission === 'granted') {
+//             console.log('Notification permission granted.');
+//         }
+//     });
+// }
 
-//콘솔창에 넣기_2
-navigator.serviceWorker.ready.then((registration) => {
-    registration.showNotification('테스트 알림 제목', {
-        body: '이것은 푸시 알림 테스트입니다.',
-        icon: '/icon-192x192.png',
-    });
-});
-
-self.addEventListener('activate', (event) => {
-    console.log('[Service Worker] Activating and cleaning old caches...');
-    const allowedCaches = [CACHE]; // 현재 캐시 이름만 유지
-
-    event.waitUntil(
-        caches.keys().then((cacheNames) =>
-            Promise.all(
-                cacheNames.map((cacheName) => {
-                    if (!allowedCaches.includes(cacheName)) {
-                        console.log(
-                            '[Service Worker] Deleting old cache:',
-                            cacheName
-                        );
-                        return caches.delete(cacheName);
-                    }
-                })
-            )
-        )
-    );
-    return self.clients.claim(); // 활성화 후 즉시 컨트롤
-});
+// // Test Notification
+// navigator.serviceWorker.ready.then((registration) => {
+//     registration.showNotification('테스트 알림 제목', {
+//         body: '이것은 푸시 알림 테스트입니다.',
+//         icon: '/icon-192x192.png',
+//     });
+// });
