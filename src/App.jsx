@@ -34,6 +34,7 @@ import ErrorBoundary from './pages/error/ErrorBoundary';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import MainPage from './pages/main/MainPage';
 import InAppBrowserBlocker from './pages/error/InAppBrowserBlocker';
+import Guest from './pages/main/guest/Guest';
 
 function AnimationRoutes() {
     const location = useLocation();
