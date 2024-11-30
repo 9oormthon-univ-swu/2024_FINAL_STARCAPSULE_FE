@@ -19,6 +19,9 @@ const MainPage = () => {
         }
     }, [login, params.userId, setUserId]);
 
+    console.log('isLoggedIn:', isLoggedIn);
+    console.log('userId:', userId);
+
     if (isLoggedIn && userId === params.userId) {
         return <Main />;
     } else {
