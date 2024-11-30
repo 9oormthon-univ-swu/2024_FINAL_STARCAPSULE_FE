@@ -1,6 +1,6 @@
 import useAuthStore from '@/stores/useAuthStore';
 import { useUserStore } from '@/stores/useUserStore';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import Main from './Main';
 import Guest from './guest/Guest';
 import { saveTokenFromURL } from '@/utils/saveTokenFromURL';
@@ -8,11 +8,12 @@ import { useEffect } from 'react';
 
 const MainPage = () => {
     const params = useParams();
+    const [searchParams] = useSearchParams();
     const { setUserId, userId } = useUserStore();
     const { login, isLoggedIn } = useAuthStore();
 
     useEffect(() => {
-        if (params.userId) {
+        if (params.userId && searchParams.get('token')) {
             saveTokenFromURL(login);
             setUserId(params.userId);
         }
