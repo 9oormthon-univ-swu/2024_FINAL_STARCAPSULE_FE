@@ -22,6 +22,7 @@ const GuestForm = () => {
     const [uploadedImage, setUploadedImage] = useState(null);
     const [object_name, setObjectName] = useState('');
     const [openModal, setOpenModal] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     // RecordBoard 참조 (자동스크롤)
     const recordBoardRef = useRef(null); // RecordBoard 참조
@@ -67,9 +68,10 @@ const GuestForm = () => {
         //console.log('image:', uploadedImage);
         //console.log('writer:', writer);
         // console.log('object_name:', object_name);
+        setIsLoading(true); // API 요청 전 isLoading true로 설정
 
-        await axios
-            .post(
+        try {
+            await axios.post(
                 `${import.meta.env.VITE_API_URL}/api/share_memory/${params.userId}/write`,
                 formData,
                 {
@@ -83,17 +85,16 @@ const GuestForm = () => {
                         writer: writer,
                     },
                 }
-            )
-            .then(() => {
-                navigate(`/complete/${params.userId}`);
-            })
-            .catch((error) => {
-                // console.log(error);
-                setSnackbarOpen({
-                    severity: 'error',
-                    text: '추억 전달에 실패했어요. 다시 시도해주세요.',
-                });
+            );
+            navigate(`/complete/${params.userId}`);
+        } catch (error) {
+            setSnackbarOpen({
+                severity: 'error',
+                text: '추억 전달에 실패했어요. 다시 시도해주세요.',
             });
+        } finally {
+            setIsLoading(false); // 요청 후 isLoading false로 설정
+        }
     };
 
     // 모달 닫기 처리 함수
@@ -186,7 +187,10 @@ const GuestForm = () => {
                                 setfwriter={setWriter}
                             ></Writer>
                         </Stack>
-                        <RecordSaveButton recordsavebtnText='추억 전달하기' />
+                        <RecordSaveButton
+                            disabled={isLoading} // isLoading에 따라 버튼 비활성화
+                            recordsavebtnText='추억 전달하기'
+                        />
                     </form>
                 </Stack>
             </Stack>
@@ -195,6 +199,7 @@ const GuestForm = () => {
                 onClose={handleCloseModal}
                 buttonText='추억 전달하기'
                 onButtonClick={handleAcceptModal}
+                disabled={isLoading}
             >
                 <Stack>
                     <Typography sx={modaltextstyle1}>
