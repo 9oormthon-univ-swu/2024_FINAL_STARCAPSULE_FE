@@ -38,10 +38,21 @@ self.addEventListener('message', (event) => {
 self.addEventListener('install', async (event) => {
     console.log('[Service Worker] Installing and caching assets...');
     event.waitUntil(
-        caches.open(CACHE).then((cache) => {
-            console.log('[Service Worker] Caching offline page and assets');
-            return cache.addAll(ASSETS_TO_CACHE);
-        })
+        (async () => {
+            const cache = await caches.open(CACHE);
+
+            // 리소스 캐싱 처리
+            const cachePromises = ASSETS_TO_CACHE.map(async (asset) => {
+                const response = await fetch(asset, { redirect: 'follow' });
+                if (response.ok) {
+                    await cache.put(asset, response);
+                } else {
+                    console.warn(`[Service Worker] Failed to cache: ${asset}`);
+                }
+            });
+
+            await Promise.all(cachePromises);
+        })()
     );
     self.skipWaiting(); // 즉시 활성화
 });
@@ -63,6 +74,13 @@ self.addEventListener('fetch', (event) => {
                     }
 
                     const networkResp = await fetch(event.request);
+
+                    // 리다이렉션 처리
+                    if (networkResp.redirected) {
+                        const finalResponse = await fetch(networkResp.url);
+                        return finalResponse;
+                    }
+
                     return networkResp;
                 } catch (error) {
                     console.log(
