@@ -34,6 +34,7 @@ import ErrorBoundary from './pages/error/ErrorBoundary';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import MainPage from './pages/main/MainPage';
 import InAppBrowserBlocker from './pages/error/InAppBrowserBlocker';
+import Guest from './pages/main/guest/Guest';
 
 function AnimationRoutes() {
     const location = useLocation();
@@ -43,14 +44,22 @@ function AnimationRoutes() {
         const userAgent =
             navigator.userAgent || navigator.vendor || window.opera;
 
+        // 인앱 브라우저 감지
         const isInAppBrowser = /FBAN|FBAV|Instagram|KAKAOTALK|Line/.test(
             userAgent
         );
 
-        if (isInAppBrowser) {
-            navigate('/in-app-browser-blocker');
+        // 크롬 브라우저 감지 (인앱 브라우저와 구분)
+        const isChrome = /Chrome/i.test(userAgent) && !isInAppBrowser;
+
+        if (isInAppBrowser && location.pathname !== '/in-app-browser-blocker') {
+            // 현재 경로를 쿼리 파라미터로 전달
+            const currentPath = location.pathname + location.search;
+            navigate(
+                `/in-app-browser-blocker?redirect=${encodeURIComponent(currentPath)}`
+            );
         }
-    }, [navigate]);
+    }, [navigate, location]);
 
     return (
         <AnimatePresence>
