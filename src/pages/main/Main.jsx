@@ -393,7 +393,7 @@ const Main = () => {
                             <Overlay onClick={handleLottieClick}>
                                 <PopupContainer>
                                     <dotlottie-player
-                                        src='https://lottie.host/73355e5c-c8c9-4583-967b-fed46bde0b83/5Ls1wxQRsp.lottie'
+                                        src='https://lottie.host/20d594fd-7218-4f0c-922b-b2f1813bc830/04Zv0OPssa.lottie'
                                         background='transparent'
                                         speed='1'
                                         style={{
