@@ -13,7 +13,7 @@ const GoToMineTag = () => {
             label={
                 <Stack direction={'row'} alignItems={'center'}>
                     <Typography variant={'body5'}>
-                        {'내 스노우볼로 돌아가기'}
+                        {'내 스노우볼 바로가기'}
                     </Typography>
                     <ChevronRightIcon
                         sx={{
