@@ -34,6 +34,7 @@ const GoToMineTag = () => {
                 '& span': {
                     padding: 0,
                 },
+                mt: '0.5rem',
             }}
         />
     );
