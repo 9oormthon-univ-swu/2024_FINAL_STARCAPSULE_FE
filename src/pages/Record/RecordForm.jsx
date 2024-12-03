@@ -25,6 +25,7 @@ const RecordForm = () => {
     const [shapeName, setObjectName] = useState('');
     const { setSnackbarOpen } = useSnackbarStore();
     const [openModal, setOpenModal] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     // RecordBoard 참조 (자동스크롤)
     const recordBoardRef = useRef(null); // RecordBoard 참조
@@ -67,6 +68,7 @@ const RecordForm = () => {
         //console.log('title:', title || 'Empty');
         //console.log('answer:', answer || 'Empty');
         // console.log('object_name:', shapeName || 'Empty');
+        setIsLoading(true); // API 요청 전 isLoading true로 설정
 
         await axiosInstance
             .post(`/api/my_memory/write`, formData, {
@@ -96,7 +98,6 @@ const RecordForm = () => {
     const handleCloseModal = () => {
         setOpenModal(false);
     };
-    
 
     // 폼 제출 처리 함수
     const handleSubmit = (e) => {
@@ -218,7 +219,7 @@ const modaltextstyle1 = {
     fontSize: '0.92rem',
     fontWeight: '700',
     textAlign: 'center',
-    color: '#7F5539',
+    color: '#6485CF',
 };
 
 const modaltextstyle2 = {

@@ -68,7 +68,7 @@ export const StyledButton = styled(Button)(({ theme }) => ({
     boxSizing: 'border-box',
     width: '100% !important',
     height: '3.875rem',
-    backgroundColor: theme.palette.custom.main2,
+    backgroundColor: theme.palette.custom.button1,
     borderRadius: '1.25rem',
     padding: '1.25rem 0',
     boxShadow: '0px 0px 4px 0px rgba(40, 40, 40, 0.20)',
@@ -134,14 +134,20 @@ const Main = () => {
     const { isLoggedIn } = useAuthStore();
 
     useEffect(() => {
-        const lastPopupCheckedDate = localStorage.getItem('popupCheckedDate');
-        const today = new Date().toLocaleDateString('ko-KR');
+        if (serverTime) {
+            const lastPopupCheckedDate =
+                localStorage.getItem('popupCheckedDate');
+            const today = dayjs
+                .utc(serverTime)
+                .tz('Asia/Seoul')
+                .format('YYYY. MM. DD.');
 
-        if (lastPopupCheckedDate !== today) {
-            setShowLottie(true);
-            setPopupOpen(true);
+            if (lastPopupCheckedDate !== today) {
+                setShowLottie(true);
+                setPopupOpen(true);
+            }
         }
-    }, []);
+    }, [serverTime]);
 
     const axiosInstance = useAxiosWithAuth();
 
@@ -157,6 +163,17 @@ const Main = () => {
     const infoFetcher = (url) =>
         axiosInstance.get(url).then((res) => {
             localStorage.setItem('snowballName', res.data.result.snowballName);
+            const receivedCount = localStorage.getItem('receivedCount') || 0;
+            if (receivedCount < res.data.result.receivedCount) {
+                setSnackbarOpen({
+                    text: '스노우볼에 새로운 추억이 도착했어요! 지금 확인해보세요.',
+                    severity: 'present',
+                });
+            }
+            localStorage.setItem(
+                'receivedCount',
+                res.data.result.receivedCount
+            );
             return res.data.result;
         });
 
@@ -238,7 +255,7 @@ const Main = () => {
 
         if (recordable && !isGuest) {
             setSnackbarOpen({
-                text: '모든 추억은 12월 31일에 공개됩니다!',
+                text: '나의 추억은 12월 31일에 공개됩니다!',
                 severity: 'present',
             });
             return;
@@ -408,7 +425,13 @@ const Main = () => {
                         >
                             <PopupAfter
                                 isOpen={isPopupOpen}
-                                onClose={() => setPopupOpen(false)}
+                                onClose={() => {
+                                    setPopupOpen(false);
+                                    if (pwa) {
+                                        console.log('test');
+                                        openRecommendModal();
+                                    }
+                                }}
                             />
                         </Portal>
                     ))}

@@ -16,6 +16,7 @@ import { isRecordable } from '@/utils/isRecordable';
 import RecommendModal from '@/components/RecommendModal';
 import MakeSnowballContent from '../MakeSnowballContent';
 import useModal from '@/hooks/useModal';
+import GoToMineTag from './GoToMineTag';
 
 const Guest = () => {
     const [serverTime, setServerTime] = useState('');
@@ -53,9 +54,6 @@ const Guest = () => {
     );
 
     useEffect(() => {
-        if (param.userId === userId) {
-            navigate(`/main/${userId}?page=1`);
-        }
         if (makeSnowball) {
             openModal();
         }
@@ -108,6 +106,7 @@ const Guest = () => {
                             <DDayTitle serverTime={serverTime} />
                         </Stack>
                         <Title nickname={data?.snowballName ?? ''} />
+                        <GoToMineTag />
                     </Stack>
 
                     <Snowball
@@ -139,9 +138,16 @@ const Guest = () => {
                     ) : (
                         <StyledButton
                             variant={'contained'}
-                            sx={{ flexGrow: 0, color: 'custom.white' }}
+                            sx={{ flexGrow: 0 }}
                         >
-                            <Typography variant='title2'>팀 소개</Typography>
+                            <Typography
+                                variant='title2'
+                                sx={{
+                                    color: 'custom.white',
+                                }}
+                            >
+                                팀 소개
+                            </Typography>
                         </StyledButton>
                     )}
                 </MainContainer>

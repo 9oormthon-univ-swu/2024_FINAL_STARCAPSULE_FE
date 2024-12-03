@@ -6,13 +6,13 @@ import Writer from './components/Writer';
 import RecordUpper from './components/RecordUpper';
 import AlertModal from '@/components/AlertModal';
 import SelectSnowballObject from '@/components/SelectSnowballObject';
-import useAxiosWithAuth from '@/utils/useAxiosWithAuth';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useNicknameStore } from 'stores/useNicknameStore';
 import Layout from '@/layouts/Layout';
 import { Helmet } from 'react-helmet-async';
 import { useSnackbarStore } from '@/stores/useSnackbarStore';
 import { useUserStore } from '@/stores/useUserStore';
+import axios from 'axios';
 
 const GuestForm = () => {
     // useState로 상태 관리
@@ -22,6 +22,8 @@ const GuestForm = () => {
     const [uploadedImage, setUploadedImage] = useState(null);
     const [object_name, setObjectName] = useState('');
     const [openModal, setOpenModal] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+
     // RecordBoard 참조 (자동스크롤)
     const recordBoardRef = useRef(null); // RecordBoard 참조
     const writerRef = useRef(null); //Writer 참조
@@ -57,7 +59,6 @@ const GuestForm = () => {
     };
 
     //모달 확인 버튼 처리 함수&데이터전달
-    const axiosInstance = useAxiosWithAuth();
     const handleAcceptModal = async () => {
         // FormData 객체를 사용해 이미지 파일과 텍스트 데이터를 서버로 전송
         const formData = new FormData();
@@ -67,30 +68,33 @@ const GuestForm = () => {
         //console.log('image:', uploadedImage);
         //console.log('writer:', writer);
         // console.log('object_name:', object_name);
+        setIsLoading(true); // API 요청 전 isLoading true로 설정
 
-        await axiosInstance
-            .post(`/api/share_memory/${params.userId}/write`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-                params: {
-                    title: writer,
-                    answer: answer,
-                    object_name: object_name,
-                    writer: writer,
-                    user_id: params.userId,
-                },
-            })
-            .then(() => {
-                navigate(`/complete/${params.userId}`);
-            })
-            .catch((error) => {
-                // console.log(error);
-                setSnackbarOpen({
-                    severity: 'error',
-                    text: '추억 전달에 실패했어요. 다시 시도해주세요.',
-                });
+        try {
+            await axios.post(
+                `${import.meta.env.VITE_API_URL}/api/share_memory/${params.userId}/write`,
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                    params: {
+                        title: writer,
+                        answer: answer,
+                        object_name: object_name,
+                        writer: writer,
+                    },
+                }
+            );
+            navigate(`/complete/${params.userId}`);
+        } catch (error) {
+            setSnackbarOpen({
+                severity: 'error',
+                text: '추억 전달에 실패했어요. 다시 시도해주세요.',
             });
+        } finally {
+            setIsLoading(false); // 요청 후 isLoading false로 설정
+        }
     };
 
     // 모달 닫기 처리 함수
@@ -164,7 +168,7 @@ const GuestForm = () => {
                     <Stack>
                         <Typography sx={titlestyle}>
                             TO.&nbsp;
-                            <span>{nickname}</span>
+                            <span style={{ color: '#C3DEF7' }}>{nickname}</span>
                         </Typography>
                     </Stack>
                     <form onSubmit={handleSubmit}>
@@ -183,7 +187,10 @@ const GuestForm = () => {
                                 setfwriter={setWriter}
                             ></Writer>
                         </Stack>
-                        <RecordSaveButton recordsavebtnText='추억 전달하기' />
+                        <RecordSaveButton
+                            disabled={isLoading} // isLoading에 따라 버튼 비활성화
+                            recordsavebtnText='추억 전달하기'
+                        />
                     </form>
                 </Stack>
             </Stack>
@@ -192,6 +199,7 @@ const GuestForm = () => {
                 onClose={handleCloseModal}
                 buttonText='추억 전달하기'
                 onButtonClick={handleAcceptModal}
+                disabled={isLoading}
             >
                 <Stack>
                     <Typography sx={modaltextstyle1}>
@@ -242,5 +250,5 @@ const modaltextstyle2 = {
     fontSize: '0.92rem',
     fontWeight: '700',
     textAlign: 'center',
-    color: '#282828',
+    color: 'custom.font',
 };

@@ -12,10 +12,13 @@ const Container = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    height: 100dvh;
     width: 100vw;
     max-width: 600px;
-    background: var(--background, linear-gradient(0deg, #93C2DF 0%, #C3DEF7 59%, #B6D8E1 100%));
+    background: var(
+        --background,
+        linear-gradient(0deg, #93c2df 0%, #c3def7 59%, #b6d8e1 100%)
+    );
     position: relative;
     overflow: hidden;
     margin: 0 auto;
@@ -36,7 +39,7 @@ const Title = styled.h1`
 const SubTitle = styled.p`
     font-size: 22px;
     font-family: 'Noto Sans';
-    color: #5A5A5A;
+    color: #5a5a5a;
     position: absolute;
     top: 270px;
     transform: translateX(-50%);
@@ -48,7 +51,7 @@ const SubTitle = styled.p`
     @media (max-width: 490px) {
         font-size: 16px;
         white-space: normal;
-        color: #5A5A5A;
+        color: #5a5a5a;
         font-weight: 600;
         position: absolute;
         top: 270px;
@@ -61,7 +64,7 @@ const SubTitle = styled.p`
     @media (max-width: 360px) {
         font-size: 14px;
         white-space: normal;
-        color: #5A5A5A;
+        color: #5a5a5a;
         font-weight: 500;
         position: absolute;
         top: 270px;
@@ -133,8 +136,6 @@ const ShareButton = styled.button`
 const BottomImage = styled.img`
     position: absolute;
     bottom: 0;
-    height: 100vh;
-    bottom: -335px;
     width: 100vw;
     max-width: 600px;
     object-fit: contain;

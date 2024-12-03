@@ -11,11 +11,11 @@ const Container = styled.div`
     justify-content: center;
     height: 100dvh;
     width: 100vw;
-    max-width: 480px;
+    max-width: 600px;
     position: relative;
     overflow: hidden;
     margin: 0 auto;
-    background-color: #27405e;
+    background-color: #c3def7;
 `;
 
 const Title = styled.p`
@@ -29,7 +29,6 @@ const Title = styled.p`
     font-weight: bold;
     line-height: normal;
     background-color: #fff;
-    color: #27405e;
     padding: 5px 10px;
     border-radius: 15px;
     position: fixed;
@@ -40,7 +39,7 @@ const Title = styled.p`
 
 const QuestionText = styled.p`
     font-size: 18px;
-    color: #fff;
+    color: #405eab;
     position: fixed;
     font-family: 'Griun NltoTAENGGU', sans-serif;
     top: calc(50% - 155px);
@@ -48,7 +47,7 @@ const QuestionText = styled.p`
     transform: translateX(-50%);
     white-space: nowrap;
     text-align: center;
-    color: var(--main2, #ddb892);
+    color: var(--main2, #405eab);
     font-style: normal;
     font-weight: 400;
     line-height: normal;
@@ -60,7 +59,7 @@ const SubTitle = styled.p`
     font-style: normal;
     font-weight: 700;
     line-height: normal;
-    color: #d5d1cd;
+    color: #4a4d48;
     position: fixed;
     top: -33%;
     left: 50%;
@@ -83,14 +82,13 @@ const SVGImage = styled.img`
     height: 100%;
     position: relative;
 `;
-
 const ObjectImage = styled.img`
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 65px;
-    height: 65px;
+    width: 3rem;
+    height: 3rem;
     flex-shrink: 0;
 `;
 
@@ -163,7 +161,10 @@ const MyCreationComplete = () => {
                 <QuestionText>
                     {question || '가장 행복했던 일은 무엇인가요?'}
                 </QuestionText>
-                <SVGImage src={'/assets/Frame_26085556.svg'} alt='Frame SVG' />
+                <SVGImage
+                    src={'/assets/Frame_1321315804.svg'}
+                    alt='Frame SVG'
+                />
                 <ObjectImage
                     src={getObjectImagePath(selectedObject)}
                     alt='Selected Object SVG'
