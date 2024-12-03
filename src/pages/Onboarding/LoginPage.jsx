@@ -188,6 +188,11 @@ const LoginPage = () => {
                         content='스노로그를 카카오 계정으로 로그인하세요.'
                     />
                     <meta property='og:type' content='website' />
+                    <meta property='og:image' content='/og_image.png' />
+                    <meta
+                        property='og:url'
+                        content={`${import.meta.env.VITE_BASE_URL}`}
+                    />
                 </Helmet>
 
                 <Title>Snow Log</Title>

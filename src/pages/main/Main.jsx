@@ -299,6 +299,11 @@ const Main = () => {
                     content='스노로그에서 남은 2024의 추억을 쌓아보세요.'
                 />
                 <meta property='og:type' content='website' />
+                <meta property='og:image' content='/og_image.png' />
+                <meta
+                    property='og:url'
+                    content={`${import.meta.env.VITE_BASE_URL}/main/${param.userId}`}
+                />
             </Helmet>
             <Layout
                 id='capture-container'
