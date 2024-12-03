@@ -183,8 +183,9 @@ const RecordForm = () => {
             <AlertModal
                 open={openModal}
                 onClose={handleCloseModal}
-                buttonText='추억 보관하기'
+                buttonText={isLoading ? '보관 중...' : '추억 보관하기'}
                 onButtonClick={handleAcceptModal}
+                disabled={isLoading}
             >
                 <Stack>
                     <Typography sx={modaltextstyle1}>

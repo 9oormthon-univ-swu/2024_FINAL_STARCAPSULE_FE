@@ -55,6 +55,7 @@ const AlertModal = ({
     buttonText,
     onButtonClick,
     children,
+    disabled,
     ...props
 }) => {
     return (
@@ -96,7 +97,11 @@ const AlertModal = ({
                         {children}
                     </Box>
                 </Stack>
-                <ModalButton variant='contained' onClick={onButtonClick}>
+                <ModalButton
+                    variant='contained'
+                    onClick={onButtonClick}
+                    disabled={disabled}
+                >
                     <Typography
                         variant='title2'
                         sx={{
