@@ -179,21 +179,21 @@ const GuestFormAfter = () => {
                     sx={{
                         width: '100%',
                         maxWidth: '300px',
-                        padding: '1.6rem',
+                        padding: '3rem',
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
                         overflow: 'visible',
-                        marginTop: '8rem',
-                        paddingBottom: '0.1rem',
+                        marginTop: '7rem',
+                        paddingBottom: '0.6rem',
                         position: 'relative',
                     }}
                 >
                     <span
                         style={{
                             position: 'absolute',
-                            top: 'calc(0rem + 0rem)',
-                            left: '2.7rem',
+                            top: 'calc(1rem + 0rem)',
+                            left: '3.7rem',
                             color: 'white',
                             fontSize: '1.3rem',
                             fontFamily: 'Griun NltoTAENGGU, sans-serif',
