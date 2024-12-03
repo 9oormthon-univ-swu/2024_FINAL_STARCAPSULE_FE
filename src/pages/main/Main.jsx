@@ -142,9 +142,12 @@ const Main = () => {
                 .tz('Asia/Seoul')
                 .format('YYYY. MM. DD.');
 
-            if (lastPopupCheckedDate !== today) {
+            if (lastPopupCheckedDate !== today && page == 1) {
                 setShowLottie(true);
                 setPopupOpen(true);
+                if (pwa) {
+                    openRecommendModal();
+                }
             }
         }
     }, [serverTime]);
@@ -296,6 +299,11 @@ const Main = () => {
                     content='스노로그에서 남은 2024의 추억을 쌓아보세요.'
                 />
                 <meta property='og:type' content='website' />
+                <meta property='og:image' content='/og_image.png' />
+                <meta
+                    property='og:url'
+                    content={`${import.meta.env.VITE_BASE_URL}/main/${param.userId}`}
+                />
             </Helmet>
             <Layout
                 id='capture-container'
@@ -385,9 +393,6 @@ const Main = () => {
                         isOpen={isPopupOpen}
                         onClose={() => {
                             setPopupOpen(false);
-                            if (pwa) {
-                                openRecommendModal();
-                            }
                         }}
                         question={questionData.question}
                         serverTime={serverTime}
@@ -427,10 +432,6 @@ const Main = () => {
                                 isOpen={isPopupOpen}
                                 onClose={() => {
                                     setPopupOpen(false);
-                                    if (pwa) {
-                                        console.log('test');
-                                        openRecommendModal();
-                                    }
                                 }}
                             />
                         </Portal>
