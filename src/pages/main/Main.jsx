@@ -142,9 +142,12 @@ const Main = () => {
                 .tz('Asia/Seoul')
                 .format('YYYY. MM. DD.');
 
-            if (lastPopupCheckedDate !== today) {
+            if (lastPopupCheckedDate !== today && page == 1) {
                 setShowLottie(true);
                 setPopupOpen(true);
+                if (pwa) {
+                    openRecommendModal();
+                }
             }
         }
     }, [serverTime]);
@@ -385,9 +388,6 @@ const Main = () => {
                         isOpen={isPopupOpen}
                         onClose={() => {
                             setPopupOpen(false);
-                            if (pwa) {
-                                openRecommendModal();
-                            }
                         }}
                         question={questionData.question}
                         serverTime={serverTime}
@@ -427,10 +427,6 @@ const Main = () => {
                                 isOpen={isPopupOpen}
                                 onClose={() => {
                                     setPopupOpen(false);
-                                    if (pwa) {
-                                        console.log('test');
-                                        openRecommendModal();
-                                    }
                                 }}
                             />
                         </Portal>
