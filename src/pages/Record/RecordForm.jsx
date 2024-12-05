@@ -68,6 +68,7 @@ const RecordForm = () => {
         //console.log('title:', title || 'Empty');
         //console.log('answer:', answer || 'Empty');
         // console.log('object_name:', shapeName || 'Empty');
+
         setIsLoading(true); // API 요청 전 isLoading true로 설정
 
         await axiosInstance
@@ -83,14 +84,15 @@ const RecordForm = () => {
             })
             .then(() => {
                 navigate(`/mycomplete/${userId}`);
-                //console.log('Memory successfully uploaded');
             })
             .catch((error) => {
-                //console.log('Error:', error);
                 setSnackbarOpen({
                     text: '추억 기록에 실패했어요. 다시 시도해주세요.',
                     severity: 'error',
                 });
+            })
+            .finally(() => {
+                setIsLoading(false); // 요청 완료 후 isLoading false로 설정
             });
     };
 
@@ -176,7 +178,10 @@ const RecordForm = () => {
                                 showplaceholder='남기고 싶은 추억을 작성해주세요.'
                             />
                         </Stack>
-                        <RecordSaveButton recordsavebtnText='추억 보관하기' />
+                        <RecordSaveButton
+                            disabled={isLoading}
+                            recordsavebtnText='추억 보관하기'
+                        />
                     </form>
                 </Stack>
             </Stack>
@@ -185,6 +190,7 @@ const RecordForm = () => {
                 onClose={handleCloseModal}
                 buttonText='추억 보관하기'
                 onButtonClick={handleAcceptModal}
+                disabled={isLoading}
             >
                 <Stack>
                     <Typography sx={modaltextstyle1}>
