@@ -22,7 +22,7 @@ export default RecordSaveButton;
 const formbtn = {
     width: '100%',
     height: '3.875rem',
-    padding: '1.25rem 6.8125rem',
+    padding: '1.25rem',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: '1.25rem',

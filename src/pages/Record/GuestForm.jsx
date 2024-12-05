@@ -202,7 +202,7 @@ const GuestForm = () => {
             <AlertModal
                 open={openModal}
                 onClose={handleCloseModal}
-                buttonText='추억 전달하기'
+                buttonText={isLoading ? '전달 중...' : '추억 전달하기'}
                 onButtonClick={handleAcceptModal}
                 disabled={isLoading}
             >
