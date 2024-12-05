@@ -62,7 +62,7 @@ const ShareModal = ({ url, open, onClose }) => {
         try {
             if (navigator.share) {
                 await navigator.share({
-                    title: '☃️ 스노우볼에 오늘의 추억이 보관되었어요! ☃️\nSNS에 공유하여 친구들과 함께한 추억을 전달받아보세요\n',
+                    title: '⛄ 눈이 펑펑 내리는 추운 겨울, 한 해의 추억을 돌아보며 자신만의 스노우볼을 만들어 볼까요?⛄\n',
                     url: url,
                 });
                 setSnackbarOpen({
@@ -161,26 +161,26 @@ const ShareModal = ({ url, open, onClose }) => {
                                 fontWeight='700'
                                 color='#405EAB'
                             >
-                                스노우볼 이미지
+                                {'스노우볼 이미지'}
                             </Box>
-                            를{' '}
+                            {'를 '}
                             <Box
                                 component='span'
                                 fontWeight='700'
                                 color='#405EAB'
                             >
-                                공유
+                                {'공유'}
                             </Box>
-                            하거나,
+                            {'하거나,'}
                             <Typography variant='title4' color='#282828'>
                                 <Box
                                     component='span'
                                     fontWeight='700'
                                     color='#405EAB'
                                 >
-                                    링크를 복사
+                                    {'링크를 복사'}
                                 </Box>
-                                하여 추억을 나누어보세요!
+                                {'하여 추억을 나누어보세요!'}
                             </Typography>
                         </Typography>
                     </Stack>
@@ -212,7 +212,7 @@ const ShareModal = ({ url, open, onClose }) => {
                                     color: 'custom.white',
                                 }}
                             >
-                                링크 복사하기
+                                {'링크 복사하기'}
                             </Typography>
                             <LinkIcon />
                         </LinkCopyButton>

@@ -177,22 +177,58 @@ const LoginPage = () => {
         <>
             <Container>
                 <Helmet>
-                    <title>스노로그 - 로그인 화면</title>
+                    {/* 기본 HTML Meta Tags */}
+                    <title>스노로그 - 2024의 추억이 쌓이는 곳</title>
                     <meta
                         name='description'
-                        content='스노로그를 카카오 계정으로 로그인하세요.'
+                        content='스노로그에서 남은 2024의 추억을 쌓아보세요.'
                     />
-                    <meta property='og:title' content='SnowLog 로그인 화면' />
+
+                    {/* Open Graph Meta Tags (공통, 카카오 및 다른 플랫폼) */}
+                    <meta
+                        property='og:title'
+                        content='스노로그 - 2024의 추억이 쌓이는 곳'
+                    />
                     <meta
                         property='og:description'
-                        content='스노로그를 카카오 계정으로 로그인하세요.'
+                        content='스노로그에서 남은 2024의 추억을 쌓아보세요.'
                     />
                     <meta property='og:type' content='website' />
-                    <meta property='og:image' content='/og_image.png' />
+                    <meta
+                        property='og:image'
+                        content={`${import.meta.env.VITE_BASE_URL}/og_image.jpeg`}
+                    />
+                    <meta property='og:alt' content='스노로그 바로가기' />
                     <meta
                         property='og:url'
                         content={`${import.meta.env.VITE_BASE_URL}`}
                     />
+
+                    {/* Twitter Meta Tags (트위터/X 전용) */}
+                    <meta
+                        property='twitter:card'
+                        content='summary_large_image'
+                    />
+                    <meta
+                        property='twitter:url'
+                        content={`${import.meta.env.VITE_BASE_URL}`}
+                    />
+                    <meta
+                        property='twitter:title'
+                        content='스노로그 - 2024의 추억이 쌓이는 곳'
+                    />
+                    <meta
+                        property='twitter:description'
+                        content='스노로그에서 남은 2024의 추억을 쌓아보세요.'
+                    />
+                    <meta
+                        property='twitter:image'
+                        content={`${import.meta.env.VITE_BASE_URL}/og_image.jpeg`}
+                    />
+
+                    {/* 카카오 전용 Meta Tags (article:) */}
+                    <meta property='article:author' content='스노로그' />
+                    <meta property='article:section' content='2024 추억 기록' />
                 </Helmet>
 
                 <Title>Snow Log</Title>

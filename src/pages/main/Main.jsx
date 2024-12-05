@@ -285,11 +285,14 @@ const Main = () => {
     return (
         <>
             <Helmet>
+                {/* 기본 HTML Meta Tags */}
                 <title>스노로그 - 2024의 추억이 쌓이는 곳</title>
                 <meta
                     name='description'
                     content='스노로그에서 남은 2024의 추억을 쌓아보세요.'
                 />
+
+                {/* Open Graph Meta Tags (공통, 카카오 및 다른 플랫폼) */}
                 <meta
                     property='og:title'
                     content='스노로그 - 2024의 추억이 쌓이는 곳'
@@ -299,12 +302,40 @@ const Main = () => {
                     content='스노로그에서 남은 2024의 추억을 쌓아보세요.'
                 />
                 <meta property='og:type' content='website' />
-                <meta property='og:image' content='/og_image.png' />
+                <meta
+                    property='og:image'
+                    content={`${import.meta.env.VITE_BASE_URL}/og_image.jpeg`}
+                />
+                <meta property='og:alt' content='스노로그 바로가기' />
                 <meta
                     property='og:url'
                     content={`${import.meta.env.VITE_BASE_URL}/main/${param.userId}`}
                 />
+
+                {/* Twitter Meta Tags (트위터/X 전용) */}
+                <meta property='twitter:card' content='summary_large_image' />
+                <meta
+                    property='twitter:url'
+                    content={`${import.meta.env.VITE_BASE_URL}/main/${param.userId}`}
+                />
+                <meta
+                    property='twitter:title'
+                    content='스노로그 - 2024의 추억이 쌓이는 곳'
+                />
+                <meta
+                    property='twitter:description'
+                    content='스노로그에서 남은 2024의 추억을 쌓아보세요.'
+                />
+                <meta
+                    property='twitter:image'
+                    content={`${import.meta.env.VITE_BASE_URL}/og_image.jpeg`}
+                />
+
+                {/* 카카오 전용 Meta Tags (article:) */}
+                <meta property='article:author' content='스노로그' />
+                <meta property='article:section' content='2024 추억 기록' />
             </Helmet>
+
             <Layout
                 id='capture-container'
                 sx={{ overflow: 'hidden' }}
