@@ -158,12 +158,12 @@ const LoginPage = () => {
         try {
             await navigator.share({
                 title: '⛄ 눈이 펑펑 내리는 추운 겨울, 한 해의 추억을 돌아보며 자신만의 스노우볼을 만들어 볼까요?⛄',
-                text: `${import.meta.env.VITE_BASE_URL}`,
+                // text: `${import.meta.env.VITE_BASE_URL}`,
                 url: `${import.meta.env.VITE_BASE_URL}`,
             });
         } catch (err) {
             setSnackbarOpen({
-                message: '공유하기를 지원하지 않는 브라우저입니다.',
+                text: '공유하기를 지원하지 않는 브라우저입니다.',
                 severity: 'error',
             });
         }
@@ -177,58 +177,24 @@ const LoginPage = () => {
         <>
             <Container>
                 <Helmet>
-                    {/* 기본 HTML Meta Tags */}
+                    {/* 동적으로 변경될 HTML Meta Tags */}
                     <title>스노로그 - 2024의 추억이 쌓이는 곳</title>
                     <meta
                         name='description'
                         content='스노로그에서 남은 2024의 추억을 쌓아보세요.'
                     />
 
-                    {/* Open Graph Meta Tags (공통, 카카오 및 다른 플랫폼) */}
-                    <meta
-                        property='og:title'
-                        content='스노로그 - 2024의 추억이 쌓이는 곳'
-                    />
-                    <meta
-                        property='og:description'
-                        content='스노로그에서 남은 2024의 추억을 쌓아보세요.'
-                    />
-                    <meta property='og:type' content='website' />
-                    <meta
-                        property='og:image'
-                        content={`${import.meta.env.VITE_BASE_URL}/og_image.jpeg`}
-                    />
-                    <meta property='og:alt' content='스노로그 바로가기' />
+                    {/* Open Graph 동적 Meta Tags */}
                     <meta
                         property='og:url'
-                        content={`${import.meta.env.VITE_BASE_URL}`}
+                        content={`${import.meta.env.VITE_BASE_URL}/`}
                     />
 
-                    {/* Twitter Meta Tags (트위터/X 전용) */}
-                    <meta
-                        property='twitter:card'
-                        content='summary_large_image'
-                    />
+                    {/* Twitter 동적 Meta Tags */}
                     <meta
                         property='twitter:url'
-                        content={`${import.meta.env.VITE_BASE_URL}`}
+                        content={`${import.meta.env.VITE_BASE_URL}/`}
                     />
-                    <meta
-                        property='twitter:title'
-                        content='스노로그 - 2024의 추억이 쌓이는 곳'
-                    />
-                    <meta
-                        property='twitter:description'
-                        content='스노로그에서 남은 2024의 추억을 쌓아보세요.'
-                    />
-                    <meta
-                        property='twitter:image'
-                        content={`${import.meta.env.VITE_BASE_URL}/og_image.jpeg`}
-                    />
-
-                    {/* 카카오 전용 Meta Tags (article:) */}
-                    <meta property='article:author' content='스노로그' />
-                    <meta property='article:section' content='2024 추억 기록' />
                 </Helmet>
 
                 <Title>Snow Log</Title>
