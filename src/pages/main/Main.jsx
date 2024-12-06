@@ -285,26 +285,26 @@ const Main = () => {
     return (
         <>
             <Helmet>
+                {/* 동적으로 변경될 HTML Meta Tags */}
                 <title>스노로그 - 2024의 추억이 쌓이는 곳</title>
                 <meta
                     name='description'
                     content='스노로그에서 남은 2024의 추억을 쌓아보세요.'
                 />
-                <meta
-                    property='og:title'
-                    content='스노로그 - 2024의 추억이 쌓이는 곳'
-                />
-                <meta
-                    property='og:description'
-                    content='스노로그에서 남은 2024의 추억을 쌓아보세요.'
-                />
-                <meta property='og:type' content='website' />
-                <meta property='og:image' content='/og_image.png' />
+
+                {/* Open Graph 동적 Meta Tags */}
                 <meta
                     property='og:url'
                     content={`${import.meta.env.VITE_BASE_URL}/main/${param.userId}`}
                 />
+
+                {/* Twitter 동적 Meta Tags */}
+                <meta
+                    property='twitter:url'
+                    content={`${import.meta.env.VITE_BASE_URL}/main/${param.userId}`}
+                />
             </Helmet>
+
             <Layout
                 id='capture-container'
                 sx={{ overflow: 'hidden' }}

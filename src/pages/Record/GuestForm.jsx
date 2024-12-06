@@ -68,10 +68,11 @@ const GuestForm = () => {
         //console.log('image:', uploadedImage);
         //console.log('writer:', writer);
         // console.log('object_name:', object_name);
+
         setIsLoading(true); // API 요청 전 isLoading true로 설정
 
-        try {
-            await axios.post(
+        await axios
+            .post(
                 `${import.meta.env.VITE_API_URL}/api/share_memory/${params.userId}/write`,
                 formData,
                 {
@@ -85,16 +86,20 @@ const GuestForm = () => {
                         writer: writer,
                     },
                 }
-            );
-            navigate(`/complete/${params.userId}`);
-        } catch (error) {
-            setSnackbarOpen({
-                severity: 'error',
-                text: '추억 전달에 실패했어요. 다시 시도해주세요.',
+            )
+            .then(() => {
+                navigate(`/complete/${params.userId}`);
+            })
+            .catch((error) => {
+                // console.log(error);
+                setSnackbarOpen({
+                    severity: 'error',
+                    text: '추억 전달에 실패했어요. 다시 시도해주세요.',
+                });
+            })
+            .finally(() => {
+                setIsLoading(false); // 요청 후 isLoading false로 설정
             });
-        } finally {
-            setIsLoading(false); // 요청 후 isLoading false로 설정
-        }
     };
 
     // 모달 닫기 처리 함수
@@ -188,7 +193,7 @@ const GuestForm = () => {
                             ></Writer>
                         </Stack>
                         <RecordSaveButton
-                            disabled={isLoading} // isLoading에 따라 버튼 비활성화
+                            disabled={isLoading}
                             recordsavebtnText='추억 전달하기'
                         />
                     </form>
