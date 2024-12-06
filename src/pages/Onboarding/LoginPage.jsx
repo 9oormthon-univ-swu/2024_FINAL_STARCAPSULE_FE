@@ -157,9 +157,9 @@ const LoginPage = () => {
     const handleShare = async () => {
         try {
             await navigator.share({
-                title: '⛄ 눈이 펑펑 내리는 추운 겨울, 한 해의 추억을 돌아보며 자신만의 스노우볼을 만들어 볼까요?⛄',
-                // text: `${import.meta.env.VITE_BASE_URL}`,
-                url: `${import.meta.env.VITE_BASE_URL}`,
+                title: '⛄ 눈이 펑펑 내리는 추운 겨울, 한 해의 추억을 돌아보며 자신만의 스노우볼을 만들어 볼까요?⛄\n',
+                text: `${import.meta.env.VITE_BASE_URL}`,
+                // url: `${import.meta.env.VITE_BASE_URL}`,
             });
         } catch (err) {
             setSnackbarOpen({
