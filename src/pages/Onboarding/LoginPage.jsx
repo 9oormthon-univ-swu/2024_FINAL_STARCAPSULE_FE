@@ -157,13 +157,13 @@ const LoginPage = () => {
     const handleShare = async () => {
         try {
             await navigator.share({
-                title: '⛄ 눈이 펑펑 내리는 추운 겨울, 한 해의 추억을 돌아보며 자신만의 스노우볼을 만들어 볼까요?⛄',
-                text: `${import.meta.env.VITE_BASE_URL}`,
-                url: `${import.meta.env.VITE_BASE_URL}`,
+                title: '⛄ 눈이 펑펑 내리는 추운 겨울,',
+                text: ` 한 해의 추억을 돌아보며 자신만의 스노우볼을 만들어 볼까요? ⛄\n${import.meta.env.VITE_BASE_URL}`,
+                // url: `${import.meta.env.VITE_BASE_URL}`,
             });
         } catch (err) {
             setSnackbarOpen({
-                message: '공유하기를 지원하지 않는 브라우저입니다.',
+                text: '공유하기를 지원하지 않는 브라우저입니다.',
                 severity: 'error',
             });
         }
@@ -177,17 +177,24 @@ const LoginPage = () => {
         <>
             <Container>
                 <Helmet>
-                    <title>스노로그 - 로그인 화면</title>
+                    {/* 동적으로 변경될 HTML Meta Tags */}
+                    <title>스노로그 - 2024의 추억이 쌓이는 곳</title>
                     <meta
                         name='description'
-                        content='스노로그를 카카오 계정으로 로그인하세요.'
+                        content='스노로그에서 남은 2024의 추억을 쌓아보세요.'
                     />
-                    <meta property='og:title' content='SnowLog 로그인 화면' />
+
+                    {/* Open Graph 동적 Meta Tags */}
                     <meta
-                        property='og:description'
-                        content='스노로그를 카카오 계정으로 로그인하세요.'
+                        property='og:url'
+                        content={`${import.meta.env.VITE_BASE_URL}/`}
                     />
-                    <meta property='og:type' content='website' />
+
+                    {/* Twitter 동적 Meta Tags */}
+                    <meta
+                        property='twitter:url'
+                        content={`${import.meta.env.VITE_BASE_URL}/`}
+                    />
                 </Helmet>
 
                 <Title>Snow Log</Title>
