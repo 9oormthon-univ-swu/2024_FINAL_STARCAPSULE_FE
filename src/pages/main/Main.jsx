@@ -380,8 +380,15 @@ const Main = () => {
                             sx={{ flexGrow: 0, width: 'fit-content' }}
                         >
                             <Typography
+                                href={
+                                    'https://sparkly-edam-b20.notion.site/BYE-2024-HI-2025-16c94fdea8998093b916da8a04ff3dba'
+                                }
+                                component={'a'}
                                 variant='title2'
-                                sx={{ color: 'custom.white' }}
+                                sx={{
+                                    color: 'custom.white',
+                                    textDecoration: 'none',
+                                }}
                             >
                                 팀 소개
                             </Typography>
