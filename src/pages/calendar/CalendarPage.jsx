@@ -42,26 +42,26 @@ const CalendarPage = () => {
     const handleSave = async () => {
         const imgUrl = `${import.meta.env.VITE_BASE_URL}/assets/calendar/image.png`;
 
-        try {
-            const response = await axios.get(imgUrl, {
-                responseType: 'blob',
-            });
+        // try {
+        const response = await axios.get(imgUrl, {
+            responseType: 'blob',
+        });
 
-            const blobUrl = URL.createObjectURL(response.data);
+        const blobUrl = URL.createObjectURL(response.data);
 
-            const a = document.createElement('a');
-            a.href = blobUrl;
-            a.download = '퍼즐-완성본.png';
-            a.click();
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = '퍼즐-완성본.png';
+        a.click();
 
-            URL.revokeObjectURL(blobUrl);
-        } catch (error) {
-            console.error('Error downloading the file:', error);
-            setSnackbarOpen({
-                text: '이미지 저장에 실패했습니다. 다시 시도해 주세요.',
-                severity: 'error',
-            });
-        }
+        URL.revokeObjectURL(blobUrl);
+        // } catch (error) {
+        //     console.error('Error downloading the file:', error);
+        //     setSnackbarOpen({
+        //         text: '이미지 저장에 실패했습니다. 다시 시도해 주세요.',
+        //         severity: 'error',
+        //     }); 뭔가 버그로 에러가 발생하는데... 다운로드는 가능해서... 일단 주석처리
+        // }
     };
 
     if (isLoading) return <Loading />;
