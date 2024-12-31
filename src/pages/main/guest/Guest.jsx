@@ -17,6 +17,7 @@ import RecommendModal from '@/components/RecommendModal';
 import MakeSnowballContent from '../MakeSnowballContent';
 import useModal from '@/hooks/useModal';
 import GoToMineTag from './GoToMineTag';
+import { useRef } from 'react';
 
 const Guest = () => {
     const [serverTime, setServerTime] = useState('');
@@ -32,6 +33,12 @@ const Guest = () => {
     //스노우볼 주인의 닉네임 설정
     const { setNickname } = useNicknameStore();
     const { userId } = useUserStore();
+
+    const linkRef = useRef(null);
+
+    const handleLinkClick = () => {
+        linkRef.current.click();
+    };
 
     const snowballFetcher = (url) =>
         axios
@@ -139,8 +146,10 @@ const Guest = () => {
                         <StyledButton
                             variant={'contained'}
                             sx={{ flexGrow: 0 }}
+                            onClick={handleLinkClick}
                         >
                             <Typography
+                                ref={linkRef}
                                 href={
                                     'https://sparkly-edam-b20.notion.site/BYE-2024-HI-2025-16c94fdea8998093b916da8a04ff3dba'
                                 }
