@@ -6,7 +6,7 @@ import {
     Typography,
     Portal,
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import DDayTitle from './DDayTitle';
 import MainTitle from './MainTitle';
 import Snowball from './Snowball/Snowball';
@@ -88,6 +88,12 @@ const Main = () => {
     const [openShareModal, setOpenShareModal] = useState(false);
     const [searchParams] = useSearchParams();
     const page = parseInt(searchParams.get('page') || 1);
+
+    const linkRef = useRef(null);
+
+    const handleLinkClick = () => {
+        linkRef.current.click();
+    };
 
     const pwa = searchParams.get('pwa') === 'true';
 
@@ -378,8 +384,10 @@ const Main = () => {
                         <StyledButton
                             variant={'contained'}
                             sx={{ flexGrow: 0, width: 'fit-content' }}
+                            onClick={handleLinkClick}
                         >
                             <Typography
+                                ref={linkRef}
                                 href={
                                     'https://sparkly-edam-b20.notion.site/BYE-2024-HI-2025-16c94fdea8998093b916da8a04ff3dba'
                                 }
